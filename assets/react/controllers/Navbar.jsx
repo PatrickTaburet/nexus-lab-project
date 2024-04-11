@@ -1,9 +1,9 @@
 import React from 'react';
 import { useState } from 'react';
-import styles from "./Navbar.module.css?module";
+import styles from "/assets/styles/Navbar.module.css?module";
+import MyButton from './MyButton';
 
-
-export default function () {
+export default function (props) {
 
     // adding the states 
     const [isActive, setIsActive] = useState(false);
@@ -12,29 +12,40 @@ export default function () {
       setIsActive(!isActive);
     };
     //clean up function to remove the active class
-    const removeActive = () => { 
+    const removeActive = () => {
       setIsActive(false)
     }
+   
+    const loginButtons = props.user ? (<div className={`${styles.rightSide}`}>
+      <MyButton to="logout">Log out</MyButton>
+      <MyButton to="">Profile</MyButton>
+    </div>) : 
+    ( <div className={`${styles.rightSide}`}>
+      <MyButton to="login">Login</MyButton>
+      <MyButton to="register">Sign in</MyButton>
+    </div>);
+
     return (
       <div className="App">
         <header className="App-header">
           <nav className={`${styles.navbar}`}>
-            {/* logo */}
-            <a href='#home' className={`${styles.logo}`}>Dev. </a>
-            <ul className={`${styles.navMenu} ${isActive ? styles.active : ''}`}>
-              <li onClick={removeActive}>
-                <a href='#home' className={`${styles.navLink}`}>Home</a>
-              </li>
-              <li onClick={removeActive}>
-                <a href='#home' className={`${styles.navLink}`}>Catalog</a>
-              </li>
-              <li onClick={removeActive}>
-                <a href='#home' className={`${styles.navLink}`}>All products</a>
-              </li>
-              <li onClick={removeActive}>
-                <a href='#home' className={`${styles.navLink}`}>Contact</a>
-              </li>
-            </ul>
+            <div className={`${styles.leftSide}`}>
+              {/* logo */}
+              <a href='home' className={`${styles.logo}`}>Dev. </a>
+              <ul className={`${styles.navMenu} ${isActive ? styles.active : ''}`}>
+                <li onClick={removeActive}>
+                  <a href='#home' className={`${styles.navLink}`}>Home</a>
+                </li>
+                <li onClick={removeActive}>
+                  <a href='#home' className={`${styles.navLink}`}>Catalog</a>
+                </li>
+                <li onClick={removeActive}>
+                  <a href='#home' className={`${styles.navLink}`}>All products</a>
+                </li>
+              </ul>
+            </div>
+            {/* Navbar buttons, different depending on the roles & user adress, link  to profile modale  */}
+              {loginButtons}
             <div className={`${styles.hamburger} ${isActive ? styles.active : ''}`}  onClick={toggleActiveClass}>
               <span className={`${styles.bar}`}></span>
               <span className={`${styles.bar}`}></span>
