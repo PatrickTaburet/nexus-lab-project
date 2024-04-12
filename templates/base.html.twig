@@ -14,7 +14,17 @@
             {{ encore_entry_script_tags('app') }}
         {% endblock %}
     </head>
-       <div {{ react_component('Navbar', {"user": app.user}) }}></div>
+    <div {{ react_component('Navbar', {"user": app.user}) }}></div>
+    {% if app.user %}
+        <div {{ react_component('Modale', {"props": {
+            "userImg": vich_uploader_asset(app.user, 'imageFile'),
+            "username": app.user.pseudo,
+            "email": app.user.email,
+            "role": app.user.roles[0]       
+        }}) }}></div>
+    {% endif %}
+
+
     <body>
         {% block body %}{% endblock %}
     </body>
