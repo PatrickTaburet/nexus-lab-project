@@ -31,16 +31,16 @@ export default function (props) {
           <nav className={`${styles.navbar}`}>
             <div className={`${styles.leftSide}`}>
               {/* logo */}
-              <a href='home' className={`${styles.logo}`}>Dev. </a>
+              <a href='home' className={`${styles.logo}`}>LOGO</a>
               <ul className={`${styles.navMenu} ${isActive ? styles.active : ''}`}>
                 <li onClick={removeActive}>
-                  <a href='#home' className={`${styles.navLink}`}>Home</a>
+                  <a href='#home' className={`${styles.navLink}`}>Gallery</a>
                 </li>
                 <li onClick={removeActive}>
-                  <a href='#home' className={`${styles.navLink}`}>Catalog</a>
+                  <a href='#home' className={`${styles.navLink}`}>Create</a>
                 </li>
                 <li onClick={removeActive}>
-                  <a href='#home' className={`${styles.navLink}`}>All products</a>
+                  <a href='#home' className={`${styles.navLink}`}>Community</a>
                 </li>
               </ul>
             </div>
