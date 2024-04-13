@@ -3,6 +3,7 @@ import { useState } from 'react';
 import styles from "/assets/styles/Navbar.module.css?module";
 import MyButton from './MyButton';
 
+
 export default function (props) {
 
     // adding the states 
@@ -18,7 +19,7 @@ export default function (props) {
    
     const loginButtons = props.user ? (<div className={`${styles.rightSide}`}>
       <MyButton to="logout">Log out</MyButton>
-      <MyButton to="">Profile</MyButton>
+      <MyButton onClick={props.toggleModal} to="">Profile</MyButton>
     </div>) : 
     ( <div className={`${styles.rightSide}`}>
       <MyButton to="login">Login</MyButton>
