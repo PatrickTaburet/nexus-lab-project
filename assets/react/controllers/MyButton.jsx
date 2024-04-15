@@ -3,13 +3,12 @@ import styles from "/assets/styles/Button.module.css?module";
 
 
 
-export default function MyButton({myStyle, to, children}) {
+export default function MyButton({myStyle, to, children, handleClick}) {
   return (
     <a 
       href={to}
-      role="button"
     >
-      <button className={`${styles.customButton} ${styles[myStyle]}`} >
+      <button className={`${styles.customButton} ${styles[myStyle]}`} onClick={handleClick}>
         <span>
           {children}
         </span>
