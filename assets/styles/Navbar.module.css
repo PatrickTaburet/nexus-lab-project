@@ -59,6 +59,13 @@ a {
     display: none;
 
 }
+.rightSideButtons{
+    display: flex;
+    flex-direction: row;
+    align-items: center;    
+    gap: 20px;
+    margin-left: auto;
+}
 
 /* --------- Media queries --------- */
 @media screen and (max-width: 1000px){
@@ -144,7 +151,14 @@ a {
         margin: 16px 0;
     }
 
-
+    .rightSideButtons{
+        display: flex;
+        flex-direction: row;
+        align-items: center;    
+        gap: 10px;
+        margin-left: auto;
+    }
+    
 
     
 }

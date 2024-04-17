@@ -48,13 +48,14 @@ export default function ({props}) {
         <MyButton to="logout">Log out</MyButton>
         <MyButton handleClick={()=> toggleModal()} >Profile</MyButton>
       </div>) 
-    } else {
-      loginButtons = 
-        (<div className={`${styles.rightSide}`}>
-          <MyButton to="login">Login</MyButton>
-          <MyButton to="register">Sign in</MyButton>
-        </div>);
-    }
+    } 
+    // else {
+    //   loginButtons = 
+    //     (<div className={`${styles.rightSide}`}>
+    //       <MyButton to="login">Login</MyButton>
+    //       <MyButton to="register">Sign in</MyButton>
+    //     </div>);
+    // }
     
     const modaleButtons = (props.role === "ROLE_ARTIST")? 
       (<div className={`${modStyles.modaleRowButtons}`}>
@@ -64,6 +65,14 @@ export default function ({props}) {
         <MyButton myStyle="whiteButton" to="">Ask for Artist Role</MyButton>
       </div> ) 
 
+    const profileResponsive = props.user ? 
+      (<div  className={`${styles.rightSideImg}`}>
+        <img onClick={()=> toggleModal()}  src={props.userImg} alt={props.username} className={`${styles.profileImg}`}/>
+      </div>) :
+      (<div className={`${styles.rightSideButtons}`}>
+        <MyButton to="login">Login</MyButton>
+        <MyButton to="register">Sign in</MyButton>
+      </div>);
 
 
     return (
@@ -72,7 +81,7 @@ export default function ({props}) {
           <nav className={`${styles.navbar}`}>
             <div className={`${styles.leftSide}`}>
               {/* logo */}
-              <a href='home' className={`${styles.logo}`}>LOGO</a>
+              <a href='/home' className={`${styles.logo}`}>LOGO</a>
               <ul className={`${styles.navMenu} ${isActive ? styles.active : ''}`}>
                 <li onClick={removeActive}>
                   <a href='#home' className={`${styles.navLink}`}>Gallery</a>
@@ -93,9 +102,7 @@ export default function ({props}) {
               <span className={`${styles.bar}`}></span>
               <span className={`${styles.bar}`}></span>
             </div>
-            <div  className={`${styles.rightSideImg}`}>
-              <img onClick={()=> toggleModal()}  src={props.userImg} alt={props.username} className={`${styles.profileImg}`}/>
-            </div>
+            {profileResponsive}
           </nav>
         </header>
 
@@ -125,7 +132,7 @@ export default function ({props}) {
             </div>
             <hr />
             <div className={`${modStyles.modaleRow}`}>
-                <MyButton myStyle="marginButton" to="">Edit Profile</MyButton>
+                <MyButton myStyle="marginButton" to="profile" id={props.userId}>Edit Profile</MyButton>
                 <MyButton myStyle="marginButton" to="">My Artworks</MyButton>
             </div>
               {modaleButtons}

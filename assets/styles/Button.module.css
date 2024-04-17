@@ -55,9 +55,10 @@
   background-color: rgba(230, 230, 255, 0.734);
   color: black;
 }
-/* @media (min-width: 768px) {
+
+@media (max-width: 768px) {
   .customButton {
-    font-size: 24px;
-    min-width: 196px;
+    font-size: 15px;
+    min-width: 100px;
   }
-} */
+}

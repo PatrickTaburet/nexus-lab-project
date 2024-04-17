@@ -1,13 +1,15 @@
 body {
     display: flex;
     flex-direction: column;
-    min-height: 100vh; /* Cette propriété assure que le contenu de la page occupe au moins la totalité de la hauteur de la fenêtre du navigateur */
+    min-height: 100vh; /* Assure que le contenu de la page occupe au moins la totalité de la hauteur de la fenêtre du navigateur */
 }
 
 main {
-    flex: 1; /* Cela permet au contenu principal de s'étendre pour remplir l'espace disponible restant */
+    flex: 1; /* Permet au contenu principal de s'étendre pour remplir l'espace disponible restant */
 }
 
+
+/* --------------- Footer ------------------*/
 footer {
     /* flex-shrink: 0; Empêche le footer de rétrécir lorsqu'il y a peu de contenu */
     display: flex;
@@ -20,14 +22,17 @@ footer {
 }
 .topFooter{
     display: flex;
-    justify-content: space-between;
-    gap: 150px;
+    justify-content: center;
+    flex-wrap: wrap;
     margin: 20px;
+    width: 100%;
+    gap: 7vw;
 }
 .topFooter ul{
     display: flex;
     justify-content: space-between;
-    gap: 100px;
+    gap: 7vw;
+    
 }
 .centerFooter{
     display: flex;

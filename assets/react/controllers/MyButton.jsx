@@ -2,11 +2,11 @@ import React from "react";
 import styles from "/assets/styles/Button.module.css?module";
 
 
+export default function MyButton({myStyle, to, id, children, handleClick}) {
 
-export default function MyButton({myStyle, to, children, handleClick}) {
   return (
     <a 
-      href={to}
+    href={id?`/${to}/${id}`:to}
     >
       <button className={`${styles.customButton} ${styles[myStyle]}`} onClick={handleClick}>
         <span>

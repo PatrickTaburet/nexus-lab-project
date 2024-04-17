@@ -1,0 +1,69 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit Profile{% endblock %}
+
+{% block body %}
+<!-- Password modal -->
+{# 
+<div class="modal fade" id="passwordModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Change password</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div> #}
+
+{# Profile form #}
+
+    <div class="container">
+        <div class="row">
+            
+            {# {% if (is_granted('ROLE_EDITOR')) %}
+            <h1 class="mt-5 mb-5 text-center">Edit Profile <span class="roleLabel">EDITOR</span></h1>
+            {% endif %}
+            <span></span> #}
+            <div class="col-md-6 offset-md-3">
+            {{ form_start(userForm) }}
+            
+                <div class="form-group text-black">
+                    {{ form_label(userForm.pseudo)}}
+                    {{ form_widget(userForm.pseudo, { "attr": {"class" : "form-control" } }) }}
+                </div>
+                <div class="form-group text-black">
+                    {{ form_label(userForm.email)}}
+                    {{ form_widget(userForm.email, { "attr": {"class" : "form-control" } }) }}
+                </div>
+                <div>
+                <div class="form-group text-black">
+                    {{ form_widget(userForm.plainPassword, { "attr": {"class" : "form-control" } }) }}
+                 </div>
+                 <div class="imagePreview">
+                {{ form_label(userForm.imageFile) }}
+                {{ form_widget(userForm.imageFile, { "attr": {"class" : "form-control" } }) }}
+                </div>
+                <div class="d-flex justify-content-around mt-3 mb-4">        
+                    {{ form_label(userForm.Submit) }}
+                    {{ form_widget(userForm.Submit) }}
+                <a href="{{ path('home')}}" class="button-13 text-decoration-none text-dark"> Back</a>
+
+                </div>
+
+            {{ form_end(userForm) }}
+
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

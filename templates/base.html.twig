@@ -22,6 +22,7 @@
         {% if app.user %}
             <div {{ react_component('Navbar', {"props": {
                 "user": app.user,
+                "userId": app.user.id, 
                 "userImg": vich_uploader_asset(app.user, 'imageFile'),
                 "username": app.user.pseudo,
                 "email": app.user.email,
@@ -39,7 +40,6 @@
             <ul>
                 <li>Gallery</li>
                 <li>Create</li>
-                <li>Community</li>
             </ul>
             <img src="" alt="logo">
              <ul>
