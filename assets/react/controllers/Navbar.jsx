@@ -32,16 +32,39 @@ export default function ({props}) {
     const handleButtonClick = () => {
       setModalOpen(!ModalOpen);
     }
-  // Display buttons depend on the login status
+  // Display navbar buttons depend on the login status and role
     
-    const loginButtons = props.user ? (<div className={`${styles.rightSide}`}>
-    <MyButton to="logout">Log out</MyButton>
-    <MyButton handleClick={()=> toggleModal()} >Profile</MyButton>
-    </div>) : 
-    ( <div className={`${styles.rightSide}`}>
-    <MyButton to="login">Login</MyButton>
-    <MyButton to="register">Sign in</MyButton>
-    </div>);
+    let loginButtons = null
+    if (props.user && (props.role === "ROLE_ADMIN")){
+      loginButtons = 
+        (<div className={`${styles.rightSide}`}>
+          <MyButton to="logout">Log out</MyButton>
+          <MyButton handleClick={()=> toggleModal()} >Profile</MyButton>
+          <MyButton >Admin</MyButton>
+        </div>)
+    } else if (props.user){
+      loginButtons = 
+      (<div className={`${styles.rightSide}`}>
+        <MyButton to="logout">Log out</MyButton>
+        <MyButton handleClick={()=> toggleModal()} >Profile</MyButton>
+      </div>) 
+    } else {
+      loginButtons = 
+        (<div className={`${styles.rightSide}`}>
+          <MyButton to="login">Login</MyButton>
+          <MyButton to="register">Sign in</MyButton>
+        </div>);
+    }
+    
+    const modaleButtons = (props.role === "ROLE_ARTIST")? 
+      (<div className={`${modStyles.modaleRowButtons}`}>
+        <MyButton myStyle="whiteButton" to="">Artist Dashboard</MyButton>
+      </div> ) :
+      (<div className={`${modStyles.modaleRowButtons}`}>
+        <MyButton myStyle="whiteButton" to="">Ask for Artist Role</MyButton>
+      </div> ) 
+
+
 
     return (
       <div className="App">
@@ -62,12 +85,16 @@ export default function ({props}) {
                 </li>
               </ul>
             </div>
+
             {/* Navbar buttons, different depending on the roles & user adress, link  to profile modale  */}
               {loginButtons}
             <div className={`${styles.hamburger} ${isActive ? styles.active : ''}`}  onClick={toggleActiveClass}>
               <span className={`${styles.bar}`}></span>
               <span className={`${styles.bar}`}></span>
               <span className={`${styles.bar}`}></span>
+            </div>
+            <div  className={`${styles.rightSideImg}`}>
+              <img onClick={()=> toggleModal()}  src={props.userImg} alt={props.username} className={`${styles.profileImg}`}/>
             </div>
           </nav>
         </header>
@@ -101,10 +128,12 @@ export default function ({props}) {
                 <MyButton myStyle="marginButton" to="">Edit Profile</MyButton>
                 <MyButton myStyle="marginButton" to="">My Artworks</MyButton>
             </div>
-            <div className={`${modStyles.modaleRowButtons}`}>
-                <MyButton myStyle="whiteButton" to="">Ask for Artist Role</MyButton>
-                <MyButton myStyle="whiteButton" to="">Artist Dashboard</MyButton>
+              {modaleButtons}
+            <hr />
+            <div className={`${modStyles.modaleBottom}`}> 
+              <a className={`${modStyles.logout}`} href="logout">Log out</a>
             </div>
+           
         </Modale>}
       </div>
     );
