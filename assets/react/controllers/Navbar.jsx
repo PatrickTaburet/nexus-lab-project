@@ -38,22 +38,22 @@ export default function ({props}) {
     if (props.user && (props.role === "ROLE_ADMIN")){
       loginButtons = 
         (<div className={`${styles.rightSide}`}>
-          <MyButton to="logout">Log out</MyButton>
+          <MyButton to="/logout">Log out</MyButton>
           <MyButton handleClick={()=> toggleModal()} >Profile</MyButton>
           <MyButton >Admin</MyButton>
         </div>)
     } else if (props.user){
       loginButtons = 
       (<div className={`${styles.rightSide}`}>
-        <MyButton to="logout">Log out</MyButton>
+        <MyButton to="/logout">Log out</MyButton>
         <MyButton handleClick={()=> toggleModal()} >Profile</MyButton>
       </div>) 
     } 
     // else {
     //   loginButtons = 
     //     (<div className={`${styles.rightSide}`}>
-    //       <MyButton to="login">Login</MyButton>
-    //       <MyButton to="register">Sign in</MyButton>
+    //       <MyButton to="/login">Login</MyButton>
+    //       <MyButton to="/register">Sign in</MyButton>
     //     </div>);
     // }
     
@@ -81,7 +81,7 @@ export default function ({props}) {
           <nav className={`${styles.navbar}`}>
             <div className={`${styles.leftSide}`}>
               {/* logo */}
-              <a href='/home' className={`${styles.logo}`}>LOGO</a>
+              <a href='/' className={`${styles.logo}`}>LOGO</a>
               <ul className={`${styles.navMenu} ${isActive ? styles.active : ''}`}>
                 <li onClick={removeActive}>
                   <a href='#home' className={`${styles.navLink}`}>Gallery</a>
@@ -138,7 +138,7 @@ export default function ({props}) {
               {modaleButtons}
             <hr />
             <div className={`${modStyles.modaleBottom}`}> 
-              <a className={`${modStyles.logout}`} href="logout">Log out</a>
+              <a className={`${modStyles.logout}`} href="/logout">Log out</a>
             </div>
            
         </Modale>}

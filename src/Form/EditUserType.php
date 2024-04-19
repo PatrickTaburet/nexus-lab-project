@@ -38,10 +38,10 @@ class EditUserType extends AbstractType
            
             ->add('imageFile', VichImageType::class, [
                 'label' => 'User picture',
-                'allow_delete' => true, 
-                'download_link' => true,
+                'allow_delete' => false, 
+                'download_link' => false,
                 'label_attr' => [
-                    'class' => 'form-label mt-3 '
+                    'class' => ''
                 ],
                 'required' => false , // image is required only if the form is used for create
             ])
@@ -49,18 +49,22 @@ class EditUserType extends AbstractType
             -> add('Submit', SubmitType::class, [
                 'label' => 'Update',
                 'attr' => [
-                    'class' => 'button-13 ',
+                    'class' => 'customButton',
                 ],
             ])
         ;
-        if ($options['is_admin']) {
+        if ($options['is_not_admin']) {
             $builder->add('plainPassword', RepeatedType::class, [
                 'type' => PasswordType::class,
                 'invalid_message' => 'The password fields must match.',
                 'options' => ['attr' => ['class' => 'password-field m-1']],
-                'required' => true,
-                'first_options'  => ['label' => 'Password'],
-                'second_options' => ['label' => 'Repeat Password'],
+                'required' => false,
+                'first_options'  => [
+                    'label' => 'Password', 
+                    'attr' => ['class' => 'firstMdpField']],
+                'second_options' => [
+                    'label' => 'Repeat Password', 
+                    'attr' => ['class' => 'secondMdpField']],
                 
                 'mapped' => false,
                 'attr' => ['autocomplete' => 'new-password'],
@@ -77,7 +81,7 @@ class EditUserType extends AbstractType
                 ],
             ]);
         }
-        if ($options['is_not_admin']){
+        if ($options['is_admin']){
             $builder ->add('roles', ChoiceType::class, [
                 'choices' => [
                     'User' => 'ROLE_USER',
