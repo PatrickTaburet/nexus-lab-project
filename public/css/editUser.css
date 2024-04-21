@@ -13,6 +13,8 @@
 }
 .form-group{
     margin : 10px;
+   display: flex;
+   justify-content: center;
 }
 .vich-image{
     margin: 10px;

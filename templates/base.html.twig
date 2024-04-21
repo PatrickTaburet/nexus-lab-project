@@ -12,9 +12,6 @@
             <link rel="stylesheet" href="{{asset('css/editUser.css')}}">
         {% endblock %}
 
-        {% block javascripts %}
-            {{ encore_entry_script_tags('app') }}
-        {% endblock %}
     </head>
    
   
@@ -59,5 +56,8 @@
             <p>© 2024 Privacy — Terms</p>
         </div>
     </footer>
+        {% block javascripts %}
+            {{ encore_entry_script_tags('app') }}
+        {% endblock %}
     </body>
 </html>

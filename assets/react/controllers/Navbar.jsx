@@ -132,7 +132,7 @@ export default function ({props}) {
             </div>
             <hr />
             <div className={`${modStyles.modaleRow}`}>
-                <MyButton myStyle="marginButton" to="profile" id={props.userId}>Edit Profile</MyButton>
+                <MyButton myStyle="marginButton" to="profile/edit" id={props.userId}>Edit Profile</MyButton>
                 <MyButton myStyle="marginButton" to="">My Artworks</MyButton>
             </div>
               {modaleButtons}
