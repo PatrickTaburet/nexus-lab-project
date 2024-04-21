@@ -5,11 +5,15 @@
 {% block body %}
 
 {# Profile form #}
-
+   {% for message in app.flashes('success')%}
+      <div class="succesFlashMessages">
+        {{message}}
+      </div>      
+    {% endfor %}
     <div class="container">
           {# {% if (is_granted('ROLE_ARTIST')) %}
           {% endif %} #}
-     
+  
       <h1 class="headerUser">Edit Profile</h1>
 
       <div class="formUser">
@@ -25,9 +29,7 @@
           </div>
           <div>
           <div class="form-group">
-             <div class="form-group">
-            {{ form_widget(userForm.plainPassword, { "attr": {"class" : "form-control" } }) }}
-          </div>
+            <a href="{{ path('editPassword',  {'id': app.user.id})}}" class="customButton">Change password</a>
           </div>
           <div class="imagePreview">
             {{ form_label(userForm.imageFile) }}
@@ -36,7 +38,7 @@
           <div class="buttonBox">        
             {{ form_label(userForm.Submit) }}
             {{ form_widget(userForm.Submit) }}
-            <a href="{{ path('home')}}"> <button  class="customButton">Back</button></a>
+            <a href="{{ path('home')}}"  class="customButton">Back</a>
           </div>
 
         {{ form_end(userForm) }}

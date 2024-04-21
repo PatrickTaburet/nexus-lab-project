@@ -9,6 +9,22 @@ main {
 }
 
 
+/* --------------- Flash messages ------------------*/
+
+.succesFlashMessages{
+    text-align: center;
+    background-color: rgba(148, 255, 148, 0.689);
+    padding: 10px;
+    font-weight: 700;
+}
+.warningFlashMessages{
+    text-align: center;
+    background-color: rgba(255, 148, 148, 0.689);
+    padding: 10px;
+    font-weight: 700;
+}
+
+
 /* --------------- Footer ------------------*/
 footer {
     /* flex-shrink: 0; Empêche le footer de rétrécir lorsqu'il y a peu de contenu */
@@ -48,3 +64,4 @@ footer {
     margin: 20px;
 
 }
+

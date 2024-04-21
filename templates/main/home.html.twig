@@ -3,10 +3,11 @@
 {% block title %}Home{% endblock %}
 
 {% block body %}
- {# {% for message in app.flash('success')%}
-      <div>
+
+ {% for message in app.flashes('success')%}
+      <div class="succesFlashMessages">
         {{message}}
       </div>
-        
-{% endfor %} #}
+{% endfor %}
+
 {% endblock %}

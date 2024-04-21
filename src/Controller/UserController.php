@@ -37,6 +37,7 @@ class UserController extends AbstractController
                 'is_admin' => false,
                 'is_not_admin' =>true,
             ]);
+            
             $userForm -> handleRequest($request);
 
             if ($userForm->isSubmitted() && $userForm->isValid()) {
@@ -55,7 +56,7 @@ class UserController extends AbstractController
     } 
 
     /**
-    * @Route("/profile/edit/password/{id}", name="user.edit.password", methods= {"GET", "POST"})
+    * @Route("/profile/edit/password/{id}", name="editPassword", methods= {"GET", "POST"})
     */
     public function editPassword(EntityManagerInterface $entityManager, Request $request, UserRepository $repo, $id, UserPasswordHasherInterface $hasher ): Response
     {
@@ -88,7 +89,7 @@ class UserController extends AbstractController
                 $entityManager->flush();
 
                 $this ->addFlash('success', 'User password successfully edited');
-                return $this->redirectToRoute('home');
+                return $this->redirectToRoute('profile', ['id' => $id]);
 
             }else{
                 $this ->addFlash('warning', 'Incorrect password');
