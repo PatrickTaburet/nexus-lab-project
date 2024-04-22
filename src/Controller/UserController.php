@@ -20,7 +20,6 @@ class UserController extends AbstractController
     */
     public function editUser(EntityManagerInterface $entityManager,Request $request, UserRepository $repo, $id) : Response
     {       
-       
             $user = $repo->find($id);
             // Check if the user is logged
             if (!$this->getUser()) {
@@ -39,8 +38,18 @@ class UserController extends AbstractController
             ]);
             
             $userForm -> handleRequest($request);
-
+            
             if ($userForm->isSubmitted() && $userForm->isValid()) {
+                // limit the file upload to 5MB maximum
+                if ($user->getImageFile() && $user->getImageFile()->getSize() > 5000000) {
+                    $user->setImageFile(null);
+                    $this->addFlash('error', 'The file is too large. Maximum file size is 5 MB.');
+                    return $this->render('user/editUser.html.twig', [
+                        'user' => $user,
+                        'userForm' => $userForm->createView(),
+                    ]);
+                }
+                // dd($user->getImageFile()->getSize());
                 $entityManager->persist($user);
                 $entityManager->flush();
                 $user->removeFile(); // Delete the object file after persist to avoid errors
@@ -54,7 +63,7 @@ class UserController extends AbstractController
                 'userForm' => $userForm->createView(),
             ]);
     } 
-
+    
     /**
     * @Route("/profile/edit/password/{id}", name="editPassword", methods= {"GET", "POST"})
     */
@@ -91,7 +100,7 @@ class UserController extends AbstractController
                 $this ->addFlash('success', 'User password successfully edited');
                 return $this->redirectToRoute('profile', ['id' => $id]);
 
-            }else{
+            } else {
                 $this ->addFlash('warning', 'Incorrect password');
             }
         }

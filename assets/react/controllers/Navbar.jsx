@@ -70,8 +70,8 @@ export default function ({props}) {
         <img onClick={()=> toggleModal()}  src={props.userImg} alt={props.username} className={`${styles.profileImg}`}/>
       </div>) :
       (<div className={`${styles.rightSideButtons}`}>
-        <MyButton to="login">Login</MyButton>
-        <MyButton to="register">Sign in</MyButton>
+        <MyButton to="login">Log in</MyButton>
+        <MyButton to="register">Sign up</MyButton>
       </div>);
 
 

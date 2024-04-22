@@ -13,6 +13,7 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
@@ -68,12 +69,18 @@ class RegistrationFormType extends AbstractType
             ])
             ->add('imageFile', VichImageType::class, [
                 'label' => 'User picture',
-                'allow_delete' => true, 
-                'download_link' => true,
+                'allow_delete' => false, 
+                'download_link' => false,
                 'label_attr' => [
                     'class' => 'form-label mt-3 '
                 ],
                 'required' => false , // image is required only if the form is used for create
+            ])
+            -> add('Submit', SubmitType::class, [
+                'label' => 'Register',
+                'attr' => [
+                    'class' => 'customButton',
+                ],
             ])
         ;
     }

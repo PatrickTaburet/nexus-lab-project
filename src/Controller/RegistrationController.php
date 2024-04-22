@@ -45,6 +45,10 @@ class RegistrationController extends AbstractController
                 $request
             );
             // return $this->redirectToRoute('home');
+        } else {
+            if ($form->isSubmitted()) {
+                $this->addFlash('warning', 'Oops! Registration Error: Please check your information and try again.');
+            }
         }
 
         return $this->render('registration/register.html.twig', [

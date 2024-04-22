@@ -21,7 +21,10 @@ security:
             logout:
                 path: app_logout
                 target: home
-    
+            remember_me:
+                secret:   '%kernel.secret%' # required
+                lifetime: 604800 # 1 week in seconds
+                
             # entry_point: App\Security\LoginAuthenticator
             # form_login:
             #     default_target_path: home

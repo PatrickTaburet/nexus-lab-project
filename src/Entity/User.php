@@ -52,10 +52,16 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     private $createdAt;
 
-    // ----- VICH UPLOADER ------
+    // ------- VICH UPLOADER --------
 
     /**
     * @Vich\UploadableField(mapping="picture_profile", fileNameProperty="imageName")
+    * @Assert\File(
+    *     maxSize = "2048M",
+    *     maxSizeMessage = "The file is too large ({{ size }} MB). Maximum file size is {{ limit }} MB.",
+    *     mimeTypes = {"image/jpeg", "image/png", "image/gif"},
+    *     mimeTypesMessage = "Please upload a valid image file (JPG, PNG, GIF)" 
+    * )
     * @var File|null
     */
     private $imageFile;
@@ -248,6 +254,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
             $this->setImageFile(null);
         }
     }
+
+    
     // public function removeFile()
     // {
     //     if ($this->imageFile instanceof File) {

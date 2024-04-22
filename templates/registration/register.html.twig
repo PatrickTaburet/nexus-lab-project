@@ -3,15 +3,45 @@
 {% block title %}Register{% endblock %}
 
 {% block body %}
+
+    {% for message in app.flashes('warning')%}
+        <div class="warningFlashMessages">
+            {{message}}
+        </div>      
+    {% endfor %}
     <h1>Register</h1>
 
-    {{ form_start(registrationForm) }}
-        {{ form_row(registrationForm.email) }}
-        {{ form_row(registrationForm.plainPassword, {
-            label: 'Password'
-        }) }}
-        {{ form_row(registrationForm.agreeTerms) }}
+    <div class="formUser">
+        {{ form_start(registrationForm) }}
+          
+          <div class="form-group">
+            {{ form_label(registrationForm.pseudo)}}
+            {{ form_widget(registrationForm.pseudo, { "attr": {"class" : "form-control" } }) }}
+          </div>
+          <div class="form-group">
+            {{ form_label(registrationForm.email)}}
+            {{ form_widget(registrationForm.email, { "attr": {"class" : "form-control" } }) }}
+          </div>
+          <div>
+          <div class="form-group">
+            {{ form_widget(registrationForm.plainPassword, { "attr": {"class" : "form-control" } }) }}
+          </div>
+          <div class="imagePreview">
+            {{ form_label(registrationForm.imageFile) }}
+            {{ form_widget(registrationForm.imageFile, { "attr": {"class" : "form-control" } }) }}
+          </div>
+          <div class="buttonBox">        
+            {{ form_label(registrationForm.agreeTerms) }}
+            {{ form_widget(registrationForm.agreeTerms) }}
+          </div>
+          <div class="buttonBox">        
+            {{ form_label(registrationForm.Submit) }}
+            {{ form_widget(registrationForm.Submit) }}
+            <a href="{{ path('home')}}"  class="customButton">Back</a>
+          </div>
 
-        <button type="submit" class="btn">Register</button>
-    {{ form_end(registrationForm) }}
+        {{ form_end(registrationForm) }}
+      </div>
+    </div>
+
 {% endblock %}
