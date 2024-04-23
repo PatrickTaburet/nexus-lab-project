@@ -1,6 +1,8 @@
 <?php
 
 namespace App\Entity;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Symfony\Component\Validator\Constraints as Assert;
 use DateTimeImmutable;
 use Doctrine\ORM\Mapping as ORM;
@@ -76,11 +78,22 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     */
     private $updatedAt;
 
+    // ------- Generative art scenes --------
+
+    /**
+     * @ORM\OneToMany(targetEntity=Scene1::class, mappedBy="user")
+     */
+    private $Scene1;
+
+
+//-------------------------------------------------------------------------------------------
+
     public function __construct()
     {
         $this->createdAt = new  DateTimeImmutable();
         $this->imageName = 'no-profile.jpg'; // Define default image
         $this->imageFile = null;
+        $this->Scene1 = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -195,7 +208,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         // $this->plainPassword = null;
     }
 
-    // ----- VICH UPLOADER ------
+    // ---------- Vich Uploader - Profile Picture ---------- //
 
     /**
      * If manually uploading a file (i.e. not using Symfony Form) ensure an instance
@@ -255,12 +268,35 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         }
     }
 
-    
-    // public function removeFile()
-    // {
-    //     if ($this->imageFile instanceof File) {
-    //         unlink($this->imageFile->getRealPath());
-    //         $this->imageFile = null;
-    //     }
-    // }
+    // ---------- Generative art scenes ---------- //
+
+    /**
+     * @return Collection<int, Scene1>
+     */
+    public function getScene1(): Collection
+    {
+        return $this->Scene1;
+    }
+
+    public function addScene1(Scene1 $scene1): self
+    {
+        if (!$this->Scene1->contains($scene1)) {
+            $this->Scene1[] = $scene1;
+            $scene1->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeScene1(Scene1 $scene1): self
+    {
+        if ($this->Scene1->removeElement($scene1)) {
+            // set the owning side to null (unless already changed)
+            if ($scene1->getUser() === $this) {
+                $scene1->setUser(null);
+            }
+        }
+
+        return $this;
+    }
 }

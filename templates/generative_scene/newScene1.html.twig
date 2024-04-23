@@ -1,0 +1,21 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New Scene{% endblock %}
+
+{% block body %}
+
+<div class="mainContainer">
+    <h1>SCENE 1</h1>
+     <div id="container">
+    </div>
+    <p>This is a paragraph element.</p>
+
+</div>
+{# <input type="hidden" id="dataScene" value="{{ scene|json_encode|raw }}">  #}
+{{ dump(scene) }}
+<div id="dataScene" data-scene="{{ scene }}"></div>
+
+
+<script defer src="{{ asset('js/sketch.js') }}" ></script>
+
+{% endblock %}

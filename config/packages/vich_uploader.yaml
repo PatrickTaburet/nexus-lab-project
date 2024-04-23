@@ -5,10 +5,17 @@ vich_uploader:
         type: annontations
 
     mappings:
-       picture_profile:
+        picture_profile:
             uri_prefix: /images/avatar
             upload_destination: '%kernel.project_dir%/public/images/avatar'
             namer: Vich\UploaderBundle\Naming\SmartUniqueNamer
             delete_on_update: false
+            delete_on_remove: true
+
+        scene1Images:
+            uri_prefix: /images/scene1Img
+            upload_destination: '%kernel.project_dir%/public/images/scene1Img'
+            namer: Vich\UploaderBundle\Naming\SmartUniqueNamer
+            delete_on_update: true
             delete_on_remove: true
             

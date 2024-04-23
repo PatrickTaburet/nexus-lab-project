@@ -1,0 +1,18 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Scene 1{% endblock %}
+
+{% block body %}
+
+<div class="mainContainer">
+    <h1>SCENE 1</h1>
+     <div id="container">
+    </div>
+    <p>This is a paragraph element.</p>
+    <button id="sendDataButton" class="customButton">Save</button>
+    <div id="dataScene" ></div>
+
+</div>
+<script src="{{ asset('js/sketch.js') }}"></script>
+
+{% endblock %}
