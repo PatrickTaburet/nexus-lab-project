@@ -5,7 +5,9 @@ namespace App\Controller;
 use App\Entity\User;
 use App\Entity\Scene1;
 use App\Repository\Scene1Repository;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Security\Core\Security;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Vich\UploaderBundle\Handler\DownloadHandler;
@@ -51,8 +53,9 @@ class GenerativeSceneController extends AbstractController
     /**
     * @Route("/sendData", name="send_data", methods={"POST"})
     */
-    public function sendData(Request $request): Response
+    public function sendData(Request $request, Security $security, EntityManagerInterface $entityManager): Response
     {
+        // var_dump($security->getUser()->getId());
         $color = $request->request->get('color');
         $saturation = $request->request->get('saturation');
         $opacity = $request->request->get('opacity');
@@ -61,6 +64,7 @@ class GenerativeSceneController extends AbstractController
         $velocity = $request->request->get('velocity');
         $noiseOctave = $request->request->get('noiseOctave');
         $noiseFalloff = $request->request->get('noiseFalloff');
+        $userId = $request->request->get('userId');
         $imgFile = $request->request->get('file');
         
         // Decode the base64 string and save it as a .png file
@@ -81,13 +85,16 @@ class GenerativeSceneController extends AbstractController
         
         // // Créer un objet Image
         // $image = new Scene1();
-   
 
-        //utilisateur temporaire
-        $user = $this->getDoctrine()
-        ->getRepository(User::class)
-        ->find(2);
-       
+        // Get logged user
+        // $userId = $security->getUser()->getId();
+        // $user = $security->getUser();
+        // $userId = $user->getId;
+        // var_dump($userId );
+            $user = $this->getDoctrine()
+            ->getRepository(User::class)
+            ->find($userId);
+        
         if ($color !== null &&
             $weight !== null &&
             $numLine !== null &&
@@ -95,7 +102,8 @@ class GenerativeSceneController extends AbstractController
             $opacity !== null &&
             $velocity !== null &&
             $noiseOctave !== null &&
-            $noiseFalloff !== null
+            $noiseFalloff !== null &&
+            $userId  !== null
             ) {
             $data = new Scene1;
             $data ->setColor($color);

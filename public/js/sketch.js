@@ -28,7 +28,6 @@ let noiseFalloffSlider;
 let sendDataButton = document.querySelector("#sendDataButton");
 
 function setup() {
-
   createCanvas(windowWidth, windowHeight);
   colorMode(HSB);
   background(0,0,0);
@@ -229,9 +228,9 @@ function sendData(){
       formData.append('velocity', velocity);
       formData.append('noiseOctave', noiseOctave);
       formData.append('noiseFalloff', noiseFalloff);
-
+      formData.append('userId', userId);
       formData.append('file', image.src);
-
+      
       // saveCanvas();
       fetch('/sendData', {
           method: 'POST',
