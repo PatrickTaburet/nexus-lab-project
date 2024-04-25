@@ -8,14 +8,19 @@
 {% endblock %}
 
 {% block body %}
-
+<h1>RANDOM LINE WALKERS</h1>
 <div class="mainContainer">
-    <h1>SCENE 1</h1>
-     <div id="container">
+    <div class="descriptionBox"> Description </div>
+    <div id="sketch"></div>
+    <div class="parametersBox">
+        <p>This is a paragraph element.</p>
+        <input type="range" id="colorSlider" min="1" max="100" value="127">
+        <input type="range" id="lineSlider" min="10" max="200" value="100">
+
+        <button id="sendDataButton" class="customButton">Save</button>
     </div>
-    <p>This is a paragraph element.</p>
-    <button id="sendDataButton" class="customButton">Save</button>
-    <div id="dataScene" ></div>
+    
+    <div id="dataScene" style="display:none;" ></div>
 
 </div>
 {% if app.user %}

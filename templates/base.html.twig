@@ -32,6 +32,7 @@
     <main>
         {% block body %}{% endblock %}
     </main>
+
     <footer>
         <div class="topFooter">
             <ul>
@@ -55,10 +56,12 @@
             <p>© 2024 Privacy — Terms</p>
         </div>
     </footer>
+
         {% block javascripts %}
             {{ encore_entry_script_tags('app') }}
             <script src="https://cdn.jsdelivr.net/npm/p5@1.9.2/lib/p5.js"></script>
             <script src="https://cdnjs.cloudflare.com/ajax/libs/dat-gui/0.7.9/dat.gui.min.js"></script>
         {% endblock %}
+        
     </body>
 </html>

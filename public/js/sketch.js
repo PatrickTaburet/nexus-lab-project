@@ -26,13 +26,20 @@ let velocitySlider;
 let noiseOctaveSlider;
 let noiseFalloffSlider;
 let sendDataButton = document.querySelector("#sendDataButton");
-let checkbox;
+let checkboxStop;
+let resetButton;
+
 // Setup 
 
 function setup() {
-  createCanvas(windowWidth, windowHeight);
+  
+  const squareSize = min(windowWidth, windowHeight);
+  const canvas = createCanvas(squareSize, squareSize);
+  canvas.parent('sketch');
   colorMode(HSB);
   background(0,0,0);
+
+  // Default parameters values
 
   let defaultValueLine = dataScene ? dataScene.numLine : 100;
   let defaultValueColor = dataScene ? dataScene.color : 5;
@@ -43,10 +50,18 @@ function setup() {
   let defaultNoiseOctave= dataScene ? dataScene.noiseOctave : 4;
   let defaultNoiseFalloff= dataScene ? dataScene.noiseFalloff : 0.5;
 
-  checkbox = createCheckbox("Stop and go", false);
-  checkbox.position(10, 170);
+  // User Interface :
+  
+  checkboxStop = createCheckbox("Stop and go", false);
+  checkboxStop.position(10, 170);
 
-  lineSlider = createSlider(1, 100, defaultValueLine, 1).position(10, 10).size(80);
+  resetButton = createButton("Reset");
+  resetButton.position(130, 170);
+  resetButton.mouseClicked(() => {
+      reset(); // Reset the canvas to its initial state
+  });
+ 
+  lineSlider = createSlider(1, 100, defaultValueLine, 1).position(squareSize, squareSize).size(80);
   colorSlider = createSlider(0, 360, defaultValueColor, 10).position(10, 30).size(80);
   weightSlider = createSlider(0.2, 10, defaultValueWeight, 0.1).position(10, 50).size(80);
   saturationSlider = createSlider(0, 100, defaultSaturation, 5).position(10, 70).size(80);
@@ -87,6 +102,16 @@ console.log(
   });
 }
 
+
+function windowResized() {
+  const squareSize = min(windowWidth, windowHeight);
+  const canvas = createCanvas(squareSize, squareSize);
+  canvas.parent('sketch');
+
+  background(0,0,0);
+  
+}
+
 class Walker {
   constructor(x, y) {
     this.x = x;
@@ -123,7 +148,7 @@ class Walker {
   }
 }
 function mouseClicked () {
-  if (checkbox.checked()) {
+  if (checkboxStop.checked()) {
     walkers = []; // -> to set only one walker for one click and stop the others walkers moves
   } 
   noiseSeed(random(50));
@@ -135,7 +160,8 @@ function mouseClicked () {
   
 }
 function reset () {
-  resizeCanvas(windowWidth, windowHeight);
+  const squareSize = min(windowWidth, windowHeight);
+  resizeCanvas(squareSize, squareSize);
   walkers = [];
   clear();
   background(0,0,0);
