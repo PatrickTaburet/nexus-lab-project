@@ -16,11 +16,13 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
-
+/**
+ * @Route("")
+ */
 class GenerativeSceneController extends AbstractController
 {
     /**
-     * @Route("/generative/scene1", name="scene1")
+     * @Route("/sceneG1", name="sceneG1")
      */
     public function scene1(): Response
     {
@@ -30,7 +32,7 @@ class GenerativeSceneController extends AbstractController
     }
 
      /**
-     * @Route("/newScene/{id}", name="newScene", methods= {"GET"}))
+     * @Route("/generative/newScene/{id}", name="newScene", methods= {"GET"}))
      */
     public function newScene(Scene1Repository $repo, SerializerInterface $serializer, $id): Response
     {
@@ -51,7 +53,7 @@ class GenerativeSceneController extends AbstractController
     }
 
     /**
-    * @Route("/sendData", name="send_data", methods={"POST"})
+    * @Route("/generative/sendData", name="send_data", methods={"POST"})
     */
     public function sendData(Request $request, Security $security, EntityManagerInterface $entityManager): Response
     {

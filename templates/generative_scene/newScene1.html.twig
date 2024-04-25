@@ -1,6 +1,10 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}New Scene{% endblock %}
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('css/generative.css') }}">
+{% endblock %}
 
 {% block body %}
 

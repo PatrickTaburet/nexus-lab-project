@@ -1,0 +1,30 @@
+h1 {
+    padding: 20px;
+    font-size: 60px;
+}
+
+.mainContainer{
+    display: flex;
+    flex-direction: column;
+    background-color: rgb(164, 246, 255);
+}
+.cardsContainer{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+
+}
+.card{
+    display: flex;
+    flex-direction: column ;
+    align-items: center;
+    width: 400px;
+    margin: 15px;
+}
+.card img{
+    width: 700px;
+}
+.dataButton{
+    margin-top: 20px;
+}

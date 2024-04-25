@@ -84,10 +84,10 @@ export default function ({props}) {
               <a href='/' className={`${styles.logo}`}>LOGO</a>
               <ul className={`${styles.navMenu} ${isActive ? styles.active : ''}`}>
                 <li onClick={removeActive}>
-                  <a href='#home' className={`${styles.navLink}`}>Gallery</a>
+                  <a href='/gallery' className={`${styles.navLink}`}>Gallery</a>
                 </li>
                 <li onClick={removeActive}>
-                  <a href='#home' className={`${styles.navLink}`}>Create</a>
+                  <a href='/create' className={`${styles.navLink}`}>Create</a>
                 </li>
                 <li onClick={removeActive}>
                   <a href='#home' className={`${styles.navLink}`}>Community</a>

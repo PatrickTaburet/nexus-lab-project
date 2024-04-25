@@ -2,6 +2,11 @@
 
 {% block title %}Scene 1{% endblock %}
 
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('css/generative.css') }}">
+{% endblock %}
+
 {% block body %}
 
 <div class="mainContainer">
@@ -13,9 +18,12 @@
     <div id="dataScene" ></div>
 
 </div>
- <script>
+{% if app.user %}
+    <script>
         var userId = {{ app.user.id }};
-</script>
+    </script>
+{% endif %}
+ 
 <script src="{{ asset('js/sketch.js') }}"></script>
 
 {% endblock %}

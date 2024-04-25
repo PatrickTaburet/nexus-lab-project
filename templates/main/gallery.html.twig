@@ -2,19 +2,24 @@
 
 {% block title %}gallery{% endblock %}
 
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('css/gallery.css') }}">
+{% endblock %}
+
 {% block body %}
 
 <div class="mainContainer">
     <h1>GALLERY</h1>
-    {% for scene in scenes %}
-    <div class="cardGallery">
-        <img style="max-width: 400px" src="{{ vich_uploader_asset(scene, 'imageFile') }}" alt="{{ scene.user.pseudo }}">
+    <div class="cardsContainer">
+         {% for scene in scenes %}
+            <div class="card">
+                <img style="max-width: 400px" src="{{ vich_uploader_asset(scene, 'imageFile') }}" alt="{{ scene.user.pseudo }}">
+                <button class="customButton dataButton"><a href="{{ path('newScene', {'id': scene.id})}}"> Open scene with parameters</a> </button>
+            </div>
+        {% endfor %}
     </div>
-    <button><a href="{{ path('newScene', {'id': scene.id})}}"> Open scene with parameters</a> </button>
-      
-
-
-    {% endfor %}
+   
 
 
 </div>

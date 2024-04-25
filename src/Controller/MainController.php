@@ -28,4 +28,12 @@ class MainController extends AbstractController
             'scenes' => $scenes,
         ]);   
     }
+     /**
+     * @Route("/create", name="create")
+     */
+    public function create(): Response
+    {
+        return $this->render('main/create.html.twig', [
+        ]);   
+    }
 }

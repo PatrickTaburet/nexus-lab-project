@@ -1,0 +1,26 @@
+.createContainer{
+    background-color: aqua;
+    display: flex;
+    justify-content: space-around;
+    padding: 15%;
+} 
+.optionContainer{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 400px;
+    height: 400px;
+    color: white;
+    border-radius: 15px;
+    border: 5px;
+    font-size: 2vw;
+    font-weight: 700;
+    word-wrap: break-word;
+    white-space: normal;
+    text-align: center;
+    line-height: 1.3;
+
+}
+.optionContainer:hover {
+    cursor: pointer;
+}

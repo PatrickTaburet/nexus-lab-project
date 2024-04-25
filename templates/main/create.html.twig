@@ -1,0 +1,23 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Create{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('css/create.css') }}">
+{% endblock %}
+
+{% block body %}
+<div class="createContainer">
+    <a><div class="optionContainer customButton">Collectif Drawing</div></a>
+    <a  href="{{ path('sceneG1')}}"><div class="optionContainer customButton">Generative Art</div></a>
+    <a><div class="optionContainer customButton">Data Art Visualization</div></a>
+</div>
+
+ {% for message in app.flashes('success')%}
+      <div class="succesFlashMessages">
+        {{message}}
+      </div>
+{% endfor %}
+
+{% endblock %}

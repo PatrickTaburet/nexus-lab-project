@@ -1,3 +1,5 @@
 index:
    path: /
    controller: App\Controller\MainController::index
+
+# proteger route generative/.. pour l'acces user uniquement (personnes log)
