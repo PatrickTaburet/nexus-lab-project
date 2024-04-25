@@ -29,7 +29,7 @@ class GenerativeSceneController extends AbstractController
         return $this->render('generative_scene/scene1.html.twig', [
             'controller_name' => 'GenerativeSceneController',
         ]);
-    }
+    }   
 
      /**
      * @Route("/generative/newScene/{id}", name="newScene", methods= {"GET"}))
@@ -46,9 +46,10 @@ class GenerativeSceneController extends AbstractController
 
         // SERIALIZER METHOD :
         $json = $serializer->serialize($scene,'json',['groups'=> 'sceneDataRecup']);
-        
+            // Décoder le JSON en tableau associatif
+        $sceneData = json_decode($json, true);
         return $this->render('generative_scene/newScene1.html.twig', [
-            'scene' => $json,
+            'scene' => $sceneData,
         ]);   
     }
 

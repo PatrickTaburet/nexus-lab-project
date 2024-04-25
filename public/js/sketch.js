@@ -4,9 +4,9 @@
 //Catch data from DB:
 let dataScene;
 function preload() {
-  const dataSceneJson = document.getElementById('dataScene').dataset.scene;
-  if (dataSceneJson) {
-    dataScene = JSON.parse(dataSceneJson);
+  const dataSceneDiv = document.getElementById('dataScene');
+  if (dataSceneDiv.dataset.scene) {
+    dataScene = JSON.parse(dataSceneDiv.dataset.scene);
   }  else {
     console.log("No scene data found");
   }
@@ -40,8 +40,8 @@ function setup() {
   background(0,0,0);
 
   // Default parameters values
-
-  let defaultValueLine = dataScene ? dataScene.numLine : 100;
+ 
+  let defaultValueLine = dataScene ? dataScene.num_line : 100;
   let defaultValueColor = dataScene ? dataScene.color : 5;
   let defaultValueWeight = dataScene ? dataScene.weight : 8;
   let defaultSaturation= dataScene ? dataScene.saturation : 90;
@@ -49,7 +49,7 @@ function setup() {
   let defaultVelocity= dataScene ? dataScene.velocity : 5;
   let defaultNoiseOctave= dataScene ? dataScene.noiseOctave : 4;
   let defaultNoiseFalloff= dataScene ? dataScene.noiseFalloff : 0.5;
-
+  console.log(defaultValueLine);
   // User Interface :
   
   checkboxStop = createCheckbox("Stop and go", false);
@@ -60,15 +60,28 @@ function setup() {
   resetButton.mouseClicked(() => {
       reset(); // Reset the canvas to its initial state
   });
- 
-  lineSlider = createSlider(1, 100, defaultValueLine, 1).position(squareSize, squareSize).size(80);
-  colorSlider = createSlider(0, 360, defaultValueColor, 10).position(10, 30).size(80);
-  weightSlider = createSlider(0.2, 10, defaultValueWeight, 0.1).position(10, 50).size(80);
-  saturationSlider = createSlider(0, 100, defaultSaturation, 5).position(10, 70).size(80);
-  opacitySlider = createSlider(0.05, 1, defaultOpacity, 0.05).position(10, 90).size(80);
-  velocitySlider = createSlider(0, 15, defaultVelocity, 0.1).position(10, 110).size(80);
-  noiseOctaveSlider = createSlider(0, 10, defaultNoiseOctave, 1).position(10, 130).size(80);
-  noiseFalloffSlider = createSlider(0, 1, defaultNoiseFalloff, 0.05).position(10, 150).size(80);
+
+  colorSlider = select('#colorSlider');
+  lineSlider = select('#lineSlider');
+  weightSlider = select('#weightSlider');
+  saturationSlider = select('#saturationSlider');
+
+  opacitySlider = select('#opacitySlider');
+  velocitySlider = select('#velocitySlider');
+  noiseOctaveSlider = select('#noiseOctaveSlider');
+  noiseFalloffSlider = select('#noiseFalloffSlider');
+  
+
+
+
+  // lineSlider = createSlider(1, 100, defaultValueLine, 1).position(squareSize, squareSize).size(80);
+  // colorSlider = createSlider(0, 360, defaultValueColor, 10).position(10, 30).size(80);
+  // weightSlider = createSlider(0.2, 10, defaultValueWeight, 0.1).position(10, 50).size(80);
+  // saturationSlider = createSlider(0, 100, defaultSaturation, 5).position(10, 70).size(80);
+  // opacitySlider = createSlider(0.05, 1, defaultOpacity, 0.05).position(10, 90).size(80);
+  // velocitySlider = createSlider(0, 15, defaultVelocity, 0.1).position(10, 110).size(80);
+  // noiseOctaveSlider = createSlider(0, 10, defaultNoiseOctave, 1).position(10, 130).size(80);
+  // noiseFalloffSlider = createSlider(0, 1, defaultNoiseFalloff, 0.05).position(10, 150).size(80);
 
   // Create un first walker serie in the center when app is open
 
@@ -82,15 +95,15 @@ function setup() {
 
 function draw(){
 // console.log((color(150,100, 100, 52).levels));
-console.log(
-  lineSlider.value() + ' - ' +
-  colorSlider.value() + ' - weight : ' +
-  weightSlider.value() + ' - ' +
-  saturationSlider.value() + ' - opacity : ' +
-  opacitySlider.value() + ' - ' +
-  velocitySlider.value() + ' - ' +
-  noiseOctaveSlider.value() + ' - ' +
-  noiseFalloffSlider.value() + ' - ' );
+// console.log(
+//   lineSlider.value() + ' - ' +
+//   colorSlider.value() + ' - weight : ' +
+//   weightSlider.value() + ' - ' +
+//   saturationSlider.value() + ' - opacity : ' +
+//   opacitySlider.value() + ' - ' +
+//   velocitySlider.value() + ' - ' +
+//   noiseOctaveSlider.value() + ' - ' +
+//   noiseFalloffSlider.value() + ' - ' );
 
   walkers.forEach(walker => {
     if (!walker.isOut()) {
@@ -211,7 +224,7 @@ function sendData(){
       formData.append('file', image.src);
       
       // saveCanvas();
-      fetch('/sendData', {
+      fetch('/generative/sendData', {
           method: 'POST',
           body: formData
       })

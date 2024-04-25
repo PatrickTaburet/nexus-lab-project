@@ -14,9 +14,15 @@
     <div id="sketch"></div>
     <div class="parametersBox">
         <p>This is a paragraph element.</p>
-        <input type="range" id="colorSlider" min="1" max="100" value="127">
-        <input type="range" id="lineSlider" min="10" max="200" value="100">
+             <input type="range" id="colorSlider" min="1" max="360" value="5"step="10">
+            <input type="range" id="lineSlider" min="1" max="200" value="100" step="1">
+            <input type="range" id="weightSlider" min="0.2" max="10" value="5"step="0.1">
+            <input type="range" id="saturationSlider" min="0" max="100" value="90" step="5">
 
+            <input type="range" id="opacitySlider" min="0.05" max="1" value="0.7"step="0.05">
+            <input type="range" id="velocitySlider" min="0" max="15" value="5" step="0.1">
+            <input type="range" id="noiseOctaveSlider" min="0" max="10" value="4"step="1">
+            <input type="range" id="noiseFalloffSlider" min="0" max="1" value="0.5" step="0.05">
         <button id="sendDataButton" class="customButton">Save</button>
     </div>
     
