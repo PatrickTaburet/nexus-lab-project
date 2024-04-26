@@ -7,6 +7,18 @@
 {% endblock %}
 
 {% block body %}
+{# Modale : save artwork  #}
+    <div class="modaleBackground hidden">
+    <div class="superModale hidden">
+        <div class="headerModale">
+            <h1>Save ArtWork</h1>
+            <button class="closeButton">X</button>
+        </div>
+        <p>Do you want to save this artwork and share it in the Gallery?</p> 
+        <button id="sendDataButton" class="customButton generateButton">Save</button>
+    </div>
+    </div>
+{# End modale #}
 
 <h1>RANDOM LINE WALKERS</h1>
 <div class="mainContainer">
@@ -71,19 +83,22 @@
             <output class="bubble"></output>
             </div>
         </div>
-        <div>
+        <div class="checkboxConatainer">
             <p>Stop and go :</p>
             <input type="checkbox" id="checkboxStop">
         </div>
         <div class="sliderBox">
             <button id="resetButton" class="customButton generateButton">Reset</button>
-            <button id="sendDataButton" class="customButton generateButton">Save</button>
+            {% if app.user %}
+            <button class="buttonModale customButton generateButton">Save</button>
+             
+            {% endif %}
         </div>
 </div>
 
 {# <input type="hidden" id="dataScene" value="{{ scene|json_encode|raw }}">  #}
-{{ dump(scene) }}
-{{ dump("<%= defaultValueColor %>") }}
+{# {{ dump(scene) }}
+{{ dump("<%= defaultValueColor %>") }} #}
 <div id="dataScene" data-scene="{{ scene|json_encode }}"></div>
 {% if app.user %}
     <script>

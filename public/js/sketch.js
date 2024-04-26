@@ -2,6 +2,7 @@
 // --------------------- Random line walkers --------------------------
 
 //Catch data from DB:
+
 let dataScene;
 function preload() {
   const dataSceneDiv = document.getElementById('dataScene');
@@ -25,7 +26,6 @@ let opacitySlider;
 let velocitySlider;
 let noiseOctaveSlider;
 let noiseFalloffSlider;
-let sendDataButton = document.querySelector("#sendDataButton");
 let checkboxStop;
 let resetButton;
 
@@ -39,26 +39,11 @@ function setup() {
   colorMode(HSB);
   background(0,0,0);
 
-  // Default parameters values
  
-  // let defaultValueLine = dataScene ? dataScene.num_line : 100;
-  // let defaultValueColor = dataScene ? dataScene.color : 5;
-  // let defaultValueWeight = dataScene ? dataScene.weight : 8;
-  // let defaultSaturation= dataScene ? dataScene.saturation : 90;
-  // let defaultOpacity= dataScene ? dataScene.opacity : 0.7;
-  // let defaultVelocity= dataScene ? dataScene.velocity : 5;
-  // let defaultNoiseOctave= dataScene ? dataScene.noiseOctave : 4;
-  // let defaultNoiseFalloff= dataScene ? dataScene.noiseFalloff : 0.5;
-
   // User Interface :
-  
-  // checkboxStop = createCheckbox("Stop and go", false);
-  // checkboxStop.position(10, 170);
-  // resetButton = createButton("Reset");
-  // resetButton.position(130, 170);
+
   checkboxStop = select("#checkboxStop");
   resetButton = select("#resetButton");
-
 
   resetButton.mousePressed(() => {
       reset(); // Reset the canvas to its initial state
@@ -73,18 +58,6 @@ function setup() {
   velocitySlider = select('#velocitySlider');
   noiseOctaveSlider = select('#noiseOctaveSlider');
   noiseFalloffSlider = select('#noiseFalloffSlider');
-  
-
-
-
-  // lineSlider = createSlider(1, 100, defaultValueLine, 1).position(squareSize, squareSize).size(80);
-  // colorSlider = createSlider(0, 360, defaultValueColor, 10).position(10, 30).size(80);
-  // weightSlider = createSlider(0.2, 10, defaultValueWeight, 0.1).position(10, 50).size(80);
-  // saturationSlider = createSlider(0, 100, defaultSaturation, 5).position(10, 70).size(80);
-  // opacitySlider = createSlider(0.05, 1, defaultOpacity, 0.05).position(10, 90).size(80);
-  // velocitySlider = createSlider(0, 15, defaultVelocity, 0.1).position(10, 110).size(80);
-  // noiseOctaveSlider = createSlider(0, 10, defaultNoiseOctave, 1).position(10, 130).size(80);
-  // noiseFalloffSlider = createSlider(0, 1, defaultNoiseFalloff, 0.05).position(10, 150).size(80);
 
   // Create un first walker serie in the center when app is open
 
@@ -97,25 +70,18 @@ function setup() {
 // Draw
 
 function draw(){
-// console.log((color(150,100, 100, 52).levels));
-// console.log(
-//   lineSlider.value() + ' - ' +
-//   colorSlider.value() + ' - weight : ' +
-//   weightSlider.value() + ' - ' +
-//   saturationSlider.value() + ' - opacity : ' +
-//   opacitySlider.value() + ' - ' +
-//   velocitySlider.value() + ' - ' +
-//   noiseOctaveSlider.value() + ' - ' +
-//   noiseFalloffSlider.value() + ' - ' );
-
-  walkers.forEach(walker => {
-    if (!walker.isOut()) {
-      walker.velocity();
-      walker.move();
-      walker.draw();
-    }
-    
-  });
+  if (modale.classList.contains("hidden")) { //  Stop the animation/interactions when modale is open
+    walkers.forEach(walker => {
+      if (!walker.isOut()) {
+        walker.velocity();
+        walker.move();
+        walker.draw();
+      }
+      
+    });
+    return;
+  }
+ 
 }
 
 
@@ -188,10 +154,9 @@ function mouseClicked () {
 
 // Send to backend :
 
-sendDataButton.addEventListener('click', function () {
+document.querySelector("#sendDataButton")?.addEventListener('click', function () {
   sendData()
 });
-
 
 function sendData(){
   let color = colorSlider.value();
@@ -241,8 +206,8 @@ function sendData(){
       })
       .then(data => {
           console.log('Data sent successfully:', data);
-      // Redirection vers la page 'gallery'
-          // window.location.href = '/gallery';
+      // Redirection vers la page 'sceneG1'
+          window.location.href = '/sceneG1';
       })
       .catch(error => {
           console.error('There was a problem sending the data:', error);
@@ -250,7 +215,7 @@ function sendData(){
     };
   }
   
-  // Sliders animation
+  // --------- Sliders animation ---------
     
   const allRanges = document.querySelectorAll(".range-wrap");
   allRanges.forEach((wrap) => {
@@ -279,5 +244,34 @@ function sendData(){
     bubble.style.left = `calc(${offset}% - 14px)`;
   }
 
+  // --------- Modale : save artwork ---------
+
+  let buttonModale = document.querySelector(".buttonModale");
+  let modale = document.querySelector(".superModale");
+  let closeButton = document.querySelector(".closeButton");
+  let body =  document.querySelector(".superBody");
+  let modaleBackground = document.querySelector(".modaleBackground");
+
+
+  function openModal(){
+    document.body.style.overflow = "hidden"; // Desable scrolling
+    modale.classList.remove("hidden");
+    modale.classList.add("translate");
+    modaleBackground.classList.remove("hidden");
+  }
+  function closeModal(){
+    document.body.style.overflow = "auto"; // Enable scrolling
+    modale.classList.add("hidden");
+    modale.classList.remove("translate");
+    modaleBackground.classList.add("hidden");
+  }
+
+  buttonModale.addEventListener("click",openModal);
+  closeButton.addEventListener("click",closeModal);
+  modaleBackground.addEventListener("click", function(event) {
+    if (event.target === modaleBackground) {
+      closeModal();
+    }
+  });
 
 

@@ -44,7 +44,7 @@ canvas {
 }
 /* --------- UI pannel style --------- */
 
-/* Sliders */
+/* ---- Sliders ---- */
 
 .range-wrap {
     position: relative;
@@ -112,12 +112,126 @@ canvas {
     
   }
   
-  /* body {
+ /* ---- Checkbox ---- */
+.checkboxConatainer{
+    display: flex;
+    justify-content: center;
+    margin: 20px;
+  }
+ #checkboxStop{
+  width:178px;
+  height:78px;
+  border-radius:40px;
+  -webkit-appearance: none;
+  position:relative;
+  margin:-39px 0 0 -30px;
+  box-shadow: inset 1px 1px 1px rgba(0, 0, 0, 0.4);
+  background: -webkit-linear-gradient(144deg,#AF40FF, #5B42F3 50%,#00DDEB);
+  scale: 0.5;
   
-    height: 100%;
-    display: grid;
-    grid-gap: 5rem;
-    place-items: center;
-    padding: 10%;
-  } */
+}
+#checkboxStop:checked{
+  background: -webkit-linear-gradient(#bfe09c,#a1f83d);
+  box-shadow: inset 1px 1px 3px rgba(0, 0, 0, 0.4);
+}
+#checkboxStop:before {
+  content:"|||";
+  letter-spacing:1px;
+  color: rgba(0,0,0,.15);
+  font-size:22px;
+  font-weight:100;
+  text-shadow:1px 1px 1px rgb(138, 138, 138);
+  width:26px;
+  height:26px;
+  padding:19px;
+  top:7px;
+  left:9px;
+  position:absolute;
+  border-radius:40px;
+  background: -webkit-linear-gradient(#ebebeb,#f1f1f1);
+  box-shadow: -2px 2px 8px rgba(0, 0, 0, 0.2), 
+        -1px 1px 2px rgba(0, 0, 0, 0.3), 
+        inset 1px 1px 1px #ffffff;
+  -webkit-transition: all 1s;
   
+}
+#checkboxStop:checked:before {
+  left:106px;
+  background:#f1f1f1;
+}
+#checkboxStop:after {
+  content:"";
+  width:14px;
+  height:14px;
+  top:32px;
+  right:-30px;
+  position:absolute;
+  border-radius:40px;
+  background: -webkit-linear-gradient(#fcc4c5,#e12c2d);
+  box-shadow: inset -1px -1px 4px #8d0808, 
+        inset 1px 1px 2px #bb1313;			
+}
+#checkboxStop:checked:after {
+  background: -webkit-linear-gradient(#d8eec4,#5fa718);
+  box-shadow: inset -1px -1px 4px #417f0b, 
+        inset 1px 1px 2px #5b9f1a;			
+}
+
+
+/* modale */
+
+.superModale{
+  background-color:rgb(255, 255, 255);
+  width: 350px;
+  height: 210px;
+  position: absolute;
+  top: 10%;
+  z-index: 5;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  box-shadow: rgb(38, 57, 77) 0px 20px 30px -10px;
+  opacity: 0;
+  border-radius: 10px;
+}
+.superModale p {
+
+  margin: 10px 10px 15px 10px;
+}
+.modaleBackground{
+  background-color: rgba(128, 128, 128, 0.525);
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 4;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+}
+
+.hidden{
+  opacity: 0;
+  pointer-events: none;
+}
+.translate{
+  opacity: 1;
+  transform: translate(0,120px);
+  transition: opacity 0.5s, transform 0.5s;
+}
+.headerModale{
+  display: flex;
+  width: 100%;
+  justify-content: space-around;
+  align-items: center;
+}
+.closeButton{
+  width: 30px;
+  height: 30px;
+  position: absolute;
+  right: 20px;
+}
+
