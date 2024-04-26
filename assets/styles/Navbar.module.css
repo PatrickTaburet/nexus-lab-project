@@ -22,12 +22,17 @@ a {
 
 /* navbar */
 .navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
     background-color: rgb(43, 0, 64);
     padding: 10px 20px;
     display: flex;
     align-items: center;
     gap: 10px;
     min-height: 70px;
+    z-index: 10;
 }
 
 

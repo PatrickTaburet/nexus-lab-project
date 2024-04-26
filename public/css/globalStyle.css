@@ -2,6 +2,7 @@ body {
     display: flex;
     flex-direction: column;
     min-height: 100vh; /* Assure que le contenu de la page occupe au moins la totalité de la hauteur de la fenêtre du navigateur */
+    margin-top: 70px;
 }
 
 main {

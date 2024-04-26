@@ -41,23 +41,26 @@ function setup() {
 
   // Default parameters values
  
-  let defaultValueLine = dataScene ? dataScene.num_line : 100;
-  let defaultValueColor = dataScene ? dataScene.color : 5;
-  let defaultValueWeight = dataScene ? dataScene.weight : 8;
-  let defaultSaturation= dataScene ? dataScene.saturation : 90;
-  let defaultOpacity= dataScene ? dataScene.opacity : 0.7;
-  let defaultVelocity= dataScene ? dataScene.velocity : 5;
-  let defaultNoiseOctave= dataScene ? dataScene.noiseOctave : 4;
-  let defaultNoiseFalloff= dataScene ? dataScene.noiseFalloff : 0.5;
-  console.log(defaultValueLine);
+  // let defaultValueLine = dataScene ? dataScene.num_line : 100;
+  // let defaultValueColor = dataScene ? dataScene.color : 5;
+  // let defaultValueWeight = dataScene ? dataScene.weight : 8;
+  // let defaultSaturation= dataScene ? dataScene.saturation : 90;
+  // let defaultOpacity= dataScene ? dataScene.opacity : 0.7;
+  // let defaultVelocity= dataScene ? dataScene.velocity : 5;
+  // let defaultNoiseOctave= dataScene ? dataScene.noiseOctave : 4;
+  // let defaultNoiseFalloff= dataScene ? dataScene.noiseFalloff : 0.5;
+
   // User Interface :
   
-  checkboxStop = createCheckbox("Stop and go", false);
-  checkboxStop.position(10, 170);
+  // checkboxStop = createCheckbox("Stop and go", false);
+  // checkboxStop.position(10, 170);
+  // resetButton = createButton("Reset");
+  // resetButton.position(130, 170);
+  checkboxStop = select("#checkboxStop");
+  resetButton = select("#resetButton");
 
-  resetButton = createButton("Reset");
-  resetButton.position(130, 170);
-  resetButton.mouseClicked(() => {
+
+  resetButton.mousePressed(() => {
       reset(); // Reset the canvas to its initial state
   });
 
@@ -120,10 +123,17 @@ function windowResized() {
   const squareSize = min(windowWidth, windowHeight);
   const canvas = createCanvas(squareSize, squareSize);
   canvas.parent('sketch');
-
   background(0,0,0);
-  
 }
+
+function reset () {
+  const squareSize = min(windowWidth, windowHeight);
+  resizeCanvas(squareSize, squareSize);
+  walkers = [];
+  clear();
+  background(0,0,0);
+}
+
 
 class Walker {
   constructor(x, y) {
@@ -160,6 +170,7 @@ class Walker {
     strokeWeight(weightSlider.value());
   }
 }
+
 function mouseClicked () {
   if (checkboxStop.checked()) {
     walkers = []; // -> to set only one walker for one click and stop the others walkers moves
@@ -172,13 +183,7 @@ function mouseClicked () {
   }
   
 }
-function reset () {
-  const squareSize = min(windowWidth, windowHeight);
-  resizeCanvas(squareSize, squareSize);
-  walkers = [];
-  clear();
-  background(0,0,0);
-}
+
 
 
 // Send to backend :
@@ -243,5 +248,36 @@ function sendData(){
           console.error('There was a problem sending the data:', error);
       });
     };
-}
+  }
+  
+  // Sliders animation
+    
+  const allRanges = document.querySelectorAll(".range-wrap");
+  allRanges.forEach((wrap) => {
+    const range = wrap.querySelector(".range");
+    const bubble = wrap.querySelector(".bubble");
+
+    range.addEventListener("input", () => {
+      setBubble(range, bubble);
+    });
+
+    // setting bubble on DOM load
+    setBubble(range, bubble);
+  });
+
+  function setBubble(range, bubble) {
+    const val = range.value;
+
+    const min = range.min || 0;
+    const max =  range.max || 100;
+
+    const offset = Number(((val - min) * 100) / (max - min));
+
+    bubble.textContent = val;
+
+    // yes, 14px is a magic number
+    bubble.style.left = `calc(${offset}% - 14px)`;
+  }
+
+
 
