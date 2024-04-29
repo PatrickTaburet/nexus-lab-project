@@ -1,0 +1,184 @@
+
+.mainContainer{
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    flex-direction: row;
+    align-items: center;
+}
+
+h1{
+    font-size: 30px;
+    margin: 1vw;
+   text-align: center;
+}
+canvas {
+    display: block;
+    margin: auto; /* centers the canvas */
+    margin-bottom: 150px;
+}
+.parametersBox{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+}
+.descriptionBox{
+    width: 100%;
+    height: 100%;
+}
+.sliderBox{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+
+}
+.generateButton{
+    min-width: 100px;
+    max-width: 200px;
+}
+
+
+.inputBox{
+width: 30%;
+}
+.country, #submitButton, #reloadButton{
+font-size: 30px;
+}
+
+/* UI */
+
+/* ---- Sliders ---- */
+
+.range-wrap {
+    position: relative;
+    width: 100%;
+    padding: 1.5em 0; /*  Giving more room for hover  */
+    max-width: 400px;
+  }
+  
+  /* Custom Bar */
+
+  .range-wrap::before {
+    content: "";
+    background: linear-gradient(144deg,#AF40FF, #5B42F3 50%,#00DDEB);
+    width: 100%;
+    height: 8px;
+    display: block;
+    position: absolute;
+    border-radius: 4px;
+    top: 50%;
+    transform: translateY(-50%);
+    transition: height 100ms ease;
+  }
+  
+  .range-wrap:hover::before {
+    height: 10px;
+  }
+  
+  /*  Hide Original */
+
+  .range {
+    width: 100%;
+    cursor: pointer;
+    opacity: 0;
+  }
+  .range-wrap{
+    font-family: monospace;
+    min-width: 200px;
+    max-width: 300px;
+    
+  }
+  
+  .bubble {
+    background: white;
+    border: 3px solid #cbd2da;
+    position: absolute;
+    border-radius: 50%;
+    width: 2rem;
+    height: 2rem;
+    top: 50%;
+    transform: translateY(-50%);
+    pointer-events: none; /* Remove pointer events on Bubble so user can click on the actual thumb beaneath it!  */
+    color: transparent;
+    display: grid;
+    place-items: center; /*  Place the number on the center  */
+    font-weight: bold;
+    transition: color 100ms ease, transform 100ms ease;
+    user-select: none; /*  Prevent Accidentally highlighting the number while sliding the cursor  */
+  }
+  
+  .range-wrap:hover .bubble,
+  .range-wrap:focus .bubble {
+    color: black;
+    transform: translateY(-50%) scale(1.5);
+    padding: 0.1em;
+    
+  }
+
+ /* ---- Checkbox ---- */
+ .checkboxConatainer{
+    display: flex;
+    justify-content: center;
+    margin: 20px;
+  }
+ .checkbox{
+  width:178px;
+  height:78px;
+  border-radius:40px;
+  -webkit-appearance: none;
+  position:relative;
+  margin:-39px 0 0 -30px;
+  box-shadow: inset 1px 1px 1px rgba(0, 0, 0, 0.4);
+  background: -webkit-linear-gradient(144deg,#AF40FF, #5B42F3 50%,#00DDEB);
+  scale: 0.5;
+  
+}
+.checkbox:checked{
+  background: -webkit-linear-gradient(#bfe09c,#a1f83d);
+  box-shadow: inset 1px 1px 3px rgba(0, 0, 0, 0.4);
+}
+.checkbox:before {
+  content:"|||";
+  letter-spacing:1px;
+  color: rgba(0,0,0,.15);
+  font-size:22px;
+  font-weight:100;
+  text-shadow:1px 1px 1px rgb(138, 138, 138);
+  width:26px;
+  height:26px;
+  padding:19px;
+  top:7px;
+  left:9px;
+  position:absolute;
+  border-radius:40px;
+  background: -webkit-linear-gradient(#ebebeb,#f1f1f1);
+  box-shadow: -2px 2px 8px rgba(0, 0, 0, 0.2), 
+        -1px 1px 2px rgba(0, 0, 0, 0.3), 
+        inset 1px 1px 1px #ffffff;
+  -webkit-transition: all 1s;
+  
+}
+.checkbox:checked:before {
+  left:106px;
+  background:#f1f1f1;
+}
+.checkbox:after {
+  content:"";
+  width:14px;
+  height:14px;
+  top:32px;
+  right:-30px;
+  position:absolute;
+  border-radius:40px;
+  background: -webkit-linear-gradient(#fcc4c5,#e12c2d);
+  box-shadow: inset -1px -1px 4px #8d0808, 
+        inset 1px 1px 2px #bb1313;			
+}
+.checkbox:checked:after {
+  background: -webkit-linear-gradient(#d8eec4,#5fa718);
+  box-shadow: inset -1px -1px 4px #417f0b, 
+        inset 1px 1px 2px #5b9f1a;			
+}

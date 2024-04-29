@@ -1,0 +1,82 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Scene D1{% endblock %}
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('css/dataScene.css') }}">
+{% endblock %}
+
+{% block body %}
+
+<h1>CO2 WORLDWIDE EMISSIONS</h1>
+<div class="mainContainer">
+    <div class="descriptionBox"> Description </div>
+    <div id="sketch"></div>
+    <div class="parametersBox">
+
+        <h2>Control parameters</h2>
+        <div class="inputBox">
+            <select name="country" class="country" id="country0">
+                <option></option>
+               
+            </select>
+            <select name="country" class="country" id="country1">
+                <option></option>
+               
+            </select>
+            <select name="country" class="country" id="country2">
+                <option></option>
+              
+            </select>
+            <select name="country" class="country" id="country3">
+                <option></option>
+               
+            </select>
+            <select name="country" class="country" id="country4">
+                <option></option>
+               
+            </select>
+            <select name="country" class="country" id="country5">
+                <option></option>
+             
+            </select>
+            <select name="country" class="country" id="country6">
+                <option></option>
+             
+            </select>
+            <select name="country" class="country" id="country7">
+                <option></option>
+              
+            </select>
+            <div class="sliderBox">
+                <p>Randomness :</p>
+                <div class="range-wrap">
+                    <input type="range" class="range" id="randomSlider" min="0.001" max="0.1" value="0.01" step="0.001">
+                    <output class="bubble"></output>
+                </div>
+            </div>
+            <div class="checkboxConatainer">
+                <p>Looping :</p>
+                <input type="checkbox" id="checkboxLoop" class="checkbox">
+            </div>
+            <div class="checkboxConatainer">
+                <p>Abstract Flag Numbers :</p>
+                <input type="checkbox" id="checkboxFlag" class="checkbox">
+            </div>
+            <button id="submitButton" type="submit">Submit</button>
+            <button id="reloadButton" type="submit">Reload</button>
+            {% if app.user %}
+                <button id="sendDataButton" class="customButton generateButton">Save</button>
+            {% endif %}
+        </div>
+    </div>
+    {# <div id="dataScene" style="display:none;" ></div> #}
+</div>
+{% if app.user %}
+    <script>
+        var userId = {{ app.user.id }};
+    </script>
+{% endif %}
+
+<script defer src="{{ asset('js/sketchSceneD1.js') }}" ></script>
+{% endblock %}

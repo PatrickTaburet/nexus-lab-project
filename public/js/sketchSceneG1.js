@@ -265,13 +265,15 @@ function sendData(){
     modale.classList.remove("translate");
     modaleBackground.classList.add("hidden");
   }
-
-  buttonModale.addEventListener("click",openModal);
-  closeButton.addEventListener("click",closeModal);
-  modaleBackground.addEventListener("click", function(event) {
-    if (event.target === modaleBackground) {
-      closeModal();
-    }
-  });
+  if (buttonModale){
+    buttonModale.addEventListener("click",openModal);
+    closeButton.addEventListener("click",closeModal);
+    modaleBackground.addEventListener("click", function(event) {
+      if (event.target === modaleBackground) {
+        closeModal();
+      }
+    });
+  }
+ 
 
 

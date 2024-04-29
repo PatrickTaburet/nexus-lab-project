@@ -85,6 +85,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     private $Scene1;
 
+    /**
+     * @ORM\OneToMany(targetEntity=SceneD1::class, mappedBy="user")
+     */
+    private $sceneD1;
+
 
 //-------------------------------------------------------------------------------------------
 
@@ -94,6 +99,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->imageName = 'no-profile.jpg'; // Define default image
         $this->imageFile = null;
         $this->Scene1 = new ArrayCollection();
+        $this->sceneD1 = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -294,6 +300,36 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
             // set the owning side to null (unless already changed)
             if ($scene1->getUser() === $this) {
                 $scene1->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, SceneD1>
+     */
+    public function getSceneD1(): Collection
+    {
+        return $this->sceneD1;
+    }
+
+    public function addSceneD1(SceneD1 $sceneD1): self
+    {
+        if (!$this->sceneD1->contains($sceneD1)) {
+            $this->sceneD1[] = $sceneD1;
+            $sceneD1->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSceneD1(SceneD1 $sceneD1): self
+    {
+        if ($this->sceneD1->removeElement($sceneD1)) {
+            // set the owning side to null (unless already changed)
+            if ($sceneD1->getUser() === $this) {
+                $sceneD1->setUser(null);
             }
         }
 

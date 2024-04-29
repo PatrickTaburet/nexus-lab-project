@@ -16,6 +16,7 @@ use Symfony\Component\Security\Http\Authenticator\AbstractLoginFormAuthenticator
 use Symfony\Component\Security\Http\Authenticator\Passport\Badge\RememberMeBadge;
 use Symfony\Component\Security\Http\Authenticator\Passport\Credentials\PasswordCredentials;
 
+
 class LoginAuthenticator extends AbstractLoginFormAuthenticator
 {
     use TargetPathTrait;
@@ -31,9 +32,12 @@ class LoginAuthenticator extends AbstractLoginFormAuthenticator
 
     public function authenticate(Request $request): Passport
     {
+        // $this->saveTargetPath($request->getSession(), $request->getUri(), 'main');
+        // dd($request->getSession(), $request->getUri());
         $email = $request->request->get('email', '');
 
         $request->getSession()->set(Security::LAST_USERNAME, $email);
+        // dd($this->getTargetPath($request->getSession(), 'main'));
 
         return new Passport(
             new UserBadge($email),
@@ -47,16 +51,22 @@ class LoginAuthenticator extends AbstractLoginFormAuthenticator
 
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, string $firewallName): ?Response
     {
-        if ($targetPath = $this->getTargetPath($request->getSession(), $firewallName)) {
-            return new RedirectResponse($targetPath);
+        // dd($request->getSession()->all());
+        $targetPath = $this->getTargetPath($request->getSession(), $firewallName);
+        
+        if (!$targetPath) {
+            $targetPath = $this->urlGenerator->generate('home');
+            // return new RedirectResponse($this->urlGenerator->generate('home'));
+           
         }
-
-        return new RedirectResponse($this->urlGenerator->generate('home'));
+        return new RedirectResponse($targetPath);
+        
         // throw new \Exception('TODO: provide a valid redirect inside '.__FILE__);
     }
-
+    
     protected function getLoginUrl(Request $request): string
     {
         return $this->urlGenerator->generate(self::LOGIN_ROUTE);
     }
+
 }

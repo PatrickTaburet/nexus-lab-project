@@ -10,8 +10,8 @@
 {% block body %}
 <div class="createContainer">
     <a><div class="optionContainer customButton">Collectif Drawing</div></a>
-    <a  href="{{ path('sceneG1')}}"><div class="optionContainer customButton">Generative Art</div></a>
-    <a><div class="optionContainer customButton">Data Art Visualization</div></a>
+    <a href="{{ path('sceneG1')}}"><div class="optionContainer customButton">Generative Art</div></a>
+    <a href="{{ path('sceneD1')}}"><div class="optionContainer customButton">Data Art Visualization</div></a>
 </div>
 
  {% for message in app.flashes('success')%}

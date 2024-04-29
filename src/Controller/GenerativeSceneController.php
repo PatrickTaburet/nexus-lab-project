@@ -16,17 +16,15 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
-/**
- * @Route("")
- */
+
 class GenerativeSceneController extends AbstractController
 {
     /**
      * @Route("/sceneG1", name="sceneG1")
      */
-    public function scene1(): Response
+    public function sceneG1(): Response
     {
-        return $this->render('generative_scene/scene1.html.twig', [
+        return $this->render('generative_scene/sceneG1.html.twig', [
             'controller_name' => 'GenerativeSceneController',
         ]);
     }   
@@ -48,7 +46,7 @@ class GenerativeSceneController extends AbstractController
         $json = $serializer->serialize($scene,'json',['groups'=> 'sceneDataRecup']);
             // Décoder le JSON en tableau associatif
         $sceneData = json_decode($json, true);
-        return $this->render('generative_scene/newScene1.html.twig', [
+        return $this->render('generative_scene/newSceneG1.html.twig', [
             'scene' => $sceneData,
         ]);   
     }
@@ -56,7 +54,7 @@ class GenerativeSceneController extends AbstractController
     /**
     * @Route("/generative/sendData", name="send_data", methods={"POST"})
     */
-    public function sendData(Request $request, Security $security, EntityManagerInterface $entityManager): Response
+    public function sendData(Request $request, EntityManagerInterface $entityManager): Response
     {
         // var_dump($security->getUser()->getId());
         $color = $request->request->get('color');
