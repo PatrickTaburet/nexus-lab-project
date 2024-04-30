@@ -18,6 +18,12 @@
                 <button class="customButton dataButton"><a href="{{ path('newScene', {'id': scene.id})}}"> Open scene with parameters</a> </button>
             </div>
         {% endfor %}
+         {% for scene in scenes2 %}
+            <div class="card">
+                <img style="max-width: 400px" src="{{ vich_uploader_asset(scene, 'imageFile') }}" alt="{{ scene.user.pseudo }}">
+                <button class="customButton dataButton"><a href="{{ path('newScene', {'id': scene.id})}}"> Open scene with parameters</a> </button>
+            </div>
+        {% endfor %}
     </div>
    
 

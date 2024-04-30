@@ -194,7 +194,7 @@ function sendData(){
       formData.append('file', image.src);
       
       // saveCanvas();
-      fetch('/generative/sendData', {
+      fetch('/generative/sendDataG1', {
           method: 'POST',
           body: formData
       })

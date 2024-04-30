@@ -255,6 +255,17 @@ class SceneD1
         return $this;
     }
     
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): self
+    {
+        $this->user = $user;
+
+        return $this;
+    }
     // ---------- Vich Uploader - Screen Artwork ---------- //
 
 
@@ -305,15 +316,4 @@ class SceneD1
         return $this;
     }
 
-    public function getUser(): ?User
-    {
-        return $this->user;
-    }
-
-    public function setUser(?User $user): self
-    {
-        $this->user = $user;
-
-        return $this;
-    }
 }

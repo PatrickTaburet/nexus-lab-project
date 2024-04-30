@@ -11,6 +11,7 @@ use Symfony\Component\Security\Core\Security;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use App\Entity\User;
 use App\Entity\SceneD1;
+use Symfony\Component\Serializer\SerializerInterface;
 
 
 class DataSceneController extends AbstractController
@@ -25,12 +26,12 @@ class DataSceneController extends AbstractController
         ]);
     }
 
+    
     /**
-    * @Route("/data/sendDataD1", name="send_data_D1", methods={"POST"})
+    * @Route("/dataScene/sendDataD1", name="send_data_D1", methods={"POST"})
     */
-    public function sendDataToSceneD1(Request $request, EntityManagerInterface $entityManager): Response
+    public function sendDataToSceneD1(Request $request, EntityManagerInterface $entityManager, Security $security): Response
     {
-        
         $randomness = $request->request->get('randomness');
         $looping = $request->request->get('looping');
         $abstract = $request->request->get('abstract');
@@ -61,10 +62,11 @@ class DataSceneController extends AbstractController
          $imageName = pathinfo($tempFilePath, PATHINFO_FILENAME) . '.png';
         // Créer un nouvel objet UploadedFile
         $imageFile = new UploadedFile($tempFilePath,  $imageName, 'image/png', null, true);
-        
-        $user = $this->getDoctrine()
-        ->getRepository(User::class)
-        ->find($userId);
+        $user = $security->getUser();
+
+        // $user = $this->getDoctrine()
+        // ->getRepository(User::class)
+        // ->find($userId);
         
         if ($randomness !== null &&
             $looping !== null &&
@@ -84,7 +86,7 @@ class DataSceneController extends AbstractController
             $data ->setCountry7($country7);
             $data ->setCountry8($country8);
             $data ->setUser($user);
-                // Lier l'image au fichier uploadé
+             // Lier l'image au fichier uploadé
             $data->setImageFile($imageFile);
 
             $entityManager = $this->getDoctrine()->getManager();

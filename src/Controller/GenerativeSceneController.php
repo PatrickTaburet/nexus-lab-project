@@ -52,11 +52,11 @@ class GenerativeSceneController extends AbstractController
     }
 
     /**
-    * @Route("/generative/sendData", name="send_data", methods={"POST"})
+    * @Route("/generative/sendDataG1", name="send_data_G1", methods={"POST"})
     */
     public function sendData(Request $request, EntityManagerInterface $entityManager): Response
     {
-        // var_dump($security->getUser()->getId());
+        
         $color = $request->request->get('color');
         $saturation = $request->request->get('saturation');
         $opacity = $request->request->get('opacity');

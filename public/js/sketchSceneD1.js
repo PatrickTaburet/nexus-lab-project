@@ -270,8 +270,8 @@ document.querySelector("#sendDataButton")?.addEventListener('click', function ()
 function sendData(){
 
     let randomness = randomSlider.value();
-    let looping = checkboxLoop.value();
-    let abstract = checkboxFlag.value();
+    let looping = checkboxLoop.checked() ? 1 : 0;
+    let abstract = checkboxFlag.checked() ? 1 : 0;
     let country1 = select("#country0").value()
     let country2 = select("#country1").value()
     let country3 = select("#country2").value()
@@ -296,14 +296,14 @@ function sendData(){
     formData.append('randomness', randomness);
     formData.append('looping', looping);
     formData.append('abstract', abstract);
-    formData.append('country1', country1);
-    formData.append('country2', country2);
-    formData.append('country3', country3);
-    formData.append('country4', country4);
-    formData.append('country5', country5);
-    formData.append('country6', country6);
-    formData.append('country7', country7);
-    formData.append('country8', country8);
+    formData.append('country1', country1 ? country1 : "");
+    formData.append('country2', country2? country2 : "");
+    formData.append('country3', country3? country3 : "");
+    formData.append('country4', country4? country4 : "");
+    formData.append('country5', country5? country5 : "");
+    formData.append('country6', country6? country6 : "");
+    formData.append('country7', country7? country7 : "");
+    formData.append('country8', country8? country8 : "");
     formData.append('userId', userId);
     formData.append('file', image.src);
 
@@ -321,7 +321,7 @@ function sendData(){
     console.log(formData.get('userId'));
      console.log(formData.get('file'));
   
-    fetch('/data/sendDataD1', {
+    fetch('/dataScene/sendDataD1', {
         method: 'POST',
         body: formData,
         // headers: {
