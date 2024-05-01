@@ -10,18 +10,24 @@
 {% block body %}
 
 <div class="mainContainer">
-    <h1>GALLERY</h1>
+    <h1>Welcome to the member's artwork gallery</h1>
     <div class="cardsContainer">
          {% for scene in scenes %}
             <div class="card">
+                <p>{{ scene.title }}</p>
                 <img style="max-width: 400px" src="{{ vich_uploader_asset(scene, 'imageFile') }}" alt="{{ scene.user.pseudo }}">
-                <button class="customButton dataButton"><a href="{{ path('newScene', {'id': scene.id})}}"> Open scene with parameters</a> </button>
+                <div>{{ scene.comment }}</div>
+                <p>By {{ scene.user.pseudo }}</p>
+                <button class="customButton dataButton"><a href="{{ path('newScene', {'id': scene.id})}}"> Open scene with last parameters</a> </button>
             </div>
         {% endfor %}
          {% for scene in scenes2 %}
             <div class="card">
+                <p>{{ scene.title }}</p>
                 <img style="max-width: 400px" src="{{ vich_uploader_asset(scene, 'imageFile') }}" alt="{{ scene.user.pseudo }}">
-                <button class="customButton dataButton"><a href="{{ path('newScene', {'id': scene.id})}}"> Open scene with parameters</a> </button>
+                <div>{{ scene.comment }}</div>
+                <p>By {{ scene.user.pseudo }}</p>
+                <button class="customButton dataButton"><a href="{{ path('newSceneD1', {'id': scene.id})}}">Open scene with last parameters</a> </button>
             </div>
         {% endfor %}
     </div>

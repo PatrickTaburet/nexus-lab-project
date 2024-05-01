@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\User;
 use App\Entity\Scene1;
+use App\Form\SaveArtworkG1Type;
 use App\Repository\Scene1Repository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -11,6 +12,7 @@ use Symfony\Component\Security\Core\Security;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Vich\UploaderBundle\Handler\DownloadHandler;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -125,11 +127,37 @@ class GenerativeSceneController extends AbstractController
 
               // Supprimer le fichier temporaire
             fclose($tempFile);
-            return new Response('Data successfully saved!', Response::HTTP_OK);
+            $id = $data->getId();
+            return new JsonResponse(['message' => 'Data successfully saved!', 'redirectUrl' => $this->generateUrl('saveG1', ['id' => $id])]);
+            // return $this->redirectToRoute('saveG1', ['id' => $id]);
+
             // redirection managed in javascript
         } 
             return new Response('Error: Missing data!', Response::HTTP_BAD_REQUEST);
         
     }
+
+    /**
+    * @Route("generative/saveSceneG1/{id}", name="saveG1")
+    */
+    public function saveArtwork(Request $request, EntityManagerInterface $entityManager, Scene1Repository $repo, $id): Response
+    {
+        $scene = $repo->find($id);
+        $form = $this->createForm(SaveArtworkG1Type::class, $scene);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) { 
+            $entityManager->persist($scene);
+            $entityManager->flush();
+
+            $this->addFlash('success', 'Artwork save in the gallery'); 
+            return $this->redirectToRoute('sceneG1');
+        }
+        return $this->render('generative_scene/saveArtwork.html.twig', [
+            'form' => $form->createView(),
+            'scene' => $scene
+        ]);
+    }   
+
 
 }

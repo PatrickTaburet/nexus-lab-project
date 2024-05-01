@@ -2,16 +2,17 @@
 
 namespace App\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
+use App\Entity\User;
+use App\Entity\SceneD1;
+use App\Repository\SceneD1Repository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Security;
-use Symfony\Component\HttpFoundation\File\UploadedFile;
-use App\Entity\User;
-use App\Entity\SceneD1;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Serializer\SerializerInterface;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 
 class DataSceneController extends AbstractController
@@ -25,7 +26,27 @@ class DataSceneController extends AbstractController
             'controller_name' => 'DataSceneController',
         ]);
     }
+    /**
+    * @Route("/generative/newScene/{id}", name="newSceneD1", methods= {"GET"}))
+    */
+    public function newScene(SceneD1Repository $repo, SerializerInterface $serializer, $id): Response
+    {
+        $scene = $repo -> find($id); 
 
+        // NORMALIZED + ENCODE METHOD :
+        // //transform complex object in an associative array (only group sceneDataRecup to avoid infinite loop with the user entity)
+        // $sceneNormalized = $normalizer->normalize($scene, null, ['groups'=> 'sceneDataRecup']);
+        // // then encore into json format
+        // $json = json_encode($sceneNormalized);
+
+        // SERIALIZER METHOD :
+        $json = $serializer->serialize($scene,'json',['groups'=> 'sceneDataRecup']);
+            // Décoder le JSON en tableau associatif
+        $sceneData = json_decode($json, true);
+        return $this->render('data_scene/newSceneD1.html.twig', [
+            'scene' => $sceneData,
+        ]);   
+    }
     
     /**
     * @Route("/dataScene/sendDataD1", name="send_data_D1", methods={"POST"})

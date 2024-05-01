@@ -15,6 +15,9 @@ window.onload = function() {
                     const option = document.createElement('option');
                     option.value = countryNames[j];
                     option.text = countryNames[j];
+                    // if (countryNames[j] === dataCountry1) {
+                    //     option.selected = true;
+                    // }
                     select.add(option);
                 }
                 select.remove(1); // Remove the first option (index 0)
@@ -113,14 +116,14 @@ function draw(){
     console.log(isAnimated);
 
     if (isAnimated){
-        countriesArray[0] != "" ? drawData(countriesArray[0], i, 100, originArray[0]) : null;
-        countriesArray[1] != "" ? drawData(countriesArray[1], i, 300, originArray[1]): null;
-        countriesArray[2] != "" ? drawData(countriesArray[2], i, 500, originArray[2]): null;
-        countriesArray[3] != "" ? drawData(countriesArray[3], i, 700, originArray[3]): null;
-        countriesArray[4] != "" ? drawData(countriesArray[4], i, 900, originArray[4]): null;
-        countriesArray[5] != "" ? drawData(countriesArray[5], i, 1100, originArray[5]): null;
-        countriesArray[6] != "" ? drawData(countriesArray[6], i, 1300, originArray[6]): null;
-        countriesArray[7] != "" ? drawData(countriesArray[7], i, 1500, originArray[7]): null;
+        countriesArray[0] != "Select a country" ? drawData(countriesArray[0], i, 100, originArray[0]) : null;
+        countriesArray[1] != "Select a country" ? drawData(countriesArray[1], i, 300, originArray[1]): null;
+        countriesArray[2] != "Select a country" ? drawData(countriesArray[2], i, 500, originArray[2]): null;
+        countriesArray[3] != "Select a country" ? drawData(countriesArray[3], i, 700, originArray[3]): null;
+        countriesArray[4] != "Select a country" ? drawData(countriesArray[4], i, 900, originArray[4]): null;
+        countriesArray[5] != "Select a country" ? drawData(countriesArray[5], i, 1100, originArray[5]): null;
+        countriesArray[6] != "Select a country" ? drawData(countriesArray[6], i, 1300, originArray[6]): null;
+        countriesArray[7] != "Select a country" ? drawData(countriesArray[7], i, 1500, originArray[7]): null;
 
         i++
         if (i == 250){
@@ -376,4 +379,35 @@ function sendData(){
 
     // yes, 14px is a magic number
     bubble.style.left = `calc(${offset}% - 14px)`;
+  }
+
+  // --------- Modale : save artwork ---------
+
+  let buttonModale = document.querySelector(".buttonModale");
+  let modale = document.querySelector(".superModale");
+  let closeButton = document.querySelector(".closeButton");
+  let body =  document.querySelector(".superBody");
+  let modaleBackground = document.querySelector(".modaleBackground");
+
+
+  function openModal(){
+    document.body.style.overflow = "hidden"; // Desable scrolling
+    modale.classList.remove("hidden");
+    modale.classList.add("translate");
+    modaleBackground.classList.remove("hidden");
+  }
+  function closeModal(){
+    document.body.style.overflow = "auto"; // Enable scrolling
+    modale.classList.add("hidden");
+    modale.classList.remove("translate");
+    modaleBackground.classList.add("hidden");
+  }
+  if (buttonModale){
+    buttonModale.addEventListener("click",openModal);
+    closeButton.addEventListener("click",closeModal);
+    modaleBackground.addEventListener("click", function(event) {
+      if (event.target === modaleBackground) {
+        closeModal();
+      }
+    });
   }
