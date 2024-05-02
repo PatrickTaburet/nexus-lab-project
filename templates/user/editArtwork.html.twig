@@ -1,11 +1,11 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Save Artwork{% endblock %}
+{% block title %}Edit Artwork{% endblock %}
 
 {% block body %}
 
-    <h1>Save my Artwork</h1>
-    <img src="{{ vich_uploader_asset(scene, 'imageFile')}}" alt="artwork_picture">
+    <h1>Edit Artwork informations</h1>
+    <img src="{{ vich_uploader_asset(artwork, 'imageFile')}}" alt="artwork_picture">
     <div class="formUser">
         {{ form_start(form) }}
           <div class="form-group">

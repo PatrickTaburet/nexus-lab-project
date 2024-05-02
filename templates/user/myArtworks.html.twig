@@ -8,10 +8,26 @@
 {% endblock %}
 
 {% block body %}
+ {% for message in app.flashes('success')%}
+        <div class="succesFlashMessages">
+            {{message}}
+        </div>      
+{% endfor %}
+
+{# Modale : Delete artwork  #}
+    <div class="modaleBackground hidden">
+    <div class="superModale hidden">
+        <div class="headerModale">
+            <h1>Delete ArtWork</h1>
+            <button class="closeButton">X</button>
+        </div>
+        <div class="modaleContent">
+        </div>
+    </div>
+    </div>
+{# End modale #}
 
 <h1 >MY ARTWORKS</h1>
-
-
 
 <div class="tableContainer">
     <p>Generative Art</p>
@@ -35,9 +51,12 @@
                 <td class="articleContent">{{artwork.comment}}</td>
                 <td>{{artwork.updatedAt|date('F j, Y, g:i a')}}</td>
                 <td>
-                Actions buttons
-                    {# <a href="{{ path('article_update', {'id': artwork.id})}}">Update</a><br /><br />
-                    <a href="{{ path('article_delete', {'id': artwork.id})}}">Delete</a> #}
+                    <a href="{{ path('editArtwork', {'id': artwork.id, 'entity': 'Scene1'})}}" class="customButton">Update</a>
+                    <button 
+                        class="buttonModaleG1 customButton generateButton"
+                        data-delete-url="{{ path('deleteArtwork', {'id': artwork.id , 'entity': "Scene1"}) }}">
+                        Delete
+                    </button>
                 </td> 
             </tr> 
             {% endif %}
@@ -45,7 +64,7 @@
         </tbody>
 	</table>
 
-     <p>Data Art</p>
+    <p>Data Art</p>
 
 	<table>
 		<thead>
@@ -66,9 +85,12 @@
                 <td class="articleContent">{{artwork.comment}}</td>
                 <td>{{artwork.updatedAt|date('F j, Y, g:i a')}}</td>
                 <td>
-                Actions buttons
-                    {# <a href="{{ path('article_update', {'id': artwork.id})}}">Update</a><br /><br />
-                    <a href="{{ path('article_delete', {'id': artwork.id})}}">Delete</a> #}
+                    <a href="{{ path('editArtwork', {'id': artwork.id, 'entity': 'SceneD1'})}}" class="customButton">Update</a>
+                    <button 
+                        class="buttonModaleD1 customButton generateButton"
+                        data-delete-url="{{ path('deleteArtwork', {'id': artwork.id , 'entity': "SceneD1"}) }}">
+                        Delete
+                    </button> 
                 </td> 
             </tr> 
             {% endif %}
@@ -126,5 +148,8 @@
       </tbody>
     </table>
 </div> #}
+
+
+<script defer src="{{ asset('js/modale.js') }}" ></script>
 
 {% endblock %}

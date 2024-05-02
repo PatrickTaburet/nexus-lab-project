@@ -8,7 +8,7 @@
 
 {% block body %}
 {# Modale : save artwork  #}
-    {# <div class="modaleBackground hidden">
+      <div class="modaleBackground hidden">
     <div class="superModale hidden">
         <div class="headerModale">
             <h1>Save ArtWork</h1>
@@ -17,7 +17,7 @@
         <p>Do you want to save this artwork and share it in the Gallery?</p> 
         <button id="sendDataButton" class="customButton generateButton">Save</button>
     </div>
-    </div> #}
+    </div>
 {# End modale #}
 
 <h1>CO2 WORLDWIDE EMISSIONS</h1>
@@ -78,7 +78,7 @@
             <button id="submitButton" type="submit">Submit</button>
             <button id="reloadButton" type="submit">Reload</button>
             {% if app.user %}
-                <button id="sendDataButton" class="customButton generateButton">Save</button>
+                <button class="buttonModale customButton generateButton">Save</button>
             {% endif %}
         </div>
     </div>

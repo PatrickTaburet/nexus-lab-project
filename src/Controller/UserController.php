@@ -4,14 +4,18 @@ namespace App\Controller;
 
 use App\Form\EditUserType;
 use App\Form\UserPasswordType;
+use App\Form\SaveArtworkD1Type;
+use App\Form\SaveArtworkG1Type;
+use App\Repository\UserRepository;
 use App\Repository\Scene1Repository;
 use App\Repository\SceneD1Repository;
-use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Security\Core\Security;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 class UserController extends AbstractController
@@ -114,7 +118,7 @@ class UserController extends AbstractController
     /**
     * @Route("/profile/myArtworks/{id}", name="myArtworks", methods= {"GET", "POST"})
     */
-    public function myArtworks(Scene1Repository $repoG1, SceneD1Repository $repoD1, $id) : Response
+    public function myArtworks( Scene1Repository $repoG1, SceneD1Repository $repoD1, $id) : Response
     {       
         $data = [
             'scene1' => $repoG1->findAll(),
@@ -125,4 +129,69 @@ class UserController extends AbstractController
             'artworks' => $data,
         ]);
     } 
+     /**
+    * @Route("/profile/myArtworks/delete/{id}/{entity}", name="deleteArtwork", methods= {"GET", "POST"})
+    */
+    public function Delete(EntityManagerInterface $entityManager, Scene1Repository $repoG1, SceneD1Repository $repoD1, $id, $entity): Response
+    {
+        if($entity === 'Scene1'){
+            $artworkG1 = $repoG1-> find($id);
+            $userId = $artworkG1->getUser()->getId();
+            $entityManager->remove($artworkG1);
+           
+        } elseif ($entity === 'SceneD1'){
+            $artworkD1 = $repoD1->find($id);
+            $userId = $artworkD1->getUser()->getId();
+            $entityManager->remove($artworkD1);
+        } else { 
+            throw new NotFoundHttpException('Entity not found');
+        }
+   
+        $entityManager->flush();
+
+        $this->addFlash('success', 'Artwork removed from gallery!'); 
+
+    
+        return $this->redirectToRoute('myArtworks', [
+            'id' => $userId
+        ]);
+    }
+      
+    /**
+    * @Route("/profile/myArtworks/update/{id}/{entity}", name="editArtwork", methods= {"GET", "POST"})
+    */
+    public function Update(Request $request, EntityManagerInterface $entityManager, Scene1Repository $repoG1, SceneD1Repository $repoD1, $id, $entity): Response
+    {
+        
+        if($entity === 'Scene1'){
+            $artwork = $repoG1-> find($id);
+            $userId = $artwork->getUser()->getId();
+            $form = $this->createForm(SaveArtworkG1Type::class, $artwork);
+           
+        } elseif ($entity === 'SceneD1'){
+            $artwork = $repoD1->find($id);
+            $userId = $artwork->getUser()->getId();
+            $form = $this->createForm(SaveArtworkD1Type::class, $artwork);
+        } else { 
+            throw new NotFoundHttpException('Entity not found');
+        }
+
+        $form -> handleRequest($request);
+        if ( $form->isSubmitted() && $form->isValid()){
+
+            $entityManager->persist($artwork);
+            $entityManager->flush();
+
+            $this->addFlash('success', 'Artwork updated successfully'); 
+          
+            return $this->redirectToRoute('myArtworks', [
+                'id' => $userId
+            ]);
+        }
+        return $this->render('user/editArtwork.html.twig', [
+            'form' => $form->createView(),
+            'artwork' => $artwork
+        ]);
+    }
+    
 }
