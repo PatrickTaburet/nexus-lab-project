@@ -1,6 +1,9 @@
 
-let buttonModaleG1 = document.querySelectorAll(".buttonModaleG1");
-let buttonModaleD1 = document.querySelectorAll(".buttonModaleD1");
+const buttons = document.querySelectorAll('.buttonModaleG1,.buttonModaleD1');
+buttons.forEach(button => {
+  button.addEventListener('click', openModal);
+});
+
 let modale = document.querySelector(".superModale");
 let closeButton = document.querySelector(".closeButton");
 let body =  document.querySelector(".superBody");
@@ -26,25 +29,9 @@ function closeModal(){
   modale.classList.remove("translate");
   modaleBackground.classList.add("hidden");
 }
-if (buttonModaleG1){
-  buttonModaleG1.forEach((btn) => {
-    btn.addEventListener("click",openModal);
-    closeButton.addEventListener("click",closeModal);
-    modaleBackground.addEventListener("click", function(event) {
-      if (event.target === modaleBackground) {
-        closeModal();
-      }
-    });
-  });
-}
-if (buttonModaleD1){
-  buttonModaleD1.forEach((btn) => {
-    btn.addEventListener("click",openModal);
-    closeButton.addEventListener("click",closeModal);
-    modaleBackground.addEventListener("click", function(event) {
-      if (event.target === modaleBackground) {
-        closeModal();
-      }
-    });
-  })
-}
+closeButton.addEventListener("click",closeModal);
+modaleBackground.addEventListener("click", function(event) {
+  if (event.target === modaleBackground) {
+    closeModal();
+  }
+});

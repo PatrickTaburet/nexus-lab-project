@@ -100,56 +100,6 @@
 </div>
 
 
-
-   {# <h1 class="text-center mb-4 mt-4">MY ARTWORKS</h1>
-<div class="container ">
-    <table class="table table-dark table-striped ">
-      <thead>
-        <tr>
-          <th scope="col">Picture</th>
-          <th scope="col">Title</th>
-          <th scope="col">Comment</th>
-          <th scope="col">Date</th>
-          <th scope="col">Action</th>
-        </tr>
-      </thead>
-      {% for artwork in artworks.scene1 %}
-      <tbody class="table table-striped ">
-        <tr>
-         {% if (is_granted('ROLE_USER') and artwork.user == app.user)%}
-          <th><img src="{{ vich_uploader_asset(artwork, 'imageFile')}}" alt="artwork_picture"></th>
-          <td>{{artwork.title}}</td>
-          <td class="articleContent">{{artwork.comment}}</td>
-          <td>{{artwork.updatedAt|date('F j, Y, g:i a')}}</td>
-          {# <td>
-            <a href="{{ path('article_update', {'id': artwork.id})}}">Update</a><br /><br />
-            <a href="{{ path('article_delete', {'id': artwork.id})}}">Delete</a>
-          </td> 
-          {% endif %}
-        </tr>
-      {% endfor %} 
-
-
-      {% for artwork in artworks.sceneD1 %}
-      <tbody class="table table-striped ">
-        <tr>
-         {% if (is_granted('ROLE_USER') and artwork.user == app.user)%}
-          <th><img src="{{ vich_uploader_asset(artwork, 'imageFile')}}" alt="artwork_picture"></th>
-          <td>{{artwork.title}}</td>
-          <td class="articleContent">{{artwork.comment}}</td>
-          <td>{{artwork.updatedAt|date('F j, Y, g:i a')}}</td>
-          {# <td>
-            <a href="{{ path('article_update', {'id': artwork.id})}}">Update</a><br /><br />
-            <a href="{{ path('article_delete', {'id': artwork.id})}}">Delete</a>
-          </td> 
-          {% endif %}
-        </tr>
-      {% endfor %}
-      </tbody>
-    </table>
-</div> #}
-
-
-<script defer src="{{ asset('js/modale.js') }}" ></script>
+<script defer src="{{ asset('js/modaleDeleteArtwork.js') }}" ></script>
 
 {% endblock %}
