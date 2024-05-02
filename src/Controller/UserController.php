@@ -4,6 +4,8 @@ namespace App\Controller;
 
 use App\Form\EditUserType;
 use App\Form\UserPasswordType;
+use App\Repository\Scene1Repository;
+use App\Repository\SceneD1Repository;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -108,4 +110,19 @@ class UserController extends AbstractController
             'form' => $form->createView(),
         ]);
     }
+
+    /**
+    * @Route("/profile/myArtworks/{id}", name="myArtworks", methods= {"GET", "POST"})
+    */
+    public function myArtworks(Scene1Repository $repoG1, SceneD1Repository $repoD1, $id) : Response
+    {       
+        $data = [
+            'scene1' => $repoG1->findAll(),
+            'sceneD1' => $repoD1->findAll(),
+        ];
+        
+        return $this->render('user/myArtworks.html.twig', [
+            'artworks' => $data,
+        ]);
+    } 
 }

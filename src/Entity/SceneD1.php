@@ -114,6 +114,16 @@ class SceneD1
     */
     private $updatedAt;
 
+    /**
+     * @ORM\Column(type="string", length=100, nullable=true)
+     */
+    private $title;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $comment;
+
 
 
 //-------------------------------------------------------------------------------------------
@@ -312,6 +322,30 @@ class SceneD1
     public function setUpdatedAt(?DateTimeImmutable $updatedAt): self
     {
         $this->updatedAt = $updatedAt;
+
+        return $this;
+    }
+
+    public function getTitle(): ?string
+    {
+        return $this->title;
+    }
+
+    public function setTitle(?string $title): self
+    {
+        $this->title = $title;
+
+        return $this;
+    }
+
+    public function getComment(): ?string
+    {
+        return $this->comment;
+    }
+
+    public function setComment(?string $comment): self
+    {
+        $this->comment = $comment;
 
         return $this;
     }

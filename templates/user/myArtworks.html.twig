@@ -1,0 +1,130 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}My Artworks{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('css/myArtworks.css') }}">
+{% endblock %}
+
+{% block body %}
+
+<h1 >MY ARTWORKS</h1>
+
+
+
+<div class="tableContainer">
+    <p>Generative Art</p>
+
+	<table>
+		<thead>
+			<tr>
+			    <th scope="col">Picture</th>
+                <th scope="col">Title</th>
+                <th scope="col">Comment</th>
+                <th scope="col">Date</th>
+                <th scope="col">Action</th>
+			</tr>
+		</thead>
+        <tbody>
+        {% for artwork in artworks.scene1 %}
+            {% if (is_granted('ROLE_USER') and artwork.user == app.user)%}
+            <tr>
+                <td><img class="artworkImg" src="{{ vich_uploader_asset(artwork, 'imageFile')}}" alt="artwork_picture"></td>
+                <td>{{artwork.title}}</td>
+                <td class="articleContent">{{artwork.comment}}</td>
+                <td>{{artwork.updatedAt|date('F j, Y, g:i a')}}</td>
+                <td>
+                Actions buttons
+                    {# <a href="{{ path('article_update', {'id': artwork.id})}}">Update</a><br /><br />
+                    <a href="{{ path('article_delete', {'id': artwork.id})}}">Delete</a> #}
+                </td> 
+            </tr> 
+            {% endif %}
+        {% endfor %} 
+        </tbody>
+	</table>
+
+     <p>Data Art</p>
+
+	<table>
+		<thead>
+			<tr>
+			    <th scope="col">Picture</th>
+                <th scope="col">Title</th>
+                <th scope="col">Comment</th>
+                <th scope="col">Date</th>
+                <th scope="col">Action</th>
+			</tr>
+		</thead>
+        <tbody>
+        {% for artwork in artworks.sceneD1 %}
+            {% if (is_granted('ROLE_USER') and artwork.user == app.user)%}
+            <tr>
+                <td><img class="artworkImg" src="{{ vich_uploader_asset(artwork, 'imageFile')}}" alt="artwork_picture"></td>
+                <td>{{artwork.title}}</td>
+                <td class="articleContent">{{artwork.comment}}</td>
+                <td>{{artwork.updatedAt|date('F j, Y, g:i a')}}</td>
+                <td>
+                Actions buttons
+                    {# <a href="{{ path('article_update', {'id': artwork.id})}}">Update</a><br /><br />
+                    <a href="{{ path('article_delete', {'id': artwork.id})}}">Delete</a> #}
+                </td> 
+            </tr> 
+            {% endif %}
+        {% endfor %} 
+        </tbody>
+	</table>
+</div>
+
+
+
+   {# <h1 class="text-center mb-4 mt-4">MY ARTWORKS</h1>
+<div class="container ">
+    <table class="table table-dark table-striped ">
+      <thead>
+        <tr>
+          <th scope="col">Picture</th>
+          <th scope="col">Title</th>
+          <th scope="col">Comment</th>
+          <th scope="col">Date</th>
+          <th scope="col">Action</th>
+        </tr>
+      </thead>
+      {% for artwork in artworks.scene1 %}
+      <tbody class="table table-striped ">
+        <tr>
+         {% if (is_granted('ROLE_USER') and artwork.user == app.user)%}
+          <th><img src="{{ vich_uploader_asset(artwork, 'imageFile')}}" alt="artwork_picture"></th>
+          <td>{{artwork.title}}</td>
+          <td class="articleContent">{{artwork.comment}}</td>
+          <td>{{artwork.updatedAt|date('F j, Y, g:i a')}}</td>
+          {# <td>
+            <a href="{{ path('article_update', {'id': artwork.id})}}">Update</a><br /><br />
+            <a href="{{ path('article_delete', {'id': artwork.id})}}">Delete</a>
+          </td> 
+          {% endif %}
+        </tr>
+      {% endfor %} 
+
+
+      {% for artwork in artworks.sceneD1 %}
+      <tbody class="table table-striped ">
+        <tr>
+         {% if (is_granted('ROLE_USER') and artwork.user == app.user)%}
+          <th><img src="{{ vich_uploader_asset(artwork, 'imageFile')}}" alt="artwork_picture"></th>
+          <td>{{artwork.title}}</td>
+          <td class="articleContent">{{artwork.comment}}</td>
+          <td>{{artwork.updatedAt|date('F j, Y, g:i a')}}</td>
+          {# <td>
+            <a href="{{ path('article_update', {'id': artwork.id})}}">Update</a><br /><br />
+            <a href="{{ path('article_delete', {'id': artwork.id})}}">Delete</a>
+          </td> 
+          {% endif %}
+        </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+</div> #}
+
+{% endblock %}

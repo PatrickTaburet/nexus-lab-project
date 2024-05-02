@@ -4,12 +4,14 @@ namespace App\Controller;
 
 use App\Entity\User;
 use App\Entity\SceneD1;
+use App\Form\SaveArtworkD1Type;
 use App\Repository\SceneD1Repository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Security;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -27,7 +29,7 @@ class DataSceneController extends AbstractController
         ]);
     }
     /**
-    * @Route("/generative/newScene/{id}", name="newSceneD1", methods= {"GET"}))
+    * @Route("/dataScene/newScene/{id}", name="newSceneD1", methods= {"GET"}))
     */
     public function newScene(SceneD1Repository $repo, SerializerInterface $serializer, $id): Response
     {
@@ -83,11 +85,9 @@ class DataSceneController extends AbstractController
          $imageName = pathinfo($tempFilePath, PATHINFO_FILENAME) . '.png';
         // Créer un nouvel objet UploadedFile
         $imageFile = new UploadedFile($tempFilePath,  $imageName, 'image/png', null, true);
-        $user = $security->getUser();
 
-        // $user = $this->getDoctrine()
-        // ->getRepository(User::class)
-        // ->find($userId);
+        // Get the logged user
+        $user = $security->getUser();
         
         if ($randomness !== null &&
             $looping !== null &&
@@ -107,20 +107,46 @@ class DataSceneController extends AbstractController
             $data ->setCountry7($country7);
             $data ->setCountry8($country8);
             $data ->setUser($user);
-             // Lier l'image au fichier uploadé
+
+         // Link image to the upload file
             $data->setImageFile($imageFile);
 
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($data);
             $entityManager->flush();
 
-              // Supprimer le fichier temporaire
+         // Delete the temporary file
             fclose($tempFile);
-            return new Response('Data successfully saved!', Response::HTTP_OK);
+
+         // Catch the id of the scene object to make redirection in js to the "saveArtwork form" after saving data in database.
+
+            $id = $data->getId();
+            return new JsonResponse(['message' => 'Data successfully saved!', 'redirectUrl' => $this->generateUrl('saveD1', ['id' => $id])]);
             // redirection managed in javascript
         } 
             return new Response('Error: Missing data!', Response::HTTP_BAD_REQUEST);
         
     }
+    /**
+    * @Route("dataScene/saveSceneD1/{id}", name="saveD1")
+    */
+    public function saveArtwork(Request $request, EntityManagerInterface $entityManager, SceneD1Repository $repo, $id): Response
+    {
+        $scene = $repo->find($id);
+        $form = $this->createForm(SaveArtworkD1Type::class, $scene);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) { 
+            $entityManager->persist($scene);
+            $entityManager->flush();
+
+            $this->addFlash('success', 'Artwork save in the gallery'); 
+            return $this->redirectToRoute('sceneD1');
+        }
+        return $this->render('main/saveArtwork.html.twig', [
+            'form' => $form->createView(),
+            'scene' => $scene
+        ]);
+    }   
 
 }

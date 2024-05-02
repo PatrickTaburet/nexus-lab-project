@@ -335,12 +335,12 @@ function sendData(){
         if (!response.ok) {
             throw new Error('Network response was not ok');
         }
-        return response.text();
+        return response.json();
     })
     .then(data => {
         console.log('Data sent successfully:', data);
     // Redirection vers la page 'sceneD1'
-        window.location.href = '/sceneD1';
+        window.location.href = data.redirectUrl;    
     })
     .catch(error => {
         console.error('There was a problem sending the data:', error);

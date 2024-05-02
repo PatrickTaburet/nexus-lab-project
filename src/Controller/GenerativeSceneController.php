@@ -45,9 +45,10 @@ class GenerativeSceneController extends AbstractController
         // $json = json_encode($sceneNormalized);
 
         // SERIALIZER METHOD :
-        $json = $serializer->serialize($scene,'json',['groups'=> 'sceneDataRecup']);
+        $json = $serializer->serialize($scene,'json',['groups'=> 'sceneDataRecup']); 
             // Décoder le JSON en tableau associatif
         $sceneData = json_decode($json, true);
+
         return $this->render('generative_scene/newSceneG1.html.twig', [
             'scene' => $sceneData,
         ]);   
@@ -85,18 +86,10 @@ class GenerativeSceneController extends AbstractController
          $imageName = pathinfo($tempFilePath, PATHINFO_FILENAME) . '.png';
         // Créer un nouvel objet UploadedFile
         $imageFile = new UploadedFile($tempFilePath,  $imageName, 'image/png', null, true);
-        
-        // // Créer un objet Image
-        // $image = new Scene1();
 
-        // Get logged user
-        // $userId = $security->getUser()->getId();
-        // $user = $security->getUser();
-        // $userId = $user->getId;
-        // var_dump($userId );
-            $user = $this->getDoctrine()
-            ->getRepository(User::class)
-            ->find($userId);
+        $user = $this->getDoctrine()
+        ->getRepository(User::class)
+        ->find($userId);
         
         if ($color !== null &&
             $weight !== null &&
@@ -118,20 +111,21 @@ class GenerativeSceneController extends AbstractController
             $data ->setNoiseOctave($noiseOctave);
             $data ->setNoiseFalloff($noiseFalloff);
             $data ->setUser($user);
-                // Lier l'image au fichier uploadé
+        // Link image to the upload file
             $data->setImageFile($imageFile);
 
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($data);
             $entityManager->flush();
 
-              // Supprimer le fichier temporaire
+        // Delete the temporary file
             fclose($tempFile);
+
+        // Catch the id of the scene object to make redirection in js to the "saveArtwork form" after saving data in database.
             $id = $data->getId();
             return new JsonResponse(['message' => 'Data successfully saved!', 'redirectUrl' => $this->generateUrl('saveG1', ['id' => $id])]);
-            // return $this->redirectToRoute('saveG1', ['id' => $id]);
 
-            // redirection managed in javascript
+        // redirection managed in javascript
         } 
             return new Response('Error: Missing data!', Response::HTTP_BAD_REQUEST);
         
@@ -153,7 +147,7 @@ class GenerativeSceneController extends AbstractController
             $this->addFlash('success', 'Artwork save in the gallery'); 
             return $this->redirectToRoute('sceneG1');
         }
-        return $this->render('generative_scene/saveArtwork.html.twig', [
+        return $this->render('main/saveArtwork.html.twig', [
             'form' => $form->createView(),
             'scene' => $scene
         ]);

@@ -2,10 +2,11 @@ body {
     display: flex;
     flex-direction: column;
     min-height: 100vh; /* Assure que le contenu de la page occupe au moins la totalité de la hauteur de la fenêtre du navigateur */
-    margin-top: 70px;
+
 }
 
 main {
+    margin-top: 70px;
     flex: 1; /* Permet au contenu principal de s'étendre pour remplir l'espace disponible restant */
 }
 
@@ -69,6 +70,11 @@ footer {
     align-items:center;
     min-height: 150px;
     z-index: 10;
+    position: relative;
+    bottom: 0;
+    left: 0;
+    right: 0;
+   
 }
 .topFooter{
     display: flex;
