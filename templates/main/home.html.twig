@@ -9,5 +9,10 @@
         {{message}}
       </div>
 {% endfor %}
+ {% for message in app.flashes('warning')%}
+      <div class="warningFlashMessages">
+        {{message|nl2br }}
+      </div>
+{% endfor %}
 
 {% endblock %}

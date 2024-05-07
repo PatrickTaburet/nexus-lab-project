@@ -1,0 +1,42 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Ask for Artist Role{% endblock %}
+
+{% block body %}
+
+    <h1>Ask for Artist Role ?</h1>
+
+    <div class="formUser">
+        {{ form_start(form) }}
+          
+          <div class="form-group">
+            {{ form_label(form.name)}}
+            {{ form_widget(form.name, { "attr": {"class" : "form-control" } }) }}
+          </div>
+          <div class="form-group">
+            {{ form_label(form.firstname)}}
+            {{ form_widget(form.firstname, { "attr": {"class" : "form-control" } }) }}
+          </div>
+          <div class="form-group">
+            {{ form_label(form.bio)}}
+            {{ form_widget(form.bio, { "attr": {"class" : "form-control" } }) }}          
+          </div>
+          <div class="imagePreview">
+            {{ form_label(form.exemples) }}
+            {{ form_widget(form.exemples, { "attr": {"class" : "form-control" } }) }}
+          </div>
+          <div class="buttonBox">        
+            {{ form_label(form.portfolio) }}
+            {{ form_widget(form.portfolio) }}
+          </div>
+          <div class="buttonBox">        
+            {{ form_label(form.submit) }}
+            {{ form_widget(form.submit) }}
+            <a href="{{ path('home')}}"  class="customButton">Back</a>
+          </div>
+
+        {{ form_end(form) }}
+      </div>
+    </div>
+
+{% endblock %}

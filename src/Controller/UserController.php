@@ -2,10 +2,13 @@
 
 namespace App\Controller;
 
+use App\Entity\ArtistRole;
+use App\Form\ArtistRoleType;
 use App\Form\EditUserType;
 use App\Form\UserPasswordType;
 use App\Form\SaveArtworkD1Type;
 use App\Form\SaveArtworkG1Type;
+use App\Repository\ArtistRoleRepository;
 use App\Repository\UserRepository;
 use App\Repository\Scene1Repository;
 use App\Repository\SceneD1Repository;
@@ -18,25 +21,28 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
+/**
+* @Route("/profile")
+*/
+
 class UserController extends AbstractController
 {
     
     /**
-    * @Route("/profile/edit/{id}", name="profile", methods= {"GET", "POST"})
+    * @Route("/edit/{id}", name="profile", methods= {"GET", "POST"})
     */
     public function editUser(EntityManagerInterface $entityManager,Request $request, UserRepository $repo, $id) : Response
     {       
             $user = $repo->find($id);
             // Check if the user is logged
-            if (!$this->getUser()) {
-                return $this->redirectToRoute('app_login');
-            }
-            
-            // Check if the logged-in user is the same as the user being edited
-            if ($this->getUser() !== $user) {
-                // If not, redirect the user to the home page
-                return $this->redirectToRoute('home');
-            }
+            // if (!$this->getUser()) {
+            //     return $this->redirectToRoute('gallery');
+            // }
+            // // Check if the logged-in user is the same as the user being edited
+            // if ($this->getUser() !== $user) {
+            //     // If not, redirect the user to the home page
+            //     return $this->redirectToRoute('home');
+            // }
             
             $userForm = $this->createForm(EditUserType::class, $user, [
                 'is_admin' => false,
@@ -71,7 +77,7 @@ class UserController extends AbstractController
     } 
     
     /**
-    * @Route("/profile/edit/password/{id}", name="editPassword", methods= {"GET", "POST"})
+    * @Route("/edit/password/{id}", name="editPassword", methods= {"GET", "POST"})
     */
     public function editPassword(EntityManagerInterface $entityManager, Request $request, UserRepository $repo, $id, UserPasswordHasherInterface $hasher ): Response
     {
@@ -116,7 +122,7 @@ class UserController extends AbstractController
     }
 
     /**
-    * @Route("/profile/myArtworks/{id}", name="myArtworks", methods= {"GET", "POST"})
+    * @Route("/myArtworks/{id}", name="myArtworks", methods= {"GET", "POST"})
     */
     public function myArtworks( Scene1Repository $repoG1, SceneD1Repository $repoD1, $id) : Response
     {       
@@ -130,7 +136,7 @@ class UserController extends AbstractController
         ]);
     } 
      /**
-    * @Route("/profile/myArtworks/delete/{id}/{entity}", name="deleteArtwork", methods= {"GET", "POST"})
+    * @Route("/myArtworks/delete/{id}/{entity}", name="deleteArtwork", methods= {"GET", "POST"})
     */
     public function Delete(EntityManagerInterface $entityManager, Scene1Repository $repoG1, SceneD1Repository $repoD1, $id, $entity): Response
     {
@@ -158,7 +164,7 @@ class UserController extends AbstractController
     }
       
     /**
-    * @Route("/profile/myArtworks/update/{id}/{entity}", name="editArtwork", methods= {"GET", "POST"})
+    * @Route("/myArtworks/update/{id}/{entity}", name="editArtwork", methods= {"GET", "POST"})
     */
     public function Update(Request $request, EntityManagerInterface $entityManager, Scene1Repository $repoG1, SceneD1Repository $repoD1, $id, $entity): Response
     {
@@ -194,4 +200,40 @@ class UserController extends AbstractController
         ]);
     }
     
+    /**
+    * @Route("/roleRequest", name="roleRequest", methods= {"GET", "POST"})
+    */
+    public function roleRequest( EntityManagerInterface $entityManager, Request $request): Response
+    {   
+         // Check if the current user has already sent a role request
+        $existingRoleRequest = $entityManager->getRepository(ArtistRole::class)->findOneBy([
+            'user' => $this->getUser(),
+        ]);
+        if ($existingRoleRequest) {
+            // If the user has already sent a role request, redirect to the home page
+            $this->addFlash('warning', "You have already sent a role request. We'll get back to you as soon as possible. 
+            Contact us if you need any changes or clarifications.");
+            return $this->redirectToRoute('home');
+        };
+
+        $roleRequest = new ArtistRole(); 
+        $roleRequest->setUser($this->getUser());
+
+        $form = $this->createForm(ArtistRoleType::class, $roleRequest); 
+        $form -> handleRequest($request); 
+
+        if ( $form->isSubmitted() && $form->isValid()){
+            $entityManager->persist($roleRequest);
+            $entityManager->flush();
+
+            $this->addFlash('success', 'Role request sent'); 
+
+            return $this->redirectToRoute('home');
+        }
+        return $this->render('admin/artistForm.html.twig', [
+            'form' => $form->createView(),
+        ]);
+    }
+
+
 }

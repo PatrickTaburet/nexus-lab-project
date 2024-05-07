@@ -90,6 +90,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     private $sceneD1;
 
+    /**
+    * @ORM\OneToOne(targetEntity="App\Entity\ArtistRole", mappedBy="user")
+    */
+    private $role_request;
+
 
 //-------------------------------------------------------------------------------------------
 
@@ -332,6 +337,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
                 $sceneD1->setUser(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getRoleRequest(): ?ArtistRole
+    {
+        return $this->role_request;
+    }
+
+    public function setRoleRequest(?ArtistRole $role_request): self
+    {
+        $this->role_request = $role_request;
 
         return $this;
     }

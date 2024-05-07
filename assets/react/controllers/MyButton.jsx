@@ -3,7 +3,6 @@ import styles from "/assets/styles/Button.module.css?module";
 
 
 export default function MyButton({myStyle, to, id, children, handleClick}) {
-
   return (
     <a 
     href={id?`/${to}/${id}`:to}

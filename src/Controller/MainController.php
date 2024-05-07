@@ -39,4 +39,13 @@ class MainController extends AbstractController
         return $this->render('main/create.html.twig', [
         ]);   
     }
+     /**
+     * @Route("/create/generative-art", name="generativeHome")
+     */
+    public function generativeHome(): Response
+    {
+        return $this->render('main/generativeHome.html.twig', [
+        ]);   
+    }
+
 }

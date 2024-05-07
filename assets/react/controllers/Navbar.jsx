@@ -7,7 +7,7 @@ import modStyles from "/assets/styles/Modale.module.css?module";
 
 
 
-export default function ({props}) {
+export default function Navbar ({props}) {
 
   // adding the states 
   const [isActive, setIsActive] = useState(false);
@@ -62,7 +62,7 @@ export default function ({props}) {
         <MyButton myStyle="whiteButton" to="">Artist Dashboard</MyButton>
       </div> ) :
       (<div className={`${modStyles.modaleRowButtons}`}>
-        <MyButton myStyle="whiteButton" to="">Ask for Artist Role</MyButton>
+        <MyButton myStyle="whiteButton" to="/profile/roleRequest">Ask for Artist Role</MyButton>
       </div> ) 
 
     const profileResponsive = props.user ? 
