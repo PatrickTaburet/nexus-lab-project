@@ -14,6 +14,7 @@ h1{
     padding: 5% 15% 15% 15%;
     flex-wrap: wrap;
 } 
+
 .optionContainer{
     display: flex;
     justify-content: center;
@@ -35,4 +36,18 @@ h1{
 }
 .optionContainer:hover {
     cursor: pointer;
+}
+
+/* scenes home */
+.scenesContainer{
+    display: flex;
+    justify-content: space-around;
+    padding: 2% 15% 2% 15%;
+    flex-wrap: wrap;
+}
+.bottomContainer{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 15px;
 }

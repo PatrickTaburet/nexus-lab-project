@@ -95,6 +95,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     */
     private $role_request;
 
+    /**
+     * @ORM\OneToMany(targetEntity=AddScene::class, mappedBy="user")
+     */
+    private $add_scene;
+
 
 //-------------------------------------------------------------------------------------------
 
@@ -105,6 +110,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->imageFile = null;
         $this->Scene1 = new ArrayCollection();
         $this->sceneD1 = new ArrayCollection();
+        $this->add_scene = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -349,6 +355,36 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setRoleRequest(?ArtistRole $role_request): self
     {
         $this->role_request = $role_request;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, AddScene>
+     */
+    public function getAddScene(): Collection
+    {
+        return $this->add_scene;
+    }
+
+    public function addAddScene(AddScene $addScene): self
+    {
+        if (!$this->add_scene->contains($addScene)) {
+            $this->add_scene[] = $addScene;
+            $addScene->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeAddScene(AddScene $addScene): self
+    {
+        if ($this->add_scene->removeElement($addScene)) {
+            // set the owning side to null (unless already changed)
+            if ($addScene->getUser() === $this) {
+                $addScene->setUser(null);
+            }
+        }
 
         return $this;
     }

@@ -1,0 +1,5 @@
+- Adresse de connexion : https://acgd.fr/foad/formation-cda-bordeaux-23-11-2023/
+
+- Mot de passe : 2311CDA23
+
+php -S localhost:8000 -t public   + /acceuil etc

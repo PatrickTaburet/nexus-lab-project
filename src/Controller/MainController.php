@@ -31,20 +31,28 @@ class MainController extends AbstractController
             'scenes2'=>$scenes2
         ]);   
     }
-     /**
-     * @Route("/create", name="create")
-     */
+    /**
+    * @Route("/create", name="create")
+    */
     public function create(): Response
     {
         return $this->render('main/create.html.twig', [
         ]);   
     }
-     /**
-     * @Route("/create/generative-art", name="generativeHome")
-     */
+    /**
+    * @Route("/create/generative-art", name="generativeHome")
+    */
     public function generativeHome(): Response
     {
         return $this->render('main/generativeHome.html.twig', [
+        ]);   
+    }
+    /**
+    * @Route("/create/data-art", name="dataArtHome")
+    */
+    public function dataArtHome(): Response
+    {
+        return $this->render('main/dataArtHome.html.twig', [
         ]);   
     }
 
