@@ -18,7 +18,7 @@ class AddScene
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="array", nullable=true)
      */
     private $language;
 
@@ -48,12 +48,15 @@ class AddScene
         return $this->id;
     }
 
-    public function getLanguage(): ?string
+    /**
+     * @return string[]|null
+     */
+    public function getLanguage():?array
     {
         return $this->language;
     }
 
-    public function setLanguage(string $language): self
+    public function setLanguage(array $language): self
     {
         $this->language = $language;
 

@@ -8,14 +8,34 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Validator\Constraints\File;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 
 class AddSceneType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('language')
+            ->add('language', ChoiceType::class,[
+                'choices' => [
+                    'P5JS' => 'p5js',
+                    'JavaScript' => 'javascript',
+                    'Python' => 'python',
+                    'GLSL / WebGl' => 'glsl / webgl',
+                    'Other' => 'other',
+                ],
+                'multiple' => true,
+                'expanded' => true,
+            ])
+            ->add('otherLanguage', TextType::class, [
+                'mapped' => false,
+                'required' => false,
+                'attr' => [
+                    'class' => 'otherLanguage',
+                ],
+            ])
             ->add('title')
             ->add('description')
             ->add('codeFile', FileType::class, [

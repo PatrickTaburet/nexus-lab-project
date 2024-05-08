@@ -22,12 +22,15 @@ class ArtistController extends AbstractController
     {   
         $sceneRequest = new AddScene(); 
 
-        $form = $this->createForm(AddSceneType::class, $sceneRequest); 
-        $form -> handleRequest($request); 
+        $form = $this->createForm(AddSceneType::class, $sceneRequest);
 
+ 
+
+        $form -> handleRequest($request); 
+     
         if ( $form->isSubmitted() && $form->isValid()){
             /** @var UploadedFile $file */
-
+            // dd($otherLanguage);
             $file = $form->get('codeFile')->getData();
                 // Extract the file name and extension
             $fileName = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
@@ -39,6 +42,16 @@ class ArtistController extends AbstractController
             $sceneRequest->setCodeFile($uniqueFileName);
         
             $sceneRequest->setUser($this->getUser());
+
+            // Add the value of the "Other" option to the main language array
+            $language = $sceneRequest->getLanguage();
+            $otherLanguage = $form->get('otherLanguage')->getData();
+           
+            if ($otherLanguage && in_array("other", $language)) {
+                $language[] = $otherLanguage;
+                dd($language);
+            }
+            $sceneRequest->setLanguage($language);
             $entityManager->persist($sceneRequest);
             $entityManager->flush();
 

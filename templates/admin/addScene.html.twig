@@ -8,7 +8,7 @@
       {{message }}
     </div>
   {% endfor %}
-    <h1>Ask for Artist Role ?</h1>
+    <h1>Add new Scene</h1>
 
     <div class="formUser">
         {{ form_start(form) }}
@@ -16,6 +16,9 @@
           <div class="form-group">
             {{ form_label(form.language)}}
             {{ form_widget(form.language, { "attr": {"class" : "form-control" } }) }}
+          </div>
+          <div class="form-group">
+            {{ form_widget(form.otherLanguage, { "attr": {"class" : "otherLanguage" } }) }}
           </div>
           <div class="form-group">
             {{ form_label(form.title)}}
@@ -39,5 +42,7 @@
         {{ form_end(form) }}
       </div>
     </div>
+
+<script src="{{ asset('js/addSceneType.js') }}" ></script>
 
 {% endblock %}
