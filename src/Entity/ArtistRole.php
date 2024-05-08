@@ -43,7 +43,7 @@ class ArtistRole
     private $portfolio;
 
    /**
-     * @ORM\OneToOne(targetEntity="App\Entity\User")
+     * @ORM\OneToOne(targetEntity="App\Entity\User",  inversedBy="role_request")
      * @ORM\JoinColumn(name="user_id", referencedColumnName="id")
      */ 
     private $user;

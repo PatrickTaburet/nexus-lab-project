@@ -1,0 +1,72 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Users list{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('css/admin.css') }}">
+{% endblock %}
+
+{% block body %}
+ {% for message in app.flashes('success')%}
+        <div class="succesFlashMessages">
+            {{message}}
+        </div>      
+{% endfor %}
+    <h1 class="text-center mb-4 mt-4">Artworks list</h1>
+
+    <div class="tableContainer">
+        <table class="table">
+            <thead>
+                <th>ID</th>
+                <th>Artwork</th>
+                <th>Author</th>
+                <th>Title</th>
+                <th>Comments</th>
+                <th>Date</th>
+                <th>Actions</th>
+            </thead>
+            <tbody>
+            {%  for artwork in artworks %}
+                <tr>
+                    <td>{{artwork.id}}</td>
+                    <td><img src="{{ vich_uploader_asset(artwork, 'imageFile')}}" alt="artwork_picture"></td>
+                    <td>
+                        {{artwork.user.pseudo}}
+                        {{artwork.user.email}}
+                    </td>
+                    <td>{{artwork.title}}</td>
+                    <td>{{artwork.comment}}</td>
+                    <td>{{artwork.updatedAt|date('F j, Y, g:i a')}}</td>
+                    <td>
+                        <a href="{{path('admin_edit_user', {'id' : artwork.id}) }}" class="customButton">Edit</a>
+
+                    {# Check which entity this artwork comes from to be sure to delete only one #}
+                    {% set entityName = artwork|class_name|split('\\')|last %} 
+
+                    {% if entityName == 'Scene1' %}
+                        <a href="{{path('admin_delete_artwork', {'id' : artwork.id, 'entity': "Scene1"}) }}" class="customButton">Delete</a>
+                    {% elseif entityName == 'SceneD1' %}
+                        <a href="{{path('admin_delete_artwork', {'id' : artwork.id, 'entity': "SceneD1"}) }}" class="customButton">Delete</a>
+                    {% endif %} 
+                    </td> 
+                    
+                </tr>
+            {% else %}
+                <tr>
+                    <td >No published Artworks</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+        <div class="d-flex justify-content-center">
+        <a href="{{ path('home')}}"><button  class="customButton ">BACK</button></a>
+        </div>
+
+        {# pagination #}
+
+        <div class="pagination navigation">
+            {{ knp_pagination_render(artworks) }}
+        </div>
+    </div>
+{% endblock %}

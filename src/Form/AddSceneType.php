@@ -5,6 +5,7 @@ namespace App\Form;
 use App\Entity\AddScene;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Vich\UploaderBundle\Form\Type\VichImageType;
 use Symfony\Component\Validator\Constraints\File;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
@@ -49,6 +50,12 @@ class AddSceneType extends AbstractType
                         ],
                         'mimeTypesMessage' => 'Please upload a valid text file',
                     ])
+                ],
+            ])
+            ->add('imageFile', VichImageType::class, [
+                'label' => 'Scene picture',
+                'label_attr' => [
+                    'class' => 'form-label mt-3 '
                 ],
             ])
             ->add('submit', SubmitType::class, [

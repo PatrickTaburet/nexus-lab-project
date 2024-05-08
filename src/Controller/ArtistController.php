@@ -49,7 +49,6 @@ class ArtistController extends AbstractController
            
             if ($otherLanguage && in_array("other", $language)) {
                 $language[] = $otherLanguage;
-                dd($language);
             }
             $sceneRequest->setLanguage($language);
             $entityManager->persist($sceneRequest);

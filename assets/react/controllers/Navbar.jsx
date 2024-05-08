@@ -40,7 +40,7 @@ export default function Navbar ({props}) {
         (<div className={`${styles.rightSide}`}>
           <MyButton to="/logout">Log out</MyButton>
           <MyButton handleClick={()=> toggleModal()} >Profile</MyButton>
-          <MyButton >Admin</MyButton>
+          <MyButton  to="/admin/dashboard">Admin</MyButton>
         </div>)
     } else if (props.user){
       loginButtons = 

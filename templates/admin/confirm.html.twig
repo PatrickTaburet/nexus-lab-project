@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Admin page{% endblock %}
+
+{% block body %}
+<div class="container text-center">
+    <h1>Confirm delete user {{user.email}} ?</h1>
+    <td><a href="{{path('admin_delete_user', {'id' : user.id}) }}" class="customButton">Delete</a></td>
+    <button><a href="{{ path('admin_users')}}" class="customButton">BACK</a></button>
+</div>
+{% endblock %}

@@ -72,6 +72,16 @@ class Scene1
     private $noiseFalloff;
 
     /**
+     * @ORM\Column(type="string", length=100, nullable=true)
+     */
+    private $title;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $comment;
+
+    /**
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="Scene1")
      * @ORM\JoinColumn(nullable=false)
      * @Groups ("sceneDataRecup")
@@ -96,15 +106,7 @@ class Scene1
     */
     private $updatedAt;
 
-    /**
-     * @ORM\Column(type="string", length=100, nullable=true)
-     */
-    private $title;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $comment;
 
 //-------------------------------------------------------------------------------------------
 

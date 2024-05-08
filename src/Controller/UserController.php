@@ -61,7 +61,7 @@ class UserController extends AbstractController
                         'userForm' => $userForm->createView(),
                     ]);
                 }
-                // dd($user->getImageFile()->getSize());
+             
                 $entityManager->persist($user);
                 $entityManager->flush();
                 $user->removeFile(); // Delete the object file after persist to avoid errors
