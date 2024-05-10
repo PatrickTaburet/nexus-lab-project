@@ -3,15 +3,15 @@
 namespace App\Controller;
 
 use App\Entity\ArtistRole;
-use App\Form\ArtistRoleType;
 use App\Form\EditUserType;
+use App\Form\ArtistRoleType;
 use App\Form\UserPasswordType;
 use App\Form\SaveArtworkD1Type;
 use App\Form\SaveArtworkG1Type;
-use App\Repository\ArtistRoleRepository;
 use App\Repository\UserRepository;
 use App\Repository\Scene1Repository;
 use App\Repository\SceneD1Repository;
+use App\Repository\ArtistRoleRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Security;
@@ -19,6 +19,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 /**
@@ -34,15 +35,16 @@ class UserController extends AbstractController
     public function editUser(EntityManagerInterface $entityManager,Request $request, UserRepository $repo, $id) : Response
     {       
             $user = $repo->find($id);
+
             // Check if the user is logged
-            // if (!$this->getUser()) {
-            //     return $this->redirectToRoute('gallery');
-            // }
-            // // Check if the logged-in user is the same as the user being edited
-            // if ($this->getUser() !== $user) {
-            //     // If not, redirect the user to the home page
-            //     return $this->redirectToRoute('home');
-            // }
+            if (!$this->getUser()) {
+                return $this->redirectToRoute('gallery');
+            }
+            // Check if the logged-in user is the same as the user being edited
+            if ($this->getUser() !== $user) {
+                // If not, redirect the user to the home page
+                return $this->redirectToRoute('home');
+            }
             
             $userForm = $this->createForm(EditUserType::class, $user, [
                 'is_admin' => false,
@@ -140,19 +142,31 @@ class UserController extends AbstractController
     */
     public function Delete(EntityManagerInterface $entityManager, Scene1Repository $repoG1, SceneD1Repository $repoD1, $id, $entity): Response
     {
+
+        $currentUser = $this->getUser();
+
         if($entity === 'Scene1'){
-            $artworkG1 = $repoG1-> find($id);
-            $userId = $artworkG1->getUser()->getId();
-            $entityManager->remove($artworkG1);
-           
+            $artwork = $repoG1-> find($id);
+
+            // Check if actual user is link to this artwork
+            if ($artwork->getUser()!== $currentUser) {
+                throw new AccessDeniedHttpException('You are not allowed to delete this artwork.');
+            }
+
+            $userId = $artwork->getUser()->getId();   
         } elseif ($entity === 'SceneD1'){
-            $artworkD1 = $repoD1->find($id);
-            $userId = $artworkD1->getUser()->getId();
-            $entityManager->remove($artworkD1);
+            $artwork = $repoD1->find($id);
+
+            if ($artwork->getUser()!== $currentUser) {
+                throw new AccessDeniedHttpException('You are not allowed to delete this artwork.');
+            }
+
+            $userId = $artwork->getUser()->getId();
         } else { 
             throw new NotFoundHttpException('Entity not found');
         }
-   
+
+        $entityManager->remove($artwork);
         $entityManager->flush();
 
         $this->addFlash('success', 'Artwork removed from gallery!'); 
@@ -168,14 +182,21 @@ class UserController extends AbstractController
     */
     public function Update(Request $request, EntityManagerInterface $entityManager, Scene1Repository $repoG1, SceneD1Repository $repoD1, $id, $entity): Response
     {
-        
+        $currentUser = $this->getUser();
+
         if($entity === 'Scene1'){
             $artwork = $repoG1-> find($id);
+            if ($artwork->getUser()!== $currentUser) {
+                throw new AccessDeniedHttpException('You are not allowed to edit this artwork.');
+            }
             $userId = $artwork->getUser()->getId();
             $form = $this->createForm(SaveArtworkG1Type::class, $artwork);
            
         } elseif ($entity === 'SceneD1'){
             $artwork = $repoD1->find($id);
+            if ($artwork->getUser()!== $currentUser) {
+                throw new AccessDeniedHttpException('You are not allowed to edit this artwork.');
+            }
             $userId = $artwork->getUser()->getId();
             $form = $this->createForm(SaveArtworkD1Type::class, $artwork);
         } else { 

@@ -8,10 +8,10 @@
 {% endblock %}
 
 {% block body %}
- {% for message in app.flashes('success')%}
-        <div class="succesFlashMessages">
-            {{message}}
-        </div>      
+{% for message in app.flashes('success')%}
+    <div class="succesFlashMessages">
+        {{message}}
+    </div>      
 {% endfor %}
 
 {# Modale : Delete artwork  #}

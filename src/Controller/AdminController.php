@@ -3,6 +3,8 @@
 namespace App\Controller;
 
 use App\Form\EditUserType;
+use App\Form\SaveArtworkD1Type;
+use App\Form\SaveArtworkG1Type;
 use Doctrine\ORM\EntityManager;
 use App\Repository\UserRepository;
 use App\Repository\Scene1Repository;
@@ -71,8 +73,9 @@ class AdminController extends AbstractController
                 //                       ->getManager();
                 $entityManager -> persist($user);
                 $entityManager -> flush();
+                $userEmail = $user->getEmail();
                 $user->removeFile(); // Delete the object file after persist to avoid errors
-                $this ->addFlash('message', 'User edit succeed');
+                $this ->addFlash('success', 'User '.$userEmail.' edit succeed');
 
                 return $this->redirectToRoute('admin_users');
             }
@@ -87,14 +90,13 @@ class AdminController extends AbstractController
       /**
      * @Route("/users/delete/{id}", name="delete_user", methods= {"GET"})
      */
-    public function deleteUser(UserRepository $repo, $id): Response
+    public function deleteUser(UserRepository $repo, EntityManagerInterface $entityManager, $id): Response
     {
         $user = $repo->find($id);
-        $entityManager = $this->getDoctrine()->getManager();
         $entityManager->remove($user);
         $entityManager->flush();
-
-        $this->addFlash('message', 'User delete succeed');
+        $userEmail = $user->getEmail();
+        $this->addFlash('success', 'User '.$userEmail.' delete succeed');
         return $this->redirectToRoute('admin_users');
     }
       /**
@@ -128,24 +130,60 @@ class AdminController extends AbstractController
     }
     
       /**
-     * @Route("/delete/{id}/{entity}", name="delete_artwork", methods= {"GET", "POST"})
+     * @Route("/gallery/delete/{id}/{entity}", name="delete_artwork", methods= {"GET", "POST"})
      */
     public function deleteArtwork(Scene1Repository $repoG1, SceneD1Repository $repoD1, EntityManagerInterface $entityManager, $id, $entity): Response
     {
         if($entity === 'Scene1'){
-            $artworkG1 = $repoG1-> find($id);
-            $entityManager->remove($artworkG1);
+            $artwork = $repoG1-> find($id);
+            $entityManager->remove($artwork);
            
         } elseif ($entity === 'SceneD1'){
-            $artworkD1 = $repoD1->find($id);
-            $entityManager->remove($artworkD1);
+            $artwork = $repoD1->find($id);
+            $entityManager->remove($artwork);
         } else { 
             throw new NotFoundHttpException('Entity not found');
         }
-   
+        $artworkTitle = $artwork->getTitle();
+
         $entityManager->flush();
 
-        $this->addFlash('success', 'Artwork delete succeed');
+        $this->addFlash('success', 'Artwork '.$artworkTitle.' delete succeed');
         return $this->redirectToRoute('admin_gallery');
     }
+    /**
+    * @Route("/gallery/edit/{id}/{entity}", name="edit_artwork", methods= {"GET", "POST"})
+    */
+    public function editArtwork(Request $request, Scene1Repository $repoG1, SceneD1Repository $repoD1, EntityManagerInterface $entityManager, $id, $entity) : Response
+    {       
+        
+        if($entity === 'Scene1'){
+            $artwork = $repoG1-> find($id);
+            $form = $this->createForm(SaveArtworkG1Type::class, $artwork);
+
+        } elseif ($entity === 'SceneD1'){
+            $artwork = $repoD1->find($id);
+            $form = $this->createForm(SaveArtworkD1Type::class, $artwork);
+
+        } else { 
+            throw new NotFoundHttpException('Entity not found');
+        }
+            
+            $form -> handleRequest($request);
+
+            if ($form->isSubmitted() && $form->isValid()) {
+
+                $entityManager -> persist($artwork);
+                $entityManager -> flush();
+                $artworkTitle = $artwork->getTitle();
+                $this ->addFlash('success', 'Artwork '.$artworkTitle.' edit succeed');
+
+                return $this->redirectToRoute('admin_gallery');
+            }
+
+            return $this->render('user/editArtwork.html.twig', [
+                'artwork' => $artwork,
+                'form' => $form->createView(),
+            ]);
+    } 
 }

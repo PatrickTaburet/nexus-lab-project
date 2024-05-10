@@ -13,6 +13,11 @@
             {{message}}
         </div>      
 {% endfor %}
+{% for message in app.flashes('error')%}
+    <div class="warningFlashMessages">
+        {{message}}
+    </div>      
+{% endfor %}
     <h1 class="text-center mb-4 mt-4">Artworks list</h1>
 
     <div class="tableContainer">
@@ -39,14 +44,14 @@
                     <td>{{artwork.comment}}</td>
                     <td>{{artwork.updatedAt|date('F j, Y, g:i a')}}</td>
                     <td>
-                        <a href="{{path('admin_edit_user', {'id' : artwork.id}) }}" class="customButton">Edit</a>
-
                     {# Check which entity this artwork comes from to be sure to delete only one #}
                     {% set entityName = artwork|class_name|split('\\')|last %} 
-
+    
                     {% if entityName == 'Scene1' %}
+                        <a href="{{path('admin_edit_artwork', {'id' : artwork.id, 'entity': "Scene1"}) }}" class="customButton">Edit</a>
                         <a href="{{path('admin_delete_artwork', {'id' : artwork.id, 'entity': "Scene1"}) }}" class="customButton">Delete</a>
                     {% elseif entityName == 'SceneD1' %}
+                        <a href="{{path('admin_edit_artwork', {'id' : artwork.id, 'entity': "SceneD1"}) }}" class="customButton">Edit</a>
                         <a href="{{path('admin_delete_artwork', {'id' : artwork.id, 'entity': "SceneD1"}) }}" class="customButton">Delete</a>
                     {% endif %} 
                     </td> 
