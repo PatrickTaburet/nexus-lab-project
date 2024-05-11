@@ -5,7 +5,9 @@ namespace App\Entity;
 use DateTimeImmutable;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\Scene1Repository;
+use Doctrine\Common\Collections\Collection;
 use Symfony\Component\HttpFoundation\File\File;
+use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
@@ -106,10 +108,19 @@ class Scene1
     */
     private $updatedAt;
 
-
+    /**
+     * @ORM\ManyToMany(targetEntity=User::class)
+     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinTable("user_artwork_like")
+     */
+    private $likes;
 
 //-------------------------------------------------------------------------------------------
 
+    public function __construct()
+    {
+        $this->likes = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -224,6 +235,7 @@ class Scene1
         return $this;
     }
 
+
    // ---------- Vich Uploader - Screen Artwork ---------- //
 
 
@@ -296,5 +308,34 @@ class Scene1
         $this->comment = $comment;
 
         return $this;
+    }
+
+    // Likes settings
+
+    /**
+     * @return Collection<int, likes>
+     */
+    public function getLikes(): Collection
+    {
+        return $this->likes;
+    }
+    public function addLike(User $like): self 
+    {
+        if (!$this->likes->contains($like)){
+            $this->likes[] = $like;
+        }
+        return $this;
+    }
+
+    public function removeLike(User $like): self
+    {
+        $this->likes->removeElement($like);
+
+        return $this;
+    }
+
+    public function isLikedByUser(User $user): bool
+    {
+        return $this->likes->contains($user);
     }
 }

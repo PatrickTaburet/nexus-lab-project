@@ -11,9 +11,19 @@
 
 <div class="mainContainer">
     <h1>Welcome to the member's artwork gallery</h1>
+
     <div class="cardsContainer">
          {% for scene in scenes %}
             <div class="card">
+             <div {{ react_component('Like', {"props": {
+                "user" : app.user,
+                "userId": scene.user.id,
+                "sceneId": scene.id,
+                "likes": scene.likes|length,
+                "entity": "Scene1",
+                "isLikedByUser": app.user in scene.likes ? true : false 
+                }}) }}>
+            </div>
                 <p>{{ scene.title }}</p>
                 <img style="max-width: 400px" src="{{ vich_uploader_asset(scene, 'imageFile') }}" alt="{{ scene.user.pseudo }}">
                 <div>{{ scene.comment }}</div>

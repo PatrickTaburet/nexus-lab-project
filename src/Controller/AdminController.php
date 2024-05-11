@@ -40,6 +40,7 @@ class AdminController extends AbstractController
     */
     public function usersList(UserRepository $users, PaginatorInterface $paginator, Request $request): Response
     {
+        // IMPLEMENTER LA LOGIQUE DE TRI (en fonction des like) ET DE PAGINATION
         $data = $users->findAll();
         $allUsers = $paginator->paginate(
             $data,

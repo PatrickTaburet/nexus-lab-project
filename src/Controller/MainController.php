@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Repository\Scene1Repository;
 use App\Repository\SceneD1Repository;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -22,7 +23,7 @@ class MainController extends AbstractController
      /**
      * @Route("/gallery", name="gallery")
      */
-    public function gallery(Scene1Repository $repo, SceneD1Repository $repo2): Response
+    public function gallery(Scene1Repository $repo, PaginatorInterface $paginator, SceneD1Repository $repo2): Response
     {
         $scenes = $repo -> findAll(); 
         $scenes2= $repo2 -> findAll();
