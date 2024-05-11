@@ -271,7 +271,6 @@ document.querySelector("#sendDataButton")?.addEventListener('click', function ()
   });
   
 function sendData(){
-
     let randomness = randomSlider.value();
     let looping = checkboxLoop.checked() ? 1 : 0;
     let abstract = checkboxFlag.checked() ? 1 : 0;
@@ -391,6 +390,7 @@ function sendData(){
 
 
   function openModal(){
+    noLoop();
     document.body.style.overflow = "hidden"; // Desable scrolling
     modale.classList.remove("hidden");
     modale.classList.add("translate");
@@ -403,7 +403,7 @@ function sendData(){
     modaleBackground.classList.add("hidden");
   }
   if (buttonModale){
-    buttonModale.addEventListener("click",openModal);
+    buttonModale.addEventListener("click",openModal );
     closeButton.addEventListener("click",closeModal);
     modaleBackground.addEventListener("click", function(event) {
       if (event.target === modaleBackground) {

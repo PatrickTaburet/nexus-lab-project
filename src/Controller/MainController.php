@@ -2,11 +2,15 @@
 
 namespace App\Controller;
 
+use App\Form\SortArtworkType;
 use App\Repository\Scene1Repository;
 use App\Repository\SceneD1Repository;
 use Knp\Component\Pager\PaginatorInterface;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class MainController extends AbstractController
@@ -21,15 +25,44 @@ class MainController extends AbstractController
         ]);
     }
      /**
-     * @Route("/gallery", name="gallery")
+     * @Route("/gallery", name="gallery", methods= {"GET", "POST"})
      */
-    public function gallery(Scene1Repository $repo, PaginatorInterface $paginator, SceneD1Repository $repo2): Response
+    public function gallery(Request $request, Scene1Repository $repo, PaginatorInterface $paginator, SceneD1Repository $repo2): Response
     {
-        $scenes = $repo -> findAll(); 
-        $scenes2= $repo2 -> findAll();
+        $sceneG1 = $repo -> findAll(); 
+        $scenesD1= $repo2 -> findAll();
+        $allScenes = array_merge($sceneG1, $scenesD1);
+
+        $form = $this->createForm(SortArtworkType::class);
+        $form->handleRequest($request);
+        usort($allScenes, function($a, $b) {
+            return ($b->getUpdatedAt() <=> $a->getUpdatedAt());
+        });
+    // Sort artworks according to the choice of the form (date or likes)
+
+        if ($form->isSubmitted() && $form->isValid()) { 
+
+            $sort = $form->get('sortSelect')->getData();
+            if ($sort == 'likes') {
+                usort($allScenes, function($a, $b) {
+                    return ($b->getLikes()->count() <=> $a->getLikes()->count());
+                });
+            } elseif ($sort == 'date') {
+                usort($allScenes, function($a, $b) {
+                    return ($b->getUpdatedAt() <=> $a->getUpdatedAt());
+                });
+            }
+            
+            return $this->render('main/gallery.html.twig', [
+                'scenes' => $allScenes,
+                'form' => $form->createView(),
+            ]);   
+        }
+     
+
         return $this->render('main/gallery.html.twig', [
-            'scenes' => $scenes,
-            'scenes2'=>$scenes2
+            'scenes' => $allScenes,
+            'form' => $form->createView(),
         ]);   
     }
     /**

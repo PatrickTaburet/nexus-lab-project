@@ -5,8 +5,10 @@ import styles from "/assets/styles/Like.module.css?module";
 export default function Like({ props }) {
   const [isLiked, setIsLiked] = useState(props.isLikedByUser);
   const [likes, setLikes] = useState(props.likes)
+  
   const handleLike = async () => {
     if (props.user){
+      
       setIsLiked(!isLiked);
 
       const response = await fetch(`/like/artwork/${props.sceneId}/${props.entity}`, {

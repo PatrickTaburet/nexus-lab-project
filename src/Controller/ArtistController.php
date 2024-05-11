@@ -11,7 +11,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 /**
-* @Route("/artist")
+* @Route("/artist"), name="artist_"
 */
 class ArtistController extends AbstractController
 {
@@ -66,5 +66,13 @@ class ArtistController extends AbstractController
             'form' => $form->createView(),
         ]);
     }
-
+    /**
+     * @Route("/dashboard", name="artistDashboard")
+     */
+    public function artistDashboard(): Response
+    {
+        return $this->render('artist/myScenes.html.twig', [
+            'controller_name' => 'MainController',
+        ]);
+    }
 }

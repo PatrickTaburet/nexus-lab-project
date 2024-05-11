@@ -90,6 +90,13 @@ class Scene1
      */
     private $user;
 
+     /**
+     * @ORM\ManyToMany(targetEntity=User::class)
+     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinTable("user_G1artwork_like")
+     */
+    private $likes;
+
     // --------- VICH UPLOADER-----------------
 
     /**
@@ -108,12 +115,7 @@ class Scene1
     */
     private $updatedAt;
 
-    /**
-     * @ORM\ManyToMany(targetEntity=User::class)
-     * @ORM\JoinColumn(nullable=false)
-     * @ORM\JoinTable("user_artwork_like")
-     */
-    private $likes;
+   
 
 //-------------------------------------------------------------------------------------------
 

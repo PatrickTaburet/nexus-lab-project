@@ -32,10 +32,11 @@ export default function Navbar ({props}) {
     const handleButtonClick = () => {
       setModalOpen(!ModalOpen);
     }
-  // Display navbar buttons depend on the login status and role
+
+  // Display navbar & modale buttons depend on the login status and role
     
     let loginButtons = null
-    if (props.user && (props.role === "ROLE_ADMIN")){
+    if (props.user && (props.role.includes("ROLE_ADMIN"))){
       loginButtons = 
         (<div className={`${styles.rightSide}`}>
           <MyButton to="/logout">Log out</MyButton>
@@ -49,17 +50,10 @@ export default function Navbar ({props}) {
         <MyButton handleClick={()=> toggleModal()} >Profile</MyButton>
       </div>) 
     } 
-    // else {
-    //   loginButtons = 
-    //     (<div className={`${styles.rightSide}`}>
-    //       <MyButton to="/login">Login</MyButton>
-    //       <MyButton to="/register">Sign in</MyButton>
-    //     </div>);
-    // }
     
-    const modaleButtons = (props.role === "ROLE_ARTIST")? 
+    const modaleButtons = (props.user && props.role.includes("ROLE_ARTIST"))? 
       (<div className={`${modStyles.modaleRowButtons}`}>
-        <MyButton myStyle="whiteButton" to="">Artist Dashboard</MyButton>
+        <MyButton myStyle="whiteButton" to="/artist/dashboard">Artist Dashboard</MyButton>
       </div> ) :
       (<div className={`${modStyles.modaleRowButtons}`}>
         <MyButton myStyle="whiteButton" to="/profile/roleRequest">Ask for Artist Role</MyButton>
@@ -74,7 +68,8 @@ export default function Navbar ({props}) {
         <MyButton to="/register">Sign up</MyButton>
       </div>);
 
-
+    // Navbar
+    
     return (
       <div className="App">
         <header className="App-header">
@@ -128,7 +123,7 @@ export default function Navbar ({props}) {
             </div> 
             <hr />
             <div className={`${modStyles.modaleRow}`}>
-                Role : {props.role}
+                Role : {props.role[0] ? "USER" : ""}{props.role[1] ? " / ARTIST" : ""}{props.role[2] ? " / ADMIN" : ""}
             </div>
             <hr />
             <div className={`${modStyles.modaleRow}`}>

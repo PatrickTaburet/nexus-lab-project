@@ -254,6 +254,7 @@ function sendData(){
 
 
   function openModal(){
+    noLoop();
     document.body.style.overflow = "hidden"; // Desable scrolling
     modale.classList.remove("hidden");
     modale.classList.add("translate");
