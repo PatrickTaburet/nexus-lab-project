@@ -8,15 +8,15 @@
     gap: 1em;
 }
 .likedSvg{
-    width: 50px;
+    width: 40px;
 }
 .unlikedSvg{
-    width: 50px;
+    width: 40px;
 }
 svg:hover{
     cursor: pointer;
 }
 .numLikes{
-    font-size: 22px;
+    font-size: 18px;
     margin-top: 15px;
 }
