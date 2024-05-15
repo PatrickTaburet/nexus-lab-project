@@ -24,6 +24,9 @@ class SaveArtworkG1Type extends AbstractType
             ])
             ->add('comment', TextareaType::class, [
                 'label' => 'Comment',
+                'attr' => [
+                    'maxlength' => 255,
+                ],
             ])
             ->add('submit', SubmitType::class, [
                 'label' => 'Submit',

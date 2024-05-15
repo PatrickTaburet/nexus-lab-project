@@ -26,7 +26,7 @@
       {% else %}
       <div {{ react_component('MyButtonTwig', {"props": {
                   "myStyle":"",
-                  "to":"/profile/roleRequest",
+                  "to": app.user ? "/profile/roleRequest" : "/login",
                   "children" : "Ask for Artist Role"
           }}) }}>
     </div>

@@ -1,3 +1,9 @@
+
+
+html {
+    box-sizing: border-box;
+}
+
 body {
     display: flex;
     flex-direction: column;
@@ -104,3 +110,34 @@ footer {
     margin: 20px;
 
 }
+
+
+/* Pagination */
+
+.pagination{
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+    margin-bottom: 10px;
+  }
+  .pagination a {
+    display: inline-block;
+    padding: 5px 10px;
+    margin: 0 5px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    text-decoration: none;
+    color: #333;
+  }
+  .pagination a:hover {
+    background-color: #f5f5f5;
+  }
+  .pagination .current {
+    background-color: #337ab7;
+    color: #fff;
+    border-color: #337ab7;
+    font-weight: bold;
+    padding: 5px 10px;
+    margin: 0 5px;
+    border-radius: 5px;
+  }

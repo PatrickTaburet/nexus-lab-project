@@ -1,11 +1,22 @@
 .likeBox{
-    height: 100px;
+    height: 3em;
     width: 150px;
     background-color: "red";
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1em;
 }
 .likedSvg{
     width: 50px;
 }
 .unlikedSvg{
     width: 50px;
+}
+svg:hover{
+    cursor: pointer;
+}
+.numLikes{
+    font-size: 22px;
+    margin-top: 15px;
 }

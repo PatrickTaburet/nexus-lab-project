@@ -16,6 +16,7 @@
       <a ><div class="optionContainer customButton">Incoming</div></a>
   </div>
  <div class="bottomContainer">
+
     {% if (is_granted('ROLE_ARTIST')) %}
       <div {{ react_component('MyButtonTwig', {"props": {
                     "myStyle":"",
@@ -26,11 +27,12 @@
       {% else %}
       <div {{ react_component('MyButtonTwig', {"props": {
                   "myStyle":"",
-                  "to":"/profile/roleRequest",
+                  "to": app.user ? "/profile/roleRequest" : "/login",
                   "children" : "Ask for Artist Role"
           }}) }}>
     </div>
-    {% endif %}
+      
+ {% endif %}
   </div>
 
    

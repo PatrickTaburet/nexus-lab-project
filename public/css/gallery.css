@@ -1,14 +1,60 @@
+/* =========================
+Fonts
+=========================
+
+font-family: 'Outfit', sans-serif;
+
+*/ 
+
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600&display=swap');
+
+/* 
+========================
+Variables
+========================
+*/
+
+:root {
+    
+    font-size: 15px;
+    
+    /* Primary */
+    --var-soft-blue: hsl(215, 51%, 70%);
+    --var-cyan: hsl(178, 100%, 50%);
+    /* Neutral */
+    --var-main-darkest: hsl(217, 54%, 11%);
+    --var-card-dark: hsl(216, 50%, 16%);
+    --var-line-dark: hsl(215, 32%, 27%);
+    --var-lightest: white;
+
+    /* Fonts */
+
+    --var-heading: normal normal 600 1.5em/1.6em 'Outfit', sans-serif;
+
+    --var-small-heading: normal normal 400 1em/1em 'Outfit', sans-serif;
+    
+    --var-para: normal normal 300 1em/1.55em 'Outfit', sans-serif;
+}
+
 h1 {
     padding: 20px;
     font-size: 40px;
     text-align: center;
+    color: white;
 }
 
 .mainContainer{
     display: flex;
     flex-direction: column;
-    background-color: rgb(164, 246, 255);
+    background-color: var(--var-main-darkest);
 }
+
+/* 
+=======================
+Cards Setup
+=======================
+*/
+
 .cardsContainer{
     display: flex;
     flex-direction: row;
@@ -17,18 +63,179 @@ h1 {
 
 }
 .card{
-    display: flex;
+    /* display: flex;
     flex-direction: column ;
     align-items: center;
     width: 400px;
-    margin: 15px;
+    margin: 15px; */
+    width: 100%;
+    max-width: 400px;
+    margin: 2em auto;
+    background-color: var(--var-card-dark);
+    border-radius: 15px;
+    margin-bottom: 1rem;
+    padding: 2rem;
 }
-.card img{
-    width: 700px;
+.cardContent{
+  
 }
+.smallAvatar {
+    width: 3em;
+    height: 3em;
+    border-radius: 200px;
+    outline: 2px solid white;
+    margin-right: 1.4em;
+    border-radius: 50%;
+}
+
+span {
+    color: white;
+}
+.artworkImg{
+    width: 100%;
+    border-radius: 15px;
+    display: block;
+}
+
+.imgContainer{
+    position: relative;
+    display: block;
+    color: inherit;
+}
+
 .dataButton{
     margin-top: 20px;
 }
 .hidden{
     display: none;
 }
+.cardTitle{
+    font: var(--var-heading);
+    color: var(--var-lightest);
+    padding: 0.8em 0;
+}
+.commentBox{
+    font: var(--var-para);
+    color: var(--var-soft-blue);
+    word-wrap: break-word;
+    max-height: 80px;
+    overflow: hidden;
+    transition: max-height 0.3s;
+}
+.commentBox:hover{
+    max-height: 200px;
+    overflow: auto;
+}
+p {
+    font: var(--var-para);
+    color: var(--var-soft-blue);
+}
+.cardAttribute{
+    margin-top: 0.5em;
+    padding-bottom: 0.5em;
+    padding-top: 1.5em;
+    border-top: 2px solid var(--var-line-dark);
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+.userInfo{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+}
+.cardBottom{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: right;
+}
+/* Image details */
+
+img.eye {
+    position: absolute;
+    width: 100%;
+    max-width: 2em;
+    top: 44%;
+    left: 43%;
+}
+@media (min-width:400px) {
+    img.eye {
+      max-width: 3em;
+  }
+}
+
+.imgContainer::after {
+    content: '';
+    background-image: url("https://i.postimg.cc/9MtT4GZY/view.png");
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: 5rem;
+    background-color: hsla(178, 100%, 50%, 0.3);
+    width: 100%;
+    height: 100%;
+    border-radius: 1rem;
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: block;
+    z-index: 2;
+    opacity: 0;
+    transition: opacity 0.3s ease-out;
+}
+.imgContainer:hover::after {
+    opacity: 1;
+  }
+
+  @media (min-width:600px) {
+    body {
+        font-size: 18px;
+    }
+}
+
+/* Open with parameters slide button */
+
+
+.studio-button {
+    bottom: 16px;
+    right: 16px;
+    display: flex;
+    align-items: center;
+    background: #68009d;
+    color: white;
+    padding: 8px 10px;
+    border-radius: 50px;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25);
+    transition: 0.35s ease all;
+    overflow: hidden;
+    max-width: 42px; /* icon size */
+    margin-top: 10px;
+  }
+  
+  .studio-button-icon {
+    position: relative;
+    top: 1px;
+  }
+  
+  .studio-button-label {
+    text-transform: uppercase;
+    font-size: 15px;
+    white-space: nowrap;
+    padding: 0 8px;
+    opacity: 0;
+    transform: translateX(10px);
+    transition: 0.25s ease all;
+  }
+  
+  .card:hover {
+    .studio-button {
+      max-width: 100%;
+    }
+    .studio-button-label {
+      opacity: 1;
+      transform: translateX(0);
+      transition: 0.25s 0.1s ease-in opacity, 0.15s 0.1s cubic-bezier(.175, .885, .32, 1.275) transform;
+    }
+  }
+  

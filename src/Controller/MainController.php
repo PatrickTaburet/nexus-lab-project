@@ -35,11 +35,13 @@ class MainController extends AbstractController
 
         $form = $this->createForm(SortArtworkType::class);
         $form->handleRequest($request);
+
+    // Sort works by date
         usort($allScenes, function($a, $b) {
             return ($b->getUpdatedAt() <=> $a->getUpdatedAt());
         });
-    // Sort artworks according to the choice of the form (date or likes)
 
+    // Sort artworks according to the choice of the form (date or likes)
         if ($form->isSubmitted() && $form->isValid()) { 
 
             $sort = $form->get('sortSelect')->getData();
@@ -58,13 +60,19 @@ class MainController extends AbstractController
                 'form' => $form->createView(),
             ]);   
         }
-     
+
+        $scenes = $paginator->paginate(
+            $allScenes,
+            $request->query->getInt('page', 1), /*page number*/
+            15 /*limit per page*/
+        );
 
         return $this->render('main/gallery.html.twig', [
-            'scenes' => $allScenes,
+            'scenes' => $scenes,
             'form' => $form->createView(),
         ]);   
     }
+    
     /**
     * @Route("/create", name="create")
     */

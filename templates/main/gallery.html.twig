@@ -11,99 +11,83 @@
 
 <div class="mainContainer">
     <h1>Welcome to the member's artwork gallery</h1>
+
+    {# Sorting filters form : Form submission managed in js when user change the choiceType value #}
     {{ form_start(form) }}
-          
           <div class="form-group">
             {{ form_label(form.sortSelect)}}
-            {{ form_widget(form.sortSelect, { "attr": {"class" : "form-control" } }) }}
+            {{ form_widget(form.sortSelect, { "attr": {"class" : "formOptions" } }) }} 
         </div>
-          <div class="form-group">
-            {{ form_label(form.submit)}}
-            {{ form_widget(form.submit, { "attr": {"class" : "form-control" } }) }}
-        </div>
-    {{ form_end(form) }}
+    {{ form_end(form) }} 
+
     <div class="cardsContainer">
     {% for scene in scenes %}
-        {% set entityName = scene|class_name|split('\\')|last %} 
+    
+        {% set entityName = scene|class_name|split('\\')|last %}  {# Extract entity name from scene object #}
        
+       {# CARD #}
+
         <div class="card">
-             <div {{ react_component('Like', {"props": {
-                "user" : app.user,
-                "userId": scene.user.id,
-                "sceneId": scene.id,
-                "likes": scene.likes|length,
-                "entity": entityName,
-                "isLikedByUser": app.user in scene.likes ? true : false 
-                }}) }}>
-            </div>
-            <p>{{scene.updatedAt|date('F j, Y, g:i a')}}</p>
-            <p>{{ scene.title }}</p>
-            <img style="max-width: 400px" src="{{ vich_uploader_asset(scene, 'imageFile') }}" alt="{{ scene.user.pseudo }}">
-            <div>{{ scene.comment }}</div>
-            <p>By {{ scene.user.pseudo }}</p>
-            <button class="customButton dataButton"><a href="{{ path('newScene', {'id': scene.id})}}"> Open scene with last parameters</a> </button>
-        </div>
-
-        {# <div class="card">
-            <div {{ react_component('Like', {"props": {
-                "user" : app.user,
-                "userId": scene.user.id,
-                "sceneId": scene.id,
-                "likes": scene.likes|length,
-                "entity": entityName,
-                "isLikedByUser": app.user in scene.likes ? true : false 
-                }}) }}>
-            </div>
-            <p>{{ scene.title }}</p>
-            <img style="max-width: 400px" src="{{ vich_uploader_asset(scene, 'imageFile') }}" alt="{{ scene.user.pseudo }}">
-            <div>{{ scene.comment }}</div>
-            <p>By {{ scene.user.pseudo }}</p>
-            <button class="customButton dataButton"><a href="{{ path('newSceneD1', {'id': scene.id})}}">Open scene with last parameters</a> </button>
-        </div> #}
-
-     {% endfor %}
-         {# 
-         {% for scene in scenes %}
-            <div class="card">
-             <div {{ react_component('Like', {"props": {
-                "user" : app.user,
-                "userId": scene.user.id,
-                "sceneId": scene.id,
-                "likes": scene.likes|length,
-                "entity": "Scene1",
-                "isLikedByUser": app.user in scene.likes ? true : false 
-                }}) }}>
-            </div>
-                <p>{{ scene.title }}</p>
-                <img style="max-width: 400px" src="{{ vich_uploader_asset(scene, 'imageFile') }}" alt="{{ scene.user.pseudo }}">
-                <div>{{ scene.comment }}</div>
-                <p>By {{ scene.user.pseudo }}</p>
-                <button class="customButton dataButton"><a href="{{ path('newScene', {'id': scene.id})}}"> Open scene with last parameters</a> </button>
-            </div>
-        {% endfor %}
-
-         {% for scene in scenes2 %}
-            <div class="card">
-               <div {{ react_component('Like', {"props": {
-                    "user" : app.user,
-                    "userId": scene.user.id,
-                    "sceneId": scene.id,
-                    "likes": scene.likes|length,
-                    "entity": "SceneD1",
-                    "isLikedByUser": app.user in scene.likes ? true : false 
-                    }}) }}>
+            <a href="/" class="imgContainer">
+                <img style="max-width: 400px" src="{{ vich_uploader_asset(scene, 'imageFile') }}" alt="{{ scene.user.pseudo }}" class="artworkImg">
+            </a>
+            <div class="cardContent">
+                <p class="cardTitle">{{ scene.title }}</p>
+                <div class="commentBox">{{ scene.comment }}</div>
+                <div class="cardAttribute">
+                    <img src="{{ vich_uploader_asset(scene.user, 'imageFile') }}" alt="avatar" class="smallAvatar"/>
+                    <div class="userInfo">
+                       <p>Creation of <span><a href="#">{{ scene.user.pseudo }}</a></span></p>
+                        <p>{{scene.updatedAt|date('F j, Y, g:i a')}}</p>
+                    </div>
+                 
                 </div>
-                <p>{{ scene.title }}</p>
-                <img style="max-width: 400px" src="{{ vich_uploader_asset(scene, 'imageFile') }}" alt="{{ scene.user.pseudo }}">
-                <div>{{ scene.comment }}</div>
-                <p>By {{ scene.user.pseudo }}</p>
-                <button class="customButton dataButton"><a href="{{ path('newSceneD1', {'id': scene.id})}}">Open scene with last parameters</a> </button>
+                <div class="cardBottom">
+                    
+                    <div {{ react_component('Like', {"props": {
+                        "user" : app.user,
+                        "userId": scene.user.id,
+                        "sceneId": scene.id,
+                        "likes": scene.likes|length,
+                        "entity": entityName,
+                        "isLikedByUser": app.user in scene.likes ? true : false 
+                        }}) }}>
+                    </div>
+                </div>
+                {% if entityName == "Scene1" %}
+                <a href="{{ path('newScene', {'id': scene.id})}}">
+                    <div class="studio-button">
+                        <div class="studio-button-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle></svg>
+                        </div>
+                        <div class="studio-button-label">
+                            Open scene with last parameters
+                        </div>
+                    </div>
+                </a>
+                {% elseif entityName == "SceneD1" %}
+                <a href="{{ path('newSceneD1', {'id': scene.id})}}">
+                    <div class="studio-button">
+                        <div class="studio-button-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle></svg>
+                        </div>
+                        <div class="studio-button-label">
+                            Open scene with last parameters
+                        </div>
+                    </div>
+                </a>
+                {% endif %}
             </div>
-        {% endfor %} #}
+        </div>
+     {% endfor %}
     </div>
-   
+    
+    {# pagination #}
 
-
+    <div class="pagination navigation">
+        {{knp_pagination_render(scenes)}}
+    </div>
 </div>
+<script src="{{ asset('js/sortingOptions.js') }}"></script>
 
 {% endblock %}

@@ -14,14 +14,13 @@ class SortArtworkType extends AbstractType
     {
         $builder
         ->add('sortSelect', ChoiceType::class, [
+            'label' => 'Sort by ',
             'choices' => [
                 'Date' => 'date',
                 'Likes' => 'likes',
             ],
         ])
-        ->add('submit', SubmitType::class, [
-            'label' => 'Apply',
-        ])
+   
         ;
     }
 
@@ -29,6 +28,9 @@ class SortArtworkType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => null,
+            'attr' => [
+                'id' => 'selectForm',
+            ],
         ]);
     }
 }
