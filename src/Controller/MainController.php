@@ -54,9 +54,13 @@ class MainController extends AbstractController
                     return ($b->getUpdatedAt() <=> $a->getUpdatedAt());
                 });
             }
-            
+            $scenes = $paginator->paginate(
+                $allScenes,
+                $request->query->getInt('page', 1), /*page number*/
+                15 /*limit per page*/
+            );
             return $this->render('main/gallery.html.twig', [
-                'scenes' => $allScenes,
+                'scenes' => $scenes,
                 'form' => $form->createView(),
             ]);   
         }

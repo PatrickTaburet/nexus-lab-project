@@ -60,16 +60,12 @@ Cards Setup
     flex-direction: row;
     flex-wrap: wrap;
     justify-content: center;
+    margin: 0 25px 0 25px;
 
 }
 .card{
-    /* display: flex;
-    flex-direction: column ;
-    align-items: center;
-    width: 400px;
-    margin: 15px; */
-    width: 100%;
-    max-width: 400px;
+    min-width: 300px;
+    width: 350px;
     margin: 2em auto;
     background-color: var(--var-card-dark);
     border-radius: 15px;
@@ -195,9 +191,11 @@ img.eye {
 }
 
 /* Open with parameters slide button */
+.buttonBox{
+    
+}
 
-
-.studio-button {
+.slideButton {
     bottom: 16px;
     right: 16px;
     display: flex;
@@ -213,14 +211,14 @@ img.eye {
     margin-top: 10px;
   }
   
-  .studio-button-icon {
+  .slideButtonIcon {
     position: relative;
     top: 1px;
   }
   
-  .studio-button-label {
+  .slideButtonLabel {
     text-transform: uppercase;
-    font-size: 15px;
+    font-size: 0.7em;
     white-space: nowrap;
     padding: 0 8px;
     opacity: 0;
@@ -229,10 +227,10 @@ img.eye {
   }
   
   .card:hover {
-    .studio-button {
+    .slideButton {
       max-width: 100%;
     }
-    .studio-button-label {
+    .slideButtonLabel {
       opacity: 1;
       transform: translateX(0);
       transition: 0.25s 0.1s ease-in opacity, 0.15s 0.1s cubic-bezier(.175, .885, .32, 1.275) transform;

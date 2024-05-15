@@ -20,7 +20,7 @@
         </div>
     {{ form_end(form) }} 
 
-    <div class="cardsContainer">
+    <div class="cardsContainer" id="gallery">
     {% for scene in scenes %}
     
         {% set entityName = scene|class_name|split('\\')|last %}  {# Extract entity name from scene object #}
@@ -28,8 +28,8 @@
        {# CARD #}
 
         <div class="card">
-            <a href="/" class="imgContainer">
-                <img style="max-width: 400px" src="{{ vich_uploader_asset(scene, 'imageFile') }}" alt="{{ scene.user.pseudo }}" class="artworkImg">
+             <a href="{{ vich_uploader_asset(scene, 'imageFile') }}" class="imgContainer" data-lightbox="gallery" data-title="{{ scene.title }}">
+                <img src="{{ vich_uploader_asset(scene, 'imageFile') }}" alt="{{ scene.user.pseudo }}" class="artworkImg">
             </a>
             <div class="cardContent">
                 <p class="cardTitle">{{ scene.title }}</p>
@@ -54,29 +54,31 @@
                         }}) }}>
                     </div>
                 </div>
-                {% if entityName == "Scene1" %}
-                <a href="{{ path('newScene', {'id': scene.id})}}">
-                    <div class="studio-button">
-                        <div class="studio-button-icon">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle></svg>
+                <div class="buttonBox">
+                    {% if entityName == "Scene1" %}
+                    <a href="{{ path('newScene', {'id': scene.id})}}">
+                        <div class="slideButton">
+                            <div class="slideButtonIcon">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle></svg>
+                            </div>
+                            <div class="slideButtonLabel">
+                                Open scene with last parameters
+                            </div>
                         </div>
-                        <div class="studio-button-label">
-                            Open scene with last parameters
+                    </a>
+                    {% elseif entityName == "SceneD1" %}
+                    <a href="{{ path('newSceneD1', {'id': scene.id})}}">
+                        <div class="slideButton">
+                            <div class="slideButtonIcon">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle></svg>
+                            </div>
+                            <div class="slideButtonLabel">
+                                Open scene with last parameters
+                            </div>
                         </div>
-                    </div>
-                </a>
-                {% elseif entityName == "SceneD1" %}
-                <a href="{{ path('newSceneD1', {'id': scene.id})}}">
-                    <div class="studio-button">
-                        <div class="studio-button-icon">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle></svg>
-                        </div>
-                        <div class="studio-button-label">
-                            Open scene with last parameters
-                        </div>
-                    </div>
-                </a>
-                {% endif %}
+                    </a>
+                    {% endif %}
+                </div>
             </div>
         </div>
      {% endfor %}
@@ -88,6 +90,21 @@
         {{knp_pagination_render(scenes)}}
     </div>
 </div>
-<script src="{{ asset('js/sortingOptions.js') }}"></script>
+{# <script src="{{ asset('js/sortingOptions.js') }}"></script> #}
+{# <script src="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.3/js/lightbox.min.js"></script> #}
 
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('js/sortingOptions.js') }}"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            lightbox.option({
+                'resizeDuration': 200,
+                'wrapAround': true,
+                'showImageNumberLabel': true,
+                'alwaysShowNavOnTouchDevices': true
+            });
+        });
+    </script>
+{% endblock %}
 {% endblock %}
