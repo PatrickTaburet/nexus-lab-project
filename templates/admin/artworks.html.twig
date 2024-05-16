@@ -41,8 +41,8 @@
                         {{artwork.user.email}}
                     </td>
                     <td>{{artwork.title}}</td>
-                    <td>{{artwork.comment}}</td>
-                    <td>{{artwork.updatedAt|date('F j, Y, g:i a')}}</td>
+                    <td class="commentTable">{{artwork.comment}}</td>
+                    <td class="dateTable">{{artwork.updatedAt|date('F j, Y, g:i a')}}</td>
                     <td>
                     {# Check which entity this artwork comes from to be sure to delete only one #}
                     {% set entityName = artwork|class_name|split('\\')|last %} 

@@ -42,7 +42,14 @@
                     <p>{{scene.updatedAt|date('F j, Y, g:i a')}}</p>
                 </div>
             </div>
-            <div class="cardBottom"> 
+            <div class="cardBottom">
+                <div class="sceneType">
+                    {% if entityName == "Scene1" %}
+                        <a href="{{ path('generativeHome')}}"><span class="generative">Generative Art</span></a>
+                    {% elseif entityName == "SceneD1" %}
+                        <a href="{{ path('dataArtHome')}}"><span class="data">Data Art</span></a>
+                    {% endif %}
+                </div>
                 <div {{ react_component('Like', {"props": {
                     "user" : app.user,
                     "userId": scene.user.id,

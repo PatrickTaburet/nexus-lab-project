@@ -48,8 +48,15 @@ td {
 	padding: 15px;
 	background-color: rgba(255,255,255,0.2);
 	color: #fff;
+  
 }
-
+.commentTable{
+    word-break: break-all;
+    min-width: 250px;
+}
+.dateTable{
+    min-width: 150px;
+}
 th {
 	text-align: left;
 }
@@ -71,4 +78,25 @@ background-color: rgba(255,255,255,0.3);
 .artworkImg{
     min-width: 150px;
     max-width: 250px;
+}
+@media screen and (max-width: 1300px) {
+    .table{
+        display: block;
+        overflow-x: auto;
+        white-space: nowrap;
+        min-width: 80%;
+    }
+    .commentTable{
+        word-wrap: break-word;
+        max-width: 150px;
+        overflow-y: auto;
+        white-space: wrap;
+    }
+    img{
+        width: 150px;
+    }
+    
+
+
+
 }
