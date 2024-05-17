@@ -50,8 +50,8 @@ class RegistrationFormType extends AbstractType
                 'invalid_message' => 'The password fields must match.',
                 'options' => ['attr' => ['class' => 'password-field m-2']],
                 'required' => true,
-                'first_options'  => ['label' => 'Password'],
-                'second_options' => ['label' => 'Repeat Password'],
+                'first_options'  => ['label' => 'Password', 'attr' => ['class' => 'passwordInput']],
+                'second_options' => ['label' => 'Repeat Password', 'attr' => ['class' => 'repeatPasswordInput']],
                 
                 'mapped' => false,
                 'attr' => ['autocomplete' => 'new-password'],
@@ -71,11 +71,18 @@ class RegistrationFormType extends AbstractType
                 'label' => 'User picture',
                 'allow_delete' => false, 
                 'download_link' => false,
+                'download_uri' => false,
+                'image_uri' => false,
                 'label_attr' => [
-                    'class' => 'form-label mt-3 '
+                    'class' => ' '
                 ],
                 'required' => false , // image is required only if the form is used for create
+                // 'image_preview' => [
+                //     'maxWidth' => '200', // Largeur maximale de prévisualisation en pixels
+                //     'maxHeight' => '150', // Hauteur maximale de prévisualisation en pixels
+                // ],
             ])
+            
             -> add('Submit', SubmitType::class, [
                 'label' => 'Register',
                 'attr' => [

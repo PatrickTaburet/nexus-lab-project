@@ -2,46 +2,55 @@
 
 {% block title %}Register{% endblock %}
 
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('css/register.css') }}">
+{% endblock %}
+
 {% block body %}
+<section> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> 
+  <div class="register"> 
+    <div class="content"> 
+      {% for message in app.flashes('warning')%}
+          <div class="warningFlashMessages">
+              {{message}}
+          </div>      
+      {% endfor %}
+      <h2>Register</h2>
 
-    {% for message in app.flashes('warning')%}
-        <div class="warningFlashMessages">
-            {{message}}
-        </div>      
-    {% endfor %}
-    <h1>Register</h1>
+      <div class="formUser form">
+          {{ form_start(registrationForm) }}
+            
+            <div class="inputBox">
+              {{ form_label(registrationForm.pseudo)}}
+              {{ form_widget(registrationForm.pseudo, { "attr": {"class" : "form-control" } }) }}
+            </div>
+            <div class="inputBox">
+              {{ form_label(registrationForm.email)}}
+              {{ form_widget(registrationForm.email, { "attr": {"class" : "form-control" } }) }}
+            </div>
+            <div>
+            <div class="inputBox">
+              {{ form_widget(registrationForm.plainPassword, { "attr": {"class" : "" } }) }}
+            </div>
+            <div class="vichImgContainer">
+              {{ form_label(registrationForm.imageFile) }}
+              {{ form_widget(registrationForm.imageFile, { "attr": {"class" : "imagePreview" } }) }}
+            </div>
+            <div class="links agreeTerms">        
+              {{ form_label(registrationForm.agreeTerms) }}
+              {{ form_widget(registrationForm.agreeTerms) }}
+            </div>
+            <div class="links">        
+              {{ form_label(registrationForm.Submit) }}
+              {{ form_widget(registrationForm.Submit, { "attr": {"class" : "submitBtn customButton " } }) }}
+              <a href="{{ path('home')}}"  class="customButton">Back</a>
+            </div>
 
-    <div class="formUser">
-        {{ form_start(registrationForm) }}
-          
-          <div class="form-group">
-            {{ form_label(registrationForm.pseudo)}}
-            {{ form_widget(registrationForm.pseudo, { "attr": {"class" : "form-control" } }) }}
-          </div>
-          <div class="form-group">
-            {{ form_label(registrationForm.email)}}
-            {{ form_widget(registrationForm.email, { "attr": {"class" : "form-control" } }) }}
-          </div>
-          <div>
-          <div class="form-group">
-            {{ form_widget(registrationForm.plainPassword, { "attr": {"class" : "form-control" } }) }}
-          </div>
-          <div class="imagePreview">
-            {{ form_label(registrationForm.imageFile) }}
-            {{ form_widget(registrationForm.imageFile, { "attr": {"class" : "form-control" } }) }}
-          </div>
-          <div class="buttonBox">        
-            {{ form_label(registrationForm.agreeTerms) }}
-            {{ form_widget(registrationForm.agreeTerms) }}
-          </div>
-          <div class="buttonBox">        
-            {{ form_label(registrationForm.Submit) }}
-            {{ form_widget(registrationForm.Submit) }}
-            <a href="{{ path('home')}}"  class="customButton">Back</a>
-          </div>
-
-        {{ form_end(registrationForm) }}
+          {{ form_end(registrationForm) }}
+        </div>
       </div>
     </div>
-
+  </div>
+</section> 
 {% endblock %}

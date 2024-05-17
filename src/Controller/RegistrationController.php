@@ -28,25 +28,43 @@ class RegistrationController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            // encode the plain password
+            // Check if user pseudo is already used.
+            $userName = $user->getPseudo();
+            $existingUserPseudo = $entityManager->getRepository(User::class)->findOneBy(['pseudo' => $userName]); 
+
+            if ($existingUserPseudo){
+                $this->addFlash('warning', 'Oops! Registration Error: This pseudo is already used.');
+                return $this->render('registration/register.html.twig', [
+                    'registrationForm' => $form->createView(),
+                ]);
+            }
+            // Encode the plain password
             $user->setPassword(
             $userPasswordHasher->hashPassword(
                     $user,
                     $form->get('plainPassword')->getData()
                 )
             );
-
+          
             $entityManager->persist($user);
             $entityManager->flush();
+            $user->removeFile(); // Delete the object file after persist to avoid serialize errors
+            $this->addFlash('success', 'Hi '.$userName . ' !  Welcome to the amazing world of generative coding art !'); 
 
             return $userAuthenticator->authenticateUser(
                 $user,
                 $authenticator,
                 $request
             );
-            // return $this->redirectToRoute('home');
-        } else {
-            if ($form->isSubmitted()) {
+
+        } else if ($form->isSubmitted()) {
+            // Check if user email is already used.
+            $email = $form->get('email')->getData(); 
+            $existingUserEmail = $entityManager->getRepository(User::class)->findOneBy(['email' => $email]); 
+
+            if ($existingUserEmail) {
+                $this->addFlash('warning', 'Oops! Registration Error: Email adress is already used.');
+            } else {
                 $this->addFlash('warning', 'Oops! Registration Error: Please check your information and try again.');
             }
         }

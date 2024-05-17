@@ -66,7 +66,7 @@ class UserController extends AbstractController
              
                 $entityManager->persist($user);
                 $entityManager->flush();
-                $user->removeFile(); // Delete the object file after persist to avoid errors
+                $user->removeFile(); // Delete the object file after persist to avoid serialize errors
                 $this ->addFlash('success', 'User informations successfully edited');
 
                 return $this->redirectToRoute('home');

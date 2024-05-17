@@ -23,14 +23,10 @@ class ArtistController extends AbstractController
         $sceneRequest = new AddScene(); 
 
         $form = $this->createForm(AddSceneType::class, $sceneRequest);
-
- 
-
         $form -> handleRequest($request); 
      
         if ( $form->isSubmitted() && $form->isValid()){
             /** @var UploadedFile $file */
-            // dd($otherLanguage);
             $file = $form->get('codeFile')->getData();
                 // Extract the file name and extension
             $fileName = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
