@@ -37,7 +37,13 @@ table {
 	box-shadow: 0 0 20px rgba(0,0,0,0.1);
     margin: 15px;
 }
-
+.commentTable{
+  word-break: break-all;
+  min-width: 250px;
+}
+.dateTable{
+  min-width: 150px;
+}
 th,
 td {
 	padding: 15px;
@@ -125,3 +131,25 @@ background-color: rgba(255,255,255,0.3);
     position: absolute;
     right: 20px;
   }
+
+  @media screen and (max-width: 1300px) {
+    .table{
+        display: block;
+        overflow-x: auto;
+        white-space: nowrap;
+        min-width: 80%;
+    }
+    .commentTable{
+        word-wrap: break-word;
+        max-width: 150px;
+        overflow-y: auto;
+        white-space: wrap;
+    }
+
+    img{
+        width: 150px;
+    }
+
+
+
+}

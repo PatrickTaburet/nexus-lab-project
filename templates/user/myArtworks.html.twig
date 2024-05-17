@@ -32,7 +32,7 @@
 <div class="tableContainer">
     <p>Generative Art</p>
 
-	<table>
+	<table class="table">
 		<thead>
 			<tr>
 			    <th scope="col">Picture</th>
@@ -48,8 +48,8 @@
             <tr>
                 <td><img class="artworkImg" src="{{ vich_uploader_asset(artwork, 'imageFile')}}" alt="artwork_picture"></td>
                 <td>{{artwork.title}}</td>
-                <td class="articleContent">{{artwork.comment}}</td>
-                <td>{{artwork.updatedAt|date('F j, Y, g:i a')}}</td>
+                <td class="commentTable">{{artwork.comment}}</td>
+                <td class="dateTable">{{artwork.updatedAt|date('F j, Y, g:i a')}}</td>
                 <td>
                     <a href="{{ path('editArtwork', {'id': artwork.id, 'entity': 'Scene1'})}}" class="customButton">Update</a>
                     <button 
@@ -66,7 +66,7 @@
 
     <p>Data Art</p>
 
-	<table>
+	<table class="table">
 		<thead>
 			<tr>
 			    <th scope="col">Picture</th>
@@ -82,8 +82,8 @@
             <tr>
                 <td><img class="artworkImg" src="{{ vich_uploader_asset(artwork, 'imageFile')}}" alt="artwork_picture"></td>
                 <td>{{artwork.title}}</td>
-                <td class="articleContent">{{artwork.comment}}</td>
-                <td>{{artwork.updatedAt|date('F j, Y, g:i a')}}</td>
+                <td class="commentTable">{{artwork.comment}}</td>
+                <td class="dateTable">{{artwork.updatedAt|date('F j, Y, g:i a')}}</td>
                 <td>
                     <a href="{{ path('editArtwork', {'id': artwork.id, 'entity': 'SceneD1'})}}" class="customButton">Update</a>
                     <button 

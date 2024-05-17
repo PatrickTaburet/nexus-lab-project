@@ -1,6 +1,18 @@
-img{
+.userImg{
+    width: 250px;
+    border-radius: 50%;
+    height: 250px;
+    object-fit: cover;
+    margin-bottom: 25px;
+}
+.artworkImg{
     width: 250px;
 }
+.imgContainer{
+    display: flex;
+    justify-content: center;
+}
+
 
 /* Table */
 
@@ -92,10 +104,13 @@ background-color: rgba(255,255,255,0.3);
         overflow-y: auto;
         white-space: wrap;
     }
-    img{
+    .userImg{
+        width: 150px;
+        height: 150px;
+    }
+    .artworkImg{
         width: 150px;
     }
-    
 
 
 

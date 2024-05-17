@@ -148,6 +148,7 @@ span {
     font: var(--var-heading);
     color: var(--var-lightest);
     padding: 0.8em 0;
+    word-wrap: break-word;
 }
 .commentBox{
     font: var(--var-para);
