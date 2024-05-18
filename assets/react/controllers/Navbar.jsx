@@ -79,13 +79,13 @@ export default function Navbar ({props}) {
               <a href='/' className={`${styles.logo}`}>LOGO</a>
               <ul className={`${styles.navMenu} ${isActive ? styles.active : ''}`}>
                 <li onClick={removeActive}>
-                  <a href='/gallery' className={`${styles.navLink}`}>Gallery</a>
+                  <a data-item= "Gallery" href='/gallery' className={`${styles.navLink}`}>Gallery</a>
                 </li>
                 <li onClick={removeActive}>
-                  <a href='/create' className={`${styles.navLink}`}>Create</a>
+                  <a data-item= "Create"  href='/create' className={`${styles.navLink}`}>Create</a>
                 </li>
                 <li onClick={removeActive}>
-                  <a href='#home' className={`${styles.navLink}`}>Community</a>
+                  <a data-item= "Community" href='#home' className={`${styles.navLink}`}>Community</a>
                 </li>
               </ul>
             </div>

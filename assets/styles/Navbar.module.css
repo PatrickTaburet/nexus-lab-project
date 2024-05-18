@@ -51,6 +51,38 @@ a {
     align-items: center;
     gap: 40px;
 }
+
+/* li hover animation */
+
+.navLink{
+    text-decoration: none;
+    color: #ffffff;
+    font-size: 20px;
+    font-weight: 500;
+    transition: all 0.5s ease-in-out;
+    position: relative;
+    text-transform: uppercase;
+}
+.navLink::before {
+      content: attr(data-item);
+      transition: 0.5s;
+      color: #8254ff;
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      width: 0;
+      overflow: hidden;
+    }
+.navLink:hover {
+    &::before {
+    width: 100%;
+    transition: all 0.5s ease-in-out;
+    }
+}
+
+
 /* Connextion space (Right Side of the Navbar) */
 
 .rightSide {
