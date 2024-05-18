@@ -60,7 +60,7 @@ section .signin
   position: absolute;
   width: 400px;
   background: #222;  
-  z-index: 1000;
+  z-index: 2;
   display: flex;
   justify-content: center;
   align-items: center;
