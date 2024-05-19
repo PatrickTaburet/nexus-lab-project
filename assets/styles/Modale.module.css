@@ -61,3 +61,20 @@
     padding: 10px;
 
 }
+.crossSvg{
+    width: 30px;
+     cursor: "pointer";
+     margin: 10px;
+     fill: black;
+     transition: fill 0.3s;
+}
+.crossSvg:hover, .crossSvg:hover path {
+    fill: rgb(154, 5, 229);
+    stroke: rgb(154, 5, 229);
+}
+.crossSvg path {
+    stroke: black;
+    stroke-width: 10;
+    transition: stroke 0.3s;
+  }
+  
