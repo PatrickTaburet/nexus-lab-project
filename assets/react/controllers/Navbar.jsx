@@ -1,25 +1,21 @@
 import React from 'react';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import styles from "/assets/styles/Navbar.module.css?module";
 import MyButton from './MyButton';
 import Modale from './Modale'
 import modStyles from "/assets/styles/Modale.module.css?module";
-
+import BurgerMenu from './BurgerMenu';
 
 
 export default function Navbar ({props}) {
 
   // Menu burger functions
+
   const [menuOpen, setMenuOpen] = useState(false);
-  //add the active class
+
   const handleBurgerClick  = () => {
     setMenuOpen(!menuOpen);
-      document.querySelector(`.${styles.menuBurger}`).classList.toggle(styles.hidden);
-      document.querySelector(`.${styles.menuBurger}`).classList.add(styles.visible);
-      document.querySelector(`.${styles.menuBurger}`).classList.add(styles.menuOpen);
-
-    document.body.classList.toggle(styles.noScroll); //empecher scroll
-   
+      document.body.classList.toggle(styles.noScroll); // empêcher le scroll   
   };
  
 
@@ -102,114 +98,8 @@ export default function Navbar ({props}) {
           </nav>
 
       {/*----------- Menu Burger --------*/}
-
-          <div className={`${styles.menuBurger} ${styles.hidden}`}>
-            <div className={`${styles.hexagonItem}`}>
-                <div className={`${styles.hexItem}`}>
-                    <div></div>
-                    <div></div>
-                    <div></div>
-                </div>
-                <div className={`${styles.hexItem}`}>
-                    <div></div>
-                    <div></div>
-                    <div></div>
-                </div>
-                <a  className={`${styles.hexContent}`}>
-                    <span className={`${styles.hexContentInner}`}>
-                        <span className={`${styles.icon}`}>
-                            <i className={`${styles.fa} ${styles.faUniversalAccess}`}></i>
-                        </span>
-                        <span className={`${styles.title}`}>Gallery</span>
-                    </span>
-                    <svg viewBox="0 0 173.20508075688772 200" height="200" width="174" version="1.1" xmlns="http://www.w3.org/2000/svg"><path d="M86.60254037844386 0L173.20508075688772 50L173.20508075688772 150L86.60254037844386 200L0 150L0 50Z" fill="#1e2530"></path></svg>
-                </a>
-            </div>
-            <div className={`${styles.hexagonItem}`}>
-                <div className={`${styles.hexItem}`}>
-                    <div></div>
-                    <div></div>
-                    <div></div>
-                </div>
-                <div className={`${styles.hexItem}`}>
-                    <div></div>
-                    <div></div>
-                    <div></div>
-                </div>
-                <a  className={`${styles.hexContent}`}>
-                    <span className={`${styles.hexContentInner}`}>
-                        <span className={`${styles.icon}`}>
-                            <i className={`${styles.fa} ${styles.faBullseye}`}></i>
-                        </span>
-                        <span className={`${styles.title}`}>Create</span>
-                    </span>
-                    <svg viewBox="0 0 173.20508075688772 200" height="200" width="174" version="1.1" xmlns="http://www.w3.org/2000/svg"><path d="M86.60254037844386 0L173.20508075688772 50L173.20508075688772 150L86.60254037844386 200L0 150L0 50Z" fill="#1e2530"></path></svg>
-                </a>
-            </div>
-            <div className={`${styles.hexagonItem}`}>
-                <div className={`${styles.hexItem}`}>
-                    <div></div>
-                    <div></div>
-                    <div></div>
-                </div>
-                <div className={`${styles.hexItem}`}>
-                    <div></div>
-                    <div></div>
-                    <div></div>
-                </div>
-                <a className={`${styles.hexContent}`}>
-                    <span className={`${styles.hexContentInner}`}>
-                        <span className={`${styles.icon}`}>
-                            <i className={`${styles.fa} ${styles.faBraille}`}></i>
-                        </span>
-                        <span className={`${styles.title}`}>Community</span>
-                    </span>
-                    <svg viewBox="0 0 173.20508075688772 200" height="200" width="174" version="1.1" xmlns="http://www.w3.org/2000/svg"><path d="M86.60254037844386 0L173.20508075688772 50L173.20508075688772 150L86.60254037844386 200L0 150L0 50Z" fill="#1e2530"></path></svg>
-                </a>    
-            </div>
-            <div className={`${styles.hexagonItem}`}>
-                <div className={`${styles.hexItem}`}>
-                    <div></div>
-                    <div></div>
-                    <div></div>
-                </div>
-                <div className={`${styles.hexItem}`}>
-                    <div></div>
-                    <div></div>
-                    <div></div>
-                </div>
-                <a  className={`${styles.hexContent}`}>
-                    <span className={`${styles.hexContentInner}`}>
-                        <span className={`${styles.icon}`}>
-                            <i className={`${styles.fa} ${styles.faIdBadge}`}></i>
-                        </span>
-                        <span className={`${styles.title}`}>Home</span>
-                    </span>
-                    <svg viewBox="0 0 173.20508075688772 200" height="200" width="174" version="1.1" xmlns="http://www.w3.org/2000/svg"><path d="M86.60254037844386 0L173.20508075688772 50L173.20508075688772 150L86.60254037844386 200L0 150L0 50Z" fill="#1e2530"></path></svg>
-                </a>
-            </div>            
-            <div className={`${styles.hexagonItem}`}>
-                <div className={`${styles.hexItem}`}>
-                    <div></div>
-                    <div></div>
-                    <div></div>
-                </div>
-                <div className={`${styles.hexItem}`}>
-                    <div></div>
-                    <div></div>
-                    <div></div>
-                </div>
-                <a  className={`${styles.hexContent}`}>
-                    <span className={`${styles.hexContentInner}`}>
-                        <span className={`${styles.icon}`}>
-                            <i className={`${styles.fa } ${styles.faMapSigns}`}></i>
-                        </span>
-                        <span className={`${styles.title}`}>Contact</span>
-                    </span>
-                    <svg viewBox="0 0 173.20508075688772 200" height="200" width="174" version="1.1" xmlns="http://www.w3.org/2000/svg"><path d="M86.60254037844386 0L173.20508075688772 50L173.20508075688772 150L86.60254037844386 200L0 150L0 50Z" fill="#1e2530"></path></svg>
-                </a>
-            </div>
-          </div>
+        <BurgerMenu isOpen={menuOpen} ></BurgerMenu>
+         
         </header>
 
         {/* Profile Modale */}
