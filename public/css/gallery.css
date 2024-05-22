@@ -197,12 +197,13 @@ p {
     margin-top: 6px;
 }
 .generative{
-    background-color: rgb(247, 0, 255);
+    background-color: var(--var-primary-dark);
     padding: 7px;
     border-radius: 10px;
 }
 .data{
-    background-color: rgb(0, 13, 255);
+    background-color: rgb(247, 0, 255);
+  
     padding: 7px;
     border-radius: 10px;
 }

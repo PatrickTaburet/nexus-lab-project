@@ -33,7 +33,7 @@ let resetButton;
 
 function setup() {
   
-  const squareSize = min(windowWidth, windowHeight);
+  const squareSize = min(windowWidth-110, windowHeight-110);
   const canvas = createCanvas(squareSize, squareSize);
   canvas.parent('sketch');
   colorMode(HSB);
@@ -235,13 +235,14 @@ function sendData(){
 
     const min = range.min || 0;
     const max =  range.max || 100;
-
+    
     const offset = Number(((val - min) * 100) / (max - min));
 
     bubble.textContent = val;
 
     // yes, 14px is a magic number
     bubble.style.left = `calc(${offset}% - 14px)`;
+    
   }
 
   // --------- Modale : save artwork ---------

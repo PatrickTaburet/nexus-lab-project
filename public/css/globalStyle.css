@@ -16,9 +16,27 @@ body {
 
 main {
     height: 100%;
-    margin-top: 70px;
+    margin-top: 60px;
     flex: 1; /* Permet au contenu principal de s'étendre pour remplir l'espace disponible restant */
 }
+
+
+/* --------------- Variables ------------------*/
+
+:root {
+    --var-main-bg: #363159;
+    --var-secondary-bg: #202026;
+    --var-main-fg: #eee;
+    
+    --var-primary: #05C7F2;
+    --var-primary-dark: #05AFF2;
+    --var-secondary: #D63BD9;
+    --var-secondary-dark: #7B6CD9;
+    
+    --var-notchSize: 40px;
+    }
+
+
 
 
 /* --------------- Flash messages ------------------*/

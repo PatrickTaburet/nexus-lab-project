@@ -2,12 +2,12 @@ import React, { forwardRef } from 'react';
 import styles from "/assets/styles/BurgerMenu.module.css?module";
 
 
-const BurgerMenu = forwardRef(({ isOpen }) => {
+const BurgerMenu = forwardRef(({ isOpen }, ref) => {
 
   // const burgerRef = React.createRef();
 
   return (
-    <div className={`${styles.menuBurger} ${isOpen ? `${styles.visible} ${styles.menuOpen}` : styles.hidden}`}>
+    <div ref={ref} className={`${styles.menuBurger} ${isOpen ? `${styles.visible} ${styles.menuOpen}` : styles.hidden}`}>
       
             <div className={`${styles.hexagonItem}`}>
                 <div className={`${styles.hexItem}`}>
