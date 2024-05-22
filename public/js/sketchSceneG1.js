@@ -36,6 +36,7 @@ function setup() {
   const squareSize = min(windowWidth-110, windowHeight-110);
   const canvas = createCanvas(squareSize, squareSize);
   canvas.parent('sketch');
+  canvas.id('myCanvas');
   colorMode(HSB);
   background(0,0,0);
 
@@ -171,7 +172,7 @@ function sendData(){
     // Capture image of the canva
 
     // Capture l'image du canva dans un format base64
-    const myCanvas = document.getElementById("defaultCanvas0");
+    const myCanvas = document.getElementById("myCanvas");
     const imageBase64 = myCanvas.toDataURL();
     // const imageBase64 = canvas.elt.toDataURL();
 
