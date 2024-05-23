@@ -87,7 +87,7 @@ function draw(){
 
 
 function windowResized() {
-  const squareSize = min(windowWidth, windowHeight);
+  const squareSize = min(windowWidth-110, windowHeight-110);
   const canvas = createCanvas(squareSize, squareSize);
   canvas.parent('sketch');
   background(0,0,0);
