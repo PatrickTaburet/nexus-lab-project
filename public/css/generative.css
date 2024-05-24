@@ -94,6 +94,9 @@ canvas {
     height: 100%;
     color: white;
 }
+
+/* Decors */
+
 .circleImg{
   position: relative;
   width: 15vw;
@@ -110,8 +113,23 @@ canvas {
     transform: rotate(360deg);
   }
 }
-
-
+.hexaImg{
+  bottom: -17.5vw;
+  left: 43vw;
+  display: block;
+  width: 12vw;
+  height: 10vw;
+  position: absolute;
+  animation: rotate 35s linear infinite;
+}
+@keyframes rotate {
+0% {
+  transform: rotate(0deg);
+}
+100% {
+  transform: rotate(360deg);
+}
+}
 
 /* 
 ========================
@@ -557,6 +575,12 @@ Media queries
     height: 12vw;
     right:135px;
   }
+  .hexaImg{
+    bottom: -550px;
+    left: 28vw;
+    width: 11vw;
+    height: 10vw;
+  }
 
 /* ------- Sliders -------*/
 
@@ -732,11 +756,18 @@ Media queries
   .circleImg{
     position: absolute;
     bottom: 15px;
-    right: 85px;
+    right: 35px;
     margin: 0;
-    width: 12vw;
-    height: 12vw;
+    width: 17vw;
+    height: 17vw;
   }
+  .hexaImg{
+    bottom: 15vw;
+    left: 2vw;
+    width: 17vw;
+    height: 15vw;
+
+}
 
 }
 
@@ -745,6 +776,112 @@ Media queries
 @media screen and (max-width: 820px)
 {
 
+  main {
+    overflow: hidden;
+  }
 
+  .descriptionBox{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    margin-bottom: 30px;
+    margin-top: 21vw;
+    min-width: 300px;
+    padding: 0;
+  }
 
+  /* card animation */
+  
+  .descriptionContent{
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 1s ease-out;
+  }
+  .card-title:hover + .separator + .card-content .descriptionContent {
+    max-height: 500px; /* Ajustez la hauteur selon vos besoins */
+  }
+
+  /* label */
+
+  
+  .labelBox{
+    position: absolute;
+    display: block;
+    margin-right: 0;
+    left: 15vw;
+    top: 18.5vw;
+  }
+  .labelBox a{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-right: 0;
+    font-size: 3.5vw;
+    top: 0;
+    left: 0;
+  }
+
+  .LabelImg{
+  display: none;
+  }
+  .hexaImg{
+    top: 15vw;
+    left: 6vw;
+    width: 17vw;
+    height: 15vw;
+
+}
+
+/* title */
+
+.headerTitle{
+  position: relative;
+  display: flex;
+  margin : 5px 0 0 20px;
+}
+.headerTitle h1{
+  display: flex;
+  position: relative;
+  left: 0;
+  transition:none;
+  font-size: 3.5vw;
+  padding-top: 8vw;
+}
+.titleImg{
+  top: 2.7vw;
+  width: 70vw;
+  height: 13vw;
+}
+
+  /* Control panel */
+
+  .parametersBox .card-content {
+    height: 100%;
+  }
+  .parametersBox .card-border {
+    width: 100%;
+  }
+  .parametersBox .card {
+    width: 85%;
+    height: 100%;
+  }
+
+  /* Sliders */
+  .sliderBox{
+    width: 40%;
+     margin: 0 7px 0 7px
+  }
+
+  /* Decors */
+
+  .circleImg{
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    margin: 0;
+    width: 150px;
+    height: 150px;
+  }
 }
