@@ -94,7 +94,7 @@ export default function Navbar ({props}) {
               <span className={`${styles.bar}`}></span>
               <span className={`${styles.bar}`}></span>
             </div>
-            {profileResponsive}
+              {profileResponsive}
           </nav>
 
       {/*----------- Menu Burger --------*/}

@@ -46,7 +46,7 @@ canvas {
   /* margin-bottom: 230px;
   margin-top: 15px; */
   top:-150px;
-  margin-top: 50px;
+  margin-top: 130px;
   border: 3px solid black; /* Vous pouvez personnaliser la bordure comme vous le souhaitez */
   clip-path: polygon(40px 0, 100% 0%, 100% calc(100% - 40px), calc(100% - 40px) 100%, 0 100%, 0 40px);
 }
@@ -97,13 +97,13 @@ canvas {
 
 /* Decors */
 
-.circleImg{
+.CyberCircleImg{
   position: relative;
   width: 15vw;
   height: 15vw;
   bottom: 0;
   margin: 20px 20px 20px 20px;
-  animation: rotate 35s linear infinite;
+  animation: rotate 35s linear infinite; 
 }
 @keyframes rotate {
   0% {
@@ -114,11 +114,11 @@ canvas {
   }
 }
 .hexaImg{
-  bottom: -17.5vw;
+  bottom: -345px;
   left: 43vw;
   display: block;
-  width: 12vw;
-  height: 10vw;
+  width: 10vw;
+  height: 9vw;
   position: absolute;
   animation: rotate 35s linear infinite;
 }
@@ -529,12 +529,12 @@ Media queries
   /* Sketch */
 
   #myCanvas{
-    top:120px;
+    top:150px;
     margin-top: 0;
   }
   #sketch{
     position: absolute;
-    left: 5vw;
+    left: 3vw;
 
   }
 
@@ -545,7 +545,7 @@ Media queries
     /* position: relative; */
     width: 30vw;
     height: 100%;
-    margin-left: 70vw;
+    margin-left: 73vw;
     margin-top: 0px;
     min-width: 250px;
   }
@@ -567,7 +567,7 @@ Media queries
 
   /* Decors */
 
-  .circleImg{
+  .CyberCircleImg{
     position: absolute;
     bottom: -555px;
     margin: 0;
@@ -576,8 +576,8 @@ Media queries
     right:135px;
   }
   .hexaImg{
-    bottom: -550px;
-    left: 28vw;
+    top: 270px;
+    left: 35px;
     width: 11vw;
     height: 10vw;
   }
@@ -753,7 +753,7 @@ Media queries
   }
   /* Decors */
 
-  .circleImg{
+  .CyberCircleImg{
     position: absolute;
     bottom: 15px;
     right: 35px;
@@ -762,6 +762,7 @@ Media queries
     height: 17vw;
   }
   .hexaImg{
+    top:auto;
     bottom: 15vw;
     left: 2vw;
     width: 17vw;
@@ -826,6 +827,10 @@ Media queries
   .LabelImg{
   display: none;
   }
+  .labelBox a:hover{
+    color: var(--var-purple-dark);
+    transition: 0.4s;
+  }
   .hexaImg{
     top: 15vw;
     left: 6vw;
@@ -847,7 +852,7 @@ Media queries
   left: 0;
   transition:none;
   font-size: 3.5vw;
-  padding-top: 8vw;
+  padding-top: 7.7vw;
 }
 .titleImg{
   top: 2.7vw;
@@ -876,7 +881,7 @@ Media queries
 
   /* Decors */
 
-  .circleImg{
+  .CyberCircleImg{
     position: absolute;
     bottom: 10px;
     right: 10px;
@@ -884,4 +889,36 @@ Media queries
     width: 150px;
     height: 150px;
   }
+}
+
+/* ----------------------------- < 500px ------------------------------ */
+
+@media screen and (max-width: 500px)
+{
+  main {
+    overflow-x: hidden;
+  }
+  .descriptionBox .card-title{
+    font-size: 20px;
+    padding: 4px 0 8px 0;
+  }
+  .descriptionBox .separator{
+   margin:0
+  }
+  .descriptionBox {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    margin-bottom: 30px;
+    margin-top: 21vw;
+    min-width: 300px;
+    padding: 0;
+  }
+
+/* MODIFIER LES SLIDERS */
+
+
+
 }

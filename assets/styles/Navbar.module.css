@@ -126,13 +126,11 @@ a {
         margin-right: auto;
         cursor: pointer;
         opacity: 1;
-        transition: height 0.7s ease-out, width 0.7s ease-out, opacity 0.7s ease-out;
+        transition: opacity 0.4s ease-out;
     }
     .profileImg:hover{
-        height: 46px;
-        width: 46px;
-        opacity: 0.6;
-        transition: 0.7s;
+        opacity: 0.4;
+        transition: opacity 0.4s;  
     }
     
     /* Right Buttons */

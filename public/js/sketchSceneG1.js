@@ -33,7 +33,7 @@ let resetButton;
 
 function setup() {
   
-  const squareSize = min(windowWidth-110, windowHeight-110);
+  const squareSize = min(windowWidth-30, windowHeight-30);
   const canvas = createCanvas(squareSize, squareSize);
   canvas.parent('sketch');
   canvas.id('myCanvas');
@@ -87,14 +87,14 @@ function draw(){
 
 
 function windowResized() {
-  const squareSize = min(windowWidth-110, windowHeight-110);
+  const squareSize = min(windowWidth-30, windowHeight-30);
   const canvas = createCanvas(squareSize, squareSize);
   canvas.parent('sketch');
   background(0,0,0);
 }
 
 function reset () {
-  const squareSize = min(windowWidth, windowHeight);
+  const squareSize = min(windowWidth-30, windowHeight-30);
   resizeCanvas(squareSize, squareSize);
   walkers = [];
   clear();
