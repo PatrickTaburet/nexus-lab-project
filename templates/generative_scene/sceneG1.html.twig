@@ -45,6 +45,7 @@
                     <div class="card-title">
                         Description
                     </div>
+                    <img class="arrow1" src="/images/design/arrow.png" alt="Description arrow">
                     <div class="separator"></div>
                     <div class="card-content">
                         <div class="descriptionContent">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Provident sapiente animi, atque fugiat, autem optio modi id sed voluptatem saepe nulla aliquam temporibus officiis consequatur amet dolorum voluptatum natus nihil.Lorem, ipsum dolor sit amet consectetur adipisicing elit. Provident sapiente animi, atque fugiat, autem optio modi id sed voluptatem saepe nulla aliquam temporibus officiis consequatur amet dolorum voluptatum natus nihil  </div>
@@ -71,8 +72,8 @@
                 <div class="card-content">
                     <div class="sliderBox">
                         <p>Color :</p>
-                        <div class="range-wrap">
-                            <input type="range" class="range" id="colorSlider" min="1" max="360" value="5"step="10">
+                        <div class="range-wrap colorSlider">
+                            <input type="range" class="range" id="colorSlider" min="1" max="360" value="5" step="10">
                             <output class="bubble"></output>
                         </div>
                     </div>
@@ -140,7 +141,7 @@
         </div>       
     </div>
     
-    <div id="dataScene" style="display:none;" ></div>
+    <div id="dataScene" style="display:none" ></div>
 
 </div>
 {% if app.user %}

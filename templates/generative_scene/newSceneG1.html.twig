@@ -7,6 +7,13 @@
 {% endblock %}
 
 {% block body %}
+
+{% for message in app.flashes('success')%}
+    <div class="succesFlashMessages">
+        {{message}}
+    </div>
+{% endfor %}
+
 {# Modale : save artwork  #}
     <div class="modaleBackground hidden">
     <div class="superModale hidden">
@@ -19,83 +26,118 @@
     </div>
     </div>
 {# End modale #}
-
-<h1>RANDOM LINE WALKERS</h1>
-<div class="mainContainer">
-    <div class="descriptionBox"> Description </div>
-    <div id="sketch"></div>
-    <div class="parametersBox">
-
-    <h2>Control parameters</h2>
-        <div class="sliderBox">
-            <p>Color :</p>
-            <div class="range-wrap">
-                <input type="range" class="range" id="colorSlider" min="1" max="360" value="{{ scene.color}}" step="10">
-                <output class="bubble"></output>
-            </div>
-        </div>
-        <div class="sliderBox">
-            <p>Number of lines :</p>
-            <div class="range-wrap">
-                <input type="range" class="range" id="lineSlider" min="1" max="200" value="{{ scene.num_line }}" step="1">   
-                <output class="bubble"></output>
-            </div>
-        </div>
-        <div class="sliderBox">
-            <p>Weight :</p>
-            <div class="range-wrap">
-            <input type="range" class="range" id="weightSlider" min="0.2" max="10" value="{{ scene.weight }}" step="0.1">
-                <output class="bubble"></output>
-            </div>
-        </div>
-        <div class="sliderBox">
-            <p>Saturation :</p>
-            <div class="range-wrap">
-            <input type="range" id="saturationSlider" class="range" min="0" max="100" value="{{ scene.saturation}}" step="5">
-                <output class="bubble"></output>
-            </div>
-        </div>
-        <div class="sliderBox">
-            <p>Opacity :</p>
-            <div class="range-wrap">
-            <input type="range" id="opacitySlider" class="range" min="0.05" max="1" value="{{ scene.opacity }}" step="0.05">
-                <output class="bubble"></output>
-            </div>
-        </div>
-        <div class="sliderBox">
-            <p>Velocity :</p>
-            <div class="range-wrap">
-            <input type="range" id="velocitySlider" class="range" min="0" value="{{ scene.velocity }}" value="5" step="0.1">
-            <output class="bubble"></output>
-            </div>
-        </div>
-        <div class="sliderBox">
-            <p>Noise octaves :</p>
-            <div class="range-wrap">
-            <input type="range" id="noiseOctaveSlider" class="range" min="0" max="10" value="{{ scene.noiseOctave }}" step="1">
-            <output class="bubble"></output>
-            </div>
-        </div>
-        <div class="sliderBox">
-            <p>Noise falloff :</p>
-            <div class="range-wrap">
-            <input type="range" id="noiseFalloffSlider" class="range" min="0" max="1" value="{{ scene.noiseFalloff}}" step="0.05">
-            <output class="bubble"></output>
-            </div>
-        </div>
-        <div class="checkboxConatainer">
-            <p>Stop and go :</p>
-            <input type="checkbox" id="checkboxStop">
-        </div>
-        <div class="sliderBox">
-            <button id="resetButton" class="customButton generateButton">Reset</button>
-            {% if app.user %}
-            <button class="buttonModale customButton generateButton">Save</button>
-             
-            {% endif %}
-        </div>
+{# ---------------------- #}
+<div class="headerTitle">
+    <img class="titleImg" src="/images/design/title2.png" alt="Title square">
+    <h1>RANDOM LINE WALKERS</h1>
 </div>
 
+<div class="mainContainer">
+    <div class="leftSide">
+        <div class="labelBox">
+            <a href="{{ path('generativeHome')}}">Generative <br> Art</a>
+            <img class="LabelImg" src="/images/design/Title-square2.png" alt="Generative Art">
+        </div>
+        <div class="descriptionBox">
+            <div class="card-border">
+                <div class="card ">
+                    <div class="card-title">
+                        Description
+                    </div>
+                    <div class="separator"></div>
+                    <div class="card-content">
+                        <div class="descriptionContent">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Provident sapiente animi, atque fugiat, autem optio modi id sed voluptatem saepe nulla aliquam temporibus officiis consequatur amet dolorum voluptatum natus nihil.Lorem, ipsum dolor sit amet consectetur adipisicing elit. Provident sapiente animi, atque fugiat, autem optio modi id sed voluptatem saepe nulla aliquam temporibus officiis consequatur amet dolorum voluptatum natus nihil  </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <img class="CyberCircleImg" src="/images/design/circle1.png" alt="Cyber-circle">
+        <img class="hexaImg" src="/images/design/hexa.png" alt="Cyber-hexagon">
+    </div>
+    
+{# sketch #}
+
+    <div id="sketch"></div>
+
+{# parameters control pannel #}
+    <div class="parametersBox">
+        <div class="card-border">
+            <div class="card ">
+                <div class="card-title">
+                    Control parameters
+                </div>
+                <div class="separator"></div>
+                <div class="card-content">
+                    <div class="sliderBox">
+                        <p>Color :</p>
+                        <div class="range-wrap colorSlider">
+                            <input type="range" class="range" id="colorSlider" min="1" max="360" value="5" step="10">
+                            <output class="bubble"></output>
+                        </div>
+                    </div>
+                    <div class="sliderBox">
+                        <p>Number of lines :</p>
+                        <div class="range-wrap">
+                            <input type="range" class="range" id="lineSlider" min="1" max="200" value="100" step="1">   
+                            <output class="bubble"></output>
+                        </div>
+                    </div>
+                    <div class="sliderBox">
+                        <p>Weight :</p>
+                        <div class="range-wrap">
+                        <input type="range" class="range" id="weightSlider" min="0.2" max="10" value="5"step="0.1">
+                            <output class="bubble"></output>
+                        </div>
+                    </div>
+                    <div class="sliderBox">
+                        <p>Saturation :</p>
+                        <div class="range-wrap">
+                        <input type="range" id="saturationSlider" class="range" min="0" max="100" value="90" step="5">
+                            <output class="bubble"></output>
+                        </div>
+                    </div>
+                    <div class="sliderBox">
+                        <p>Opacity :</p>
+                        <div class="range-wrap">
+                        <input type="range" id="opacitySlider" class="range" min="0.05" max="1" value="0.7"step="0.05">
+                            <output class="bubble"></output>
+                        </div>
+                    </div>
+                    <div class="sliderBox">
+                        <p>Velocity :</p>
+                        <div class="range-wrap">
+                        <input type="range" id="velocitySlider" class="range" min="0" max="15" value="5" step="0.1">
+                        <output class="bubble"></output>
+                        </div>
+                    </div>
+                    <div class="sliderBox">
+                        <p>Noise octaves :</p>
+                        <div class="range-wrap">
+                        <input type="range" id="noiseOctaveSlider" class="range" min="0" max="10" value="4"step="1">
+                        <output class="bubble"></output>
+                        </div>
+                    </div>
+                    <div class="sliderBox">
+                        <p>Noise falloff :</p>
+                        <div class="range-wrap">
+                        <input type="range" id="noiseFalloffSlider" class="range" min="0" max="1" value="0.5" step="0.05">
+                        <output class="bubble"></output>
+                        </div>
+                    </div>
+                    <div class="checkboxConatainer">
+                        <p>Stop and go :</p>
+                        <input type="checkbox" id="checkboxStop">
+                    </div>
+                    <div class="buttonBox">
+                        <button id="resetButton" class="customButton generateButton">Reset</button>
+                        {% if app.user %}
+                            <button class="buttonModale customButton generateButton">Save</button>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>       
+    </div>
 {# <input type="hidden" id="dataScene" value="{{ scene|json_encode|raw }}">  #}
 {# {{ dump(scene) }}
 {{ dump("<%= defaultValueColor %>") }} #}

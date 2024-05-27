@@ -267,7 +267,7 @@ UI pannel style
   }
   
   /*  Hide Original */
-
+ 
   .range {
     width: 100%;
     cursor: pointer;
@@ -864,6 +864,7 @@ Media queries
 
   .parametersBox .card-content {
     height: 100%;
+    justify-content: space-around;
   }
   .parametersBox .card-border {
     width: 100%;
@@ -916,9 +917,59 @@ Media queries
     min-width: 300px;
     padding: 0;
   }
+  .descriptionContent{
+   font-size: 14px; 
+  }
 
-/* MODIFIER LES SLIDERS */
+ 
+  /* ------- Sliders -------*/
+  .parametersBox .card-content{
+    margin: 0;
+    justify-content: space-around;
+  }
 
+  .sliderBox{
+    width: 30%;
+  }
 
+  .range-wrap {
+    width: 40%;
+    padding: 0.3em 0; /*  Giving more room for hover  */
+  }
+
+  .range-wrap::before {
+    height: 7px;
+  }
+
+  .range-wrap{
+    min-width: 120px;
+  }
+
+  .bubble {
+    scale: 0.7;
+    top: 40%;
+  }
+  .colorSlider{
+    margin-top: 19px;
+  }
+
+/* Decors */
+.arrow1{
+  rotate: 180deg;
+  position: absolute;
+  left: 48%;
+  top: 53px;
+  z-index: 5;
+  width: 20px;
+  display: block;
+}
+  /* card animation */
+  
+  .card-title:hover + .arrow1 +.separator + .card-content .descriptionContent {
+    max-height: 500px; /* Ajustez la hauteur selon vos besoins */
+  }
+  .card-title:hover + .arrow1{
+    display: none;
+  }
 
 }
