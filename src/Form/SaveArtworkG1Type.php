@@ -16,7 +16,7 @@ class SaveArtworkG1Type extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('title', null, [
+            ->add('title', TextType::class, [
                 'constraints' => [
                     new NotBlank(),
                 ],
@@ -24,6 +24,9 @@ class SaveArtworkG1Type extends AbstractType
             ])
             ->add('comment', TextareaType::class, [
                 'label' => 'Comment',
+                'constraints' => [
+                    new NotBlank(),
+                ],
                 'attr' => [
                     'maxlength' => 255,
                 ],

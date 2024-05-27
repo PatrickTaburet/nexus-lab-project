@@ -15,23 +15,6 @@ Variables
 :root {
     
     font-size: 15px;
-    
-    /* Primary */
-    --var-soft-blue: hsl(215, 51%, 70%);
-    --var-cyan: hsl(178, 100%, 50%);
-    /* Neutral */
-    --var-main-darkest: hsl(217, 54%, 11%);
-    --var-card-dark: hsl(216, 50%, 16%);
-    --var-line-dark: hsl(215, 32%, 27%);
-    --var-lightest: white;
-
-    /* Fonts */
-
-    --var-heading: normal normal 600 1.5em/1.6em 'Outfit', sans-serif;
-
-    --var-small-heading: normal normal 400 1em/1em 'Outfit', sans-serif;
-    
-    --var-para: normal normal 300 1em/1.55em 'Outfit', sans-serif;
 }
 
 /* 
@@ -103,6 +86,9 @@ h1 {
 
 }
 .card{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
     min-width: 300px;
     width: 350px;
     margin: 2em auto;
@@ -110,9 +96,12 @@ h1 {
     border-radius: 15px;
     margin-bottom: 1rem;
     padding: 2rem;
+    align-self: flex-start;
+    /* min-height: 675px; */
+    min-height: 750px;
 }
 .cardHeader{
-  min-height: 460px;
+  min-height: 200px;
 }
 .smallAvatar {
     width: 3em;
@@ -147,26 +136,39 @@ span {
 .cardTitle{
     font: var(--var-heading);
     color: var(--var-lightest);
-    padding: 0.8em 0;
+    padding: 0.5em 0;
     word-wrap: break-word;
 }
 .commentBox{
     font: var(--var-para);
     color: var(--var-soft-blue);
     word-wrap: break-word;
-    max-height: 60px;
-    min-height: 60px;
-    overflow: hidden;
+    max-height: 53px;
+    /* min-height: 60px; */
+    overflow: hidden; 
+    flex-direction: column;
     transition: max-height 0.3s;
     position: relative;
     display: flex;
-    align-items: center;
+    align-items: start;
     word-break: break-all;
+    /* margin-top: 10px; */
     /* flex-wrap: wrap; */ 
 }
+
 .commentBox:hover{
     max-height: 200px;
     overflow: auto;
+}
+.noCommentImg{
+    width: 50px;
+    margin: auto;
+}
+.cardBottom{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    /* height: 25vh; */
 }
 p {
     font: var(--var-para);
@@ -187,7 +189,7 @@ p {
     justify-content: center;
 
 }
-.cardBottom{
+.cardSpec{
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -202,7 +204,7 @@ p {
     border-radius: 10px;
 }
 .data{
-    background-color: rgb(247, 0, 255);
+    background-color: var(--var-secondary);
   
     padding: 7px;
     border-radius: 10px;
@@ -299,4 +301,52 @@ img.eye {
       transition: 0.25s 0.1s ease-in opacity, 0.15s 0.1s cubic-bezier(.175, .885, .32, 1.275) transform;
     }
   }
+
+@media screen and (max-width:992px)
+{
+    .generative{
+        background-color: var(--var-primary-dark);
+        padding: 4px;
+        border-radius: 10px;
+    }
+    /* Open with parameters slide button */
+.buttonBox{
+    
+}
+
+.slideButton {
+    bottom: 16px;
+    right: 16px;
+    display: flex;
+    align-items: center;
+    background: #68009d;
+    color: white;
+    padding: 8px 10px;
+    border-radius: 50px;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25);
+    transition: 0.35s ease all;
+    overflow: hidden;
+    max-width:none; /* icon size */
+    margin-top: 10px;
+  }
   
+  .slideButtonIcon {
+    position: relative;
+    top: 2px;
+  }
+  
+  .slideButtonLabel {
+    text-transform: uppercase;
+    font-size: 0.7em;
+    white-space: nowrap;
+    padding: 8px;
+    opacity: 1;
+    transform:none;
+    transition: 0.25s ease all;
+  }
+  .slideButton:hover{
+    opacity: 0.8;
+    color: var(--var-primary);
+  }
+
+}
