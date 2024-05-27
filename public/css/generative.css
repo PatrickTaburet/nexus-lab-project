@@ -36,9 +36,7 @@ h1{
    z-index: 2;
    animation: text-glow 1.1s ease-in-out infinite alternate;
 }
-canvas {
 
-}
 #myCanvas{
   position: relative;
   display: block;
@@ -96,7 +94,9 @@ canvas {
 }
 
 /* Decors */
-
+.arrow1{
+  display: none;
+}
 .CyberCircleImg{
   position: relative;
   width: 15vw;
@@ -384,7 +384,7 @@ UI pannel style
 /* ------- Modale -------*/
 
 .superModale{
-  background-color:rgb(255, 255, 255);
+  background-color:var(--var-purple-dark);
   width: 350px;
   height: 210px;
   position: absolute;
@@ -392,15 +392,17 @@ UI pannel style
   z-index: 5;
   display: flex;
   flex-direction: column;
+  justify-content: space-between;
   align-items: center;
   text-align: center;
   box-shadow: rgb(38, 57, 77) 0px 20px 30px -10px;
   opacity: 0;
   border-radius: 10px;
+  color: white;
 }
 .superModale p {
-
-  margin: 10px 10px 15px 10px;
+  text-align: center;
+  margin: 10px;
 }
 .modaleBackground{
   background-color: rgba(128, 128, 128, 0.525);
@@ -428,16 +430,24 @@ UI pannel style
 .headerModale{
   display: flex;
   width: 100%;
-  justify-content: space-around;
+  justify-content: center;
   align-items: center;
+  margin-top: 13px;
+  animation: text-glow 1.1s ease-in-out infinite alternate;
+  font-size: 23px;
 }
 .closeButton{
   width: 30px;
   height: 30px;
   position: absolute;
-  right: 20px;
+  right: 0;
+  top:5px;
 }
-
+.closeModaleStyle{
+    min-width: 40px;
+    max-width: 40px;
+    min-height: 40px;
+}
 
 /* ------- Background -------*/
 
@@ -800,10 +810,12 @@ Media queries
     overflow: hidden;
     transition: max-height 1s ease-out;
   }
-  .card-title:hover + .separator + .card-content .descriptionContent {
+  .card-title:hover + .arrow1 + .separator + .card-content .descriptionContent {
     max-height: 500px; /* Ajustez la hauteur selon vos besoins */
   }
-
+  .card-title:hover + .arrow1{
+    display: none;
+  }
   /* label */
 
   
@@ -881,7 +893,15 @@ Media queries
   }
 
   /* Decors */
-
+  .arrow1{
+    rotate: 180deg;
+    position: absolute;
+    left: 48%;
+    top: 90px;
+    z-index: 5;
+    width: 25px;
+    display: block;
+  }
   .CyberCircleImg{
     position: absolute;
     bottom: 10px;
@@ -965,7 +985,7 @@ Media queries
 }
   /* card animation */
   
-  .card-title:hover + .arrow1 +.separator + .card-content .descriptionContent {
+  .card-title:hover + .arrow1 + .separator + .card-content .descriptionContent {
     max-height: 500px; /* Ajustez la hauteur selon vos besoins */
   }
   .card-title:hover + .arrow1{

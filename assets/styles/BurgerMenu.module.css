@@ -36,7 +36,7 @@
   
      .menuBurger.menuOpen{
         position: fixed;
-        overflow: scroll; 
+        overflow: hidden; 
         padding: 100px 40px 200px 40px;  
     }
 
@@ -306,6 +306,11 @@
             transform: rotate(30deg) translate(0px, 0px);
         }
     
+    }
+    @media screen and (max-width: 500px){
+        .menuBurger.menuOpen{
+            overflow: scroll; 
+        }
     }
     
 }
