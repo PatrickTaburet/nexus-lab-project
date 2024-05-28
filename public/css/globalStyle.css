@@ -36,12 +36,9 @@ main {
     
     --var-notchSize: 40px;
 
-    /* Gallery */
-
-    /* Primary */
     --var-soft-blue: hsl(215, 51%, 70%);
     --var-cyan: hsl(178, 100%, 50%);
-    /* Neutral */
+
     --var-main-darkest: hsl(217, 54%, 11%);
     --var-card-dark: hsl(216, 50%, 16%);
     --var-line-dark: hsl(215, 32%, 27%);
