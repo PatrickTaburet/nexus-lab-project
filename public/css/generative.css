@@ -976,7 +976,7 @@ Media queries
   /* card animation */
   
   .card-title:hover + .arrow1 + .separator + .card-content .descriptionContent {
-    max-height: 500px; /* Ajustez la hauteur selon vos besoins */
+    max-height: 500px;
   }
   .card-title:hover + .arrow1{
     display: none;

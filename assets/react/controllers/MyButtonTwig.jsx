@@ -7,7 +7,7 @@ export default function MyButton({props}) {
     <a 
     href={props.id?`/${props.to}/${props.id}`:props.to}
     >
-      <button className={`${styles.customButton} ${styles[props.myStyle]}`} onClick={props.handleClick}>
+      <button className={`${styles.customButton} ${styles[props.myStyle]}`} >
         <span>
           {props.children}
         </span>
