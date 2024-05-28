@@ -29,6 +29,7 @@ class MainController extends AbstractController
      */
     public function gallery(Request $request, Scene1Repository $repo, PaginatorInterface $paginator, SceneD1Repository $repo2): Response
     {
+        $session = $request->getSession();
         $sceneG1 = $repo -> findAll(); 
         $scenesD1= $repo2 -> findAll();
         $allScenes = array_merge($sceneG1, $scenesD1);
@@ -36,15 +37,12 @@ class MainController extends AbstractController
         $form = $this->createForm(SortArtworkType::class);
         $form->handleRequest($request);
 
-    // Sort works by date
-        usort($allScenes, function($a, $b) {
-            return ($b->getUpdatedAt() <=> $a->getUpdatedAt());
-        });
-
-    // Sort artworks according to the choice of the form (date or likes)
+        // Sort artworks according to the choice of the form (date or likes)
         if ($form->isSubmitted() && $form->isValid()) { 
 
             $sort = $form->get('sortSelect')->getData();
+            $session->set('sort_option', $sort);
+
             if ($sort == 'likes') {
                 usort($allScenes, function($a, $b) {
                     return ($b->getLikes()->count() <=> $a->getLikes()->count());
@@ -53,16 +51,19 @@ class MainController extends AbstractController
                 usort($allScenes, function($a, $b) {
                     return ($b->getUpdatedAt() <=> $a->getUpdatedAt());
                 });
+            }   
+        } else {
+            // Sort artworks based on the previous sort option stored in the session, otherwise sorted by date by default
+            $sortOption = $session->get('sort_option', 'date');
+            if ($sortOption == 'likes') {
+                usort($allScenes, function ($a, $b) {
+                    return ($b->getLikes()->count() <=> $a->getLikes()->count());
+                });
+            } else {
+                usort($allScenes, function ($a, $b) {
+                    return ($b->getUpdatedAt() <=> $a->getUpdatedAt());
+                });
             }
-            $scenes = $paginator->paginate(
-                $allScenes,
-                $request->query->getInt('page', 1), /*page number*/
-                15 /*limit per page*/
-            );
-            return $this->render('main/gallery.html.twig', [
-                'scenes' => $scenes,
-                'form' => $form->createView(),
-            ]);   
         }
 
         $scenes = $paginator->paginate(
