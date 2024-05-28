@@ -10,7 +10,12 @@
 {% block body %}
 
 <div class="mainContainer">
-    <h1>Welcome to the member's artwork gallery</h1>
+    <div class="galleryHeader">
+        <img class="sideBarLeft" src={{asset("/images/design/sideBarLeft.png")}} alt="sideBarLeft">
+        <h1>Welcome to the member's artwork gallery</h1>
+        <img class="sideBarRight" src={{asset("/images/design/sideBarRight.png")}} alt="sideBarRight">
+    </div>
+    
 
     {# Sorting filters form : Form submission managed in js when user change the choiceType value #}
     {{ form_start(form) }}
@@ -21,81 +26,82 @@
     {{ form_end(form) }} 
 
     <div class="cardsContainer" id="gallery">
-    {% for scene in scenes %}
-    
-        {% set entityName = scene|class_name|split('\\')|last %}  {# Extract entity name from scene object #}
-       
-       {# CARD #}
+        {# <div class="cardsWrapper"> #}
+            {% for scene in scenes %}
+        
+            {% set entityName = scene|class_name|split('\\')|last %}  {# Extract entity name from scene object #}
+        
+        {# CARD #}
 
-        <div class="card">
-            <div class="cardHeader">
-                <a href="{{ vich_uploader_asset(scene, 'imageFile') }}" class="imgContainer" data-lightbox="gallery" data-title="{{ scene.title }}">
-                    <img src="{{ vich_uploader_asset(scene, 'imageFile') }}" alt="{{ scene.user.pseudo }}" class="artworkImg">
-                </a>
-                <p class="cardTitle">{{ scene.title }}</p>
-                <div class="commentBox">
-                {% if scene.comment %}
-                    {{ scene.comment }}
-                {% else %}
-                    <img src="{{ asset('/images/icons/no-comment.png') }}" alt="no-comment" class="noCommentImg">
-                {% endif %}
-                </div>
-            </div>
-            <div class="cardBottom">
-                <div class="cardAttribute">
-                    <img src="{{ vich_uploader_asset(scene.user, 'imageFile') }}" alt="avatar" class="smallAvatar"/>
-                    <div class="userInfo">
-                        <p>Creation of&nbsp; <span><a href="#">{{ scene.user.pseudo }}</a></span></p>
-                        <p>{{scene.updatedAt|date('F j, Y, g:i a')}}</p>
-                    </div>
-                </div>
-                <div class="cardSpec">
-                    <div class="sceneType">
-                        {% if entityName == "Scene1" %}
-                            <a href="{{ path('generativeHome')}}"><span class="generative">Generative Art</span></a>
-                        {% elseif entityName == "SceneD1" %}
-                            <a href="{{ path('dataArtHome')}}"><span class="data">Data Art</span></a>
+                <div class="card">
+                    <div class="cardHeader">
+                        <a href="{{ vich_uploader_asset(scene, 'imageFile') }}" class="imgContainer" data-lightbox="gallery" data-title="{{ scene.title }}">
+                            <img src="{{ vich_uploader_asset(scene, 'imageFile') }}" alt="{{ scene.user.pseudo }}" class="artworkImg">
+                        </a>
+                        <p class="cardTitle">{{ scene.title }}</p>
+                        <div class="commentBox">
+                        {% if scene.comment %}
+                            {{ scene.comment }}
+                        {% else %}
+                            <img src="{{ asset('/images/icons/no-comment.png') }}" alt="no-comment" class="noCommentImg">
                         {% endif %}
+                        </div>
                     </div>
-                    <div {{ react_component('Like', {"props": {
-                        "user" : app.user,
-                        "userId": scene.user.id,
-                        "sceneId": scene.id,
-                        "likes": scene.likes|length,
-                        "entity": entityName,
-                        "isLikedByUser": app.user in scene.likes ? true : false 
-                        }}) }}>
-                    </div>
-                </div>
-                <div class="buttonBox">
-                    {% if entityName == "Scene1" %}
-                    <a href="{{ path('newScene', {'id': scene.id})}}">
-                        <div class="slideButton">
-                            <div class="slideButtonIcon">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle></svg>
-                            </div>
-                            <div class="slideButtonLabel">
-                                Open scene with last parameters
+                    <div class="cardBottom">
+                        <div class="cardAttribute">
+                            <img src="{{ vich_uploader_asset(scene.user, 'imageFile') }}" alt="avatar" class="smallAvatar"/>
+                            <div class="userInfo">
+                                <p>Creation of&nbsp; <span><a href="#">{{ scene.user.pseudo }}</a></span></p>
+                                <p>{{scene.updatedAt|date('F j, Y, g:i a')}}</p>
                             </div>
                         </div>
-                    </a>
-                    {% elseif entityName == "SceneD1" %}
-                    <a href="{{ path('newSceneD1', {'id': scene.id})}}">
-                        <div class="slideButton">
-                            <div class="slideButtonIcon">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle></svg>
+                        <div class="cardSpec">
+                            <div class="sceneType">
+                                {% if entityName == "Scene1" %}
+                                    <a href="{{ path('generativeHome')}}"><span class="generative">Generative Art</span></a>
+                                {% elseif entityName == "SceneD1" %}
+                                    <a href="{{ path('dataArtHome')}}"><span class="data">Data Art</span></a>
+                                {% endif %}
                             </div>
-                            <div class="slideButtonLabel">
-                                Open scene with last parameters
+                            <div {{ react_component('Like', {"props": {
+                                "user" : app.user,
+                                "userId": scene.user.id,
+                                "sceneId": scene.id,
+                                "likes": scene.likes|length,
+                                "entity": entityName,
+                                "isLikedByUser": app.user in scene.likes ? true : false 
+                                }}) }}>
                             </div>
                         </div>
-                    </a>
-                    {% endif %}
+                        <div class="buttonBox">
+                            {% if entityName == "Scene1" %}
+                            <a href="{{ path('newScene', {'id': scene.id})}}">
+                                <div class="slideButton">
+                                    <div class="slideButtonIcon">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle></svg>
+                                    </div>
+                                    <div class="slideButtonLabel">
+                                        Open scene with last parameters
+                                    </div>
+                                </div>
+                            </a>
+                            {% elseif entityName == "SceneD1" %}
+                            <a href="{{ path('newSceneD1', {'id': scene.id})}}">
+                                <div class="slideButton">
+                                    <div class="slideButtonIcon">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle></svg>
+                                    </div>
+                                    <div class="slideButtonLabel">
+                                        Open scene with last parameters
+                                    </div>
+                                </div>
+                            </a>
+                            {% endif %}
+                        </div>
+                    </div>
                 </div>
-            </div>
-           
-        </div>
-     {% endfor %}
+            {% endfor %}
+        {# </div> #}
     </div>
     
     {# pagination #}
@@ -109,16 +115,7 @@
 
 {% block javascripts %}
     {{ parent() }}
-    <script src="{{ asset('js/sortingOptions.js') }}"></script>
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            lightbox.option({
-                'resizeDuration': 200,
-                'wrapAround': false,
-                'showImageNumberLabel': true,
-                'alwaysShowNavOnTouchDevices': true
-            });
-        });
-    </script>
+    <script src="{{ asset('js/gallery.js') }}"></script>
+
 {% endblock %}
 {% endblock %}
