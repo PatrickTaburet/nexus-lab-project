@@ -1,6 +1,9 @@
-@import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap');
+/* @import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap'); */
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400..900&family=Oxanium:wght@200..800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600&display=swap');
+
 *{
-    font-family: 'Quicksand', sans-serif;
+    font-family: 'Outfit', sans-serif;
     margin: 0;
     padding: 0;
     box-sizing: border-box;
@@ -15,12 +18,24 @@ body {
 }
 
 main {
+    background-color: var(--var-main-darkest);
     height: 100%;
     margin-top: 60px;
     flex: 1; /* Permet au contenu principal de s'étendre pour remplir l'espace disponible restant */
 }
 
-
+h1{
+    font-family: var(--var-title);
+    animation: text-glow 1.3s ease-in-out infinite alternate;
+}
+@keyframes text-glow {
+    from {
+      text-shadow: 0 0 1px var(--var-primary);
+    }
+    to {
+      text-shadow: 0 0 7px var(--var-primary);
+    }
+  }
 /* --------------- Variables ------------------*/
 
 :root {
@@ -45,6 +60,8 @@ main {
     --var-lightest: white;
 
     /* Fonts */
+
+    --var-title:'Oxanium', sans-serif;
 
     --var-heading: normal normal 600 1.5em/1.6em 'Outfit', sans-serif;
 

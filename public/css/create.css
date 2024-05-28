@@ -1,11 +1,16 @@
 main{
-    background-color: aqua;
+    /* background-color: var(--var-main-bg); */
+    background-image: url("/images/design/hexagonal-background.jpg");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
     text-align: center;
     font-size: 40px;
     height: 100%;
 }
 h1{
     padding: 2%;
+    font-weight: 500;
 }
 
 .createContainer{

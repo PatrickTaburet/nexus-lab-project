@@ -34,7 +34,7 @@ h1{
    padding-top: 54px;
    font-weight: 600;
    z-index: 2;
-   animation: text-glow 1.1s ease-in-out infinite alternate;
+
 }
 
 #myCanvas{
@@ -225,16 +225,6 @@ UI pannel style
   }
   
   
-  
-  @keyframes text-glow {
-    from {
-      text-shadow: 0 0 1px var(--var-primary);
-    }
-    to {
-      text-shadow: 0 0 7px var(--var-primary);
-    }
-  }
-
   
 /* ------- Sliders -------*/
 
