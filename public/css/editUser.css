@@ -3,24 +3,63 @@
     justify-content: center;
     align-items: center;
     flex-direction: column;
+    background-color: var(--var-main-bg);
 }
 .headerUser{
-    margin: 10px;
-    margin-top: 25px;
+    margin: 35px 0 5px 0;
+    font-size: 47px;
 }
+
 .formUser{
     text-align: center;
+    background-color: #15172b;
+    border-radius: 20px;
+    padding: 20px;
+    width: 350px;
+    margin: 30px 0 50px 0;
+    box-shadow: inset 0 0 10px var(--var-primary);
+
 }
-.form-group{
-    margin : 10px;
-   display: flex;
-   justify-content: center;
+
+/* vich uploader button */
+
+input[type="file"]::file-selector-button {
+    align-items: center;
+    background-color: rgb(5, 6, 45);
+    border: 0;
+    border-radius: 8px;
+    box-shadow: rgba(151, 65, 252, 0.2) 0 15px 30px -5px;
+    box-sizing: border-box;
+    display: flex;
+    font-family: Phantomsans, sans-serif;
+    font-size: 17px;
+    justify-content: center;
+    line-height: 1em;
+    max-width: 100%;
+    min-width: 140px;
+    padding: 3px;
+    text-decoration: none;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+    white-space: nowrap;
+    cursor: pointer;
+    color: #FFFFFF;
+    padding: 10px 14px;
+    margin: auto;
+    box-shadow: inset 0 0 10px var(--var-primary);
+
+  }
+
+input[type="file"]::file-selector-button:hover {
+    background-image: linear-gradient(144deg,#AF40FF, #5B42F3 50%,#00DDEB);
 }
+
 .vich-image{
-    margin: 10px;
     display: flex;
     flex-direction: column;
     align-items: center;
+   
 }
 .vich-image a{
     margin: 15px;
@@ -28,17 +67,120 @@
     text-decoration: none;
     color: inherit;
 }
-img{
-    width: 30%;
+.imagePreview img{
+    width: 230px;
+    border-radius: 15px;
+    margin-top: 20px;
+    border: solid 3px #00DDEB;
 }
-.firstMdpField{
-    margin: 10px;
+.labelImg{
+    color:#65657b;
+    text-align: left;
+    margin-right: 200px;
+    margin-top: 20px;
 }
-.secondMdpField{
-    margin: 10px;
+.img-control{
+    background-color: #303245;
+    border-radius: 12px;
+    border: 0;
+    box-sizing: border-box;
+    color: #eee;
+    font-size: 18px;
+    height: 100%;
+    outline: 0;
+    padding: 4px 76px 0;
+    width: 100%;
+}
 
+.pswButton{
+    width: 200px;
+    margin: auto;
+    margin-top: 5px;
+    margin-bottom: 5px;
 }
 .buttonBox{
     display: flex;
     justify-content: center;
+}
+.psw-group{
+    position: relative;
+    width: 100%;
+    margin-top: 30px;
+    margin-bottom: 15px;
+    background-color: #303245;
+    border-radius: 12px;
+    border: 0;
+    box-sizing: border-box;
+    color: #eee;
+    font-size: 18px;
+    height: 100%;
+    outline: 0;
+    padding: 2px 0 2px 0;
+}
+
+.form-group {
+    height: 50px;
+    position: relative;
+    width: 100%;
+    margin-top: 30px;
+}
+
+
+.form-control {
+    background-color: #303245;
+    border-radius: 12px;
+    border: 0;
+    box-sizing: border-box;
+    color: #eee;
+    font-size: 18px;
+    height: 100%;
+    outline: 0;
+    padding: 4px 20px 0;
+    width: 100%;
+}
+
+.cut {
+    background-color: #15172b;
+    border-radius: 10px;
+    height: 20px;
+    left: 20px;
+    position: absolute;
+    top: -20px;
+    transform: translateY(0);
+    transition: transform 200ms;
+    width: 76px;
+}
+
+.cut-short {
+    width: 50px;
+}
+
+.form-control:focus ~ .cut,
+.form-control:not(:placeholder-shown) ~ .cut {
+    transform: translateY(8px);
+}
+
+.placeholder {
+    color: #65657b;
+    font-family: sans-serif;
+    left: 20px;
+    line-height: 14px;
+    pointer-events: none;
+    position: absolute;
+    transform-origin: 0 50%;
+    transition: transform 200ms, color 200ms;
+    top: 20px;
+}
+
+.form-control:focus ~ .placeholder,
+.form-control:not(:placeholder-shown) ~ .placeholder {
+    transform: translateY(-30px) translateX(10px) scale(0.75);
+}
+
+.form-control:not(:placeholder-shown) ~ .placeholder {
+    color: #808097;
+}
+
+.form-control:focus ~ .placeholder {
+    color: var(--var-secondary);
 }

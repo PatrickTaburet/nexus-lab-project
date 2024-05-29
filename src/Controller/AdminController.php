@@ -59,9 +59,7 @@ class AdminController extends AbstractController
             $user = $repo->find($id);
             
             $userForm = $this->createForm(EditUserType::class, $user,[
-                'is_admin' => true,
-                'is_not_admin' => false,
-                
+                'is_admin' => true,  
             ]);
             $userForm -> handleRequest($request);
 

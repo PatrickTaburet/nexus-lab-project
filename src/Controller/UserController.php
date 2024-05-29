@@ -48,7 +48,6 @@ class UserController extends AbstractController
             
             $userForm = $this->createForm(EditUserType::class, $user, [
                 'is_admin' => false,
-                'is_not_admin' =>true,
             ]);
             
             $userForm -> handleRequest($request);

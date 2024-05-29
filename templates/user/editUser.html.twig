@@ -18,39 +18,41 @@
         {{message}}
       </div>      
     {% endfor %}
-    <div class="container">
-          {# {% if (is_granted('ROLE_ARTIST')) %}
-          {% endif %} #}
-  
+    <div class="container">  
       <h1 class="headerUser">Edit Profile</h1>
-
       <div class="formUser">
         {{ form_start(userForm) }}
           
           <div class="form-group">
-            {{ form_label(userForm.pseudo)}}
+            {# {{ form_label(userForm.pseudo)}} #}
             {{ form_widget(userForm.pseudo, { "attr": {"class" : "form-control" } }) }}
+            <div class="cut"></div>
+            <label for="pseudo" class="placeholder">Pseudo</label>
           </div>
           <div class="form-group">
-            {{ form_label(userForm.email)}}
+            {# {{ form_label(userForm.email)}} #}
             {{ form_widget(userForm.email, { "attr": {"class" : "form-control" } }) }}
+            <div class="cut"></div>
+            <label for="email" class="placeholder">Email</label>
           </div>
- 
-          {% if is_granted('ROLE_ADMIN') %}
+        {# Display roles field if option is_admin = true in the controller #}
+          {% if userForm.roles is defined %} 
             <div class="form-group">
-              {{ form_label(userForm.roles)}}
+              {# {{ form_label(userForm.roles)}} #}
               {{ form_widget(userForm.roles, { "attr": {"class" : "form-control" } }) }}
+              <div class="cut"></div>
+              <label for="roles" class="placeholder">Roles</label> 
             </div>
-           {% endif %}
-          <div>
+          {% endif %}
+        
           {% if not is_granted('ROLE_ADMIN') %}
-            <div class="form-group">
-              <a href="{{ path('editPassword',  {'id': app.user.id})}}" class="customButton">Change password</a>
+            <div class="psw-group">
+              <a href="{{ path('editPassword',  {'id': app.user.id})}}" class="customButton pswButton">Change password</a>
             </div>
           {% endif %}
           <div class="imagePreview">
             {{ form_label(userForm.imageFile) }}
-            {{ form_widget(userForm.imageFile, { "attr": {"class" : "form-control" } }) }}
+            {{ form_widget(userForm.imageFile, { "attr": {"class" : "img-control" } }) }}
           </div>
           <div class="buttonBox">        
             {{ form_label(userForm.Submit) }}
