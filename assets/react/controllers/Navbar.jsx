@@ -112,6 +112,7 @@ export default function Navbar ({props}) {
           onClose = {handleButtonClick}
         >
             <div className={`${modStyles.modaleImgBox}`}>
+                <img src="/images/design/circle2.png" alt="cyber-circle" className={`${modStyles.modaleProfileCircle}`}/>
                 <img src={props.userImg} alt={props.username} className={`${modStyles.modaleImg}`}/>
             </div>
             <hr />

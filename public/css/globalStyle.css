@@ -30,12 +30,12 @@ h1{
 }
 @keyframes text-glow {
     from {
-      text-shadow: 0 0 1px var(--var-primary);
+        text-shadow: 0 0 1px var(--var-primary);
     }
     to {
-      text-shadow: 0 0 7px var(--var-primary);
+        text-shadow: 0 0 7px var(--var-primary);
     }
-  }
+}
 /* --------------- Variables ------------------*/
 
 :root {
