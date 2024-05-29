@@ -55,11 +55,82 @@
   background-color: rgba(230, 230, 255, 0.734);
   color: black;
 }
+/* Create button style */
+
+/* Add scene */
+
+.createButton{
+  margin-top: 15px;
+  width: 170px;
+  height: 65px;
+}
+.createButton span{
+  background-color: rgba(230, 230, 255, 0.734);
+  color: black;
+  padding-top: 20px;
+  font-size: 24px;
+  font-weight: 600;
+}
+/* Artist role : */
+
+.artistRoleButton{
+    margin-top: 15px;
+    width: 200px;
+    height: 65px;
+  }
+.artistRoleButton span{
+    background-color: rgba(230, 230, 255, 0.734);
+    color: black;
+    padding-top: 22px;
+    font-size: 20px;
+    font-weight: 600;
+  }
+
+/* --------------------------------------------- */
 
 @media (max-width: 860px) {
   .customButton {
     font-size: 15px;
     min-width: 100px;
   }
-}
 
+/* Create button style */
+
+  /* Add scene */
+
+  .createButton{
+    margin-top: 15px;
+    width: 150px;
+    height: 50px;
+  }
+  .createButton span{
+    background-color: rgba(230, 230, 255, 0.734);
+    color: black;
+    padding-top: 15px;
+    font-size: 17px;
+    font-weight: 600;
+  }
+  /* Artist role : */
+
+  .artistRoleButton{
+    margin-top: 15px;
+    width: 180px;
+    height: 50px;
+  }
+  .artistRoleButton span{
+    background-color: rgba(230, 230, 255, 0.734);
+    color: black;
+    padding-top: 15px;
+    font-size: 17px;
+    font-weight: 600;
+  }
+
+
+
+
+
+
+
+
+
+}

@@ -9,7 +9,7 @@
 
 {% block body %}
   <h1>Data Visualization Art</h1>
-  <p>Choose a scene</p>
+  <h2>Choose a scene</h2>
   <div class="scenesContainer">
       <a href="{{ path('sceneD1')}}"><div class="optionContainer buttonGradient">Scene 1</div></a>
       <a><div class="optionContainer buttonGradient">Incoming</div></a>
@@ -18,14 +18,14 @@
  <div class="bottomContainer">
     {% if (is_granted('ROLE_ARTIST')) %}
       <div {{ react_component('MyButtonTwig', {"props": {
-                    "myStyle":"",
+                    "myStyle":"createButton",
                     "to":"/artist/add-new-scene",
                     "children" : "Add scene"
             }}) }}>
       </div>
       {% else %}
       <div {{ react_component('MyButtonTwig', {"props": {
-                  "myStyle":"",
+                  "myStyle":"artistRoleButton",
                   "to": app.user ? "/profile/roleRequest" : "/login",
                   "children" : "Ask for Artist Role"
           }}) }}>
