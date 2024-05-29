@@ -20,7 +20,7 @@
     {% endfor %}
     <div class="container">  
       <h1 class="headerUser">Edit Profile</h1>
-      <div class="formUser">
+      <div class="formUser spinningLight">
         {{ form_start(userForm) }}
           
           <div class="form-group">
@@ -38,7 +38,6 @@
         {# Display roles field if option is_admin = true in the controller #}
           {% if userForm.roles is defined %} 
             <div class="form-group">
-              {# {{ form_label(userForm.roles)}} #}
               {{ form_widget(userForm.roles, { "attr": {"class" : "form-control" } }) }}
               <div class="cut"></div>
               <label for="roles" class="placeholder">Roles</label> 
