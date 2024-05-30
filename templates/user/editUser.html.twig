@@ -8,7 +8,7 @@
 {% block body %}
 
 {# Profile form #}
-   {% for message in app.flashes('success')%}
+   {# {% for message in app.flashes('success')%}
       <div class="succesFlashMessages">
         {{message}}
       </div>      
@@ -17,13 +17,13 @@
       <div class="warningFlashMessages">
         {{message}}
       </div>      
-    {% endfor %}
+    {% endfor %} #}
     <div class="container">  
       <h1 class="headerUser">Edit Profile</h1>
       <div class="formUser spinningLight">
         {{ form_start(userForm) }}
           
-          <div class="form-group">
+          <div class="form-pseudo">
             {# {{ form_label(userForm.pseudo)}} #}
             {{ form_widget(userForm.pseudo, { "attr": {"class" : "form-control" } }) }}
             <div class="cut"></div>

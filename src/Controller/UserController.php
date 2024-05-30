@@ -215,6 +215,7 @@ class UserController extends AbstractController
             ]);
         }
         return $this->render('user/editArtwork.html.twig', [
+            'userId' => $userId,
             'form' => $form->createView(),
             'artwork' => $artwork
         ]);

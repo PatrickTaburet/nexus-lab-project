@@ -2,28 +2,41 @@
 
 {% block title %}Edit Artwork{% endblock %}
 
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('css/editArtwork.css') }}">
+{% endblock %}
+
 {% block body %}
+  <div class="container">  
+      <h1 class="headerArtwork">Edit Artwork informations</h1>
+      <div class="subContainer">
+        <img src="{{ vich_uploader_asset(artwork, 'imageFile')}}" alt="artwork_picture" class="artworkImg">
+        <div class="formArtwork spinningLight">
+          {{ form_start(form) }}
+            
+            <div class="form-title">
+              {# {{ form_label(form.pseudo)}} #}
+              {{ form_widget(form.title, { "attr": {"class" : "form-control" } }) }}
+              <div class="cut"></div>
+              <label for="title" class="placeholder">Title</label>
+            </div>
+            <div class="form-group">
+              {# {{ form_label(form.email)}} #}
+              {{ form_widget(form.comment, { "attr": {"class" : "form-control" } }) }}
+              <div class="cut"></div>
+              <label for="comment" class="placeholder">Comment</label>
+            </div>
+            <div class="buttonBox">        
+              {{ form_label(form.submit) }}
+              {{ form_widget(form.submit, { "attr": {"class" : "customButton" } }) }}
+              <a href="{{ path('myArtworks', {'id': userId})}}"  class="customButton">Back</a>
+            </div>
 
-    <h1>Edit Artwork informations</h1>
-    <img src="{{ vich_uploader_asset(artwork, 'imageFile')}}" alt="artwork_picture">
-    <div class="formUser">
-        {{ form_start(form) }}
-          <div class="form-group">
-            {{ form_label(form.title)}}
-            {{ form_widget(form.title, { "attr": {"class" : "form-control" } }) }}
-          </div>
-          <div class="form-group">
-            {{ form_label(form.comment)}}
-            {{ form_widget(form.comment, { "attr": {"class" : "form-control" } }) }}
-          </div>
-           <div class="buttonBox">        
-            {{ form_label(form.submit) }}
-            {{ form_widget(form.submit) }}
-            <a href="{{ path('home')}}"  class="customButton">Back</a>
-          </div> 
-
-        {{ form_end(form) }}
+          {{ form_end(form) }}
+        </div>
       </div>
+      
     </div>
 
 {% endblock %}

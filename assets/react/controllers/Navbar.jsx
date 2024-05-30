@@ -56,6 +56,11 @@ export default function Navbar ({props}) {
       (<div className={`${modStyles.modaleRowButtons}`}>
         <MyButton myStyle="whiteButton" to="/profile/roleRequest">Ask for Artist Role</MyButton>
       </div> ) 
+    const adminButton = (props.user && props.role.includes("ROLE_ADMIN"))?
+      (<div className={`${modStyles.modaleRowButtons}`}>
+        <MyButton myStyle="whiteButton" to="/admin/dashboard">Admin Dashboard</MyButton><hr className={`${modStyles.adminHr}`}/>
+      </div> ) : "";
+
 
     const profileResponsive = props.user ? 
       (<div  className={`${styles.rightSideImg}`}>
@@ -134,6 +139,7 @@ export default function Navbar ({props}) {
             </div>
               {modaleButtons}
             <hr />
+              {adminButton}
             <div className={`${modStyles.modaleBottom}`}> 
               <a className={`${modStyles.logout}`} href="/logout">Log out</a>
             </div>
