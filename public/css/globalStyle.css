@@ -20,7 +20,7 @@ body {
 main {
     background-color: var(--var-main-darkest);
     height: 100%;
-    margin-top: 60px;
+    padding-top: 60px;
     flex: 1; /* Permet au contenu principal de s'étendre pour remplir l'espace disponible restant */
 }
 

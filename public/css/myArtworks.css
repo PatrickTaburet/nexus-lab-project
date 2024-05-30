@@ -9,10 +9,13 @@ main {
   text-align: center;
 }
 h1{
-    margin: 23px;
+    margin: 23px 23px 8px 23px;
+    font-size: 50px;
 } 
 h2{
-    margin: 13px;
+    margin: 18px;
+    font-size: 30px;
+    font-weight: 400;
 }
 
 .tableContainer {
@@ -132,6 +135,15 @@ background-color: rgba(255,255,255,0.3);
     right: 20px;
   }
 
+
+/* 
+========================
+Media queries
+========================
+*/
+
+/* ----------------------------- < 1300px ------------------------------ */
+
   @media screen and (max-width: 1300px) {
     .table{
         display: block;
@@ -149,7 +161,12 @@ background-color: rgba(255,255,255,0.3);
     img{
         width: 150px;
     }
+}
 
+/* ----------------------------- < 900px ------------------------------ */
 
-
+@media screen and (max-width: 900px) {
+  h1{
+    font-size: 40px;
+  }
 }

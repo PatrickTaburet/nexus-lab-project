@@ -2,9 +2,13 @@
 
 namespace App\Controller;
 
+use App\Entity\AddScene;
+use App\Entity\ArtistRole;
 use App\Form\EditUserType;
 use App\Form\SaveArtworkD1Type;
 use App\Form\SaveArtworkG1Type;
+use App\Repository\AddSceneRepository;
+use App\Repository\ArtistRoleRepository;
 use Doctrine\ORM\EntityManager;
 use App\Repository\UserRepository;
 use App\Repository\Scene1Repository;
@@ -25,11 +29,14 @@ class AdminController extends AbstractController
      /**
     * @Route("/dashboard", name="dashboard")
     */
-    public function dashboard(UserRepository $users, Request $request): Response
+    public function dashboard(UserRepository $users, ArtistRoleRepository $role, AddSceneRepository $newScene, Request $request): Response
     {
-    
+        $roleRequests = $role->findAll();
+        $sceneRequests = $newScene->findAll();
+
         return $this->render('admin/dashboard.html.twig', [
-           
+           'roleRequests' => $roleRequests,
+           'sceneRequests' => $sceneRequests
         ]);
     }
 
@@ -158,10 +165,12 @@ class AdminController extends AbstractController
         
         if($entity === 'Scene1'){
             $artwork = $repoG1-> find($id);
+            $userId = $artwork->getUser()->getId();   
             $form = $this->createForm(SaveArtworkG1Type::class, $artwork);
 
         } elseif ($entity === 'SceneD1'){
             $artwork = $repoD1->find($id);
+            $userId = $artwork->getUser()->getId();   
             $form = $this->createForm(SaveArtworkD1Type::class, $artwork);
 
         } else { 
@@ -183,6 +192,7 @@ class AdminController extends AbstractController
             return $this->render('user/editArtwork.html.twig', [
                 'artwork' => $artwork,
                 'form' => $form->createView(),
+                'userId' => $userId
             ]);
     } 
 }

@@ -28,6 +28,7 @@
                 <th>Author</th>
                 <th>Title</th>
                 <th>Comments</th>
+                <th>Likes</th>
                 <th>Date</th>
                 <th>Actions</th>
             </thead>
@@ -42,6 +43,7 @@
                     </td>
                     <td>{{artwork.title}}</td>
                     <td class="commentTable">{{artwork.comment}}</td>
+                    <td class="likeTable">{{artwork.likes|length}}</td>
                     <td class="dateTable">{{artwork.updatedAt|date('F j, Y, g:i a')}}</td>
                     <td>
                     {# Check which entity this artwork comes from to be sure to delete only one #}
@@ -65,7 +67,7 @@
             </tbody>
         </table>
         <div class="d-flex justify-content-center">
-        <a href="{{ path('home')}}"><button  class="customButton ">BACK</button></a>
+        <a href="{{ path('home')}}"><button  class="customButton ">HOME</button></a>
         </div>
 
         {# pagination #}

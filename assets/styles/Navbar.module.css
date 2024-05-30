@@ -33,7 +33,7 @@ a {
     display: flex;
     align-items: center;
     gap: 10px;
-    min-height: 50px;
+    height: 60px;
     z-index: 10000;
 }
 

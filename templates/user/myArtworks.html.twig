@@ -30,7 +30,7 @@
 <h1 >MY ARTWORKS</h1>
 
 <div class="tableContainer">
-    <p>Generative Art</p>
+    <h2>Generative Art</h2>
 
 	<table class="table">
 		<thead>
@@ -38,6 +38,7 @@
 			    <th scope="col">Picture</th>
                 <th scope="col">Title</th>
                 <th scope="col">Comment</th>
+                <th scope="col">Likes</th>
                 <th scope="col">Date</th>
                 <th scope="col">Action</th>
 			</tr>
@@ -49,6 +50,7 @@
                 <td><img class="artworkImg" src="{{ vich_uploader_asset(artwork, 'imageFile')}}" alt="artwork_picture"></td>
                 <td>{{artwork.title}}</td>
                 <td class="commentTable">{{artwork.comment}}</td>
+                <td class="likeTable">{{artwork.likes|length}}</td>
                 <td class="dateTable">{{artwork.updatedAt|date('F j, Y, g:i a')}}</td>
                 <td>
                     <a href="{{ path('editArtwork', {'id': artwork.id, 'entity': 'Scene1'})}}" class="customButton">Update</a>
@@ -64,7 +66,7 @@
         </tbody>
 	</table>
 
-    <p>Data Art</p>
+    <h2>Data Art</h2>
 
 	<table class="table">
 		<thead>
@@ -72,6 +74,7 @@
 			    <th scope="col">Picture</th>
                 <th scope="col">Title</th>
                 <th scope="col">Comment</th>
+                <th scope="col">Likes</th>
                 <th scope="col">Date</th>
                 <th scope="col">Action</th>
 			</tr>
@@ -83,6 +86,7 @@
                 <td><img class="artworkImg" src="{{ vich_uploader_asset(artwork, 'imageFile')}}" alt="artwork_picture"></td>
                 <td>{{artwork.title}}</td>
                 <td class="commentTable">{{artwork.comment}}</td>
+                <td class="likeTable">{{artwork.likes|length}}</td>
                 <td class="dateTable">{{artwork.updatedAt|date('F j, Y, g:i a')}}</td>
                 <td>
                     <a href="{{ path('editArtwork', {'id': artwork.id, 'entity': 'SceneD1'})}}" class="customButton">Update</a>

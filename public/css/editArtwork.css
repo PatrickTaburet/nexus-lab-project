@@ -218,13 +218,45 @@ Media queries
 @media screen and (max-width: 900px)
 {
     .artworkImg{
-        width: 550px;
+        width: 500px;
+        margin-top: 0;
     }
     .headerArtwork{
-        margin: 0 0 25px 0;
-        padding: 40px 0 30px 0;
-        font-size: 47px;
-        font-family: var(--var-title);
-        animation: text-glow 1.3s ease-in-out infinite alternate;
+        margin-top: 30px ;
+        margin-bottom: 0;
+        padding: 60px 0 0 0;
+        text-align: center;
+    }
+    .subContainer{
+        gap: 2vw;
+        margin: 0 0 190px 0;
+        padding-top: 90px;
+    }
+}
+
+/* ----------------------------- < 500px ------------------------------ */
+
+@media screen and (max-width: 500px)
+{
+    .artworkImg{
+        width: 350px;
+        margin-top: 0;
+    }
+    .headerArtwork{
+        margin-top: 0 ;
+        margin-bottom: 0;
+        padding: 40px 0 0 0;
+        font-size: 40px;
+    }
+    .subContainer{
+        gap: 3vw;
+        margin: 0 0 190px 0;
+        padding-top: 50px;
+    }
+    .formArtwork{
+        padding: 20px;
+        min-width: 250px;
+        min-height: 230px;
+        margin: 10px 0 25px 0;
     }
 }

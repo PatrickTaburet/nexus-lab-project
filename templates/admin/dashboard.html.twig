@@ -2,10 +2,27 @@
 
 {% block title %}Admin Dashboard{% endblock %}
 
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('css/admin.css') }}">
+{% endblock %}
+
 {% block body %}
 <h1>Admin Dashboard</h1>
+    <div class="requestContainer">
+        {% for request in roleRequests %}
+            <div>{{request.firstname}}</div>
+        {% endfor %}
+    </div>
+    <div class="newSceneContainer">
+        {% for request in sceneRequests %}
+             <div>{{request.title}}</div>
+        {% endfor %}
+    </div>
+    <div class="buttonBox">
+        <a href="{{ path('admin_users')}}" class="customButton adminButton">Edit Users</a> 
+        <a href="{{ path('admin_gallery')}}" class="customButton adminButton">Edit Gallery</a> 
+    </div>
 
-    <a href="{{ path('admin_users')}}" class="customButton">Edit Users</a> 
-    <a href="{{ path('admin_gallery')}}" class="customButton">Edit Gallery</a> 
 
 {% endblock %}
