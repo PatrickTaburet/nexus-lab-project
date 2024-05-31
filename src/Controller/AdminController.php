@@ -29,7 +29,7 @@ class AdminController extends AbstractController
      /**
     * @Route("/dashboard", name="dashboard")
     */
-    public function dashboard(UserRepository $users, ArtistRoleRepository $role, AddSceneRepository $newScene, Request $request): Response
+    public function dashboard(ArtistRoleRepository $role, AddSceneRepository $newScene): Response
     {
         $roleRequests = $role->findAll();
         $sceneRequests = $newScene->findAll();
@@ -195,4 +195,33 @@ class AdminController extends AbstractController
                 'userId' => $userId
             ]);
     } 
+
+    /**
+    * @Route("/request/{entity}/{id}", name="showRequest", methods= {"GET", "POST"})
+    */
+    public function showRequest(ArtistRoleRepository $artistReq, AddSceneRepository $sceneReq, $id, $entity): Response
+    {
+        $request = null;
+        $type = '';
+        if($entity === 'ArtistRole'){
+            $request = $artistReq->find($id);
+            $type = $request->getType();
+        }
+        if($entity === 'AddScene'){
+            $request = $sceneReq->find($id);
+            $type = $request->getType();
+        }
+       
+
+        return $this->render('admin/request.html.twig', [
+           'request' => $request,
+           'type' => $type,
+        ]);
+    }
+
+
+
+
+
+
 }

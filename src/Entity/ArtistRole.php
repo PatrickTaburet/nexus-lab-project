@@ -2,14 +2,20 @@
 
 namespace App\Entity;
 
-use App\Repository\ArtistRoleRepository;
+use DateTimeImmutable;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\ArtistRoleRepository;
 
 /**
  * @ORM\Entity(repositoryClass=ArtistRoleRepository::class)
  */
 class ArtistRole
 {
+    public function __construct()
+    {
+        $this->createdAt = new DateTimeImmutable();
+    }
+    
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
@@ -42,11 +48,17 @@ class ArtistRole
      */
     private $portfolio;
 
+    /**
+    * @ORM\Column(type="datetime_immutable", nullable=true)
+    */
+    private $createdAt;
+
    /**
      * @ORM\OneToOne(targetEntity="App\Entity\User",  inversedBy="role_request")
      * @ORM\JoinColumn(name="user_id", referencedColumnName="id")
      */ 
     private $user;
+    
 
     public function getId(): ?int
     {
@@ -112,11 +124,23 @@ class ArtistRole
 
         return $this;
     }
+    public function getCreatedAt(): ?DateTimeImmutable
+    {
+        return $this->createdAt;
+    }
+
+    public function setCreatedAt(?DateTimeImmutable $updatedAt): self
+    {
+        $this->createdAt = $updatedAt;
+
+        return $this;
+    }
 
     public function getUser(): ?User
     {
         return $this->user;
     }
+    
 
     public function setUser(?User $user): self
     {
@@ -133,5 +157,10 @@ class ArtistRole
         $this->user = $user;
 
         return $this;
+    }
+
+    public function getType(): string
+    {
+        return 'ArtistRole';
     }
 }

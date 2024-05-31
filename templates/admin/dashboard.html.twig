@@ -9,20 +9,60 @@
 
 {% block body %}
 <h1>Admin Dashboard</h1>
-    <div class="requestContainer">
-        {% for request in roleRequests %}
-            <div>{{request.firstname}}</div>
-        {% endfor %}
+<div class="dashboardContainer">
+    <div class="dashboardTop">
+        <div class="requestContainer">
+            <h2>Artist role requests</h2>
+            <div class="requestContent">
+                <table class="table">
+                    <thead>
+                        <th>User</th>
+                        <th>Date</th>
+                        <th>Action</th>
+                    </thead>
+                    <tbody>
+                    {% for request in roleRequests %}
+                        <tr>
+                            <td>{{request.user.pseudo}}</td>
+                            <td>{{request.createdAt|date('F j, Y, g:i a')}}</td>
+                            <td><a href="{{path('admin_showRequest', {'id' : request.id, 'entity': "ArtistRole"}) }}" class="customButton">Open</a>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            
+        </div>
+        <div class="newSceneContainer">
+            <h2>New scene proposals</h2>
+            <div class="requestContent">
+                <table class="table">
+                    <thead>
+                        <th>User</th>
+                        <th>Date</th>
+                        <th>Action</th>
+                    </thead>
+                    <tbody>
+                    {% for request in sceneRequests %}
+                        <tr>
+                            <td>{{request.user.pseudo}}</td>
+                            <td>{{request.updatedAt|date('F j, Y, g:i a')}}</td>
+                            <td><a href="{{path('admin_showRequest', {'id' : request.id, 'entity': "AddScene"}) }}" class="customButton">Open</a></td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+           
+        </div>
     </div>
-    <div class="newSceneContainer">
-        {% for request in sceneRequests %}
-             <div>{{request.title}}</div>
-        {% endfor %}
-    </div>
+
     <div class="buttonBox">
         <a href="{{ path('admin_users')}}" class="customButton adminButton">Edit Users</a> 
         <a href="{{ path('admin_gallery')}}" class="customButton adminButton">Edit Gallery</a> 
     </div>
+</div>
+
 
 
 {% endblock %}

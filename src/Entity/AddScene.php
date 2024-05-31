@@ -185,4 +185,9 @@ class AddScene
 
         return $this;
     }
+
+    public function getType(): string
+    {
+        return 'AddScene';
+    }
 }

@@ -1,0 +1,82 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Request{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('css/admin.css') }}">
+{% endblock %}
+
+{% block body %}
+<h1>Request</h1>
+<div class="dashboardContainer">
+    <div class="dashboardTop">
+        <div class="requestContainer">
+            <div class="requestContent">
+            {% if type == 'ArtistRole' %}
+                <h2>Artist role request</h2>
+                <div>Id : {{request.id}}</div>
+                <div>Firstname : {{request.firstname}}</div>
+                <div>Name : {{request.name}}</div>
+                <div>Pseudo : {{request.user.pseudo}}</div>
+                <div>Email : {{request.user.email}}</div>
+                <div>Bio : {{request.bio}}</div>
+                <div>Exemples : {{request.exemples}}</div>
+                <div>Portfolio : {{request.portfolio}}</div>
+                <div>Date : {{request.createdAt|date('F j, Y, g:i a')}}</div>
+            {% elseif type == 'AddScene' %}
+                <h2>New scene request</h2>
+                <div>Id : {{request.id}}</div>
+                <div>Pseudo : {{request.user.pseudo}}</div>
+                <div>Email : {{request.user.email}}</div>
+                <div>Languages :
+                    <ul>
+                        {% for language in request.language %}
+                            <li>{{ language }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                <div>Name : {{request.title}}</div>
+                <div>Bio : {{request.description}}</div>
+                <div><img class="sceneImg" src="{{ vich_uploader_asset(request, 'imageFile')}}" alt="scene_picture"></div>
+                <div>
+                    <a href="{{ asset('code/' ~ request.codeFile) }}" download>Download Code File</a>
+                </div>
+                <div>Date : {{request.updatedAt|date('F j, Y, g:i a')}}</div>
+
+            {% endif %}
+            </div>
+            
+        </div>
+        {# <div class="newSceneContainer">
+            <h2>New scene proposals</h2>
+            <div class="requestContent">
+                <table class="table">
+                    <thead>
+                        <th>User</th>
+                        <th>Date</th>
+                        <th>Action</th>
+                    </thead>
+                    <tbody>
+                    {% for request in sceneRequests %}
+                        <tr>
+                            <td>{{request.user.pseudo}}</td>
+                            <td>{{request.updatedAt|date('F j, Y, g:i a')}}</td>
+                            <td><a href="{{path('admin_edit_artwork', {'id' : artwork.id}) }}" class="customButton">Edit</a>
+                       </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div> #}
+    </div>
+
+    <div class="buttonBox">
+        {# <a href="{{ path('')}}" class="customButton adminButton">Delete request</a>    #}
+    </div>
+</div>
+
+
+
+{% endblock %}
