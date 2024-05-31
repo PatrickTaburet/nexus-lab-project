@@ -49,9 +49,10 @@ let checkboxFlag;
 // Initial setup
 
 function setup(){
-    const squareSize = min(windowWidth, windowHeight);
+    const squareSize = min(windowWidth-30, windowHeight-30);
     const canvas = createCanvas(squareSize, squareSize);
     canvas.parent('sketch');
+    canvas.id('myCanvas');
     // console.log(width);
     
     // width = 800 - (800 - 600) / 2; // Set the width to 600 pixels with padding on each side
@@ -141,9 +142,10 @@ function draw(){
 }
 
 function windowResized() { 
-    const squareSize = min(windowWidth, windowHeight);
+    const squareSize = min(windowWidth-30, windowHeight-30);
     const canvas = createCanvas(squareSize, squareSize);
     canvas.parent('sketch');
+    canvas.id('myCanvas');
     // Create a vertical gradient background
 
     background(0);

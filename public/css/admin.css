@@ -160,6 +160,7 @@ Dashboard
     flex-direction: column;
     align-items: center;
     gap: 40px;
+    margin: 20px;
 }
 .openReqContent{
     color: white;
@@ -258,10 +259,6 @@ Confirm delete user
 }
 
 
-
-
-
-
 /* 
 ========================
 Media queries
@@ -321,7 +318,24 @@ Media queries
     .requestContent{
         display: flex;
         width: 100%;
-    
+    }
+
+    /* Open request */
+    .openReqContent{
+        color: white;
+        display: flex;
+        justify-content: left;
+        flex-direction: column;
+        align-items: start;
+        padding: 10px;
+        box-shadow: 0 0 10px var(--var-primary);
+        background-color: var( --var-card-dark);
+        min-width: 200px;
+        border-radius: 15px;
+    }
+    .sceneImg{
+        width: 70%;
+        margin: auto;
     }
 }
 /* ----------------------------- < 500px ------------------------------ */

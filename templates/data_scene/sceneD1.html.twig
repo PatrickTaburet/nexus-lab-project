@@ -16,21 +16,54 @@
 
 
 {# Modale : save artwork  #}
-    <div class="modaleBackground hidden">
+<div class="modaleBackground hidden">
     <div class="superModale hidden">
         <div class="headerModale">
             <h1>Save ArtWork</h1>
-            <button class="closeButton">X</button>
+            <button class="closeButton customButton closeModaleStyle">X</button>
         </div>
         <p>Do you want to save this artwork and share it in the Gallery?</p> 
         <button id="sendDataButton" class="customButton generateButton">Save</button>
     </div>
-    </div>
+</div>
 {# End modale #}
 
-<h1>CO2 WORLDWIDE EMISSIONS</h1>
+{# ---------------------- #}
+
+<div class="headerTitle">
+    <img class="titleImg" src={{ asset("/images/design/title3.png")}} alt="Title square">
+    <h1>CO2 WORLDWIDE EMISSIONS</h1>
+</div>
+
 <div class="mainContainer">
-    <div class="descriptionBox"> Description </div>
+
+{# Left Side #}
+
+    <div class="leftSide">
+        <div class="labelBox">
+            <a href="{{ path('generativeHome')}}">Data <br> Art</a>
+            <img class="LabelImg" src={{ asset("/images/design/Title-square2.png")}} alt="Generative Art">
+        </div>
+        <div class="descriptionBox">
+            <div class="card-border">
+                <div class="card ">
+                    <div class="card-title">
+                        Description
+                    </div>
+                    <img class="arrow1" src={{ asset("/images/design/arrow.png")}} alt="Description arrow">
+                    <div class="separator"></div>
+                    <div class="card-content">
+                        <div class="descriptionContent">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Provident sapiente animi, atque fugiat, autem optio modi id sed voluptatem saepe nulla aliquam temporibus officiis consequatur amet dolorum voluptatum natus nihil.Lorem, ipsum dolor sit amet consectetur adipisicing elit. Provident sapiente animi, atque fugiat, autem optio modi id sed voluptatem saepe nulla aliquam temporibus officiis consequatur amet dolorum voluptatum natus nihil  </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <img class="CyberCircleImg" src={{asset("/images/design/circle1.png")}} alt="Cyber-circle">
+        <img class="hexaImg" src={{asset("/images/design/hexa.png")}} alt="Cyber-hexagon">
+    </div>
+
+{# Sketch #}
+
     <div id="sketch"></div>
     <div class="parametersBox">
 
@@ -75,7 +108,7 @@
                     <output class="bubble"></output>
                 </div>
             </div>
-            <div class="checkboxConatainer">
+            <div class="checkboxContainer">
                 <p>Looping :</p>
                 <input type="checkbox" id="checkboxLoop" class="checkbox">
             </div>

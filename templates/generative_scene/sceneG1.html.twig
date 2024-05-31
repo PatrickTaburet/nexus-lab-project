@@ -16,7 +16,7 @@
 {% endfor %}
 
 {# Modale : save artwork  #}
-    <div class="modaleBackground hidden">
+<div class="modaleBackground hidden">
     <div class="superModale hidden">
         <div class="headerModale">
             <p>Save ArtWork</p>
@@ -25,7 +25,7 @@
         <p>Do you want to save this artwork and share it in the Gallery?</p> 
         <button id="sendDataButton" class="customButton generateButton">Save</button>
     </div>
-    </div>
+</div>
 {# End modale #}
 
 {# ---------------------- #}
@@ -36,6 +36,9 @@
 </div>
 
 <div class="mainContainer">
+
+{# Left Side #}
+
     <div class="leftSide">
         <div class="labelBox">
             <a href="{{ path('generativeHome')}}">Generative <br> Art</a>
@@ -128,7 +131,7 @@
                         <output class="bubble"></output>
                         </div>
                     </div>
-                    <div class="checkboxConatainer">
+                    <div class="checkboxContainer">
                         <p>Stop and go :</p>
                         <input type="checkbox" id="checkboxStop">
                     </div>

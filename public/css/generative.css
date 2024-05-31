@@ -18,6 +18,13 @@ Generative scenes
   top: 80px;
 }
 
+h1{
+  font-size: 23px;
+  text-align: center;
+  padding-top: 54px;
+  font-weight: 600;
+  z-index: 2;
+}
 .mainContainer{
     text-align: center;
     display: flex;
@@ -27,15 +34,7 @@ Generative scenes
     width: 100%;
 }
 
-h1{
-    font-size: 23px;
-    /* margin: 1vw; */
-   text-align: center;
-   padding-top: 54px;
-   font-weight: 600;
-   z-index: 2;
-
-}
+/* Sketch */
 
 #myCanvas{
   position: relative;
@@ -48,6 +47,9 @@ h1{
   border: 3px solid black; /* Vous pouvez personnaliser la bordure comme vous le souhaitez */
   clip-path: polygon(40px 0, 100% 0%, 100% calc(100% - 40px), calc(100% - 40px) 100%, 0 100%, 0 40px);
 }
+
+/* Left Side */
+
 .leftSide{
   margin-left: 70px;
   height: 100%;
@@ -94,6 +96,7 @@ h1{
 }
 
 /* Decors */
+
 .arrow1{
   display: none;
 }
@@ -123,12 +126,12 @@ h1{
   animation: rotate 35s linear infinite;
 }
 @keyframes rotate {
-0% {
-  transform: rotate(0deg);
-}
-100% {
-  transform: rotate(360deg);
-}
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }
 
 /* 
@@ -168,62 +171,6 @@ UI pannel style
   color: white;
   width: 90%;
 }
-
-/* ------- SciFi box card -------*/
-
-
-  /* .main-container  {
-    align-items: center;
-    background: linear-gradient(-45deg, var(--var-secondary-bg), var(--var-main-bg));
-    color: var(--var-main-fg);
-    display: grid;
-    height: 100vh;
-    justify-content: center;
-    width: 100vw;
-  } */
-  
-  
-  .card {
-    background: rgba(0,0,0,.5);
-    width: 70%;
-    height: 100%;
-    padding: var(--var-notchSize/2) var(--var-notchSize);
-    box-shadow: inset 0 0 10px var(--var-primary);
-    clip-path: polygon(40px 0, 100% 0%, 100% calc(100% - 40px), calc(100% - 40px) 100%, 0 100%, 0 40px);
-    padding: 10px;
-    .card-title {
-      font-weight: 700;
-      font-size: 20px;
-      padding: 15px 0 0 0;
-      animation: text-glow 1.1s ease-in-out infinite alternate;
-    }
-    
-    .separator {
-      height: 1px;
-      width: 100%;
-      background-color: var(--var-primary);
-      margin: 20px 0;
-      box-shadow: 0 0 10px var(--var-primary);
-    }
-    
-    .card-content {
-      text-shadow: 0px 0px 5px rgba(255,255,255,.2);
-      display: flex;
-      justify-content: center;
-      flex-direction: column;
-      align-items: center;
-      margin: 10px;
-    }
-  }
-  
-  .card-border {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-    filter: drop-shadow(0px 0px 3px var(--var-primary));
-  }
-  
   
   
 /* ------- Sliders -------*/
@@ -302,7 +249,7 @@ UI pannel style
   
  /* ---- Checkbox ---- */
 
-.checkboxConatainer{
+.checkboxContainer{
     display: flex;
     justify-content: center;
     align-items: center;
@@ -370,6 +317,50 @@ UI pannel style
 }
 
 
+/* ------- SciFi box card -------*/
+  
+  
+.card {
+  background: rgba(0,0,0,.5);
+  width: 70%;
+  height: 100%;
+  padding: var(--var-notchSize/2) var(--var-notchSize);
+  box-shadow: inset 0 0 10px var(--var-primary);
+  clip-path: polygon(40px 0, 100% 0%, 100% calc(100% - 40px), calc(100% - 40px) 100%, 0 100%, 0 40px);
+  padding: 10px;
+  .card-title {
+    font-weight: 700;
+    font-size: 20px;
+    padding: 15px 0 0 0;
+    animation: text-glow 1.1s ease-in-out infinite alternate;
+  }
+  
+  .separator {
+    height: 1px;
+    width: 100%;
+    background-color: var(--var-primary);
+    margin: 20px 0;
+    box-shadow: 0 0 10px var(--var-primary);
+  }
+  
+  .card-content {
+    text-shadow: 0px 0px 5px rgba(255,255,255,.2);
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    margin: 10px;
+  }
+}
+  
+.card-border {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  filter: drop-shadow(0px 0px 3px var(--var-primary));
+}
+  
 
 /* ------- Modale -------*/
 
@@ -611,10 +602,10 @@ Media queries
 
 /* Checkbox */
 
-.checkboxConatainer{
+.checkboxContainer{
   margin: 20px 0px 0px 20px;
 }
-.checkboxConatainer p {
+.checkboxContainer p {
   min-width: 70px;
 }
 
@@ -723,7 +714,7 @@ Media queries
     min-width: 50px;
     max-width: 100px;
   }
-  .checkboxConatainer{
+  .checkboxContainer{
     margin: 0;
   }
   
