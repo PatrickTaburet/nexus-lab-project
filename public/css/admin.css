@@ -106,43 +106,181 @@ Dashboard
 }
 .dashboardTop{
     display: flex;
-    justify-content: space-around;
+    justify-content: center;
+    gap: 50px;
+    flex-wrap: wrap;
     width: 80%;
+}
+.dashboardTitle{
+    font-size: 50px;
+}
+.subTitle{
+    color: white;
+    font-weight: 400;
+}
+.dashboardTable{
+    width: 100%;
 }
 .buttonBox{
     display: flex;
     justify-content: center;
-    flex-direction: column;
     align-items: center;
+    margin-bottom: 50px;
+    margin-top: 20px;
+    background-color: var( --var-line-dark);
+    border-radius: 15px;
+    padding: 10px;
+    box-shadow: 0 0 10px var(--var-primary);
+
 }
 .adminButton{
     width: 150px;
 }
 .requestContainer{
-   width: 500px;
+   /* width: 500px; */
     border: solid 1px black;
     display: flex;
-    justify-content: center;
     align-items: center;
     flex-direction: column;
-}
-.newSceneContainer{
-    width: 500px;
-    border: solid 1px black;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
+    border-radius: 15px;
+    padding: 10px;
+    box-shadow: 0 0 10px var(--var-primary);
+    background-color: var( --var-card-dark);
+    margin-bottom: 40px;
 }
 .requestContent{
-    flex-wrap: wrap;
+    display: flex;
+
 }
+/* Open request */
+
+.openReqContainer{
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    gap: 40px;
+}
+.openReqContent{
+    color: white;
+    display: flex;
+    justify-content: left;
+    flex-direction: column;
+    align-items: start;
+    padding: 10px;
+    box-shadow: 0 0 10px var(--var-primary);
+    background-color: var( --var-card-dark);
+   max-width: 800px;
+    border-radius: 15px;
+}
+.openReqContent h2{
+    margin: auto;
+    padding: 15px 15px 35px 15px;
+}
+.openReqContent div {
+    display: flex;
+    text-align: start;
+    align-items: center;
+    justify-content: left;
+    border-radius: 15px;
+    word-break: break-all;
+    padding: 15px;
+    background-color: var( --var-line-dark);
+    margin: 10px;
+}
+.openReqContent div p{
+    word-break: normal;
+    margin-right: 7px;
+    font-weight: 600;
+    color: var(--var-cyan);
+}
+.openReqContent .sceneImgDiv{
+    margin: auto;
+    margin-top: 10px;
+}
+.sceneImg{
+    width: 500px;
+}
+.openReqContent .download{
+   margin: auto;
+   margin-top: 20px;
+
+}
+.download a:hover{
+    color: var(--var-cyan);
+}
+hr{
+    height: 1px;
+    width: 100%;
+    background-color: var(--var-primary);
+    box-shadow: 0 0 10px var(--var-primary);
+    margin: 15px 0 15px 0;
+}
+.openReqContent  .deleteButtonBox{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 30px 0 30px 0;
+    background-color: var( --var-secondary-dark);
+    border-radius: 15px;
+    padding: 0;
+    width: 100%;
+    box-shadow: 0 0 10px var(--var-primary);
+}
+
+/* 
+========================
+Confirm delete user
+========================
+*/
+.confirmContainer{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 10px;
+    box-shadow: 0 0 10px var(--var-primary);
+    background-color: var( --var-card-dark);
+    border-radius: 15px;
+    width: 500px;
+    margin: auto;
+    margin-top: 50px;
+    margin-bottom: 70px;
+}
+.confirmContainer div{
+    padding: 10px;
+    box-shadow: 0 0 10px var(--var-primary);
+    background-color: var( --var-secondary-dark);
+    width:50%;
+    border-radius: 15px;
+    margin-bottom: 50px;
+    margin-top: 30px;
+}
+
+
+
+
+
+
 /* 
 ========================
 Media queries
 ========================
 */
 
+/* ----------------------------- < 1400px ------------------------------ */
+
+@media screen and (max-width: 1400px)
+{
+
+/* Dashboard*/
+
+    .dashboardTop{
+        gap: 0px;
+
+    }
+
+}
 /* ----------------------------- < 1300px ------------------------------ */
 
 @media screen and (max-width: 1300px) {
@@ -165,6 +303,54 @@ Media queries
     .artworkImg{
         width: 150px;
     }
+
+}
+
+/* ----------------------------- < 700px ------------------------------ */
+
+@media screen and (max-width: 700px) {
+
+    /* Dashboard*/
+
+    .requestContainer{
+     
+        overflow-x: auto;
+        white-space: nowrap;
+        min-width: 80%;
+    }
+    .requestContent{
+        display: flex;
+        width: 100%;
+    
+    }
+}
+/* ----------------------------- < 500px ------------------------------ */
+
+@media screen and (max-width: 500px) {
+
+
+/* 
+========================
+Confirm delete user
+========================
+*/
+.confirmContainer{
+    width: 300px;
+}
+.confirmContainer h1{
+    font-size: 20px;
+    word-break:normal;
+}
+.confirmContainer div{
+    padding: 10px;
+    box-shadow: 0 0 10px var(--var-primary);
+    background-color: var( --var-secondary-dark);
+    width:80%;
+    border-radius: 15px;
+    margin-bottom: 50px;
+    margin-top: 30px;
+}
+
 
 
 

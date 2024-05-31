@@ -8,13 +8,24 @@
 {% endblock %}
 
 {% block body %}
-<h1>Admin Dashboard</h1>
+
+{% for message in app.flashes('success')%}
+    <div class="succesFlashMessages">
+        {{message}}
+    </div>      
+{% endfor %}
+
+<h1 class="dashboardTitle">Admin Dashboard</h1>
 <div class="dashboardContainer">
+    <div class="buttonBox">
+        <a href="{{ path('admin_users')}}" class="customButton adminButton">Edit Users</a> 
+        <a href="{{ path('admin_gallery')}}" class="customButton adminButton">Edit Gallery</a> 
+    </div>
     <div class="dashboardTop">
         <div class="requestContainer">
-            <h2>Artist role requests</h2>
+            <h2 class="subTitle">Artist role requests</h2>
             <div class="requestContent">
-                <table class="table">
+                <table class="table dashboardTable">
                     <thead>
                         <th>User</th>
                         <th>Date</th>
@@ -25,7 +36,7 @@
                         <tr>
                             <td>{{request.user.pseudo}}</td>
                             <td>{{request.createdAt|date('F j, Y, g:i a')}}</td>
-                            <td><a href="{{path('admin_showRequest', {'id' : request.id, 'entity': "ArtistRole"}) }}" class="customButton">Open</a>
+                            <td><a href="{{path('admin_show_request', {'id' : request.id, 'entity': "ArtistRole"}) }}" class="customButton">Open</a>
                         </tr>
                     {% endfor %}
                     </tbody>
@@ -33,10 +44,10 @@
             </div>
             
         </div>
-        <div class="newSceneContainer">
-            <h2>New scene proposals</h2>
+        <div class="requestContainer">
+            <h2 class="subTitle">New scene proposals</h2>
             <div class="requestContent">
-                <table class="table">
+                <table class="table dashboardTable">
                     <thead>
                         <th>User</th>
                         <th>Date</th>
@@ -47,7 +58,7 @@
                         <tr>
                             <td>{{request.user.pseudo}}</td>
                             <td>{{request.updatedAt|date('F j, Y, g:i a')}}</td>
-                            <td><a href="{{path('admin_showRequest', {'id' : request.id, 'entity': "AddScene"}) }}" class="customButton">Open</a></td>
+                            <td><a href="{{path('admin_show_request', {'id' : request.id, 'entity': "AddScene"}) }}" class="customButton">Open</a></td>
                         </tr>
                     {% endfor %}
                     </tbody>
@@ -55,11 +66,6 @@
             </div>
            
         </div>
-    </div>
-
-    <div class="buttonBox">
-        <a href="{{ path('admin_users')}}" class="customButton adminButton">Edit Users</a> 
-        <a href="{{ path('admin_gallery')}}" class="customButton adminButton">Edit Gallery</a> 
     </div>
 </div>
 

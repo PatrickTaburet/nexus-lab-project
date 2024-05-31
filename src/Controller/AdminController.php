@@ -34,6 +34,14 @@ class AdminController extends AbstractController
         $roleRequests = $role->findAll();
         $sceneRequests = $newScene->findAll();
 
+        // Sorting all requests by creation date
+        usort($roleRequests, function($a, $b) {
+            return ($b->getCreatedAt() <=> $a->getCreatedAt());
+        });
+        usort($sceneRequests, function($a, $b) {
+            return ($b->getUpdatedAt() <=> $a->getUpdatedAt());
+        });
+
         return $this->render('admin/dashboard.html.twig', [
            'roleRequests' => $roleRequests,
            'sceneRequests' => $sceneRequests
@@ -105,6 +113,7 @@ class AdminController extends AbstractController
         $this->addFlash('success', 'User '.$userEmail.' delete succeed');
         return $this->redirectToRoute('admin_users');
     }
+
       /**
      * @Route("/confirm/{id}", name="confirm")
      */
@@ -197,7 +206,7 @@ class AdminController extends AbstractController
     } 
 
     /**
-    * @Route("/request/{entity}/{id}", name="showRequest", methods= {"GET", "POST"})
+    * @Route("/request/{entity}/{id}", name="show_request", methods= {"GET", "POST"})
     */
     public function showRequest(ArtistRoleRepository $artistReq, AddSceneRepository $sceneReq, $id, $entity): Response
     {
@@ -219,7 +228,25 @@ class AdminController extends AbstractController
         ]);
     }
 
+    /**
+    * @Route("/delete/request/{entity}/{id}", name="delete_request", methods= {"GET", "POST"})
+    */
+    public function deleteRequest(EntityManagerInterface $entityManager, ArtistRoleRepository $artistReq, AddSceneRepository $sceneReq, $id, $entity): Response
+    {
+        if($entity === 'ArtistRole'){
+            $request = $artistReq->find($id);
+            $entityManager->remove($request);
+        }
+        if($entity === 'AddScene'){
+            $request = $sceneReq->find($id);
+            $entityManager->remove($request);
+        }
+        $entityManager->flush();
+        $this->addFlash('success', 'Request successfully deleted');
+        return $this->redirectToRoute('admin_dashboard');
+    }
 
+   
 
 
 
