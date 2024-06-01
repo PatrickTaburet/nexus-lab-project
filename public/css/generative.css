@@ -576,7 +576,6 @@ Media queries
 /* ------- Sliders -------*/
 
 .sliderBox{
-
   width: 60%;
 }
 
@@ -720,7 +719,6 @@ Media queries
   
   /* ------- Sliders -------*/
   .sliderBox{
-
     width: 30%;
   }
 
@@ -870,7 +868,7 @@ Media queries
   /* Sliders */
   .sliderBox{
     width: 40%;
-     margin: 0 7px 0 7px
+    margin: 0 7px 0 7px
   }
 
   /* Decors */
