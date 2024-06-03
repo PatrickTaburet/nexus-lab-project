@@ -286,7 +286,7 @@ function sendData(){
     let country8 = select("#country7").value()
 
     // Capture l'image du canva dans un format base64
-    const myCanvas = document.getElementById("defaultCanvas0");
+    const myCanvas = document.getElementById("myCanvas");
     const imageBase64 = myCanvas.toDataURL();
     // const imageBase64 = canvas.elt.toDataURL();
 

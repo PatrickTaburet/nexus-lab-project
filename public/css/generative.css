@@ -117,7 +117,7 @@ h1{
   }
 }
 .hexaImg{
-  bottom: -345px;
+  bottom: -362px;
   left: 43vw;
   display: block;
   width: 10vw;
@@ -249,13 +249,20 @@ UI pannel style
   
  /* ---- Checkbox ---- */
 
-.checkboxContainer{
+  .checkboxContainer{
     display: flex;
     justify-content: center;
     align-items: center;
-    margin: 20px;
+    margin: 20px 20px 20px 50px;
     color: white
   }
+
+  .checkboxContainer p{
+    min-width: 70px;
+
+  }
+
+
  #checkboxStop{
   width:178px;
   min-width: 178px;
@@ -573,42 +580,38 @@ Media queries
     height: 10vw;
   }
 
-/* ------- Sliders -------*/
+  /* ------- Sliders -------*/
 
-.sliderBox{
-  width: 60%;
+  .sliderBox{
+    width: 60%;
+  }
+
+  .range-wrap {
+    width: 100%;
+    padding: 0.7em 0;
+
+  }
+
+  /* .range-wrap::before {
+    height: 7px;
+  } */
+
+  .range-wrap{
+    min-width: 200px;
+  }
+
+
+
+  /* Checkbox */
+
+  .checkboxContainer{
+    margin: 20px 0px 0px 40px;
+  }
+  .checkboxContainer p {
+    min-width: 70px;
+  }
+
 }
-
-.range-wrap {
-  width: 100%;
-  padding: 0.7em 0;
-
-}
-
-/* .range-wrap::before {
-  height: 7px;
-} */
-
-.range-wrap{
-  min-width: 200px;
-}
-
-/* .bubble {
-  scale: 0.7;
-  top: 40%;
-} */
-}
-
-/* Checkbox */
-
-.checkboxContainer{
-  margin: 20px 0px 0px 20px;
-}
-.checkboxContainer p {
-  min-width: 70px;
-}
-
-
 /* ----------------------------- < 1200px ------------------------------ */
 
 @media screen and (max-width: 1200px)
@@ -756,8 +759,7 @@ Media queries
     left: 2vw;
     width: 17vw;
     height: 15vw;
-
-}
+  }
 
 }
 
