@@ -17,13 +17,14 @@ Data vizyalise scenes
   height: 85px;
   top: 80px;
 }
-h1{
+.headerTitle h1{
   font-size: 23px;
   text-align: center;
   padding-top: 52px;
   font-weight: 600;
   z-index: 2;
 }
+
 .mainContainer{
   text-align: center;
   display: flex;
@@ -75,7 +76,7 @@ h1{
   width: 280px;
   height: 150px;
   position: absolute;
-  top:100px;  
+  top:95px;  
 }
 .descriptionBox{
   display: flex;
@@ -264,12 +265,11 @@ UI pannel
   border: 1px solid #ccc;
   border-radius: 0.25rem;
   background-color: var(--var-secondary-dark);
+  /* opacity: 0.5; */
   background-clip: padding-box;
   transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
   margin: 5px;
 }
-
-
 
 /* ---- Sliders ---- */
 
@@ -494,6 +494,13 @@ Modale
   animation: text-glow 1.1s ease-in-out infinite alternate;
   font-size: 23px;
 }
+.headerModale h1{
+  font-size: 23px;
+  text-align: center;
+  padding-top: 32px;
+  font-weight: 600;
+  z-index: 2;
+}
 .closeButton{
   width: 30px;
   height: 30px;
@@ -570,15 +577,15 @@ Media queries
     justify-content: center;
     align-items: center;
     margin-right: 57px;
-    font-size: 26px;
+    font-size: 28px;
     top: 117px;
-    right: 40px;
+    right: 35px;
     
   }
 
   .LabelImg{
     width: 220px;
-    height: 120px;
+    height: 110px;
     top: 80px;
     right: 40px;
   }
@@ -717,7 +724,8 @@ Media queries
     top: 118px; 
   }
   .LabelImg{
-    top: 80px;
+    top: 83px;
+    right: 42px;
   }
   .leftSide{
     margin: 0px;

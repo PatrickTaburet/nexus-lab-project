@@ -366,7 +366,7 @@ Cards lazy loading animation
 }
 
 .card.visible {
-    opacity: 1; /* show the cards when they come into view */
+    opacity: 0.9; /* show the cards when they come into view */
     transform: translateY(0); /* reset the translation effect */
 }
 

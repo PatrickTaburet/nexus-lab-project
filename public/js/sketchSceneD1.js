@@ -62,15 +62,17 @@ function setup(){
     colorMode(HSB);
     frameRate(60);
 
-    // Create a vertical gradient background
+   
 
     background(0);
     noStroke(); 
-    for (let i = 0; i < height; i++) {
-      let brightness = map(i, 0, height, 0, 100); // Map the y-position to a brightness value
-      fill(brightness);
-      rect(0, i, width, 1); // Draw a rectangle with the calculated brightness
-    }
+
+    // Create a vertical gradient background
+    // for (let i = 0; i < height; i++) {
+    //   let brightness = map(i, 0, height, 0, 100); // Map the y-position to a brightness value
+    //   fill(brightness);
+    //   rect(0, i, width, 1); // Draw a rectangle with the calculated brightness
+    // }
 
     checkboxLoop = select("#checkboxLoop");
     checkboxFlag = select("#checkboxFlag");
@@ -150,11 +152,11 @@ function windowResized() {
 
     background(0);
     noStroke(); 
-    for (let i = 0; i < height; i++) {
-        let brightness = map(i, 0, height, 0, 100); // Map the y-position to a brightness value
-        fill(brightness);
-        rect(0, i, width, 1); // Draw a rectangle with the calculated brightness
-    }
+    // for (let i = 0; i < height; i++) {
+    //     let brightness = map(i, 0, height, 0, 100); // Map the y-position to a brightness value
+    //     fill(brightness);
+    //     rect(0, i, width, 1); // Draw a rectangle with the calculated brightness
+    // }
     
   }
   

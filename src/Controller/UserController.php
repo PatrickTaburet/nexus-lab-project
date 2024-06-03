@@ -127,9 +127,19 @@ class UserController extends AbstractController
     */
     public function myArtworks( Scene1Repository $repoG1, SceneD1Repository $repoD1, $id) : Response
     {       
+
+        $sceneG1 = $repoG1->findAll(); 
+        // sorting artworks by creaton date
+        usort($sceneG1, function($a, $b) {
+            return ($b->getUpdatedAt() <=> $a->getUpdatedAt());
+        });
+        $sceneD1 = $repoD1->findAll();
+        usort($sceneD1, function($a, $b) {
+            return ($b->getUpdatedAt() <=> $a->getUpdatedAt());
+        });
         $data = [
-            'scene1' => $repoG1->findAll(),
-            'sceneD1' => $repoD1->findAll(),
+            'scene1' =>  $sceneG1,
+            'sceneD1' => $sceneD1,
         ];
         
         return $this->render('user/myArtworks.html.twig', [

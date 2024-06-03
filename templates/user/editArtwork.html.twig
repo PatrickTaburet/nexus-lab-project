@@ -9,34 +9,31 @@
 
 {% block body %}
   <div class="container">  
-      <h1 class="headerArtwork">Edit Artwork informations</h1>
-      <div class="subContainer">
-        <img src="{{ vich_uploader_asset(artwork, 'imageFile')}}" alt="artwork_picture" class="artworkImg">
-        <div class="formArtwork spinningLight">
-          {{ form_start(form) }}
-            
-            <div class="form-title">
-              {# {{ form_label(form.pseudo)}} #}
-              {{ form_widget(form.title, { "attr": {"class" : "form-control" } }) }}
-              <div class="cut"></div>
-              <label for="title" class="placeholder">Title</label>
-            </div>
-            <div class="form-group">
-              {# {{ form_label(form.email)}} #}
-              {{ form_widget(form.comment, { "attr": {"class" : "form-control" } }) }}
-              <div class="cut"></div>
-              <label for="comment" class="placeholder">Comment</label>
-            </div>
-            <div class="buttonBox">        
-              {{ form_label(form.submit) }}
-              {{ form_widget(form.submit, { "attr": {"class" : "customButton" } }) }}
-              <a href="{{ path('myArtworks', {'id': userId})}}"  class="customButton">Back</a>
-            </div>
+    <h1 class="headerArtwork">Edit Artwork informations</h1>
+    <div class="subContainer">
+      <img src="{{ vich_uploader_asset(artwork, 'imageFile')}}" alt="artwork_picture" class="artworkImg">
+      <div class="formArtwork spinningLight">
+        {{ form_start(form) }}
+          
+          <div class="form-title">
+            {{ form_widget(form.title, { "attr": {"class" : "form-control" } }) }}
+            <div class="cut"></div>
+            <label for="title" class="placeholder">Title</label>
+          </div>
+          <div class="form-group">
+            {{ form_widget(form.comment, { "attr": {"class" : "form-control" } }) }}
+            <div class="cut"></div>
+            <label for="comment" class="placeholder">Comment</label>
+          </div>
+          <div class="buttonBox">        
+            {{ form_label(form.submit) }}
+            {{ form_widget(form.submit, { "attr": {"class" : "customButton" } }) }}
+            <a href="{{ path('myArtworks', {'id': userId})}}"  class="customButton">Back</a>
+          </div>
 
-          {{ form_end(form) }}
-        </div>
+        {{ form_end(form) }}
       </div>
-      
-    </div>
+    </div>   
+  </div>
 
 {% endblock %}

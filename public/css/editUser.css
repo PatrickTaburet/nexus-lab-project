@@ -9,8 +9,9 @@
     background-repeat: no-repeat;
 }
 .headerUser{
-    margin: 85px 0 5px 0;
+    margin: 25px 0 5px 0;
     font-size: 47px;
+    padding-bottom: 30px;
 }
 
 .formUser{
