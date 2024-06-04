@@ -1,14 +1,24 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}Edit Profile{% endblock %}
-
 {% block stylesheets %}
     {{ parent() }}
     <link rel="stylesheet" href="{{ asset('css/editUser.css') }}">
 {% endblock %}
-
 {% block body %}
 
+{# Profile form #}
+
+   {% for message in app.flashes('success')%}
+      <div class="succesFlashMessages">
+        {{message}}
+      </div>      
+    {% endfor %}
+   {% for message in app.flashes('error')%}
+      <div class="warningFlashMessages">
+        {{message}}
+      </div>      
+    {% endfor %}
     <div class="container">  
       <h1 class="headerUser">Edit Profile</h1>
       <div class="formUser spinningLight">
@@ -17,7 +27,7 @@
           <div class="form-pseudo">
             {{ form_widget(userForm.pseudo, { "attr": {"class" : "form-control" } }) }}
             <div class="cut"></div>
-            <label for="pseudo" class="placeholder">Password</label>
+            <label for="pseudo" class="placeholder">Pseudo</label>
           </div>
           <div class="form-group">
             {{ form_widget(userForm.email, { "attr": {"class" : "form-control" } }) }}

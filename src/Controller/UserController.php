@@ -83,7 +83,7 @@ class UserController extends AbstractController
     public function editPassword(EntityManagerInterface $entityManager, Request $request, UserRepository $repo, $id, UserPasswordHasherInterface $hasher ): Response
     {
         $user = $repo->find($id);
-
+        $userId = $user->getId();
         // Check if the user is logged
         if (!$this->getUser()) {
             return $this->redirectToRoute('app_login');
@@ -119,6 +119,7 @@ class UserController extends AbstractController
         }
         return $this->render('user/editPassword.html.twig', [
             'form' => $form->createView(),
+            'userId' => $userId
         ]);
     }
 

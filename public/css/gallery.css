@@ -195,7 +195,7 @@ h1 {
     margin-bottom: 1rem;
     padding: 2rem;
     align-self: flex-start;
-    min-height: 750px;
+    min-height: 800px;
 }
 .cardHeader{
   min-height: 200px;
@@ -240,7 +240,7 @@ span {
     font: var(--var-para);
     color: var(--var-soft-blue);
     word-wrap: break-word;
-    max-height: 53px;
+    max-height: 73px;
     /* min-height: 60px; */
     overflow: hidden; 
     flex-direction: column;
@@ -249,7 +249,7 @@ span {
     display: flex;
     align-items: start;
     word-break: break-all;
-    /* margin-top: 10px; */
+    margin: 20px 0 20px 0;
     /* flex-wrap: wrap; */ 
 }
 
