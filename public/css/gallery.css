@@ -195,7 +195,6 @@ h1 {
     margin-bottom: 1rem;
     padding: 2rem;
     align-self: flex-start;
-    /* min-height: 675px; */
     min-height: 750px;
 }
 .cardHeader{
@@ -483,7 +482,9 @@ Media queries
 
 @media screen and (max-width:730px)
 {
-
+    .card{
+        min-height: auto;
+     }
     /* 
     ========================
     Header
@@ -541,4 +542,5 @@ Media queries
     .sortingForm{
         margin: 40px 15px 50px 0;
      }
+   
 }

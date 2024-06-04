@@ -24,10 +24,12 @@ class UserPasswordType extends AbstractType
                 'required' => false,
                 'first_options'  => [
                     'label' => 'Password', 
-                    'attr' => ['class' => 'firstMdpField']],
+                    'label_attr' => ['class' => 'label-psw'],
+                    'attr' => ['class' => 'firstMdpField form-control']],
                 'second_options' => [
                     'label' => 'Repeat Password', 
-                    'attr' => ['class' => 'secondMdpField']],
+                    'label_attr' => ['class' => 'label-psw'],
+                    'attr' => ['class' => 'secondMdpField form-control']],
                 
                 'mapped' => false,
                 'attr' => ['autocomplete' => 'new-password'],
@@ -49,7 +51,7 @@ class UserPasswordType extends AbstractType
                 ],
                 'label' => "Add a new password",
                 'label_attr' => [
-                    'class' => '',
+                    'class' => 'label-psw',
                 ],
                 'constraints' => [
                     new NotBlank([

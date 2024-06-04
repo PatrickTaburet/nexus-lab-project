@@ -280,7 +280,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function removeFile()
     {
-        if ($this->getImageFile()) {
+        if ($this->getImageFile()!== 'no-profile.jpg') {
             $this->setImageFile(null);
         }
     }

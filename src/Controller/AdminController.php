@@ -72,7 +72,8 @@ class AdminController extends AbstractController
     public function editUser(Request $request, UserRepository $repo, EntityManagerInterface $entityManager, $id) : Response
     {       
             $user = $repo->find($id);
-            
+            $oldAvatar = $user->getImageName();
+           
             $userForm = $this->createForm(EditUserType::class, $user,[
                 'is_admin' => true,  
             ]);
@@ -80,11 +81,23 @@ class AdminController extends AbstractController
 
             if ($userForm->isSubmitted() && $userForm->isValid()) {
 
-                  // Handle the uploaded avatar image       
-                // $avatar = $user->getAvatar();
-                // $user->setAvatar($avatar);
-                // $entityManager = $this->getDoctrine()
-                //                       ->getManager();
+            // Check if the new avatar is different from the old one and from the default image
+                $formData = $userForm->getData();
+                $newAvatarFile = $formData->getImageFile();
+                if($newAvatarFile){
+                    $newAvatar = $newAvatarFile->getClientOriginalName();
+                    if ($newAvatar !== $oldAvatar) {
+                        // Check if the new avatar already exists in the directory
+                        $avatarDir = $this->getParameter('kernel.project_dir') . '/public/images/avatar/';
+                        if (!file_exists($avatarDir . $newAvatar)) {
+                            // Delete the old avatar file
+                            if ($oldAvatar && $oldAvatar !== 'no-profile.jpg') {
+                                unlink($avatarDir . $oldAvatar);
+                            }
+                        }
+                    }
+                }
+     
                 $entityManager -> persist($user);
                 $entityManager -> flush();
                 $userEmail = $user->getEmail();
@@ -107,6 +120,12 @@ class AdminController extends AbstractController
     public function deleteUser(UserRepository $repo, EntityManagerInterface $entityManager, $id): Response
     {
         $user = $repo->find($id);
+        
+        // Delete the avatar file if it's not the default image
+        $avatar = $user->getImageName();
+        if ($avatar && $avatar !== 'no-profile.jpg') {
+            unlink($this->getParameter('kernel.project_dir') . '/public/images/avatar/' . $avatar);
+        }
         $entityManager->remove($user);
         $entityManager->flush();
         $userEmail = $user->getEmail();

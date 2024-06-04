@@ -253,3 +253,56 @@ input[type="file"]::file-selector-button:hover {
 		border-radius: 15px;
 	}
 }
+
+/* 
+========================
+Change password
+========================
+*/
+.change-psw-group{
+    height: 150px;
+    position: relative;
+    width: 100%;
+    margin-bottom: 50px;
+}
+
+.firstMdpField, .secondMdpField{
+    background-color: #303245;
+    border-radius: 12px;
+    border: 0;
+    box-sizing: border-box;
+    color: #eee;
+    font-size: 18px;
+    height: 50px;
+    outline: 0;
+    padding: 4px 20px 0;
+    width: 100%;
+    margin-bottom: 20px;
+}
+.label-psw{
+    color: white;
+}
+
+.buttonBoxPsw{
+    display: flex;
+    justify-content: center;
+    margin-top: 60px;
+}
+.form-group-newPsw {
+    height: 50px;
+    position: relative;
+    width: 100%;
+    margin-top: 30px;
+}
+.change-psw-group:focus-within .label-psw {
+    color: var(--var-primary);
+}
+.form-group-newPsw:focus-within .label-psw {
+    color: var(--var-primary);
+}
+
+/* Error messages style */
+
+.change-psw-group li{ 
+    color: var( --var-secondary);
+}
