@@ -1,0 +1,273 @@
+.container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    background-image: url("/images/design/background-cyber-form.jpg");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+.headerUser{
+    margin: 25px 0 5px 0;
+    font-size: 47px;
+    padding-bottom: 30px;
+}
+
+.form{
+    text-align: center;
+    background-color: #15172b;
+    border-radius: 20px;
+    padding: 20px;
+    min-width: 350px;
+    /* min-height: 500px; */
+    height: 100%;
+    margin: 10px 0 100px 0;
+    box-shadow: inset 0 0 10px var(--var-primary);
+}
+
+
+
+
+/* vich uploader button */
+
+input[type="file"]::file-selector-button {
+    align-items: center;
+    background-color: rgb(5, 6, 45);
+    border: 0;
+    border-radius: 8px;
+    box-shadow: rgba(151, 65, 252, 0.2) 0 15px 30px -5px;
+    box-sizing: border-box;
+    display: flex;
+    font-family: Phantomsans, sans-serif;
+    font-size: 17px;
+    justify-content: center;
+    line-height: 1em;
+    max-width: 100%;
+    min-width: 170px;
+    padding: 3px;
+    text-decoration: none;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+    white-space: nowrap;
+    cursor: pointer;
+    color: #FFFFFF;
+    padding: 10px 14px;
+    margin: 0;
+    box-shadow: inset 0 0 10px var(--var-primary);
+
+  }
+
+input[type="file"]::file-selector-button:hover {
+    background-image: linear-gradient(144deg,#AF40FF, #5B42F3 50%,#00DDEB);
+}
+
+.vich-image{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+   
+}
+.vich-image a{
+    margin: 15px;
+    pointer-events: none;
+    text-decoration: none;
+    color: inherit;
+}
+.imagePreview img{
+    width: 230px;
+    border-radius: 15px;
+    margin-top: 20px;
+    border: solid 3px #00DDEB;
+}
+.labelImg{
+    color:#65657b;
+    text-align: left;
+    margin-right: 200px;
+    margin-top: 20px;
+}
+.img-control{
+    background-color: #303245;
+    border-radius: 12px;
+    border: 0;
+    box-sizing: border-box;
+    color: #eee;
+    font-size: 18px;
+    height: 100%;
+    outline: 0;
+    padding: 7px 57px 0;
+    width: 100%;
+}
+
+.pswButton{
+    width: 200px;
+    margin: auto;
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+.buttonBox{
+    display: flex;
+    justify-content: center;
+    margin-top: 30px;
+}
+.psw-group{
+    position: relative;
+    width: 100%;
+    margin-top: 30px;
+    margin-bottom: 15px;
+    background-color: #303245;
+    border-radius: 12px;
+    border: 0;
+    box-sizing: border-box;
+    color: #eee;
+    font-size: 18px;
+    height: 100%;
+    outline: 0;
+    padding: 2px 0 2px 0;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    height: 50px;
+    position: relative;
+    width: 100%;
+    margin-top: 30px;
+}
+.form-group-textArea {
+    display: flex;
+    flex-direction: column;
+    height: 100px;
+    position: relative;
+    width: 100%;
+    margin-top: 30px;
+}
+.form-group > * {
+    flex: 1; /* make each element flexible and take up available space */
+  }
+.form-group-top {
+    height: 50px;
+    position: relative;
+    width: 100%;
+    margin-top: 15px;
+}
+
+.form-control {
+    background-color: #303245;
+    border-radius: 12px;
+    border: 0;
+    box-sizing: border-box;
+    color: #eee;
+    font-size: 18px;
+    height: 100%;
+    outline: 0;
+    padding: 4px 20px 0;
+    width: 100%;
+}
+
+
+#edit_user_roles{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}
+/* Placeholder animation */
+
+.cut {
+    background-color: #15172b;
+    border-radius: 10px;
+    height: 20px;
+    left: 20px;
+    position: absolute;
+    top: -20px;
+    transform: translateY(0);
+    transition: transform 200ms;
+    width: 76px;
+}
+
+.cut-short {
+    width: 50px;
+}
+
+.form-control:focus ~ .cut,
+.form-control:not(:placeholder-shown) ~ .cut {
+    transform: translateY(8px);
+}
+
+.placeholder {
+    color: #65657b;
+    font-family: sans-serif;
+    left: 20px;
+    line-height: 14px;
+    pointer-events: none;
+    position: absolute;
+    transform-origin: 0 50%;
+    transition: transform 200ms, color 200ms;
+    top: 20px;
+}
+
+.form-control:focus ~ .placeholder,
+.form-control:not(:placeholder-shown) ~ .placeholder {
+    transform: translateY(-30px) translateX(10px) scale(0.75);
+}
+
+.form-control:not(:placeholder-shown) ~ .placeholder {
+    color: #808097;
+}
+
+.form-control:focus ~ .placeholder {
+    color:var(--var-primary);
+}
+
+/* Spinning light animation */
+
+@keyframes rotate {
+	100% {
+		transform: rotate(1turn);
+	}
+}
+
+.spinningLight {
+	position: relative;
+	z-index: 0;
+	/* width: 400px;
+	height: 300px;
+	border-radius: 10px; */
+	overflow: hidden;
+	padding: 2rem;
+	/* display: flex;
+	justify-content: center;
+	align-items: center;
+	font-family: sans-serif;
+	font-weight: bold; */
+	
+	&::before {
+		content: '';
+		position: absolute;
+		z-index: -2;
+		left: -50%;
+		top: -50%;
+		width: 200%;
+		height: 200%;
+		/* background-color: #39995300; */
+		background-repeat: no-repeat;
+		background-size: 40% 40%, 40% 40%;
+		background-position: 0 0, 100% 0, 100% 100%, 0 100%;
+		background-image:linear-gradient(var(--var-cyan), var(--var-cyan));
+		animation: rotate 4s linear infinite;
+	}
+	
+	&::after {
+		content: '';
+		position: absolute;
+		z-index: -1;
+		left: 4px;
+		top: 3.5px;
+		width: calc(100% - 8px);
+		height: calc(100% - 8px);
+        background-color: #15172b;
+		border-radius: 15px;
+	}
+}

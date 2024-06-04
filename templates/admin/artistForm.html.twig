@@ -2,41 +2,57 @@
 
 {% block title %}Ask for Artist Role{% endblock %}
 
+{% block stylesheets %}
+  {{ parent() }}
+  <link rel="stylesheet" href="{{ asset('css/requestForm.css') }}">
+{% endblock %}
+
 {% block body %}
 
-    <h1>Ask for Artist Role ?</h1>
+{% for message in app.flashes('warning')%}
+  <div class="warningFlashMessages">
+    {{message }}
+  </div>
+{% endfor %}
 
-    <div class="formUser">
-        {{ form_start(form) }}
-          
-          <div class="form-group">
-            {{ form_label(form.name)}}
-            {{ form_widget(form.name, { "attr": {"class" : "form-control" } }) }}
-          </div>
-          <div class="form-group">
-            {{ form_label(form.firstname)}}
-            {{ form_widget(form.firstname, { "attr": {"class" : "form-control" } }) }}
-          </div>
-          <div class="form-group">
-            {{ form_label(form.bio)}}
-            {{ form_widget(form.bio, { "attr": {"class" : "form-control" } }) }}          
-          </div>
-          <div class="imagePreview">
-            {{ form_label(form.exemples) }}
-            {{ form_widget(form.exemples, { "attr": {"class" : "form-control" } }) }}
-          </div>
-          <div class="buttonBox">        
-            {{ form_label(form.portfolio) }}
-            {{ form_widget(form.portfolio) }}
-          </div>
-          <div class="buttonBox">        
-            {{ form_label(form.submit) }}
-            {{ form_widget(form.submit) }}
-            <a href="{{ path('home')}}"  class="customButton">Back</a>
-          </div>
+  <div class="container">  
+    <h1 class="headerUser">Ask for Artist Role ?</h1>
 
-        {{ form_end(form) }}
-      </div>
+    <div class="form spinningLight">
+      {{ form_start(form) }}
+        
+        <div class="form-group-top">
+          {{ form_widget(form.name, { "attr": {"class" : "form-control" } }) }}
+          <div class="cut"></div>
+          <label for="name" class="placeholder">Name</label>
+        </div>
+        <div class="form-group">
+          {{ form_widget(form.firstname, { "attr": {"class" : "form-control" } }) }}
+          <div class="cut"></div>
+          <label for="firstname" class="placeholder">Firstname</label>
+        </div>
+        <div class="form-group-textArea">
+          {{ form_widget(form.bio, { "attr": {"class" : "form-control" } }) }}    
+          <div class="cut"></div>
+          <label for="bio" class="placeholder">Bio</label>     
+        </div>
+        <div class="form-group">
+          {{ form_widget(form.exemples, { "attr": {"class" : "form-control" } }) }}
+          <div class="cut"></div>
+          <label for="exemples" class="placeholder">Exemples</label> 
+        </div>
+        <div class="form-group">        
+          {{ form_widget(form.portfolio, { "attr": {"class" : "form-control" } }) }}
+          <div class="cut"></div>
+          <label for="portfolio" class="placeholder">Portfolio</label> 
+        </div>
+        <div class="buttonBox">        
+          {{ form_label(form.submit) }}
+          {{ form_widget(form.submit, { "attr": {"class" : "customButton" } }) }}
+          <a href="{{ path('home')}}"  class="customButton">Back</a>
+        </div>
+
+      {{ form_end(form) }}
     </div>
 
 {% endblock %}
