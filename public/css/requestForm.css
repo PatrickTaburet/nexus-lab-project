@@ -12,6 +12,7 @@
     margin: 25px 0 5px 0;
     font-size: 47px;
     padding-bottom: 30px;
+    text-align: center;
 }
 
 .form{
@@ -56,18 +57,22 @@ input[type="file"]::file-selector-button {
     padding: 10px 14px;
     margin: 0;
     box-shadow: inset 0 0 10px var(--var-primary);
+    margin: auto;
+    margin-top: 10px;
 
   }
 
 input[type="file"]::file-selector-button:hover {
     background-image: linear-gradient(144deg,#AF40FF, #5B42F3 50%,#00DDEB);
 }
-
+.img-label{
+    color: #65657b;
+    margin-bottom: 5px;
+}
 .vich-image{
     display: flex;
     flex-direction: column;
     align-items: center;
-   
 }
 .vich-image a{
     margin: 15px;
@@ -96,7 +101,7 @@ input[type="file"]::file-selector-button:hover {
     font-size: 18px;
     height: 100%;
     outline: 0;
-    padding: 7px 57px 0;
+    padding: 4px 20px 5px;
     width: 100%;
 }
 
@@ -152,7 +157,25 @@ input[type="file"]::file-selector-button:hover {
     width: 100%;
     margin-top: 15px;
 }
-
+.form-group-code {
+    display: flex;
+    flex-direction: column;
+    height: 80px;
+    position: relative;
+    width: 40%;
+    margin: auto;
+    margin-top: 30px;
+}
+.form-group-img {
+    display: flex;
+    flex-direction: column;
+    height: 80px;
+    position: relative;
+    width: 40%;
+    margin: auto;
+    margin-top: 15px;
+    margin-bottom: 50px;
+}
 .form-control {
     background-color: #303245;
     border-radius: 12px;
@@ -166,6 +189,24 @@ input[type="file"]::file-selector-button:hover {
     width: 100%;
 }
 
+.other{
+    background-color: #474a64;
+}
+.languageOptions{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+.otherLanguage{
+    display: flex;
+    flex-direction: column;
+    height: 50px;
+    position: relative;
+    width: 100%;
+    margin-top: 15px;
+}
 
 #edit_user_roles{
     display: flex;
@@ -270,4 +311,29 @@ input[type="file"]::file-selector-button:hover {
         background-color: #15172b;
 		border-radius: 15px;
 	}
+}
+
+/* 
+========================
+Media queries
+========================
+*/
+
+/* ----------------------------- < 800px ------------------------------ */
+
+@media screen and (max-width: 800px)
+{
+
+    .form-group-top {
+        height: 65px;
+    }
+    .form-group-code {
+        width: 65%;
+    }
+    .form-group-img {
+        width: 65%;
+    }
+    .img-control{
+        padding: 4px 20px 5px;
+    }
 }

@@ -21,13 +21,12 @@
         {{ form_start(form) }}
           
           <div class="form-group-top">
-            {{ form_widget(form.language, { "attr": {"class" : "form-control" } }) }}
+            {{ form_widget(form.language, { "attr": {"class" : "form-control languageOptions" } }) }}
             <div class="cut"></div>
             <label for="language" class="placeholder">Language</label>
           </div>
-          <div class="form-group">
-            {{ form_widget(form.otherLanguage, { "attr": {"class" : "otherLanguage" } }) }}
-            <div class="cut"></div>
+          <div class="otherLanguage">
+            {{ form_widget(form.otherLanguage, { "attr": {"class" : "other form-control " } }) }}
           </div>
           <div class="form-group">
             {{ form_widget(form.title, { "attr": {"class" : "form-control" } }) }}
@@ -39,20 +38,20 @@
             <div class="cut"></div>
             <label for="description" class="placeholder">Description</label>        
           </div>
-          <div class="form-group">
+          <div class="form-group-code">
             {{ form_widget(form.codeFile, { "attr": {"class" : "form-control" } }) }}    
             <div class="cut"></div>
             <label for="codeFile" class="placeholder">Code File</label>         
           </div>
-          <div class="imagePreview">
+          <div class="form-group-img">
             {{ form_label(form.imageFile)}}
-            {{ form_widget(form.imageFile, { "attr": {"class" : "img-control" } }) }}          
+            {{ form_widget(form.imageFile, { "attr": {"class" : "img-control " } }) }}     
           </div>
 
           <div class="buttonBox">        
             {{ form_label(form.submit) }}
             {{ form_widget(form.submit, { "attr": {"class" : "customButton" } }) }}
-            <a href="{{ path('home')}}"  class="customButton">Back</a>
+            <a href="{{ path('create')}}"  class="customButton">Back</a>
           </div>
 
         {{ form_end(form) }}

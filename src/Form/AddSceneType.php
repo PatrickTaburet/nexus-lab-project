@@ -34,7 +34,7 @@ class AddSceneType extends AbstractType
                 'mapped' => false,
                 'required' => false,
                 'attr' => [
-                    'class' => 'otherLanguage',
+                    'placeholder' => "Other Language"
                 ],
             ])
             ->add('title')
@@ -53,9 +53,9 @@ class AddSceneType extends AbstractType
                 ],
             ])
             ->add('imageFile', VichImageType::class, [
-                'label' => 'Scene picture',
+                'label' => 'Scene Screenshot',
                 'label_attr' => [
-                    'class' => 'form-label mt-3 '
+                    'class' => 'img-label '
                 ],
             ])
             ->add('submit', SubmitType::class, [
