@@ -1,0 +1,129 @@
+
+.container{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.titleImg{
+    width: 400px;
+   
+}
+.firstBox{
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+    margin: 50px 30px 30px 30px;
+}
+.subBox h1{
+   margin-bottom: 30px;
+}
+.subBox{
+  width: 40%;
+}
+.subBox p{
+   color: white;
+}
+.video{
+    width: 300px;
+    height: 400px;
+    background-color: aqua;
+}
+.secondBox{
+
+}
+.bottomBox{
+
+}
+
+/* 
+========================
+SlidesShow
+========================
+*/
+
+
+  
+  #slideshow {
+    text-align: center;
+    overflow: hidden;
+    height: 510px;
+    width: 728px;
+    margin: 0 auto;
+  }
+  
+  .slide-wrapper {
+    width: 2184px;
+    -webkit-animation: slide 15s ease infinite;
+  }
+  
+  .slide {
+    position: relative;
+    float: left;
+    height: 510px;
+    width: 728px;
+    transform-style: preserve-3d; /* add this line */
+
+    perspective: 1000px;
+    -webkit-animation: slideWidth 15s ease infinite;
+  }
+  
+  .slide:nth-child(1) {
+    background: #D93B65;
+  }
+  
+  .slide:nth-child(2) {
+    background: #037E8C;
+  }
+  
+  .slide:nth-child(3) {
+    background: #36BF66;
+  }
+
+  
+  .slide-number {
+    color: #000;
+    text-align: center;
+    font-size: 10em;
+  }
+  
+  /* @-webkit-keyframes slide {
+    30% {filter: blur();
+        margin-left: 0px;
+    }
+    35% {filter: blur(10px);}
+    40% {filter: blur();
+        margin-left: -728px;
+    }
+    60% {filter: blur();
+        margin-left: -728px;
+    }
+    65% {filter: blur(10px);}
+    70% {filter: blur();
+        margin-left: -1456px;
+    }
+    90% {filter: blur();
+        margin-left: -1456px;
+    }
+    95% {filter: blur(10px);}
+  } */
+  @-webkit-keyframes slideWidth {
+        30% {transform: perspective(1000px) translate3d(0, 0, 100px);
+        }
+        35% {transform: perspective(1000px) translate3d(0, 0, 150px);
+    }
+        40% {transform: perspective(1000px) translate3d(0, 0, 100px)
+        }
+        60% {transform: perspective(1000px) translate3d(0, 0, 100px);
+        }
+        65% {transform: perspective(1000px) translate3d(0, 0, 150px);
+    }
+        70% {transform: translate3d(0, 0, 100px)
+        }
+        90% {transform: translate3d(0, 0, 100px)
+        }
+        95% {transform: translate3d(0, 0, 150px);
+    }
+    
+}
+  

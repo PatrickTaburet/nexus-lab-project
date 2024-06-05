@@ -79,7 +79,7 @@ export default function Navbar ({props}) {
           <nav className={`${styles.navbar}`}>
             <div className={`${styles.leftSide}`}>
               {/* logo */}
-              <a href='/' className={`${styles.logo}`}>LOGO</a>
+              <a href='/' ><img src="/images/design/logo/logo-white.png" alt="logo-white-vortexLab" className={`${styles.logo}`}/></a>
               <ul className={`${styles.navMenu}`}>
                 <li >
                   <a data-item= "Gallery" href='/gallery' className={`${styles.navLink}`}>Gallery</a>

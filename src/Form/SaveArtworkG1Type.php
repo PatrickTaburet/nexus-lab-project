@@ -20,6 +20,9 @@ class SaveArtworkG1Type extends AbstractType
                 'constraints' => [
                     new NotBlank(),
                 ],
+                'attr' => [
+                    'maxlength' => 36,
+                ],
                 'label' => 'Title',
             ])
             ->add('comment', TextareaType::class, [

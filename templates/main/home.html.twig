@@ -2,17 +2,53 @@
 
 {% block title %}Home{% endblock %}
 
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('css/home.css') }}">
+{% endblock %}
+
 {% block body %}
 
- {% for message in app.flashes('success')%}
-      <div class="succesFlashMessages">
-        {{message}}
+  {% for message in app.flashes('success')%}
+    <div class="succesFlashMessages">
+      {{message}}
+    </div>
+  {% endfor %}
+  {% for message in app.flashes('warning')%}
+    <div class="warningFlashMessages">
+      {{message|nl2br }}
+    </div>
+  {% endfor %}
+  <div class="container">
+    <div class="firstBox">
+      <div class="subBox">
+        <h1>Collaborative platform for generative art</h1>
+        <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Rerum perferendis quidem repudiandae sit sapiente aliquid architecto porro ut odio quam praesentium possimus ex adipisci pariatur nesciunt minus magnam, optio eos.</p>
+        <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Rerum perferendis quidem repudiandae sit sapiente aliquid architecto porro ut odio quam praesentium possimus ex adipisci pariatur nesciunt minus magnam, optio eos.</p>
       </div>
-{% endfor %}
- {% for message in app.flashes('warning')%}
-      <div class="warningFlashMessages">
-        {{message|nl2br }}
+      <div> 
+         <div id="slideshow">
+        <div class="slide-wrapper">
+          <div class="slide"><img class="titleImg" src={{ asset("/images/design/logo/NexusLab-full-purple.png")}} alt="Title NexusLab"></div>
+          <div class="slide"><h1 class="slide-number">2</h1></div>
+          <div class="slide"><h1 class="slide-number">3</h1></div>
+        </div>
       </div>
-{% endfor %}
+      
+      </div>
+     
+
+      {# <img class="titleImg" src={{ asset("/images/design/logo/NexusLab-full-purple.png")}} alt="Title NexusLab"> #}
+    </div>
+    <div class="secondBox">
+    
+    </div>
+    <div class="bottomBox">
+    
+    </div>
+
+  </div>
+
+
 
 {% endblock %}

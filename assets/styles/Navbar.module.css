@@ -40,11 +40,20 @@ a {
 
 /* logo  */
 .logo {
-    font-size: 30px;
-    font-family: Arial, Helvetica, sans-serif;
-    margin-right: 32px;
+    position: absolute;
+    top: 10px;
+    left: 25px;
+    width: 50px;
+    margin: 0 20px 0 0px;
+    transition: 0.5s;
 }
-
+.logo:hover {
+    /* opacity: 0.6; */
+    transform: scale(1.2); /* scale the logo to 1.2 times its original size */
+    transform-origin: center;
+    transition: 0.5s;
+    filter: blur(1px);
+}
 
 /* ul  */
 .navMenu {
@@ -52,6 +61,7 @@ a {
     justify-content: space-between;
     align-items: center;
     gap: 40px;
+    margin-left: 80px;
 }
 
 /* li hover animation */
@@ -63,7 +73,7 @@ a {
     color: #2290cb;
     font-size: 20px;
     font-weight: 500;
-    transition: all 0.3s ease-in-out;
+    transition: all 0.2s ease-in-out;
     position: relative;
     text-transform: uppercase;
     
