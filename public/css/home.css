@@ -43,87 +43,131 @@ SlidesShow
 */
 
 
-  
-  #slideshow {
-    text-align: center;
-    overflow: hidden;
-    height: 510px;
-    width: 728px;
-    margin: 0 auto;
-  }
-  
-  .slide-wrapper {
-    width: 2184px;
-    -webkit-animation: slide 15s ease infinite;
-  }
-  
-  .slide {
-    position: relative;
-    float: left;
-    height: 510px;
-    width: 728px;
-    transform-style: preserve-3d; /* add this line */
 
-    perspective: 1000px;
-    -webkit-animation: slideWidth 15s ease infinite;
-  }
-  
-  .slide:nth-child(1) {
-    background: #D93B65;
-  }
-  
-  .slide:nth-child(2) {
-    background: #037E8C;
-  }
-  
-  .slide:nth-child(3) {
-    background: #36BF66;
-  }
-
-  
-  .slide-number {
-    color: #000;
-    text-align: center;
-    font-size: 10em;
-  }
-  
-  /* @-webkit-keyframes slide {
-    30% {filter: blur();
-        margin-left: 0px;
-    }
-    35% {filter: blur(10px);}
-    40% {filter: blur();
-        margin-left: -728px;
-    }
-    60% {filter: blur();
-        margin-left: -728px;
-    }
-    65% {filter: blur(10px);}
-    70% {filter: blur();
-        margin-left: -1456px;
-    }
-    90% {filter: blur();
-        margin-left: -1456px;
-    }
-    95% {filter: blur(10px);}
-  } */
-  @-webkit-keyframes slideWidth {
-        30% {transform: perspective(1000px) translate3d(0, 0, 100px);
-        }
-        35% {transform: perspective(1000px) translate3d(0, 0, 150px);
-    }
-        40% {transform: perspective(1000px) translate3d(0, 0, 100px)
-        }
-        60% {transform: perspective(1000px) translate3d(0, 0, 100px);
-        }
-        65% {transform: perspective(1000px) translate3d(0, 0, 150px);
-    }
-        70% {transform: translate3d(0, 0, 100px)
-        }
-        90% {transform: translate3d(0, 0, 100px)
-        }
-        95% {transform: translate3d(0, 0, 150px);
-    }
-    
+#slideshow {
+  text-align: center;
+  overflow: hidden;
+  height: 510px;
+  width: 728px;
+  margin: 0 auto;
 }
-  
+
+.slide-wrapper {
+  width: 2184px;
+  animation: slide 15s ease infinite;
+  -webkit-animation: slide 15s ease infinite;
+}
+
+.slide {
+  position: relative;
+  float: left;
+  height: 510px;
+  width: 728px;
+  /* transform-style: preserve-3d; 
+  perspective: 1000px; */
+}
+.slide img{
+  animation: slideWidth 15s ease infinite;
+  -webkit-animation: slideWidth 15s ease infinite;
+  transform-style: preserve-3d; 
+
+}
+
+.slide:nth-child(1) {
+  background-image: url("/images/design/background-cyber-form.jpg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.slide:nth-child(2) {
+  background-image: url("/images/design/background-cyber-form.jpg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.slide:nth-child(3) {
+  background: #36BF66;
+}
+
+
+
+@keyframes slide {
+  30% {filter: blur();
+      margin-left: 0px;
+  }
+  35% {filter: blur(10px);}
+  40% {filter: blur();
+      margin-left: -728px;
+  }
+  60% {filter: blur();
+      margin-left: -728px;
+  }
+  65% {filter: blur(10px);}
+  70% {filter: blur();
+      margin-left: -1456px;
+  }
+  90% {filter: blur();
+      margin-left: -1456px;
+  }
+  95% {filter: blur(10px);}
+}
+@-webkit-keyframes slide {
+  30% {filter: blur();
+      margin-left: 0px;
+  }
+  35% {filter: blur(10px);}
+  40% {filter: blur();
+      margin-left: -728px;
+  }
+  60% {filter: blur();
+      margin-left: -728px;
+  }
+  65% {filter: blur(10px);}
+  70% {filter: blur();
+      margin-left: -1456px;
+  }
+  90% {filter: blur();
+      margin-left: -1456px;
+  }
+  95% {filter: blur(10px);}
+}
+
+@keyframes slideWidth {
+      30% {transform: perspective(1200px) translate3d(0, 0, 0px);
+      }
+      35% {transform: perspective(1200px) translate3d(0, 0, 150px);
+  }
+      40% {transform: perspective(1200px) translate3d(0, 0, 0px)
+      }
+      60% {transform: perspective(1200px) translate3d(0, 0, 0px);
+      }
+      65% {transform: perspective(1200px) translate3d(0, 0, 150px);
+  }
+      70% {transform: perspective(1200px) translate3d(0, 0, 0px)
+      }
+      90% {transform: perspective(1200px) translate3d(0, 0, 0px)
+      }
+      95% {transform: perspective(1200px) translate3d(0, 0, 150px);
+  }
+}
+@-webkit-keyframes slideWidth {
+      30% {transform: perspective(1200px) translate3d(0, 0, 0px);
+      }
+      35% {transform: perspective(1200px) translate3d(0, 0, 150px);
+  }
+      40% {transform: perspective(1200px) translate3d(0, 0, 0px)
+      }
+      60% {transform: perspective(1200px) translate3d(0, 0, 0px);
+      }
+      65% {transform: perspective(1200px) translate3d(0, 0, 150px);
+  }
+      70% {transform: perspective(1200px) translate3d(0, 0, 0px)
+      }
+      90% {transform: perspective(1200px) translate3d(0, 0, 0px)
+      }
+      95% {transform: perspective(1200px) translate3d(0, 0, 150px);
+  }
+}
+
