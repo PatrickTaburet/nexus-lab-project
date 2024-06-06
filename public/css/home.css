@@ -13,12 +13,13 @@
     width: 100%;
     display: flex;
     justify-content: space-around;
-    margin: 30px 30px 30px 30px;
+    padding: 30px;
     background-color: var(--var-main-darkest);
 }
 .subBox h1{
    margin-bottom: 30px;
    text-align: center;
+   font-size: 40px;
 }
 .subBox{
   width: 40%;
@@ -36,11 +37,52 @@
   background-color: var(--var-line-dark);
   height: 600px;
   width: 100%;
+  display: flex;
+  justify-content: space-around;
+  flex-direction: column;
+  align-items: center;
+  padding: 70px;
 }
+.secondBox h1{
+  font-size: 40px;
+}
+.secondBox p{
+  width: 40%;
+  text-align: center;
+  color: white;
+}
+
 .bottomBox{
   background-color: var(--var-main-darkest);
   height: 600px;
   width: 100%;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  padding: 70px;
+}
+.bottomSubBox{
+  display: flex;
+  justify-content: space-around;
+  flex-direction: column;
+  align-items: center;
+  width: 40%;
+  height: 100%;
+}
+.bottomSubBox p{
+  color: white;
+}
+.bottomBox h1{
+  font-size: 40px;
+  text-align: center;
+}
+.codeImg{
+  width: 500px;
+  height: 500px;
+  background-image: url("/images/design/share-your-code.jpg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
 }
 
 /* 

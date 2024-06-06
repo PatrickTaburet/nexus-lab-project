@@ -25,11 +25,11 @@
         <h1>Collaborative platform for generative art and creative coding</h1>
         <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Rerum perferendis quidem repudiandae sit sapiente aliquid architecto porro ut odio quam praesentium possimus ex adipisci pariatur nesciunt minus magnam, optio eos.</p>
         <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Rerum perferendis quidem repudiandae sit sapiente aliquid architecto porro ut odio quam praesentium possimus ex adipisci pariatur nesciunt minus magnam, optio eos.</p>
-         <div {{ react_component('MyButtonTwig', {"props": {
-                    "myStyle":"",
-                    "to":"/gallery",
-                    "children" : "Let's explore.."
-            }}) }}>
+        <div {{ react_component('MyButtonTwig', {"props": {
+                  "myStyle":"",
+                  "to":"/gallery",
+                  "children" : "Let's explore.."
+          }}) }}>
         </div>
       </div>
       <div class="slideshowContainer"> 
@@ -42,13 +42,38 @@
           </div>
         </div>
       </div>
-      {# <img class="titleImg" src={{ asset("/images/design/logo/NexusLab-full-purple.png")}} alt="Title NexusLab"> #}
     </div>
     <div class="secondBox">
-    
+      <h1>Create your own artwork</h1>
+      <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Numquam, explicabo voluptates. Iure quo est officiis, earum aspernatur magni dignissimos perspiciatis sunt alias quasi ab repellendus, commodi architecto soluta nobis sapiente!</p>
+      <div {{ react_component('MyButtonTwig', {"props": {
+                  "myStyle":"",
+                  "to":"/create",
+                  "children" : "Start generate art"
+          }}) }}>
+      </div>
     </div>
     <div class="bottomBox">
-    
+      <div class="codeImg"></div>
+      <div class="bottomSubBox">
+        <h1>Share your code</h1>
+        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Cumque, voluptatem reprehenderit! Esse deserunt ipsa expedita adipisci odit, labore consequuntur facilis facere reiciendis, eum quam quis nihil, amet numquam voluptates obcaecati.</p>
+        {% if (is_granted ('ROLE_ARTIST')) %}
+        <div {{ react_component('MyButtonTwig', {"props": {
+            "myStyle":"",
+            "to":"/artist/add-new-scene",
+            "children" : "Add scene"
+          }}) }}>
+        </div>
+        {% else %}
+        <div {{ react_component('MyButtonTwig', {"props": {
+            "myStyle":"",
+            "to":"/profile/roleRequest",
+            "children" : "Get artist role"
+          }}) }}>
+        </div>
+        {% endif %}
+      </div> 
     </div>
 
   </div>
