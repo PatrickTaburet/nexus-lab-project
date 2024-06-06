@@ -22,16 +22,22 @@
   <div class="container">
     <div class="firstBox">
       <div class="subBox">
-        <h1>Collaborative platform for generative art</h1>
+        <h1>Collaborative platform for generative art and creative coding</h1>
         <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Rerum perferendis quidem repudiandae sit sapiente aliquid architecto porro ut odio quam praesentium possimus ex adipisci pariatur nesciunt minus magnam, optio eos.</p>
         <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Rerum perferendis quidem repudiandae sit sapiente aliquid architecto porro ut odio quam praesentium possimus ex adipisci pariatur nesciunt minus magnam, optio eos.</p>
+         <div {{ react_component('MyButtonTwig', {"props": {
+                    "myStyle":"",
+                    "to":"/gallery",
+                    "children" : "Let's explore.."
+            }}) }}>
+        </div>
       </div>
       <div class="slideshowContainer"> 
         <div class="slideshowBorder"></div>
         <div id="slideshow">
           <div class="slide-wrapper">
             <div class="slide"><img class="NexusLabImg" src={{ asset("/images/design/logo/NexusLab-full-purple.png")}} alt="Title NexusLab"></div>
-            <div class="slide"><p class="pA1">Experiments new ways of creating art..</p><p class="pA2">through algorithms</p></div>
+            <div class="slide"><p class="pA1">Experiments new ways of creating art..</p><p class="pA2">through coding and algorithms</p></div>
             <div class="slide"><p class="pB1">Create your own artworks.. </p><p class="pB2">share them with the community</p></div>
           </div>
         </div>

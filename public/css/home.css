@@ -13,23 +13,34 @@
     width: 100%;
     display: flex;
     justify-content: space-around;
-    margin: 50px 30px 30px 30px;
+    margin: 30px 30px 30px 30px;
+    background-color: var(--var-main-darkest);
 }
 .subBox h1{
    margin-bottom: 30px;
+   text-align: center;
 }
 .subBox{
   width: 40%;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  gap: 30px;
 }
 .subBox p{
    color: white;
 }
 
 .secondBox{
-
+  background-color: var(--var-line-dark);
+  height: 600px;
+  width: 100%;
 }
 .bottomBox{
-
+  background-color: var(--var-main-darkest);
+  height: 600px;
+  width: 100%;
 }
 
 /* 
@@ -54,7 +65,8 @@ SlidesShow
   clip-path: polygon(40px 0, 100% 0%, 100% calc(100% - 40px), calc(100% - 40px) 100%, 0 100%, 0 40px);
 }
 .slideshowBorder {
-  background-color: aqua;
+  /* background-color: var(--var-primary); */
+  box-shadow: inset 0 0 40px var(--var-primary);
   position: absolute;
   top: 0;
   left: 0;
@@ -94,7 +106,8 @@ SlidesShow
   animation: slideWidth 18s ease infinite;
   -webkit-animation: slideWidth 18s ease infinite;
   transform-style: preserve-3d; 
-  font-size: 20px;
+  font-size: 23px;
+  font-weight: 600;
   -webkit-animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
   animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
 
@@ -120,18 +133,27 @@ SlidesShow
   background-position: center;
   background-repeat: no-repeat;
 }
-.pA1, .pB1{
+.pA1{
   position: absolute;
   top:50px;
   left:50px;
   
 }
-.pA2, .pB2{
+.pA2{
   position: absolute;
   bottom:50px;
   right:50px;
 }
-
+.pB1{
+  position: absolute;
+  top:50px;
+  right:50px;
+}
+.pB2{
+  position: absolute;
+  bottom:50px;
+  left:50px;
+}
 
 @keyframes slide {
   30% {filter: blur();
