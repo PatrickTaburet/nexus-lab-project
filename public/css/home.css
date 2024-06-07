@@ -14,7 +14,7 @@
     display: flex;
     justify-content: space-around;
     padding: 30px;
-    background-color: var(--var-main-darkest);
+    /* background-color: var(--var-main-darkest); */
 }
 .subBox h1{
    margin-bottom: 30px;
@@ -32,9 +32,14 @@
 .subBox p{
    color: white;
 }
-
 .secondBox{
-  background-color: var(--var-line-dark);
+  width: 100%;
+  display: flex;
+  justify-content: space-around;
+  padding: 30px;
+}
+.secondBoxCenter{
+  /* background-color: var(--var-line-dark); */
   height: 600px;
   width: 100%;
   display: flex;
@@ -43,17 +48,17 @@
   align-items: center;
   padding: 70px;
 }
-.secondBox h1{
+.secondBoxCenter h1{
   font-size: 40px;
 }
-.secondBox p{
+.secondBoxCenter p{
   width: 40%;
   text-align: center;
   color: white;
 }
 
 .bottomBox{
-  background-color: var(--var-main-darkest);
+  /* background-color: var(--var-main-darkest); */
   height: 600px;
   width: 100%;
   display: flex;
@@ -79,10 +84,53 @@
 .codeImg{
   width: 500px;
   height: 500px;
-  background-image: url("/images/design/share-your-code.jpg");
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
+  clip-path: polygon(40px 0, 100% 0%, 100% calc(100% - 40px), calc(100% - 40px) 100%, 0 100%, 0 40px); 
+}
+
+/* Spinning light animation */
+
+@keyframes rotate {
+	100% {
+		transform: rotate(1turn);
+	}
+}
+
+.spinningLight {
+	position: relative;
+	z-index: 0;
+	overflow: hidden;
+	padding: 2rem;
+
+	&::before {
+		content: '';
+		position: absolute;
+		z-index: -2;
+		left: -50%;
+		top: -50%;
+		width: 200%;
+		height: 200%;
+		/* background-color: #39995300; */
+		background-repeat: no-repeat;
+		background-size: 40% 40%, 40% 40%;
+		background-position: 0 0, 100% 0, 100% 100%, 0 100%;
+		background-image:linear-gradient(var(--var-cyan), var(--var-cyan));
+		animation: rotate 5s linear infinite;
+	}
+	
+	&::after {
+		content: '';
+		position: absolute;
+		z-index: -1;
+		left: 4px;
+		top: 3.5px;
+		width: calc(100% - 8px);
+		height: calc(100% - 8px);
+    background-image: url("/images/design/share-your-code.jpg");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    clip-path: polygon(40px 0, 100% 0%, 100% calc(100% - 40px), calc(100% - 40px) 100%, 0 100%, 0 40px);
+	}
 }
 
 /* 
@@ -285,3 +333,18 @@ SlidesShow
   }
 }
 
+/* 
+========================
+p5js sketch
+========================
+*/
+
+#myCanvas{
+  position: absolute;
+  top:0;
+  /* top: 100vh;  display canvas under the loading screen */
+  right: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: -1;
+}

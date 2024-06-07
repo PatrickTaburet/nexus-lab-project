@@ -44,17 +44,20 @@
       </div>
     </div>
     <div class="secondBox">
-      <h1>Create your own artwork</h1>
-      <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Numquam, explicabo voluptates. Iure quo est officiis, earum aspernatur magni dignissimos perspiciatis sunt alias quasi ab repellendus, commodi architecto soluta nobis sapiente!</p>
-      <div {{ react_component('MyButtonTwig', {"props": {
-                  "myStyle":"",
-                  "to":"/create",
-                  "children" : "Start generate art"
-          }}) }}>
+      <div id="sketch1"></div>
+      <div class="secondBoxCenter">
+        <h1>Create your own artwork</h1>
+        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Numquam, explicabo voluptates. Iure quo est officiis, earum aspernatur magni dignissimos perspiciatis sunt alias quasi ab repellendus, commodi architecto soluta nobis sapiente!</p>
+        <div {{ react_component('MyButtonTwig', {"props": {
+                    "myStyle":"",
+                    "to":"/create",
+                    "children" : "Start generate art"
+            }}) }}>
+        </div>
       </div>
     </div>
     <div class="bottomBox">
-      <div class="codeImg"></div>
+      <div class="codeImg spinningLight"></div>
       <div class="bottomSubBox">
         <h1>Share your code</h1>
         <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Cumque, voluptatem reprehenderit! Esse deserunt ipsa expedita adipisci odit, labore consequuntur facilis facere reiciendis, eum quam quis nihil, amet numquam voluptates obcaecati.</p>
@@ -78,6 +81,6 @@
 
   </div>
 
-
+<script src="{{ asset('js/sketchHome1.js') }}"></script>
 
 {% endblock %}
