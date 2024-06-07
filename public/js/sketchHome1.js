@@ -14,11 +14,16 @@ function setup(){
 }
 
 function draw(){
-    let h = random(0, 360); 
-    let s = 100;           
-    let l = 50;             
-    let alpha = 0.6;        
-    let col = color(h, s, l, alpha);
+    let colors = [
+        color(180, 100, 50, 0.588),  // Cyan translucide
+        color(170, 100, 50, 0.588),  // Cyan translucide
+        color(160, 100, 50, 0.588),  // Cyan translucide
+        color(190, 100, 50, 0.588),  // Cyan translucide
+        // color(300, 100, 50, 0.588),  // Magenta translucide
+        // color(120, 100, 50, 0.588),  // Vert translucide
+        // color(60, 100, 50, 0.588)    // Jaune translucide
+      ];
+    let col = random(colors);
     stroke(col);
 
     let stepSize = random(10, 30);
@@ -42,7 +47,7 @@ function draw(){
     prevX = newX;
     prevY = newY;
 
-    fill(0, 0, 0, 0.05); // Couche translucide noire pour créer un effet de fondu
+    fill(0, 0, 0, 0.03); // Couche translucide noire pour créer un effet de fondu
     noStroke();
     rect(0, 0, width, height);
 }
