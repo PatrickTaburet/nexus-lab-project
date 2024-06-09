@@ -1,6 +1,7 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}Scene D1{% endblock %}
+
 {% block stylesheets %}
     {{ parent() }}
     <link rel="stylesheet" href="{{ asset('css/dataScene.css') }}">
@@ -13,7 +14,6 @@
         {{message}}
     </div>
 {% endfor %}
-
 
 {# Modale : save artwork  #}
 <div class="modaleBackground hidden">
@@ -65,6 +65,9 @@
 {# Sketch #}
 
     <div id="sketch"></div>
+
+{# Parameters #}
+
     <div class="parametersBox">
         <div class="card-border">
             <div class="card ">
@@ -124,13 +127,12 @@
                             <input type="checkbox" id="checkboxFlag" class="checkbox">
                         </div>
                         <div class="buttonBox"> 
-                            <button class="customButton " id="submitButton" type="submit">Submit</button>
-                            <button class="customButton " id="reloadButton" type="submit">Clear</button>
-                       
+                            <button id="submitButton" type="submit" class="customButton">Submit</button>
+                            <button id="reloadButton" type="submit" class="customButton">Reload</button> 
                         </div>
                         {% if app.user %}
-                            <div class="separator2"></div>
-                            <button class="buttonModale customButton generateButton">Save</button>
+                        <div class="separator2"></div>
+                        <button class="buttonModale customButton generateButton">Save</button>
                         {% endif %}
                     </div>
                 </div>
@@ -146,4 +148,5 @@
 {% endif %}
 
 <script defer src="{{ asset('js/sketchSceneD1.js') }}" ></script>
+
 {% endblock %}

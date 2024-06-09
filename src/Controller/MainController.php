@@ -102,5 +102,13 @@ class MainController extends AbstractController
         return $this->render('main/dataArtHome.html.twig', [
         ]);   
     }
+    /**
+    * @Route("/privacy-policy", name="privacyPolicy")
+    */
+    public function privacyPolicy(): Response
+    {
+        return $this->render('main/privacyPolicy.html.twig', [
+        ]);   
+    }
 
 }

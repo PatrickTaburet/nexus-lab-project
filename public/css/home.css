@@ -355,6 +355,7 @@ p5js sketch
 position: absolute;
 right: -230px;
 top: 300px;
+margin-top: 30px;
 }
 .slider {
   -webkit-appearance: none;

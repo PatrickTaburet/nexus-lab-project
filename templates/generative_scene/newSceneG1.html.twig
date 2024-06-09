@@ -139,9 +139,6 @@
             </div>
         </div>       
     </div>
-{# <input type="hidden" id="dataScene" value="{{ scene|json_encode|raw }}">  #}
-{# {{ dump(scene) }}
-{{ dump("<%= defaultValueColor %>") }} #}
 <div id="dataScene" data-scene="{{ scene|json_encode }}"></div>
 {% if app.user %}
     <script>

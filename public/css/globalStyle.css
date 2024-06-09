@@ -37,7 +37,12 @@ h1{
         text-shadow: 0 0 7px var(--var-primary);
     }
 }
-/* --------------- Variables ------------------*/
+
+/* 
+========================
+CSS variables
+========================
+*/
 
 :root {
     --var-main-bg: #363159;
@@ -71,9 +76,11 @@ h1{
     }
 
 
-
-
-/* --------------- Flash messages ------------------*/
+/* 
+========================
+Flash messages
+========================
+*/
 
 .succesFlashMessages{
     text-align: center;
@@ -95,7 +102,13 @@ h1{
     top: 60;
     width: 100%;
 }
-/* --------------- Loading Image  ------------------*/
+
+/* 
+========================
+Loading screen image
+========================
+*/
+
 #loadingScreen {
     position: fixed;
     width: 100%;
@@ -191,7 +204,11 @@ h1{
     }
 }
 
-/* Update button style */
+/* 
+========================
+Update button style
+========================
+*/
 
 .customButton{
     align-items: center;
@@ -265,8 +282,12 @@ h1{
 }
 
 
+/* 
+========================
+Footer
+========================
+*/
 
-/* --------------- Footer ------------------*/
 footer {
     /* flex-shrink: 0; Empêche le footer de rétrécir lorsqu'il y a peu de contenu */
     display: flex;
@@ -289,6 +310,7 @@ footer {
     display: flex;
     justify-content: center;
     flex-wrap: wrap;
+    align-items: center;
     margin: 20px;
     width: 100%;
     gap: 7vw;
@@ -297,7 +319,13 @@ footer {
     display: flex;
     justify-content: space-between;
     gap: 7vw;
-    
+}
+.topFooter ul li a:hover{
+   cursor: pointer;
+   color: var(--var-cyan);
+}
+.NexusLab{
+    width: 200px;
 }
 .centerFooter{
     display: flex;
@@ -311,11 +339,21 @@ footer {
 }
 .bottomFooter{
     margin: 20px;
-
 }
+.bottomFooter a{
+    color: white;
+    cursor: pointer;
+}
+.bottomFooter a:hover{
+    color: var(--var-cyan);
+ }
 
 
-/* Pagination */
+/* 
+========================
+Pagination
+========================
+*/
 
 .pagination{
     display: flex;
@@ -347,3 +385,27 @@ footer {
     margin: 0 5px;
     border-radius: 5px;
   }
+
+/* 
+========================
+Privacy Policy
+========================
+*/
+
+.privacyContainer{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 30px;
+    background-color: var(--var-main-darkest);
+    color: white;
+    height: 100%;
+}
+.privacyContainer h1{
+    margin: 30px;
+    text-align: center;
+}
+.privacyContainer h1, .privacyContainer h2{
+    margin: 30px;
+    color: var(--var-soft-blue);
+}
