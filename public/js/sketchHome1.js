@@ -1,53 +1,80 @@
 let prevX, prevY;
+let mainColor;
+let colors =[];
+let lines = [];
+let lineSlider;
 
 function setup(){
     const canvas = createCanvas(windowWidth, windowHeight*2);
     canvas.parent('sketch1');
     canvas.id('myCanvas');
-    colorMode(HSL, 360, 100, 100, 1);
-    frameRate(60);
+    colorMode(HSB, 360, 100, 100, 1);
+    frameRate(50);
     background(217, 54, 11);
     // noStroke(); 
     prevX = mouseX;
     prevY = mouseY;
     strokeWeight(3);
+    colors = [
+      color(180, 100, 50, 1),  // Cyan translucide
+      color(300, 100, 50, 1),  // Magenta translucide
+      color(120, 100, 50, 1),  // Vert translucide
+      color(60, 100, 50, 1)    // Jaune translucide
+    ];
+    lines.push({
+      prevX: mouseX,
+      prevY: mouseY,
+    })
+
+    // User Interface
+
+    lineSlider = select('#lineSlider');
 }
 
 function draw(){
-    let colors = [
-        color(180, 100, 50, 0.588),  // Cyan translucide
-        color(170, 100, 50, 0.588),  // Cyan translucide
-        color(160, 100, 50, 0.588),  // Cyan translucide
-        color(190, 100, 50, 0.588),  // Cyan translucide
-        // color(300, 100, 50, 0.588),  // Magenta translucide
-        // color(120, 100, 50, 0.588),  // Vert translucide
-        // color(60, 100, 50, 0.588)    // Jaune translucide
-      ];
-    let col = random(colors);
-    stroke(col);
+  if(!mainColor){
+    mainColor = color(180, 100, 50, 1)
+  }
+  for (let mainLine of lines) {
+    stroke(mainColor);
 
     let stepSize = random(10, 30);
     let direction = floor(random(4));
 
-    let newX = prevX;
-    let newY = prevY;
+    let newX = mainLine.prevX;
+    let newY = mainLine.prevY;
 
     if (direction == 0) {
-        newX += stepSize;  // Droite
+        newX += stepSize;  // Right
       } else if (direction == 1) {
-        newX -= stepSize;  // Gauche
+        newX -= stepSize;  // Left
       } else if (direction == 2) {
-        newY += stepSize;  // Bas
+        newY += stepSize;  // Down
       } else if (direction == 3) {
-        newY -= stepSize;  // Haut
+        newY -= stepSize;  // Up
       }
     
-    line(prevX, prevY, newX, newY);
+    line(mainLine.prevX, mainLine.prevY, newX, newY);
 
-    prevX = newX;
-    prevY = newY;
+    mainLine.prevX = newX;
+    mainLine.prevY = newY;
 
-    fill(0, 0, 0, 0.03); // Couche translucide noire pour créer un effet de fondu
+     // Adding randlomly new lines 
+    rand = floor(random(30));
+    if (rand == 2){
+      if (lines.length < lineSlider.value()){
+        lines.push({
+          prevX: newX,
+          prevY:  newY,
+        })
+
+      }
+    }
+  }
+ console.log(lineSlider.value());
+  // Black translucent layer to create a fade effect
+
+    fill(0, 0, 0, 0.03); 
     noStroke();
     rect(0, 0, width, height);
 }
@@ -59,66 +86,18 @@ function windowResized() {
     prevY = mouseY;
   }
 function mouseMoved() {
-// Repositionner la ligne de départ lorsque la souris se déplace
-prevX = mouseX;
-prevY = mouseY;
+  // Reposition the starting line when mouse moves
+  for (let line of lines) {
+    line.prevX = mouseX;
+    line.prevY = mouseY;
+  }
+  lines=[];
+  lines.push({
+    prevX: mouseX,
+    prevY: mouseY,
+  })
 }
-  
-// /** @type {HTMLCanvasElement} */  
-// // -> add intellisense for ctx functions
+function mouseClicked(){
+  mainColor = random(colors);
+}
 
-// let canvas = document.querySelector('#canvas1');
-// let ctx = canvas.getContext('2d');
-// let drawing = false;
-// canvas.width = window.innerWidth;
-// canvas.height = window.innerHeight;
-
-// class Root{
-
-//     constructor(x, y){
-//         this.x = x;
-//         this.y = y;
-//         this.speedX = Math.random() * 4 - 2;  // Math.random() * (max - min) + min  --> between -2 & 2
-//         this.speedY = Math.random() * 4 - 2;
-//         this.maxSize = Math.random() * 7 + 5;
-//         this.size = Math.random() * 1 + 2;
-//         this.velocitySize = Math.random() * 0.2 + 0.05;
-//         this.angleX = Math.random() * 6.2; // 6.2 radians -> 360°
-//         this.velocityAngleX  = Math.random() * 0.6  - 0.3;
-//         this.angleY = Math.random() * 6.2; 
-//         this.velocityAngleY  = Math.random() * 0.6  - 0.3;
-//         this.lightness = 10;
-//     }
-//     update(){
-//         this.x += this.speedX + Math.sin(this.angleX);
-//         this.y += this.speedY + Math.sin(this.angleY);
-//         this.size += this.velocitySize;
-//         this.angleX += this.velocityAngleX ;
-//         this.angleY += this.velocityAngleY ;
-//         if (this.lightness < 70) this.lightness += 0.4; // increase the lightness for a "3D" render (from 10% dark to 70% light)
-//         if(this.size <= this.maxSize){
-//             ctx.beginPath();
-//             ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-//             ctx.fillStyle = "hsl(140,100%," + this.lightness + "%)";
-//             ctx.fill();
-//             ctx.stroke();
-//             requestAnimationFrame(this.update.bind(this));
-//         }
-        
-        
-//     }
-// }
-// window.addEventListener("mousemove", (e) =>{
-//     if (drawing){
-//         for (let i=0 ; i < 2; i++){
-//             let root = new Root(e.x, e.y);
-//             root.update();
-//         }
-//     }
-// });
-// window.addEventListener("mousedown", function(){
-//     drawing = true;
-// });
-// window.addEventListener("mouseup", function(){
-//     drawing = false;
-// });
