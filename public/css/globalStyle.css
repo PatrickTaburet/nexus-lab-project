@@ -284,100 +284,6 @@ Update button style
 
 /* 
 ========================
-Footer
-========================
-*/
-
-footer {
-    /* flex-shrink: 0; Empêche le footer de rétrécir lorsqu'il y a peu de contenu */
-    display: flex;
-    background: #6441A5;  /* fallback for old browsers */
-    background: -webkit-linear-gradient(to left, #2a0845, #6441A5);  /* Chrome 10-25, Safari 5.1-6 */
-    background: linear-gradient(to left, #2a0845, #6441A5); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-    color: white;
-    justify-content: center;
-    flex-direction: column;
-    align-items:center;
-    min-height: 150px;
-    z-index: 10;
-    position: relative;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    overflow: hidden;   
-}
-.topFooter{
-    display: flex;
-    justify-content: center;
-    flex-wrap: wrap;
-    align-items: center;
-    margin: 20px;
-    width: 100%;
-    gap: 7vw;
-}
-.topFooter ul{
-    display: flex;
-    justify-content: space-between;
-    gap: 7vw;
-}
-.topFooter ul li a:hover{
-   cursor: pointer;
-   color: var(--var-cyan);
-   transition: 0.3s;
-}
-.NexusLab{
-    width: 200px;
-    cursor: pointer;
-    transition: 2s;
-}
-.NexusLab:hover{
-    transition: 6s;
-    filter:hue-rotate(540deg);
-}
-.centerFooter{
-    display: flex;
-    gap: 50px;
-    margin: 20px;
-
-}
-.centerFooter img{
-    width: 40px;
-
-}
-.bottomFooter{
-    margin: 20px;
-}
-.bottomFooter a{
-    color: white;
-    cursor: pointer;
-    transition: 0.3s;
-}
-.bottomFooter a:hover{
-    color: var(--var-cyan);
-}
-
-/* Decorations */
-
-.footerImgLeft{
-    position: absolute;
-    width: 600px;
-    left: -415px;
-    bottom: -420px;
-    rotate: -45deg;
-}
-.footerImgRight{
-    position: absolute;
-    width: 600px;
-    bottom: -720px;
-    right: -100px;
-    rotate: 45deg;
-}
-.footerImgRight:hover, .footerImgLeft:hover{
-    filter: invert();
-}
-
-/* 
-========================
 Pagination
 ========================
 */
@@ -435,4 +341,209 @@ Privacy Policy
 .privacyContainer h1, .privacyContainer h2{
     margin: 30px;
     color: var(--var-soft-blue);
+}
+
+
+/* 
+========================
+Footer
+========================
+*/
+
+footer {
+    /* flex-shrink: 0; Empêche le footer de rétrécir lorsqu'il y a peu de contenu */
+    display: flex;
+    background: #6441A5;  /* fallback for old browsers */
+    background: -webkit-linear-gradient(to left, #2a0845, #6441A5);  /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to left, #2a0845, #6441A5); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+    color: white;
+    justify-content: center;
+    flex-direction: column;
+    align-items:center;
+    min-height: 150px;
+    z-index: 10;
+    position: relative;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    overflow: hidden;   
+}
+.topFooter{
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    align-items: center;
+    margin: 20px;
+    width: 100%;
+    gap: 5vw;
+    margin-left: 50px;
+}
+.topFooter ul{
+    display: flex;
+    justify-content: space-between;
+    gap: 7vw;
+}
+.topFooter ul li a:hover{
+   cursor: pointer;
+   color: var(--var-cyan);
+   transition: 0.3s;
+}
+.NexusLab{
+    width: 250px;
+    cursor: pointer;
+    transition: 2s;
+ 
+}
+.NexusLab:hover{
+    transition: 6s;
+    filter:hue-rotate(540deg);
+}
+.centerFooter{
+    display: flex;
+    gap: 50px;
+    margin: 20px;
+
+}
+
+.bottomFooter{
+    margin-bottom: 15px;
+}
+.bottomFooter a{
+    color: white;
+    cursor: pointer;
+    transition: 0.3s;
+    font-size: 15px;
+    text-align: center;
+}
+.bottomFooter a:hover{
+    color: var(--var-cyan);
+   
+}
+
+/* Decorations */
+
+.footerImgLeft{
+    position: absolute;
+    width: 380px;
+    left: -20px;
+    bottom: -190px;
+    rotate: -45deg;
+    transition: 0.3s;
+}
+.footerImgRight{
+    position: absolute;
+    width: 380px;
+    bottom: -190px;
+    right: 20px;
+    rotate: 45deg;
+    transition: 0.3s;
+}
+.footerImgRight:hover, .footerImgLeft:hover{
+    filter: invert();
+}
+
+
+
+/* 
+========================
+Media queries
+========================
+*/
+
+/* ----------------------------- < 1500px ------------------------------ */
+
+
+@media screen and (max-width: 1500px)
+{
+    .footerImgLeft{
+        width: 280px;
+        left: -20px;
+        bottom: -110px;
+    }
+    .footerImgRight{
+        width: 280px;
+        bottom: -123px;
+        right: -40px;
+    }
+
+}
+
+/* ----------------------------- < 1200px ------------------------------ */
+
+
+@media screen and (max-width: 1200px)
+{
+    .NexusLab{
+    width: 170px;
+    cursor: pointer;
+    transition: 2s;
+ 
+    }
+    .footerImgLeft{
+        width: 180px;
+        left: -50px;
+        bottom: -90px;
+    }
+    .footerImgRight{
+        width: 180px;
+        bottom: -90px;
+        right: -50px;
+    }
+
+}
+/* ----------------------------- < 800px ------------------------------ */
+
+
+@media screen and (max-width: 800px)
+{
+    .NexusLab{
+    width: 170px;
+    }
+    .footerImgLeft{
+        width: 180px;
+        left: -50px;
+        bottom: -90px;
+    }
+    .footerImgRight{
+        width: 180px;
+        bottom: -90px;
+        right: -50px;
+    }
+    .topFooter ul li a{
+        font-size: 15px;
+    }
+    .bottomFooter a{
+        font-size: 11px;
+    }
+    .ulLeft, .ulRight {
+        display: flex ;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+}
+/* ----------------------------- < 500px ------------------------------ */
+
+
+@media screen and (max-width: 500px)
+{
+
+    .NexusLab{
+        width: 130px;
+        margin-top: 30px;
+        margin-bottom: 15px;
+        }
+    .footerImgLeft{
+        width: 140px;
+        left: -40px;
+        bottom: -90px;
+    }
+    .footerImgRight{
+        width: 140px;
+        bottom: -100px;
+        right: -25px;
+    }
+    .topFooter{
+        margin: auto;
+    }
 }

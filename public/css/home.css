@@ -1,9 +1,19 @@
 
-.container{
+.blackBackground {
+  position: absolute; /* Position the black background absolutely */
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vw; /* Set the height to 100vh to cover the entire screen */
+  background-color: #000;
+  z-index: -2; /* Send it behind the sketch */
+}
+.homeContainer{
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    /* background-color: #000; */
 }
 .NexusLabImg{
     width: 400px;

@@ -10,7 +10,7 @@ function setup(){
     canvas.id('myCanvas');
     colorMode(HSB, 360, 100, 100, 1);
     frameRate(50);
-    background(217, 54, 11);
+    background(0, 0, 0);
     // noStroke(); 
     prevX = mouseX;
     prevY = mouseY;
@@ -80,7 +80,7 @@ function draw(){
 
 function windowResized() {
     resizeCanvas(windowWidth, windowHeight*2);
-    background(217, 54, 11);
+    background(0, 0, 0);
     prevX = mouseX;
     prevY = mouseY;
   }
