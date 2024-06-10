@@ -304,7 +304,7 @@ footer {
     bottom: 0;
     left: 0;
     right: 0;
-   
+    overflow: hidden;   
 }
 .topFooter{
     display: flex;
@@ -323,9 +323,16 @@ footer {
 .topFooter ul li a:hover{
    cursor: pointer;
    color: var(--var-cyan);
+   transition: 0.3s;
 }
 .NexusLab{
     width: 200px;
+    cursor: pointer;
+    transition: 2s;
+}
+.NexusLab:hover{
+    transition: 6s;
+    filter:hue-rotate(540deg);
 }
 .centerFooter{
     display: flex;
@@ -343,11 +350,24 @@ footer {
 .bottomFooter a{
     color: white;
     cursor: pointer;
+    transition: 0.3s;
 }
 .bottomFooter a:hover{
     color: var(--var-cyan);
- }
-
+}
+.footerImgLeft{
+    position: absolute;
+    width: 600px;
+    left: -400px;
+    rotate: -45deg;
+}
+.footerImgRight{
+    position: absolute;
+    width: 600px;
+    bottom: -720px;
+    right: -100px;
+    rotate: 45deg;
+}
 
 /* 
 ========================

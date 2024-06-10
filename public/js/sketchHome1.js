@@ -71,7 +71,6 @@ function draw(){
       }
     }
   }
- console.log(lineSlider.value());
   // Black translucent layer to create a fade effect
 
     fill(0, 0, 0, 0.03); 

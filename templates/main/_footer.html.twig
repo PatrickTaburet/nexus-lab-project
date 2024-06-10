@@ -1,22 +1,17 @@
 <footer>
     <div class="topFooter">
+        <img class="footerImgLeft" src={{ asset("/images/design/footer2.png") }} alt="footer design left">
         <ul>
             <li><a href={{ path("gallery") }}>Gallery</a></li>
             <li><a href={{ path("create") }}>Create</a></li>
         </ul>
-            <img class="NexusLab" src={{ asset("/images/design/logo/NexusLab-full-purple.png")}} alt="Logo NexusLab">
+            <a href={{ path("home") }}><img class="NexusLab" src={{ asset("/images/design/logo/NexusLab-full-purple.png")}} alt="Logo NexusLab"></a>
         <ul>
             <li><a href={{ path("home") }}>About</a></li>
             <li><a href={{ path("home") }}>Contact</a></li>
         </ul>
+        <img class="footerImgRight" src={{ asset("/images/design/footer.png") }} alt="footer design right">
     </div>
-    {# <div class="centerFooter">
-        <img src="{{ asset('images/icons/facebook.png') }}" alt="facebook_logo">
-        <img src="{{ asset('images/icons/instagram.png') }}" alt="instagram_logo">
-        <img src="{{ asset('images/icons/twitter.png') }}" alt="twitter_logo">
-        <img src="{{ asset('images/icons/youtube.png') }}" alt="youtube_logo">
-
-    </div> #}
     <div class="bottomFooter">
         <a href={{ path("privacyPolicy") }}>© 2024 Privacy — Terms</a>
     </div>

@@ -4,6 +4,7 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
+
 }
 .NexusLabImg{
     width: 400px;
@@ -352,10 +353,9 @@ p5js sketch
 /* slider */
 
 .sliderWrapper{
-position: absolute;
-right: -230px;
-top: 300px;
-margin-top: 30px;
+position: fixed;
+right: -250px;
+top: 320px;
 }
 .slider {
   -webkit-appearance: none;
