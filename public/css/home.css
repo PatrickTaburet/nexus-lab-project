@@ -1,19 +1,20 @@
-
+main{
+  position: relative;
+}
 .blackBackground {
-  position: absolute; /* Position the black background absolutely */
+  position: absolute;
   top: 0;
   left: 0;
   width: 100%;
-  height: 100vw; /* Set the height to 100vh to cover the entire screen */
+  height: 100%; 
   background-color: #000;
-  z-index: -2; /* Send it behind the sketch */
+  z-index: -2; 
 }
 .homeContainer{
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    /* background-color: #000; */
 }
 .NexusLabImg{
     width: 400px;
@@ -24,6 +25,8 @@
     display: flex;
     justify-content: space-around;
     padding: 30px;
+    margin-top: 30px;
+    flex-wrap: wrap;
     /* background-color: var(--var-main-darkest); */
 }
 .subBox h1{
@@ -32,13 +35,18 @@
    font-size: 40px;
 }
 .subBox{
-  width: 40%;
+  max-width: 40%;
+  min-width: 30%;
   display: flex;
   justify-content: center;
   flex-direction: column;
   align-items: center;
   gap: 30px;
+  margin: 20px;
 }
+ .subBox div{
+    margin-top: 30px;
+  }
 .subBox p{
    color: white;
 }
@@ -152,6 +160,7 @@ SlidesShow
 
 .slideshowContainer {
   position: relative;
+  margin-right: 80px;
 }
 
 #slideshow {
@@ -381,8 +390,10 @@ p5js sketch
 
 .sliderWrapper{
 position: fixed;
-right: -250px;
+right: -230px;
 top: 320px;
+z-index: 10;
+
 }
 .slider {
   -webkit-appearance: none;
@@ -421,3 +432,51 @@ top: 320px;
   border-radius: 4px;
 }
 
+
+/* 
+========================
+Media queries
+========================
+*/
+
+/* ----------------------------- < 1500px ------------------------------ */
+
+
+@media screen and (max-width: 1500px) {
+  .subBox{
+    margin-bottom: 100px;
+    max-width: 60%;
+  }
+  .slideshowContainer{
+    margin: 0;
+  }
+  .bottomSubBox{
+    margin: 20px;
+    min-width: 40%;
+  }
+  .secondBoxCenter{
+    padding: 50px 70px 50px 70px;
+  }
+
+  .bottomBox{
+    flex-wrap: wrap;
+    padding: 0 70px 70px 70px;
+    height: auto;
+  }
+  .bottomSubBox{
+    text-align: center;
+    gap: 60px;
+    margin-top: 70px;
+  }
+}
+
+/* ----------------------------- < 1000px ------------------------------ */
+
+
+@media screen and (max-width: 1000px) {
+
+.secondBoxCenter p{
+  width: 60%;
+}
+
+}
