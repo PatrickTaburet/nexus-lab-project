@@ -167,7 +167,6 @@ h1 {
 .mainContainer{
     display: flex;
     flex-direction: column;
-    /* background-color: var(--var-main-darkest); */
     background-image: url("/images/design/hexagonal-background.jpg");
     background-size: cover;
     /* background-position: center; */

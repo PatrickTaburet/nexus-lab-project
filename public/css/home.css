@@ -4,7 +4,6 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-
 }
 .NexusLabImg{
     width: 400px;
@@ -335,6 +334,24 @@ SlidesShow
 }
 
 /* 
+=======================
+Boxes lazy loading animation
+=======================
+*/
+
+.element {
+  opacity: 0; /* initially hide the cards */
+  transform: translateY(20px); /* add a small translation effect */
+  transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+}
+
+.element.visible {
+  opacity: 0.9; /* show the cards when they come into view */
+  transform: translateY(0); /* reset the translation effect */
+}
+
+
+/* 
 ========================
 p5js sketch
 ========================
@@ -393,3 +410,4 @@ top: 320px;
   border: 5px solid var(--var-cyan);
   border-radius: 4px;
 }
+

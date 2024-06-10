@@ -355,10 +355,14 @@ footer {
 .bottomFooter a:hover{
     color: var(--var-cyan);
 }
+
+/* Decorations */
+
 .footerImgLeft{
     position: absolute;
     width: 600px;
-    left: -400px;
+    left: -415px;
+    bottom: -420px;
     rotate: -45deg;
 }
 .footerImgRight{
@@ -367,6 +371,9 @@ footer {
     bottom: -720px;
     right: -100px;
     rotate: 45deg;
+}
+.footerImgRight:hover, .footerImgLeft:hover{
+    filter: invert();
 }
 
 /* 

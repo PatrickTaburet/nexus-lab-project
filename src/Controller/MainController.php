@@ -110,5 +110,13 @@ class MainController extends AbstractController
         return $this->render('main/privacyPolicy.html.twig', [
         ]);   
     }
+    /**
+    * @Route("/community", name="community")
+    */
+    public function community(): Response
+    {
+        return $this->render('main/community.html.twig', [  
+        ]);   
+    }
 
 }

@@ -88,7 +88,7 @@ export default function Navbar ({props}) {
                   <a data-item= "Create"  href='/create' className={`${styles.navLink}`}>Create</a>
                 </li>
                 <li >
-                  <a data-item= "Community" href='#home' className={`${styles.navLink}`}>Community</a>
+                  <a data-item= "Community" href='/community' className={`${styles.navLink}`}>Community</a>
                 </li>
               </ul>
             </div>
