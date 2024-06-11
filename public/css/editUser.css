@@ -7,10 +7,10 @@
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
-    min-height: 100vh
+    min-height: 130vh
 }
 .headerUser{
-    margin: 35px 0 5px 0;
+    margin: 80px 0 5px 0;
     font-size: 47px;
     padding-bottom: 30px;
 }
@@ -21,7 +21,7 @@
     border-radius: 20px;
     padding: 20px;
     width: 350px;
-    margin: 10px 0 100px 0;
+    margin: 120px 0 100px 0;
     box-shadow: inset 0 0 10px var(--var-primary);
 
 }
@@ -306,4 +306,27 @@ Change password
 
 .change-psw-group li{ 
     color: var( --var-secondary);
+}
+
+
+
+/* 
+========================
+Media queries
+========================
+*/
+
+/* ----------------------------- < 400px ------------------------------ */
+
+@media screen and (max-width: 400px)
+{
+    .formUser{
+        margin: 3px 0 100px 0;
+    }
+    .headerUser{
+        margin: 50px 0 5px 0;
+        font-size: 47px;
+        padding-bottom: 50px;
+    }
+
 }

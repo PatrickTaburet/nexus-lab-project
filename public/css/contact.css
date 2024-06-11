@@ -1,0 +1,202 @@
+main{
+    display: flex;
+    /* justify-content: center; */
+    align-items: center;
+    flex-direction: column;
+    background-image: url("/images/design/background-form.jpg");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    min-height: 130vh
+}
+
+h1{
+    font-size: 60px;
+    margin: 2%;
+    font-weight: 500;
+    text-align: center;
+}
+
+.contactContainer{
+    display: flex;
+    flex-direction: column;
+}
+.topContent{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 40px;
+    margin-left: 150px;
+}
+.NexusLabLogo{
+    width: 400px;
+    margin-bottom: 20px;
+}
+.rightSide{
+    width: 100%;
+}
+.contactRow{
+    display: flex;
+    flex-direction: row;
+    align-items: center;  
+    justify-content: left;
+    margin: 10px;
+    width: 100%;
+}
+.mailIcon, .adressIcon, .phoneIcon{
+    width: 40px;
+    margin-right: 10px;
+}
+
+.bottomContent{
+    background-color: black;
+    width: 80%;
+    height: 300px;
+    color: white;
+    margin: auto;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    margin-top: 50px;
+    clip-path: polygon(40px 0, 100% 0%, 100% calc(100% - 40px), calc(100% - 40px) 100%, 0 100%, 0 40px);
+}
+.bottomContent p {
+    margin: auto;
+}
+/* ------- SciFi box card -------*/
+  
+  
+.card {
+    background: rgba(0,0,0,.5);
+    width: 60%;
+    height: 100%;
+    min-width: 400px;
+    padding: 20px 40px;
+    box-shadow: inset 0 0 10px var(--var-primary);
+    clip-path: polygon(40px 0, 100% 0%, 100% calc(100% - 40px), calc(100% - 40px) 100%, 0 100%, 0 40px);
+    padding: 10px;
+    .card-title {
+      font-weight: 700;
+      font-size: 20px;
+      padding: 15px 0 0 0;
+      animation: text-glow 1.1s ease-in-out infinite alternate;
+      text-align: center;
+    }
+    
+    .separator {
+      height: 1px;
+      width: 100%;
+      background-color: var(--var-primary);
+      margin: 20px 0;
+      box-shadow: 0 0 10px var(--var-primary);
+    }
+    
+    .card-content {
+      text-shadow: 0px 0px 5px rgba(255,255,255,.2);
+      display: flex;
+      justify-content: center;
+      flex-direction: column;
+      align-items: center;
+      margin: 10px;
+      color: white;
+    }
+  }
+    
+  .card-border {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    filter: drop-shadow(0px 0px 3px var(--var-primary));
+  }
+
+  
+/* Spinning light animation */
+
+@keyframes rotate {
+	100% {
+		transform: rotate(1turn);
+	}
+}
+
+.spinningLight {
+	position: relative;
+	z-index: 0;
+	overflow: hidden;
+	padding: 2rem;
+
+	&::before {
+		content: '';
+		position: absolute;
+		z-index: -2;
+		left: -10%;
+		top: 0%;
+		width: 130%;
+		height: 100%;
+		background-repeat: no-repeat;
+		background-size: 40% 40%, 40% 40%;
+		background-position: 0 0, 100% 0, 100% 100%, 0 100%;
+		background-image:linear-gradient(var(--var-cyan), var(--var-cyan));
+		animation: rotate 4s linear infinite;
+	}
+	
+	&::after {
+		content: '';
+		position: absolute;
+		z-index: -1;
+		left: 4px;
+		top: 3.5px;
+		width: calc(100% - 8px);
+		height: calc(100% - 8px);
+        background-color: #15172b;
+		border-radius: 15px;
+	}
+}
+
+/* 
+========================
+Media queries
+========================
+*/
+
+/* ----------------------------- < 1300px ------------------------------ */
+
+
+@media screen and (max-width: 1300px) {
+    .topContent{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-top: 40px;
+        margin-left: 0;
+        flex-wrap: wrap;
+        gap: 50px;
+    }
+    .NexusLabLogo{
+        width: 30vw;
+        min-width: 280px;
+        margin-bottom: 20px;
+    }
+    .bottomContent{
+        margin-bottom: 50px;
+    }
+}
+
+/* ----------------------------- < 400px ------------------------------ */
+
+
+@media screen and (max-width: 400px) {
+    h1{
+        font-size: 40px;
+        margin: 50px;
+    }
+    .card{
+        min-width: 310px;
+    }
+    .NexusLabLogo{
+        width: 30vw;
+        min-width: 280px;
+        margin-bottom:20px;
+        margin-top: 0px;
+    }
+}

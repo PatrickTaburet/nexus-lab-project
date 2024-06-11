@@ -1,0 +1,47 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Contact{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('css/contact.css') }}">
+{% endblock %}
+
+{% block body %}
+<h1>Contact</h1>
+  <div class="contactContainer">
+    <div class="topContent">
+      <img class="NexusLabLogo" src={{ asset("/images/design/logo/NexusLab-full-purple.png")}} alt="Logo NexusLab">
+      <div class="rightSide">
+        <div class="card-border">
+          <div class="card ">
+            <div class="card-title">Contact us</div>
+            <div class="separator"></div>
+            <div class="card-content">
+              <p>If you need any information or have suggestions to make, do not hesitate to contact us</p>
+              <div class="separator"></div>
+              <div class="contactRow">
+                <img class="mailIcon" src={{ asset("/images/icons/email.png")}} alt="Mail icon">
+                <p>nexus.lab.contact@gmail.com</p>
+              </div>
+              <div class="contactRow">
+                <img class="adressIcon" src={{ asset("/images/icons/adress.png")}} alt="Adress icon">
+                <p>19 rue du gaz 33210 Langon</p>
+              </div>
+              <div class="contactRow">
+                <img class="phoneIcon" src={{ asset("/images/icons/phone.png")}} alt="Phone icon">
+                <p>+33 6 11 01 23 70</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="bottomContent spinningLight">
+      <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Sit dolores ex quas dolorem, laborum odio quos ad modi quis adipisci, pariatur id omnis ut, minima culpa sint neque inventore iusto.</p>
+    </div>
+    
+  </div>
+ 
+
+{% endblock %}
