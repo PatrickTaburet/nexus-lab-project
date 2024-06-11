@@ -101,6 +101,7 @@ background-color: rgba(255,255,255,0.3);
 Dashboard
 ========================
 */
+
 .dashboardContainer{
     display: flex;
     justify-content: center;
@@ -153,8 +154,8 @@ Dashboard
 }
 .requestContent{
     display: flex;
-
 }
+
 /* Open request */
 
 .openReqContainer{

@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\AddScene;
 use App\Form\AddSceneType;
+use App\Repository\AddSceneRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -62,13 +63,22 @@ class ArtistController extends AbstractController
             'form' => $form->createView(),
         ]);
     }
+
     /**
      * @Route("/dashboard", name="artistDashboard")
      */
-    public function artistDashboard(): Response
+    public function artistDashboard(AddSceneRepository $newScene): Response
     {
+        $user = $this->getUser();
+        $userId = $user->getId();
+        $sceneRequests = $newScene->findby(['user' => $userId]);
+        // Sorting all requests by creation date
+        usort($sceneRequests, function($a, $b) {
+            return ($b->getUpdatedAt() <=> $a->getUpdatedAt());
+        });
+
         return $this->render('artist/myScenes.html.twig', [
-            'controller_name' => 'MainController',
+           'sceneRequests' => $sceneRequests,
         ]);
     }
 }
