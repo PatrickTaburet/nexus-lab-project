@@ -56,7 +56,7 @@ class UserController extends AbstractController
                 // limit the file upload to 5MB maximum
                 if ($user->getImageFile() && $user->getImageFile()->getSize() > 5000000) {
                     $user->setImageFile(null);
-                    $this->addFlash('error', 'The file is too large. Maximum file size is 5 MB.');
+                    $this->addFlash('warning', 'The file is too large. Maximum file size is 5 MB.');
                     return $this->render('user/editUser.html.twig', [
                         'user' => $user,
                         'userForm' => $userForm->createView(),

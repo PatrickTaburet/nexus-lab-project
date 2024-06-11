@@ -9,16 +9,6 @@
 
 {% block body %}
 
-  {% for message in app.flashes('success')%}
-    <div class="succesFlashMessages">
-      {{message}}
-    </div>
-  {% endfor %}
-  {% for message in app.flashes('warning')%}
-    <div class="warningFlashMessages">
-      {{message|nl2br }}
-    </div>
-  {% endfor %}
   <div class="blackBackground"></div>
   <div id="sketch1"></div>
   <div class="homeContainer">

@@ -8,30 +8,54 @@
 {% endblock %}
 
 {% block body %}
-<h1 class="dashboardTitle">Admin Dashboard</h1>
+
+<h1 class="dashboardTitle">Artist Dashboard</h1>
 <div class="dashboardContainer">
     <div class="dashboardTop">
         <div class="requestContainer">
-            <h2 class="subTitle">New scene request pending</h2>
+            <h2 class="subTitle">Pending scene request</h2>
             <div class="requestContent">
                 <table class="table dashboardTable">
                     <thead>
-                        <th>User</th>
+                        <th>Title</th>
                         <th>Date</th>
                         <th>Action</th>
                     </thead>
                     <tbody>
-                    {% for request in sceneRequests %}
-                        <tr>
-                            <td>{{request.user.pseudo}}</td>
-                            <td>{{request.updatedAt|date('F j, Y, g:i a')}}</td>
-                            <td><a href="{{path('admin_show_request', {'id' : request.id, 'entity': "AddScene"}) }}" class="customButton">Open</a></td>
-                        </tr>
-                    {% endfor %}
+                        {% if sceneRequests|length == 0 %}
+                            <tr><td colspan="2">No scene</td></tr>
+                        {% else %}
+                        {% for request in sceneRequests %}
+                            <tr>
+                                <td>{{ request.title}}</td>
+                                <td>{{ request.updatedAt|date('F j, Y, g:i a') }}</td>
+                                <td><a href="{{ path('artist_delete_request', {'id' : request.id}) }}" class="customButton">Delete</a></td>
+                            </tr>
+                        {% endfor %}
+                    {% endif %}
                     </tbody>
                 </table>
-            </div>
-           
+            </div>           
+        </div>
+    </div>
+</div>
+
+<div class="dashboardContainer">
+    <div class="dashboardTop">
+        <div class="requestContainer">
+            <h2 class="subTitle">My scenes</h2>
+            <div class="requestContent">
+                  <table class="table dashboardTable">
+                    <thead>
+                        <th>Title</th>
+                        <th>Vews</th>
+                        <th>Artworks</th>
+                    </thead>
+                    <tbody>
+                        <tr><td colspan="3">No scene</td></tr>
+                    </tbody>
+                </table>
+            </div>           
         </div>
     </div>
 </div>

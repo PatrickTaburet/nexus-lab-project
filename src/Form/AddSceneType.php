@@ -42,6 +42,9 @@ class AddSceneType extends AbstractType
             ->add('codeFile', FileType::class, [
                 'label' => 'Code file',
                 'mapped' => false,
+                'label_attr' => [
+                    'class' => 'img-label '
+                ],
                 'constraints' => [
                     new File([
                         'maxSize' => '1024k',
@@ -54,8 +57,20 @@ class AddSceneType extends AbstractType
             ])
             ->add('imageFile', VichImageType::class, [
                 'label' => 'Scene Screenshot',
+                'allow_delete' => false, 
+                'download_link' => false,
                 'label_attr' => [
                     'class' => 'img-label '
+                ],
+                'constraints' => [
+                    new File([
+                        'mimeTypes' => [
+                            'image/jpeg',
+                            'image/png',
+                            'image/gif',
+                        ],
+                        'mimeTypesMessage' => 'Please upload a valid image file',
+                    ])
                 ],
             ])
             ->add('submit', SubmitType::class, [

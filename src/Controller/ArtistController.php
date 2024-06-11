@@ -12,7 +12,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 /**
-* @Route("/artist"), name="artist_"
+* @Route("/artist", name="artist_")
 */
 class ArtistController extends AbstractController
 {
@@ -54,12 +54,10 @@ class ArtistController extends AbstractController
             $this->addFlash('success', 'New scene request sent.'); 
 
             return $this->redirectToRoute('home');
-        }  elseif ($form->isSubmitted()) {
-            $this->addFlash('warning', 'Invalid file type. Please upload a file with a .txt extension.');
-            return $this->redirectToRoute('addScene');
-        }
 
-        return $this->render('admin/addScene.html.twig', [
+        } 
+
+        return $this->render('artist/addScene.html.twig', [
             'form' => $form->createView(),
         ]);
     }
@@ -80,5 +78,17 @@ class ArtistController extends AbstractController
         return $this->render('artist/myScenes.html.twig', [
            'sceneRequests' => $sceneRequests,
         ]);
+    }
+    
+    /**
+    * @Route("/delete/request/{id}", name="delete_request", methods= {"GET", "POST"})
+    */
+    public function deleteSceneRequest(EntityManagerInterface $entityManager, AddSceneRepository $sceneReq, $id): Response
+    {
+        $request = $sceneReq->find($id);
+        $entityManager->remove($request);
+        $entityManager->flush();
+        $this->addFlash('success', 'Request successfully deleted');
+        return $this->redirectToRoute('artist_artistDashboard');
     }
 }

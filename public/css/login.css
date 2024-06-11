@@ -1,6 +1,5 @@
 
-main 
-{
+main {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -161,6 +160,19 @@ input[type="submit"]:active
 .rememberMe{
     color: white;
 }
+
+.LoginFlashMessages{
+  text-align: center;
+  background-color: rgba(255, 148, 148, 0.689);
+  padding: 10px;
+  font-weight: 700;
+  z-index: 500;
+  width: 100%;
+}
+
+
+
+
 @media (max-width: 900px)
 {
   section span 

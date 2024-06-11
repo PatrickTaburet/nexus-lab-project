@@ -27,7 +27,12 @@
     box-shadow: inset 0 0 10px var(--var-primary);
 }
 
-
+.error{
+    background-color: rgba(255, 148, 148, 0.689);
+    border-radius: 10px;
+    position: relative;
+    padding: 3px;
+}
 
 
 /* vich uploader button */
@@ -114,7 +119,7 @@ input[type="file"]::file-selector-button:hover {
 .buttonBox{
     display: flex;
     justify-content: center;
-    margin-top: 30px;
+    margin-top: 70px;
 }
 .psw-group{
     position: relative;
@@ -160,7 +165,7 @@ input[type="file"]::file-selector-button:hover {
 .form-group-code {
     display: flex;
     flex-direction: column;
-    height: 80px;
+    min-height: 110px;
     position: relative;
     width: 40%;
     margin: auto;

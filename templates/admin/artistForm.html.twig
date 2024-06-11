@@ -9,12 +9,6 @@
 
 {% block body %}
 
-{% for message in app.flashes('warning')%}
-  <div class="warningFlashMessages">
-    {{message }}
-  </div>
-{% endfor %}
-
   <div class="container">  
     <h1 class="headerUser">Ask for Artist Role ?</h1>
 
@@ -54,5 +48,6 @@
 
       {{ form_end(form) }}
     </div>
+  </div>
 
 {% endblock %}

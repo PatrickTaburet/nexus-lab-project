@@ -8,60 +8,56 @@
 {% endblock %}
 
 {% block body %}
-    {% for message in app.flashes('success')%}
-        <div class="succesFlashMessages">
-            {{message}}
-        </div>      
-    {% endfor %}
-    <h1 class="text-center mb-4 mt-4">Users list</h1>
 
-    <div class="tableContainer">
-        <table class="table">
-            <thead>
-                <th>ID</th>
-                <th>Avatar</th>
-                <th>Mail</th>
-                <th>Pseudo</th>
-                <th>Roles</th>
-                <th>Actions</th>
-            </thead>
-            <tbody>
-            {%  for user in users %}
-                <tr>
-                    <td>{{user.id}}</td>
-                    <td class ='imgContainer'><img class="userImg" src="{{ vich_uploader_asset(user, 'imageFile')}}" alt="article_picture"></td>
-                    <td>{{user.email}}</td>
-                    <td>{{user.pseudo}}</td>
-                    <td>{% for role in user.roles %}
-                            {% if role == "ROLE_USER" %}
-                                User
-                            {% elseif role == "ROLE_ARTIST" %}
-                                Artist
-                            {% elseif role == "ROLE_ADMIN" %}
-                                Administrtor
-                            {% endif %}          
-                        {% endfor %}
-                    </td>
-                    <td><a href="{{path('admin_edit_user', {'id' : user.id}) }}" class="customButton">Edit</a>
-                    {% if 'ROLE_ADMIN' not in user.roles %} {# to prevent the admin from deleting his own account #}
-                         <a href="{{path('admin_confirm', {'id' : user.id}) }}" class="customButton">Delete</a></td> 
-                    {% endif %}
-                </tr>
-            {% else %}
-                <tr>
-                    <td colspan=5>No register users</td>
-                </tr>
-            {% endfor %}
-            </tbody>
-        </table>
-        <div class="d-flex justify-content-center">
-        <a href="{{ path('admin_dashboard')}}"><button class="customButton ">BACK</button></a>
-        </div>
+<h1 class="text-center mb-4 mt-4">Users list</h1>
 
-        {# pagination #}
-
-        <div class="pagination navigation">
-            {{knp_pagination_render(users)}}
-        </div>
+<div class="tableContainer">
+    <table class="table">
+        <thead>
+            <th>ID</th>
+            <th>Avatar</th>
+            <th>Mail</th>
+            <th>Pseudo</th>
+            <th>Roles</th>
+            <th>Actions</th>
+        </thead>
+        <tbody>
+        {%  for user in users %}
+            <tr>
+                <td>{{user.id}}</td>
+                <td class ='imgContainer'><img class="userImg" src="{{ vich_uploader_asset(user, 'imageFile')}}" alt="article_picture"></td>
+                <td>{{user.email}}</td>
+                <td>{{user.pseudo}}</td>
+                <td>{% for role in user.roles %}
+                        {% if role == "ROLE_USER" %}
+                            User
+                        {% elseif role == "ROLE_ARTIST" %}
+                            Artist
+                        {% elseif role == "ROLE_ADMIN" %}
+                            Administrtor
+                        {% endif %}          
+                    {% endfor %}
+                </td>
+                <td><a href="{{path('admin_edit_user', {'id' : user.id}) }}" class="customButton">Edit</a>
+                {% if 'ROLE_ADMIN' not in user.roles %} {# to prevent the admin from deleting his own account #}
+                        <a href="{{path('admin_confirm', {'id' : user.id}) }}" class="customButton">Delete</a></td> 
+                {% endif %}
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan=5>No register users</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    <div class="d-flex justify-content-center">
+    <a href="{{ path('admin_dashboard')}}"><button class="customButton ">BACK</button></a>
     </div>
+
+    {# pagination #}
+
+    <div class="pagination navigation">
+        {{knp_pagination_render(users)}}
+    </div>
+</div>
 {% endblock %}

@@ -9,12 +9,6 @@
 
 {% block body %}
 
-{% for message in app.flashes('success')%}
-    <div class="succesFlashMessages">
-        {{message}}
-    </div>      
-{% endfor %}
-
 <h1 class="dashboardTitle">Admin Dashboard</h1>
 <div class="dashboardContainer">
     <div class="buttonBox">
