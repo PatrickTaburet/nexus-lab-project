@@ -80,8 +80,11 @@ background-color: rgba(255,255,255,0.3);
     border: solid 3px #00DDEB;
 }
 
-/* modale */
-
+/* 
+========================
+Modale
+========================
+*/
 
 .superModale{
     background-color:rgb(255, 255, 255);
@@ -138,6 +141,16 @@ background-color: rgba(255,255,255,0.3);
     right: 20px;
   }
 
+
+/* 
+========================
+LightBox
+========================
+*/
+
+#lightbox{
+  margin-top: 20px;
+}
 
 /* 
 ========================

@@ -34,7 +34,7 @@ a {
     align-items: center;
     gap: 10px;
     height: 60px;
-    z-index: 10000;
+    z-index: 9999;
 }
 
 

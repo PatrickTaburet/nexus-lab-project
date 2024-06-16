@@ -18,7 +18,7 @@ Generative scenes
   top: 80px;
 }
 
-h1{
+.headerTitle h1{
   font-size: 23px;
   text-align: center;
   padding-top: 54px;
@@ -628,14 +628,14 @@ Media queries
 }
 
   .titleImg{
-    top: 25px;
+    top: 84px;
   }
 
   .labelBox a{
-    top: 40px; 
+    top: 100px; 
   }
   .LabelImg{
-    top: 20px;
+    top: 80px;
   }
   .leftSide{
     margin: 0px;
@@ -811,7 +811,7 @@ Media queries
     align-items: center;
     margin-right: 0;
     font-size: 3.5vw;
-    top: 0;
+    top: 9vw;
     left: 0;
   }
 
@@ -819,15 +819,14 @@ Media queries
   display: none;
   }
   .labelBox a:hover{
-    color: var(--var-purple-dark);
+    color: var(--var-primary-dark);
     transition: 0.4s;
   }
   .hexaImg{
-    top: 15vw;
+    top: 24vw;
     left: 6vw;
     width: 17vw;
     height: 15vw;
-
 }
 
 /* title */
@@ -920,7 +919,38 @@ Media queries
    font-size: 14px; 
   }
 
- 
+  /* ------- Title -------*/
+
+  .headerTitle{
+    position: relative;
+    display: flex;
+    margin : 5px 0 0 20px;
+  }
+  .headerTitle h1{
+    display: flex;
+    position: relative;
+    left: 0;
+    transition:none;
+    font-size: 3.5vw;
+    padding-top: 8.3vw;
+  }
+  .titleImg{
+    top: 2.7vw;
+    width: 70vw;
+    height: 13vw;
+  }
+
+  /* ------- Label -------*/
+
+  .hexaImg{
+    top: 31vw;
+    left: 6vw;
+  }
+  .labelBox a{
+    top: 16vw;
+    left: 0vw;
+  }
+
   /* ------- Sliders -------*/
   .parametersBox .card-content{
     margin: 0;

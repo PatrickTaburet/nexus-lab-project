@@ -42,7 +42,12 @@
         {% for artwork in artworks.scene1 %}
             {% if (is_granted('ROLE_USER') and artwork.user == app.user)%}
             <tr>
-                <td><img class="artworkImg" src="{{ vich_uploader_asset(artwork, 'imageFile')}}" alt="artwork_picture"></td>
+                <td>
+                    <a href="{{ vich_uploader_asset(artwork, 'imageFile') }}"  data-lightbox="artwork" data-title="{{ artwork.title }}">
+                        <img src="{{ vich_uploader_asset(artwork, 'imageFile') }}" alt="artwork_picture" class="artworkImg">
+                    </a>
+                {# <img class="artworkImg" src="{{ vich_uploader_asset(artwork, 'imageFile')}}" alt="artwork_picture"> #}
+                </td>
                 <td>{{artwork.title}}</td>
                 <td class="commentTable">{{artwork.comment}}</td>
                 <td class="likeTable">{{artwork.likes|length}}</td>
@@ -99,6 +104,11 @@
 </div>
 
 
-<script defer src="{{ asset('js/modaleDeleteArtwork.js') }}" ></script>
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('js/myArtworks.js') }}"></script>
+    <script defer src="{{ asset('js/modaleDeleteArtwork.js') }}" ></script>
+{% endblock %}
+
 
 {% endblock %}
