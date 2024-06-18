@@ -29,9 +29,9 @@ class DataSceneController extends AbstractController
         ]);
     }
     /**
-    * @Route("/dataScene/newScene/{id}", name="newSceneD1", methods= {"GET"}))
+    * @Route("/dataScene/newScene-D1/{id}", name="newSceneD1", methods= {"GET"}))
     */
-    public function newScene(SceneD1Repository $repo, SerializerInterface $serializer, $id): Response
+    public function newSceneD1(SceneD1Repository $repo, SerializerInterface $serializer, $id): Response
     {
         $scene = $repo -> find($id); 
 

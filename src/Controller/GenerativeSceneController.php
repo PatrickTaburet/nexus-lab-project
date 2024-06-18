@@ -32,9 +32,9 @@ class GenerativeSceneController extends AbstractController
     }   
 
      /**
-     * @Route("/generative/newScene/{id}", name="newScene", methods= {"GET"}))
+     * @Route("/generative/newScene-G1/{id}", name="newSceneG1", methods= {"GET"}))
      */
-    public function newScene(Scene1Repository $repo, SerializerInterface $serializer, $id): Response
+    public function newSceneG1(Scene1Repository $repo, SerializerInterface $serializer, $id): Response
     {
         $scene = $repo -> find($id); 
 
