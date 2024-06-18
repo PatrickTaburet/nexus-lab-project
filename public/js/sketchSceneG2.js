@@ -4,7 +4,7 @@
 // Variables
 
 const numSteps = 10;
-let colorSlider ;
+let hueSlider ;
 let colorRangeSlider;
 let brightnessSlider;
 let moveSlider;
@@ -14,6 +14,7 @@ let shapeSlider;
 let ringsSlider;
 let zoomSlider;
 let diameterSlider;
+let resetButton;
 
 // Setup 
 
@@ -22,12 +23,11 @@ function setup() {
     const canvas = createCanvas(squareSize, squareSize);
     canvas.parent('sketch');
     canvas.id('myCanvas');
-    background(0, 0, 0);
     colorMode(HSB, 360, 100, 100, 1.0);
 
  // User Interface :
 
-    colorSlider = select(".colorSlider");
+    hueSlider = select(".hueSlider");
     colorRangeSlider = select(".colorRangeSlider");
     brightnessSlider = select(".brightnessSlider");
     moveSlider = select(".moveSlider");
@@ -38,20 +38,23 @@ function setup() {
     zoomSlider = select(".zoomSlider");
     diameterSlider = select(".diameterSlider");
 
+    resetButton = select("#resetButton");
+
     resetButton.mousePressed(() => {
         reset(); // Reset the canvas to its initial state
     });
 }
 
 function draw() {
-
+    background(0, 0, 0);
     noFill(); 
     strokeWeight(w(0.001));
-    // console.log(colorSlider.value());
     // console.log("2 -" + colorRangeSlider.value());
 
     for (let radius = 0.05; radius < diameterSlider.value(); radius += ringsSlider.value()+0.005) {
-        stroke(colorSlider.value()+radius*colorRangeSlider.value(), brightnessSlider.value(), 100); 
+
+        stroke(hueSlider.value()+radius*colorRangeSlider.value(), brightnessSlider.value(), 100); 
+
         let circle = makeCircle(numSteps, radius*zoomSlider.value());
         let distortedCircle = distortPolygon(circle);
         let smoothCircle = chaikin(distortedCircle, 4); // To make circle from a polygon (angle -> curve)
@@ -132,7 +135,6 @@ function windowResized() {
     const squareSize = min(windowWidth-30, windowHeight-30);
     const canvas = createCanvas(squareSize, squareSize);
     canvas.parent('sketch');
-    background(0,0,0);
 }
 
 function reset () {

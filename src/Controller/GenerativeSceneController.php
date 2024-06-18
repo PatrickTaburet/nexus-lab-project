@@ -21,13 +21,15 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class GenerativeSceneController extends AbstractController
 {
+
+// ----------- SCENE G1 : Random Line Walkers -----------
+
     /**
      * @Route("/sceneG1", name="sceneG1")
      */
     public function sceneG1(): Response
     {
         return $this->render('generative_scene/sceneG1.html.twig', [
-            'controller_name' => 'GenerativeSceneController',
         ]);
     }   
 
@@ -152,6 +154,20 @@ class GenerativeSceneController extends AbstractController
             'scene' => $scene
         ]);
     }   
+
+// ----------- SCENE G2 : Noise Orbit -----------
+
+
+    /**
+     * @Route("/sceneG2", name="sceneG2")
+     */
+    public function sceneG2(): Response
+    {
+        return $this->render('generative_scene/sceneG2.html.twig', [
+        ]);
+    }   
+
+
 
 
 }
