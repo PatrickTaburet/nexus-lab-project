@@ -4,7 +4,7 @@ namespace App\Entity;
 
 use DateTimeImmutable;
 use Doctrine\ORM\Mapping as ORM;
-use App\Repository\Scene1Repository;
+use App\Repository\Scene2Repository;
 use Doctrine\Common\Collections\Collection;
 use Symfony\Component\HttpFoundation\File\File;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -12,66 +12,67 @@ use Symfony\Component\Serializer\Annotation\Groups;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
 /**
- * @ORM\Entity(repositoryClass=Scene1Repository::class)
+ * @ORM\Entity(repositoryClass=Scene2Repository::class)
  * @Vich\Uploadable
  */
-class Scene1
+class Scene2
 {
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
-     * @Groups ("sceneDataRecup")
      */
     private $id;
 
     /**
      * @ORM\Column(type="integer")
-     * @Groups ("sceneDataRecup")
      */
-    private $color;
+    private $hue;
 
     /**
      * @ORM\Column(type="integer")
-     * @Groups ("sceneDataRecup")
      */
-    private $saturation;
-
-    /**
-     * @ORM\Column(type="float")
-     * @Groups ("sceneDataRecup")
-     */
-    private $opacity;
-
-    /**
-     * @ORM\Column(type="float")
-     * @Groups ("sceneDataRecup")
-     */
-    private $weight;
+    private $colorRange;
 
     /**
      * @ORM\Column(type="integer")
-     * @Groups ("sceneDataRecup")
      */
-    private $num_line;
+    private $brightness;
 
     /**
      * @ORM\Column(type="float")
-     * @Groups ("sceneDataRecup")
      */
-    private $velocity;
-
-    /**
-     * @ORM\Column(type="integer")
-     * @Groups ("sceneDataRecup")
-     */
-    private $noiseOctave;
+    private $movement;
 
     /**
      * @ORM\Column(type="float")
-     * @Groups ("sceneDataRecup")
      */
-    private $noiseFalloff;
+    private $deformA;
+
+    /**
+     * @ORM\Column(type="float")
+     */
+    private $deformB;
+
+    /**
+     * @ORM\Column(type="float")
+     */
+    private $shape;
+
+    /**
+     * @ORM\Column(type="float")
+     */
+    private $rings;
+
+    /**
+     * @ORM\Column(type="float")
+     */
+    private $diameter;
+
+    /**
+     * @ORM\Column(type="float")
+     */
+    private $zoom;
 
     /**
      * @ORM\Column(type="string", length=100, nullable=true)
@@ -83,24 +84,10 @@ class Scene1
      */
     private $comment;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="Scene1")
-     * @ORM\JoinColumn(nullable=false)
-     * @Groups ("sceneDataRecup")
-     */
-    private $user;
-
-     /**
-     * @ORM\ManyToMany(targetEntity=User::class)
-     * @ORM\JoinColumn(nullable=false)
-     * @ORM\JoinTable("user_G1artwork_like")
-     */
-    private $likes;
-
     // --------- VICH UPLOADER-----------------
 
     /**
-     * @Vich\UploadableField(mapping="scene1Images", fileNameProperty="imageName")
+     * @Vich\UploadableField(mapping="scene2Images", fileNameProperty="imageName")
      * @var File|null
      */
     private $imageFile;
@@ -119,120 +106,132 @@ class Scene1
 
 //-------------------------------------------------------------------------------------------
 
-    public function __construct()
-    {
-        $this->likes = new ArrayCollection();
-    }
+
+
+
+
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getColor(): ?int
+    public function getHue(): ?int
     {
-        return $this->color;
+        return $this->hue;
     }
 
-    public function setColor(?int $color): self
+    public function setHue(int $hue): self
     {
-        $this->color = $color;
+        $this->hue = $hue;
 
         return $this;
     }
 
-    public function getSaturation(): ?int
+    public function getColorRange(): ?int
     {
-        return $this->saturation;
+        return $this->colorRange;
     }
 
-    public function setSaturation(?int $saturation): self
+    public function setColorRange(int $colorRange): self
     {
-        $this->saturation = $saturation;
+        $this->colorRange = $colorRange;
 
         return $this;
     }
 
-    public function getOpacity(): ?float
+    public function getBrightness(): ?int
     {
-        return $this->opacity;
+        return $this->brightness;
     }
 
-    public function setOpacity(?float $opacity): self
+    public function setBrightness(int $brightness): self
     {
-        $this->opacity = $opacity;
+        $this->brightness = $brightness;
 
         return $this;
     }
 
-    public function getWeight(): ?float
+    public function getMovement(): ?float
     {
-        return $this->weight;
+        return $this->movement;
     }
 
-    public function setWeight(?float $weight): self
+    public function setMovement(float $movement): self
     {
-        $this->weight = $weight;
+        $this->movement = $movement;
 
         return $this;
     }
 
-    public function getNumLine(): ?int
+    public function getDeformA(): ?float
     {
-        return $this->num_line;
+        return $this->deformA;
     }
 
-    public function setNumLine(?int $num_line): self
+    public function setDeformA(float $deformA): self
     {
-        $this->num_line = $num_line;
+        $this->deformA = $deformA;
 
         return $this;
     }
 
-    public function getVelocity(): ?float
+    public function getDeformB(): ?float
     {
-        return $this->velocity;
+        return $this->deformB;
     }
 
-    public function setVelocity(?float $velocity): self
+    public function setDeformB(float $deformB): self
     {
-        $this->velocity = $velocity;
+        $this->deformB = $deformB;
 
         return $this;
     }
 
-    public function getNoiseOctave(): ?int
+    public function getShape(): ?float
     {
-        return $this->noiseOctave;
+        return $this->shape;
     }
 
-    public function setNoiseOctave(?int $noiseOctave): self
+    public function setShape(float $shape): self
     {
-        $this->noiseOctave = $noiseOctave;
+        $this->shape = $shape;
 
         return $this;
     }
 
-    public function getNoiseFalloff(): ?float
+    public function getRings(): ?float
     {
-        return $this->noiseFalloff;
+        return $this->rings;
     }
 
-    public function setNoiseFalloff(?float $noiseFalloff): self
+    public function setRings(float $rings): self
     {
-        $this->noiseFalloff = $noiseFalloff;
+        $this->rings = $rings;
 
         return $this;
     }
 
-    public function getUser(): ?User
+    public function getDiameter(): ?float
     {
-        return $this->user;
+        return $this->diameter;
     }
 
-    public function setUser(?User $user): self
+    public function setDiameter(float $diameter): self
     {
-        $this->user = $user;
+        $this->diameter = $diameter;
+
+        return $this;
+    }
+
+    public function getZoom(): ?float
+    {
+        return $this->zoom;
+    }
+
+    public function setZoom(float $zoom): self
+    {
+        $this->zoom = $zoom;
 
         return $this;
     }
@@ -309,35 +308,5 @@ class Scene1
         $this->updatedAt = $updatedAt;
 
         return $this;
-    }
-
-    // ---------- Likes settings ---------- //
-
-    
-    /**
-     * @return Collection<int, likes>
-     */
-    public function getLikes(): Collection
-    {
-        return $this->likes;
-    }
-    public function addLike(User $like): self 
-    {
-        if (!$this->likes->contains($like)){
-            $this->likes[] = $like;
-        }
-        return $this;
-    }
-
-    public function removeLike(User $like): self
-    {
-        $this->likes->removeElement($like);
-
-        return $this;
-    }
-
-    public function isLikedByUser(User $user): bool
-    {
-        return $this->likes->contains($user);
     }
 }

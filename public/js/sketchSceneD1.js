@@ -405,6 +405,7 @@ function sendData(){
     modale.classList.add("hidden");
     modale.classList.remove("translate");
     modaleBackground.classList.add("hidden");
+    loop();
   }
   if (buttonModale){
     buttonModale.addEventListener("click",openModal );

@@ -41,7 +41,7 @@ function setup() {
     resetButton = select("#resetButton");
 
     resetButton.mousePressed(() => {
-        reset(); // Reset the canvas to its initial state
+      window.location.reload(); // Reset the canvas to its initial state
     });
 }
 
@@ -195,6 +195,7 @@ function closeModal(){
     modale.classList.add("hidden");
     modale.classList.remove("translate");
     modaleBackground.classList.add("hidden");
+    loop();
 }
 if (buttonModale){
     buttonModale.addEventListener("click",openModal);
