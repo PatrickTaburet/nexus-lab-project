@@ -21,56 +21,67 @@ class Scene2
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @Groups ("sceneDataRecup")
      */
     private $id;
 
     /**
      * @ORM\Column(type="integer")
+     * @Groups ("sceneDataRecup")
      */
     private $hue;
 
     /**
      * @ORM\Column(type="integer")
+     * @Groups ("sceneDataRecup")
      */
     private $colorRange;
 
     /**
      * @ORM\Column(type="integer")
+     * @Groups ("sceneDataRecup")
      */
     private $brightness;
 
     /**
      * @ORM\Column(type="float")
+     * @Groups ("sceneDataRecup")
      */
     private $movement;
 
     /**
      * @ORM\Column(type="float")
+     * @Groups ("sceneDataRecup")
      */
     private $deformA;
 
     /**
      * @ORM\Column(type="float")
+     * @Groups ("sceneDataRecup")
      */
     private $deformB;
 
     /**
      * @ORM\Column(type="float")
+     * @Groups ("sceneDataRecup")
      */
     private $shape;
 
     /**
      * @ORM\Column(type="float")
+     * @Groups ("sceneDataRecup")
      */
     private $rings;
 
     /**
      * @ORM\Column(type="float")
+     * @Groups ("sceneDataRecup")
      */
     private $diameter;
 
     /**
      * @ORM\Column(type="float")
+     * @Groups ("sceneDataRecup")
      */
     private $zoom;
 
@@ -83,6 +94,20 @@ class Scene2
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $comment;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="Scene2")
+     * @ORM\JoinColumn(nullable=false)
+     * @Groups ("sceneDataRecup")
+     */
+    private $user;
+
+    /**
+     * @ORM\ManyToMany(targetEntity=User::class)
+     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinTable("user_G2artwork_like")
+     */
+    private $likes;
 
     // --------- VICH UPLOADER-----------------
 
@@ -259,6 +284,17 @@ class Scene2
 
         return $this;
     }
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): self
+    {
+        $this->user = $user;
+
+        return $this;
+    }
 
     // ---------- Vich Uploader - Screen Artwork ---------- //
 
@@ -309,4 +345,35 @@ class Scene2
 
         return $this;
     }
+
+     // ---------- Likes settings ---------- //
+
+    
+    /**
+     * @return Collection<int, likes>
+     */
+    public function getLikes(): Collection
+    {
+        return $this->likes;
+    }
+    public function addLike(User $like): self 
+    {
+        if (!$this->likes->contains($like)){
+            $this->likes[] = $like;
+        }
+        return $this;
+    }
+
+    public function removeLike(User $like): self
+    {
+        $this->likes->removeElement($like);
+
+        return $this;
+    }
+
+    public function isLikedByUser(User $user): bool
+    {
+        return $this->likes->contains($user);
+    }
 }
+

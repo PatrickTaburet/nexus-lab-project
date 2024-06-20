@@ -90,7 +90,7 @@ class Scene1
      */
     private $user;
 
-     /**
+    /**
      * @ORM\ManyToMany(targetEntity=User::class)
      * @ORM\JoinColumn(nullable=false)
      * @ORM\JoinTable("user_G1artwork_like")

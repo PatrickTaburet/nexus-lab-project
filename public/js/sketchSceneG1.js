@@ -152,8 +152,7 @@ function mouseClicked () {
 }
 
 
-
-// Send to backend :
+// --------- Send to backend ---------
 
 document.querySelector("#sendDataButton")?.addEventListener('click', function () {
   sendData()

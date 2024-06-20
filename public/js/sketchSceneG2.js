@@ -144,6 +144,74 @@ function reset () {
     background(0,0,0);
 }
 
+
+// --------- Send to backend ---------
+
+document.querySelector("#sendDataButton")?.addEventListener('click', function () {
+  sendData()
+});
+
+function sendData(){
+  let hue = hueSlider.value();
+  let colorRange = colorRangeSlider.value();
+  let brighness = brightnessSlider.value();
+  let movement = moveSlider.value();
+  let deformA = deformSlider.value();
+  let deformB = deformSlider2.value();
+  let shape = shapeSlider.value();
+  let rings = ringsSlider.value();
+  let zoom = zoomSlider.value();
+  let diameter = diameterSlider.value();
+   
+    // Capture image of the canva
+
+    // Capture l'image du canva dans un format base64
+    const myCanvas = document.getElementById("myCanvas");
+    const imageBase64 = myCanvas.toDataURL();
+    // const imageBase64 = canvas.elt.toDataURL();
+
+    // Créez une nouvelle image à partir de l'URL base64
+    const image = new Image();
+    image.src = imageBase64;
+
+    // Lorsque l'image est chargée, envoyez-la au serveur
+    image.onload = function() {
+      const formData = new FormData(); // or new URLSearchParams()
+      formData.append('hue', hue);
+      formData.append('colorRange', colorRange);
+      formData.append('brighness', brighness);
+      formData.append('movement', movement);
+      formData.append('deformA', deformA);
+      formData.append('deformB', deformB);
+      formData.append('shape', shape);
+      formData.append('rings', rings);
+      formData.append('zoom', zoom);
+      formData.append('diameter', diameter);
+      formData.append('userId', userId);
+      formData.append('file', image.src);
+      
+      // saveCanvas();
+      fetch('/generative/sendDataG2', {
+          method: 'POST',
+          body: formData
+      })
+      .then(response => {
+          if (!response.ok) {
+              throw new Error('Network response was not ok');
+          }
+          return response.json();
+      })
+      .then(data => {
+          console.log('Data sent successfully:', data);
+      // Redirection vers la page 'sceneG2'
+        window.location.href = data.redirectUrl;
+      })
+      .catch(error => {
+          console.error('There was a problem sending the data:', error);
+      });
+    };
+  }
+
 // --------- Sliders animation ---------
     
 const allRanges = document.querySelectorAll(".range-wrap");
