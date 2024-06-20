@@ -1,6 +1,7 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}New Scene{% endblock %}
+
 {% block stylesheets %}
     {{ parent() }}
     <link rel="stylesheet" href="{{ asset('css/generative.css') }}">
@@ -9,7 +10,8 @@
 {% block body %}
 
 {# Modale : save artwork  #}
-    <div class="modaleBackground hidden">
+
+<div class="modaleBackground hidden">
     <div class="superModale hidden">
         <div class="headerModale">
             <p>Save ArtWork</p>
@@ -18,15 +20,21 @@
         <p>Do you want to save this artwork and share it in the Gallery?</p> 
         <button id="sendDataButton" class="customButton generateButton">Save</button>
     </div>
-    </div>
+</div>
+
 {# End modale #}
+
 {# ---------------------- #}
+
 <div class="headerTitle">
     <img class="titleImg" src={{asset("/images/design/title2.png")}} alt="Title square">
     <h1>RANDOM LINE WALKERS</h1>
 </div>
 
 <div class="mainContainer">
+
+{# Left Side #}
+
     <div class="leftSide">
         <div class="labelBox">
             <a href="{{ path('generativeHome')}}">Generative <br> Art</a>
@@ -55,6 +63,7 @@
     <div id="sketch"></div>
 
 {# parameters control pannel #}
+
     <div class="parametersBox">
         <div class="card-border">
             <div class="card ">
@@ -64,63 +73,63 @@
                 <div class="separator"></div>
                 <div class="card-content">
                     <div class="sliderBox">
-                        <p>Color :</p>
+                        <p>Color</p>
                         <div class="range-wrap colorSlider">
                             <input type="range" class="range" id="colorSlider" min="1" max="360" value="5" step="10">
                             <output class="bubble"></output>
                         </div>
                     </div>
                     <div class="sliderBox">
-                        <p>Number of lines :</p>
+                        <p>Number of lines</p>
                         <div class="range-wrap">
                             <input type="range" class="range" id="lineSlider" min="1" max="200" value="100" step="1">   
                             <output class="bubble"></output>
                         </div>
                     </div>
                     <div class="sliderBox">
-                        <p>Weight :</p>
+                        <p>Weight</p>
                         <div class="range-wrap">
-                        <input type="range" class="range" id="weightSlider" min="0.2" max="10" value="5"step="0.1">
+                            <input type="range" class="range" id="weightSlider" min="0.2" max="10" value="5"step="0.1">
                             <output class="bubble"></output>
                         </div>
                     </div>
                     <div class="sliderBox">
-                        <p>Saturation :</p>
+                        <p>Saturation</p>
                         <div class="range-wrap">
-                        <input type="range" id="saturationSlider" class="range" min="0" max="100" value="90" step="5">
+                            <input type="range" id="saturationSlider" class="range" min="0" max="100" value="90" step="5">
                             <output class="bubble"></output>
                         </div>
                     </div>
                     <div class="sliderBox">
-                        <p>Opacity :</p>
+                        <p>Opacity</p>
                         <div class="range-wrap">
-                        <input type="range" id="opacitySlider" class="range" min="0.05" max="1" value="0.7"step="0.05">
+                            <input type="range" id="opacitySlider" class="range" min="0.05" max="1" value="0.7"step="0.05">
                             <output class="bubble"></output>
                         </div>
                     </div>
                     <div class="sliderBox">
-                        <p>Velocity :</p>
+                        <p>Velocity</p>
                         <div class="range-wrap">
-                        <input type="range" id="velocitySlider" class="range" min="0" max="15" value="5" step="0.1">
-                        <output class="bubble"></output>
+                            <input type="range" id="velocitySlider" class="range" min="0" max="15" value="5" step="0.1">
+                            <output class="bubble"></output>
                         </div>
                     </div>
                     <div class="sliderBox">
-                        <p>Noise octaves :</p>
+                        <p>Noise octaves</p>
                         <div class="range-wrap">
-                        <input type="range" id="noiseOctaveSlider" class="range" min="0" max="10" value="4"step="1">
-                        <output class="bubble"></output>
+                            <input type="range" id="noiseOctaveSlider" class="range" min="0" max="10" value="4"step="1">
+                            <output class="bubble"></output>
                         </div>
                     </div>
                     <div class="sliderBox">
-                        <p>Noise falloff :</p>
+                        <p>Noise falloff</p>
                         <div class="range-wrap">
-                        <input type="range" id="noiseFalloffSlider" class="range" min="0" max="1" value="0.5" step="0.05">
-                        <output class="bubble"></output>
+                            <input type="range" id="noiseFalloffSlider" class="range" min="0" max="1" value="0.5" step="0.05">
+                            <output class="bubble"></output>
                         </div>
                     </div>
-                    <div class="checkboxConatainer">
-                        <p>Stop and go :</p>
+                    <div class="checkboxContainer">
+                        <p>Stop and go</p>
                         <input type="checkbox" id="checkboxStop">
                     </div>
                     <div class="buttonBox">
@@ -133,7 +142,10 @@
             </div>
         </div>       
     </div>
-<div id="dataScene" data-scene="{{ scene|json_encode }}"></div>
+
+    <div id="dataScene" data-scene="{{ scene|json_encode }}"></div>
+
+</div>
 {% if app.user %}
     <script>
         let userId = {{ app.user.id }};

@@ -154,7 +154,7 @@ document.querySelector("#sendDataButton")?.addEventListener('click', function ()
 function sendData(){
   let hue = hueSlider.value();
   let colorRange = colorRangeSlider.value();
-  let brighness = brightnessSlider.value();
+  let brightness = brightnessSlider.value();
   let movement = moveSlider.value();
   let deformA = deformSlider.value();
   let deformB = deformSlider2.value();
@@ -162,7 +162,7 @@ function sendData(){
   let rings = ringsSlider.value();
   let zoom = zoomSlider.value();
   let diameter = diameterSlider.value();
-   
+
     // Capture image of the canva
 
     // Capture l'image du canva dans un format base64
@@ -179,7 +179,7 @@ function sendData(){
       const formData = new FormData(); // or new URLSearchParams()
       formData.append('hue', hue);
       formData.append('colorRange', colorRange);
-      formData.append('brighness', brighness);
+      formData.append('brightness', brightness);
       formData.append('movement', movement);
       formData.append('deformA', deformA);
       formData.append('deformB', deformB);
@@ -189,7 +189,7 @@ function sendData(){
       formData.append('diameter', diameter);
       formData.append('userId', userId);
       formData.append('file', image.src);
-      
+    
       // saveCanvas();
       fetch('/generative/sendDataG2', {
           method: 'POST',

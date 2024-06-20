@@ -1,7 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Scene 1{% endblock %}
-
+{% block title %}New Scene{% endblock %}
 {% block stylesheets %}
     {{ parent() }}
     <link rel="stylesheet" href="{{ asset('css/generative.css') }}">
@@ -10,8 +9,7 @@
 {% block body %}
 
 {# Modale : save artwork  #}
-
-<div class="modaleBackground hidden">
+    <div class="modaleBackground hidden">
     <div class="superModale hidden">
         <div class="headerModale">
             <p>Save ArtWork</p>
@@ -20,21 +18,15 @@
         <p>Do you want to save this artwork and share it in the Gallery?</p> 
         <button id="sendDataButton" class="customButton generateButton">Save</button>
     </div>
-</div>
-
+    </div>
 {# End modale #}
-
 {# ---------------------- #}
-
 <div class="headerTitle">
-    <img class="titleImg" src={{ asset("/images/design/title2.png")}} alt="Title square">
+    <img class="titleImg" src={{asset("/images/design/title2.png")}} alt="Title square">
     <h1>RANDOM LINE WALKERS</h1>
 </div>
 
 <div class="mainContainer">
-
-{# Left Side #}
-
     <div class="leftSide">
         <div class="labelBox">
             <a href="{{ path('generativeHome')}}">Generative <br> Art</a>
@@ -63,7 +55,6 @@
     <div id="sketch"></div>
 
 {# parameters control pannel #}
-
     <div class="parametersBox">
         <div class="card-border">
             <div class="card ">
@@ -73,64 +64,74 @@
                 <div class="separator"></div>
                 <div class="card-content">
                     <div class="sliderBox">
-                        <p>Color </p>
+                        <p>Hue color</p>
                         <div class="range-wrap colorSlider">
-                            <input type="range" class="range" id="colorSlider" min="1" max="360" value="5" step="10">
+                            <input type="range" class="hueSlider range" min="0" max="360" value="180" step="1">
                             <output class="bubble"></output>
                         </div>
                     </div>
                     <div class="sliderBox">
-                        <p>Number of lines </p>
+                        <p>Color range </p>
                         <div class="range-wrap">
-                            <input type="range" class="range" id="lineSlider" min="1" max="200" value="100" step="1">   
+                            <input type="range" class="colorRangeSlider range" min="0" max="1200" value="600" step="1">
                             <output class="bubble"></output>
                         </div>
                     </div>
                     <div class="sliderBox">
-                        <p>Weight </p>
+                        <p>Brightness</p>
                         <div class="range-wrap">
-                        <input type="range" class="range" id="weightSlider" min="0.2" max="10" value="5"step="0.1">
+                            <input type="range" class="range brightnessSlider" min="0" max="100" value="0" step="1">
                             <output class="bubble"></output>
                         </div>
                     </div>
                     <div class="sliderBox">
-                        <p>Saturation </p>
+                        <p>Movement</p>
                         <div class="range-wrap">
-                        <input type="range" id="saturationSlider" class="range" min="0" max="100" value="90" step="5">
+                            <input type="range" class="range moveSlider" min="0" max="1" value="0.08" step="0.005">
                             <output class="bubble"></output>
                         </div>
                     </div>
                     <div class="sliderBox">
-                        <p>Opacity </p>
+                        <p>Deformation A</p>
                         <div class="range-wrap">
-                        <input type="range" id="opacitySlider" class="range" min="0.05" max="1" value="0.7"step="0.05">
+                            <input type="range" class="range deformSlider" min="0" max="10" value="0.5" step="0.005">
                             <output class="bubble"></output>
                         </div>
                     </div>
                     <div class="sliderBox">
-                        <p>Velocity </p>
+                        <p>Deformation B</p>
                         <div class="range-wrap">
-                        <input type="range" id="velocitySlider" class="range" min="0" max="15" value="5" step="0.1">
-                        <output class="bubble"></output>
+                            <input type="range" class="deformSlider2 range" min="0" max="10" value="0.5" step="0.005">
+                            <output class="bubble"></output>
                         </div>
                     </div>
                     <div class="sliderBox">
-                        <p>Noise octaves </p>
+                        <p>Shape</p>
                         <div class="range-wrap">
-                        <input type="range" id="noiseOctaveSlider" class="range" min="0" max="10" value="4"step="1">
-                        <output class="bubble"></output>
+                            <input type="range" class="range shapeSlider" min="1" max="10" value="2" step="0.5">
+                            <output class="bubble"></output>
                         </div>
                     </div>
                     <div class="sliderBox">
-                        <p>Noise falloff </p>
+                        <p>Rings</p>
                         <div class="range-wrap">
-                        <input type="range" id="noiseFalloffSlider" class="range" min="0" max="1" value="0.5" step="0.05">
-                        <output class="bubble"></output>
+                            <input type="range" class="range ringsSlider" min="0" max="0.3" value="0" step="0.0005">
+                            <output class="bubble"></output>
                         </div>
                     </div>
-                    <div class="checkboxContainer">
-                        <p>Stop and go</p>
-                        <input type="checkbox" id="checkboxStop">
+                    <div class="sliderBox">
+                        <p>Diameter</p>
+                        <div class="range-wrap">
+                            <input type="range" class="range diameterSlider" min="0.001" max="2.5" value="0.4" step="0.005"> 
+                            <output class="bubble"></output>
+                        </div>
+                    </div>
+                    <div class="sliderBox">
+                        <p>Zoom</p>
+                        <div class="range-wrap">
+                            <input type="range" class="range zoomSlider" min="0" max="5" value="1" step="0.005">
+                            <output class="bubble"></output>
+                        </div>
                     </div>
                     <div class="buttonBox">
                         <button id="resetButton" class="customButton generateButton">Reset</button>
@@ -142,16 +143,16 @@
             </div>
         </div>       
     </div>
-    
-    <div id="dataScene" style="display:none" ></div>
+
+    <div id="dataScene" data-scene="{{ scene|json_encode }}"></div>
 
 </div>
 {% if app.user %}
     <script>
-        var userId = {{ app.user.id }};
+        let userId = {{ app.user.id }};
     </script>
 {% endif %}
- 
-<script src="{{ asset('js/sketchSceneG1.js') }}"></script>
+
+<script defer src="{{ asset('js/sketchSceneG2.js') }}" ></script>
 
 {% endblock %}

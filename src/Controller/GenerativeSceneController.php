@@ -4,8 +4,11 @@ namespace App\Controller;
 
 use App\Entity\User;
 use App\Entity\Scene1;
+use App\Entity\Scene2;
 use App\Form\SaveArtworkG1Type;
+use App\Form\SaveArtworkG2Type;
 use App\Repository\Scene1Repository;
+use App\Repository\Scene2Repository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Security;
@@ -167,7 +170,123 @@ class GenerativeSceneController extends AbstractController
         ]);
     }   
 
+    /**
+    * @Route("/generative/sendDataG2", name="send_data_G2", methods={"POST"})
+    */
+    public function sendDataToSceneG2(Request $request, EntityManagerInterface $entityManager): Response
+    {
+        $hue = $request->request->get('hue');
+        $colorRange = $request->request->get('colorRange');
+        $brightness = $request->request->get('brightness');
+        $movement = $request->request->get('movement');
+        $deformA = $request->request->get('deformA');
+        $deformB = $request->request->get('deformB');
+        $shape = $request->request->get('shape');
+        $rings = $request->request->get('rings');
+        $zoom = $request->request->get('zoom');
+        $diameter = $request->request->get('diameter');
+        $userId = $request->request->get('userId');
+        $imgFile = $request->request->get('file');
+       
+        // Decode the base64 string and save it as a .png file
+        $imageData = base64_decode(preg_replace('#^data:image/\w+;base64,#i', '', $imgFile));
 
+    
+        // Créer un fichier temporaire à partir des données image
+        $tempFile = tmpfile();
 
+        // Écrire les données image dans le fichier temporaire
+        fwrite($tempFile, $imageData);
+        // Obtenir le chemin absolu du fichier temporaire
+        $tempFilePath = stream_get_meta_data($tempFile)['uri'];
+         // Get the image name
+         $imageName = pathinfo($tempFilePath, PATHINFO_FILENAME) . '.png';
+        // Créer un nouvel objet UploadedFile
+        $imageFile = new UploadedFile($tempFilePath,  $imageName, 'image/png', null, true);
+
+        $user = $this->getDoctrine()
+        ->getRepository(User::class)
+        ->find($userId);
+        
+        if ($hue !== null &&
+            $colorRange !== null &&
+            $brightness !== null &&
+            $movement !== null &&
+            $deformA !== null &&
+            $deformB !== null &&
+            $shape !== null &&
+            $rings !== null &&
+            $zoom !== null &&
+            $diameter !== null &&
+            $userId  !== null
+            ) {
+            $data = new Scene2;
+            $data ->setHue($hue);
+            $data ->setColorRange($colorRange);
+            $data ->setBrightness($brightness);
+            $data ->setMovement($movement);
+            $data ->setDeformA($deformA);
+            $data ->setDeformB($deformB);
+            $data ->setShape($shape);
+            $data ->setRings($rings);
+            $data ->setZoom($zoom);
+            $data ->setDiameter($diameter);
+            $data ->setUser($user);
+            $data->setImageFile($imageFile);
+
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($data);
+            $entityManager->flush();
+
+        // Delete the temporary file
+            fclose($tempFile);
+
+        // Catch the id of the scene object to make redirection in js to the "saveArtwork form" after saving data in database.
+            $id = $data->getId();
+            return new JsonResponse(['message' => 'Data successfully saved!', 'redirectUrl' => $this->generateUrl('saveG2', ['id' => $id])]);
+
+        // redirection managed in javascript
+        } 
+            return new Response('Error: Missing data!', Response::HTTP_BAD_REQUEST);   
+    }
+
+    /**
+     * @Route("/generative/newScene-G2/{id}", name="newSceneG2", methods= {"GET"}))
+     */
+    public function newSceneG2(Scene2Repository $repo, SerializerInterface $serializer, $id): Response
+    {
+        $scene = $repo -> find($id); 
+
+        // SERIALIZER METHOD :
+        $json = $serializer->serialize($scene,'json',['groups'=> 'sceneDataRecup']); 
+            // Décoder le JSON en tableau associatif
+        $sceneData = json_decode($json, true);
+
+        return $this->render('generative_scene/newSceneG2.html.twig', [
+            'scene' => $sceneData,
+        ]);   
+    }
+
+    /**
+    * @Route("generative/saveSceneG2/{id}", name="saveG2")
+    */
+    public function saveArtworkG2(Request $request, EntityManagerInterface $entityManager, Scene2Repository $repo, $id): Response
+    {
+        $scene = $repo->find($id);
+        $form = $this->createForm(SaveArtworkG2Type::class, $scene);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) { 
+            $entityManager->persist($scene);
+            $entityManager->flush();
+
+            $this->addFlash('success', 'Artwork save in the gallery'); 
+            return $this->redirectToRoute('sceneG2');
+        }
+        return $this->render('main/saveArtwork.html.twig', [
+            'form' => $form->createView(),
+            'scene' => $scene
+        ]);
+    }   
 
 }
