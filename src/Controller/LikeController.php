@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Scene1;
 use App\Repository\Scene1Repository;
+use App\Repository\Scene2Repository;
 use App\Repository\SceneD1Repository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Response;
@@ -17,7 +18,7 @@ class LikeController extends AbstractController
     /**
      * @Route("/like/artwork/{id}/{entity}", name="artwork_like")
      */
-    public function like(EntityManagerInterface $entityManager, Scene1Repository $repoG1, SceneD1Repository $repoD1, $id, $entity): Response
+    public function like(EntityManagerInterface $entityManager, Scene1Repository $repoG1, Scene2Repository $repoG2, SceneD1Repository $repoD1, $id, $entity): Response
     {
         $user = $this->getUser();
 
@@ -26,6 +27,8 @@ class LikeController extends AbstractController
         } 
         elseif ($entity === 'SceneD1'){
             $artwork = $repoD1->find($id);  
+        }elseif ($entity === 'Scene2'){
+            $artwork = $repoG2->find($id);  
         } else { 
             throw new NotFoundHttpException('Entity not found');
         }

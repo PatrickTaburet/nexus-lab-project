@@ -7,12 +7,14 @@ use App\Entity\ArtistRole;
 use App\Form\EditUserType;
 use App\Form\SaveArtworkD1Type;
 use App\Form\SaveArtworkG1Type;
-use App\Repository\AddSceneRepository;
-use App\Repository\ArtistRoleRepository;
+use App\Form\SaveArtworkG2Type;
 use Doctrine\ORM\EntityManager;
 use App\Repository\UserRepository;
 use App\Repository\Scene1Repository;
+use App\Repository\Scene2Repository;
 use App\Repository\SceneD1Repository;
+use App\Repository\AddSceneRepository;
+use App\Repository\ArtistRoleRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -148,11 +150,15 @@ class AdminController extends AbstractController
     /**
      * @Route("/gallery", name="gallery")
      */
-    public function gallery(Scene1Repository $repo, SceneD1Repository $repo2, PaginatorInterface $paginator, Request $request): Response
+    public function gallery(Scene1Repository $repo, Scene2Repository $repo3, SceneD1Repository $repo2, PaginatorInterface $paginator, Request $request): Response
     {
         $scenes = $repo -> findAll(); 
         $scenes2= $repo2 -> findAll();
-        $allScenes = array_merge($scenes, $scenes2);
+        $scenes3= $repo3 -> findAll();
+        $allScenes = array_merge($scenes, $scenes2, $scenes3);
+        usort($allScenes, function($a, $b) {
+            return ($b->getUpdatedAt() <=> $a->getUpdatedAt());
+        });
         $artworks = $paginator->paginate(
             $allScenes,
             $request->query->getInt('page', 1),
@@ -166,7 +172,7 @@ class AdminController extends AbstractController
       /**
      * @Route("/gallery/delete/{id}/{entity}", name="delete_artwork", methods= {"GET", "POST"})
      */
-    public function deleteArtwork(Scene1Repository $repoG1, SceneD1Repository $repoD1, EntityManagerInterface $entityManager, $id, $entity): Response
+    public function deleteArtwork(Scene1Repository $repoG1, Scene2Repository $repoG2, SceneD1Repository $repoD1, EntityManagerInterface $entityManager, $id, $entity): Response
     {
         if($entity === 'Scene1'){
             $artwork = $repoG1-> find($id);
@@ -174,6 +180,9 @@ class AdminController extends AbstractController
            
         } elseif ($entity === 'SceneD1'){
             $artwork = $repoD1->find($id);
+            $entityManager->remove($artwork);
+        } elseif ($entity === 'Scene2'){
+            $artwork = $repoG2->find($id);
             $entityManager->remove($artwork);
         } else { 
             throw new NotFoundHttpException('Entity not found');
@@ -188,7 +197,7 @@ class AdminController extends AbstractController
     /**
     * @Route("/gallery/edit/{id}/{entity}", name="edit_artwork", methods= {"GET", "POST"})
     */
-    public function editArtwork(Request $request, Scene1Repository $repoG1, SceneD1Repository $repoD1, EntityManagerInterface $entityManager, $id, $entity) : Response
+    public function editArtwork(Request $request, Scene1Repository $repoG1, Scene2Repository $repoG2, SceneD1Repository $repoD1, EntityManagerInterface $entityManager, $id, $entity) : Response
     {       
         
         if($entity === 'Scene1'){
@@ -200,6 +209,10 @@ class AdminController extends AbstractController
             $artwork = $repoD1->find($id);
             $userId = $artwork->getUser()->getId();   
             $form = $this->createForm(SaveArtworkD1Type::class, $artwork);
+        } elseif ($entity === 'Scene2'){
+            $artwork = $repoG2->find($id);
+            $userId = $artwork->getUser()->getId();   
+            $form = $this->createForm(SaveArtworkG2Type::class, $artwork);
 
         } else { 
             throw new NotFoundHttpException('Entity not found');

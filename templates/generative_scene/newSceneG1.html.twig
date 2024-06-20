@@ -75,56 +75,56 @@
                     <div class="sliderBox">
                         <p>Color</p>
                         <div class="range-wrap colorSlider">
-                            <input type="range" class="range" id="colorSlider" min="1" max="360" value="5" step="10">
+                            <input type="range" class="range" id="colorSlider" min="1" max="360" value="{{scene.color}}" step="10">
                             <output class="bubble"></output>
                         </div>
                     </div>
                     <div class="sliderBox">
                         <p>Number of lines</p>
                         <div class="range-wrap">
-                            <input type="range" class="range" id="lineSlider" min="1" max="200" value="100" step="1">   
+                            <input type="range" class="range" id="lineSlider" min="1" max="200" value="{{scene.num_line}}" step="1">   
                             <output class="bubble"></output>
                         </div>
                     </div>
                     <div class="sliderBox">
                         <p>Weight</p>
                         <div class="range-wrap">
-                            <input type="range" class="range" id="weightSlider" min="0.2" max="10" value="5"step="0.1">
+                            <input type="range" class="range" id="weightSlider" min="0.2" max="10" value="{{scene.weight}}"step="0.1">
                             <output class="bubble"></output>
                         </div>
                     </div>
                     <div class="sliderBox">
                         <p>Saturation</p>
                         <div class="range-wrap">
-                            <input type="range" id="saturationSlider" class="range" min="0" max="100" value="90" step="5">
+                            <input type="range" id="saturationSlider" class="range" min="0" max="100" value="{{scene.saturation}}" step="5">
                             <output class="bubble"></output>
                         </div>
                     </div>
                     <div class="sliderBox">
                         <p>Opacity</p>
                         <div class="range-wrap">
-                            <input type="range" id="opacitySlider" class="range" min="0.05" max="1" value="0.7"step="0.05">
+                            <input type="range" id="opacitySlider" class="range" min="0.05" max="1" value="{{scene.opacity}}" step="0.05">
                             <output class="bubble"></output>
                         </div>
                     </div>
                     <div class="sliderBox">
                         <p>Velocity</p>
                         <div class="range-wrap">
-                            <input type="range" id="velocitySlider" class="range" min="0" max="15" value="5" step="0.1">
+                            <input type="range" id="velocitySlider" class="range" min="0" max="15" value="{{scene.velocity}}" step="0.1">
                             <output class="bubble"></output>
                         </div>
                     </div>
                     <div class="sliderBox">
                         <p>Noise octaves</p>
                         <div class="range-wrap">
-                            <input type="range" id="noiseOctaveSlider" class="range" min="0" max="10" value="4"step="1">
+                            <input type="range" id="noiseOctaveSlider" class="range" min="0" max="10" value="{{scene.noiseOctave}}" step="1">
                             <output class="bubble"></output>
                         </div>
                     </div>
                     <div class="sliderBox">
                         <p>Noise falloff</p>
                         <div class="range-wrap">
-                            <input type="range" id="noiseFalloffSlider" class="range" min="0" max="1" value="0.5" step="0.05">
+                            <input type="range" id="noiseFalloffSlider" class="range" min="0" max="1" value="{{scene.noiseFalloff}}" step="0.05">
                             <output class="bubble"></output>
                         </div>
                     </div>

@@ -42,7 +42,7 @@
             {% for scene in scenes %}
         
             {% set entityName = scene|class_name|split('\\')|last %}  {# Extract entity name from scene object #}
-        
+
         {# CARD #}
 
                 <div class="card">
@@ -69,9 +69,9 @@
                         </div>
                         <div class="cardSpec">
                             <div class="sceneType">
-                                {% if entityName == "Scene1" %}
+                                {% if entityName == "Scene1" or entityName == "Scene2" %}
                                     <a href="{{ path('generativeHome')}}"><span class="generative">Generative Art</span></a>
-                                {% elseif entityName == "SceneD1" %}
+                                {% elseif entityName == "SceneD1"  %}
                                     <a href="{{ path('dataArtHome')}}"><span class="data">Data Art</span></a>
                                 {% endif %}
                             </div>

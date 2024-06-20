@@ -10,6 +10,7 @@ use App\Form\SaveArtworkD1Type;
 use App\Form\SaveArtworkG1Type;
 use App\Repository\UserRepository;
 use App\Repository\Scene1Repository;
+use App\Repository\Scene2Repository;
 use App\Repository\SceneD1Repository;
 use App\Repository\ArtistRoleRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -126,12 +127,16 @@ class UserController extends AbstractController
     /**
     * @Route("/myArtworks/{id}", name="myArtworks", methods= {"GET", "POST"})
     */
-    public function myArtworks( Scene1Repository $repoG1, SceneD1Repository $repoD1, $id) : Response
+    public function myArtworks( Scene1Repository $repoG1,  Scene2Repository $repoG2,SceneD1Repository $repoD1, $id) : Response
     {       
 
         $sceneG1 = $repoG1->findAll(); 
-        // sorting artworks by creaton date
-        usort($sceneG1, function($a, $b) {
+
+        $sceneG2 = $repoG2->findAll(); 
+
+        $allScenesG = array_merge($sceneG1, $sceneG2);
+        // sorting generatives artworks by creaton date
+        usort($allScenesG, function($a, $b) {
             return ($b->getUpdatedAt() <=> $a->getUpdatedAt());
         });
         $sceneD1 = $repoD1->findAll();
@@ -139,7 +144,7 @@ class UserController extends AbstractController
             return ($b->getUpdatedAt() <=> $a->getUpdatedAt());
         });
         $data = [
-            'scene1' =>  $sceneG1,
+            'scenesG' =>  $allScenesG,
             'sceneD1' => $sceneD1,
         ];
         

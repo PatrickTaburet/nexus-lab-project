@@ -20,7 +20,6 @@ export default function Like({ props }) {
       });
   
       const data = await response.json();
-      console.log(data);
        // Update the like count
       if (data.message === 'Like successfully added.') {
         setLikes(likes + 1);

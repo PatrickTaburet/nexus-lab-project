@@ -46,6 +46,9 @@
                     {% elseif entityName == 'SceneD1' %}
                         <a href="{{path('admin_edit_artwork', {'id' : artwork.id, 'entity': "SceneD1"}) }}" class="customButton">Edit</a>
                         <a href="{{path('admin_delete_artwork', {'id' : artwork.id, 'entity': "SceneD1"}) }}" class="customButton">Delete</a>
+                    {% elseif entityName == 'Scene2' %}
+                        <a href="{{path('admin_edit_artwork', {'id' : artwork.id, 'entity': "Scene2"}) }}" class="customButton">Edit</a>
+                        <a href="{{path('admin_delete_artwork', {'id' : artwork.id, 'entity': "Scene2"}) }}" class="customButton">Delete</a>
                     {% endif %} 
                     </td> 
                     

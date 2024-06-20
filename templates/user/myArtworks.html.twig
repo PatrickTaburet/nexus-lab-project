@@ -39,7 +39,7 @@
 			</tr>
 		</thead>
         <tbody>
-        {% for artwork in artworks.scene1 %}
+        {% for artwork in artworks.scenesG %}
             {% if (is_granted('ROLE_USER') and artwork.user == app.user)%}
             <tr>
                 <td>

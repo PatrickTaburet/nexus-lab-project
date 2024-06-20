@@ -31,10 +31,10 @@ class MainController extends AbstractController
     public function gallery(Request $request, Scene1Repository $repo, SceneD1Repository $repo2, Scene2Repository $repo3, PaginatorInterface $paginator): Response
     {
         $session = $request->getSession();
-        $sceneG1 = $repo -> findAll(); 
+        $scenesG1 = $repo -> findAll(); 
         $scenesD1 = $repo2 -> findAll();
         $scenesG2 = $repo3 -> findAll();
-        $allScenes = array_merge($sceneG1, $scenesD1, $scenesG2);
+        $allScenes = array_merge($scenesG1, $scenesD1, $scenesG2);
 
         $form = $this->createForm(SortArtworkType::class);
         $form->handleRequest($request);
