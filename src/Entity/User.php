@@ -91,6 +91,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private $sceneD1;
 
     /**
+     * @ORM\OneToMany(targetEntity=SceneD2::class, mappedBy="user")
+     */
+    private $sceneD2;
+
+    /**
     * @ORM\OneToOne(targetEntity="App\Entity\ArtistRole", mappedBy="user")
     */
     private $role_request;
@@ -110,6 +115,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->imageFile = null;
         $this->Scene1 = new ArrayCollection();
         $this->sceneD1 = new ArrayCollection();
+        $this->sceneD2 = new ArrayCollection();
         $this->add_scene = new ArrayCollection();
     }
 
@@ -341,6 +347,35 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
             // set the owning side to null (unless already changed)
             if ($sceneD1->getUser() === $this) {
                 $sceneD1->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+    /**
+     * @return Collection<int, SceneD2>
+     */
+    public function getSceneD2(): Collection
+    {
+        return $this->sceneD1;
+    }
+
+    public function addSceneD2(SceneD2 $sceneD2): self
+    {
+        if (!$this->sceneD2->contains($sceneD2)) {
+            $this->sceneD2[] = $sceneD2;
+            $sceneD2->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSceneD2(SceneD2 $sceneD2): self
+    {
+        if ($this->sceneD1->removeElement($sceneD2)) {
+            // set the owning side to null (unless already changed)
+            if ($sceneD2->getUser() === $this) {
+                $sceneD2->setUser(null);
             }
         }
 

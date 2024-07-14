@@ -4,8 +4,11 @@ namespace App\Controller;
 
 use App\Entity\User;
 use App\Entity\SceneD1;
+use App\Entity\SceneD2;
 use App\Form\SaveArtworkD1Type;
+use App\Form\SaveArtworkD2Type;
 use App\Repository\SceneD1Repository;
+use App\Repository\SceneD2Repository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Security;
@@ -125,8 +128,8 @@ class DataSceneController extends AbstractController
             // redirection managed in javascript
         } 
             return new Response('Error: Missing data!', Response::HTTP_BAD_REQUEST);
-        
     }
+
     /**
     * @Route("dataScene/saveSceneD1/{id}", name="saveD1")
     */
@@ -149,4 +152,132 @@ class DataSceneController extends AbstractController
         ]);
     }   
 
+    //  ---------- Scene D2 -------------
+
+    /**
+    * @Route("/sceneD2", name="sceneD2")
+    */
+    public function sceneD2(): Response
+    {
+        return $this->render('data_scene/sceneD2.html.twig', [
+            'controller_name' => 'DataSceneController',
+        ]);
+    }
+
+     /**
+    * @Route("/dataScene/sendDataD2", name="send_data_D2", methods={"POST"})
+    */
+    public function sendDataToSceneD2(Request $request, EntityManagerInterface $entityManager, Security $security): Response
+    {
+        $divFactor = $request->request->get('divFactor');
+        $copy = $request->request->get('copy');
+        $deformation = $request->request->get('deformation');
+        $sizeFactor = $request->request->get('sizeFactor');
+        $angle = $request->request->get('angle');
+        $opacity = $request->request->get('opacity');
+        $filters = $request->request->get('filters');
+        $division = $request->request->get('division');
+        $colorRange = $request->request->get('colorRange');
+        $glitch = $request->request->get('glitch');
+        $noise = $request->request->get('noise');
+        $userId = $request->request->get('userId');
+        $imgFile = $request->request->get('file');
+        
+        
+        // Decode the base64 string and save it as a .png file
+        $imageData = base64_decode(preg_replace('#^data:image/\w+;base64,#i', '', $imgFile));
+
+    
+        // Créer un fichier temporaire à partir des données image
+        $tempFile = tmpfile();
+
+        // Écrire les données image dans le fichier temporaire
+        fwrite($tempFile, $imageData);
+        // Obtenir le chemin absolu du fichier temporaire
+        $tempFilePath = stream_get_meta_data($tempFile)['uri'];
+         // Get the image name
+         $imageName = pathinfo($tempFilePath, PATHINFO_FILENAME) . '.png';
+        // Créer un nouvel objet UploadedFile
+        $imageFile = new UploadedFile($tempFilePath,  $imageName, 'image/png', null, true);
+
+        // Get the logged user
+        $user = $security->getUser();
+        
+        if ($divFactor !== null &&
+            $copy !== null &&
+            $deformation !== null &&
+            $sizeFactor !== null &&
+            $angle !== null &&
+            $opacity !== null &&
+            $filters !== null &&
+            $division !== null &&
+            $colorRange !== null &&
+            $glitch !== null &&
+            $noise !== null &&
+            $userId  !== null
+            ) {
+            $data = new SceneD2;
+            $data ->setDivFactor($divFactor);
+            $data ->setCopy($copy);
+            $data ->setDeformation($deformation);
+            $data ->setSizeFactor($sizeFactor);
+            $data ->setAngle($angle);
+            $data ->setOpacity($opacity);
+            $data ->setFilters($filters);
+            $data ->setDivision($division);
+            $data ->setColorRange($colorRange);
+            $data ->setGlitch($glitch);
+            $data ->setNoise($noise);
+            $data ->setUser($user);
+
+         // Link image to the upload file
+            $data->setImageFile($imageFile);
+
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($data);
+            $entityManager->flush();
+
+         // Delete the temporary file
+            fclose($tempFile);
+
+         // Catch the id of the scene object to make redirection in js to the "saveArtwork form" after saving data in database.
+
+            $id = $data->getId();
+            return new JsonResponse(['message' => 'Data successfully saved!', 'redirectUrl' => $this->generateUrl('saveD2', ['id' => $id])]);
+            // redirection managed in javascript
+        } 
+            return new Response('Error: Missing data!', Response::HTTP_BAD_REQUEST);
+    }
+
+     /**
+    * @Route("dataScene/saveSceneD2/{id}", name="saveD2")
+    */
+    public function saveArtworkD2(Request $request, EntityManagerInterface $entityManager, SceneD2Repository $repo, $id): Response
+    {
+        $scene = $repo->find($id);
+        $form = $this->createForm(SaveArtworkD2Type::class, $scene);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) { 
+            $entityManager->persist($scene);
+            $entityManager->flush();
+
+            $this->addFlash('success', 'Artwork save in the gallery'); 
+            return $this->redirectToRoute('sceneD2');
+        }
+        return $this->render('main/saveArtwork.html.twig', [
+            'form' => $form->createView(),
+            'scene' => $scene
+        ]);
+    }   
+    
+     /**
+    * @Route("/dataScene/newScene-D2/{id}", name="newSceneD2", methods= {"GET"}))
+    */
+    public function newSceneD2(SceneD1Repository $repo, SerializerInterface $serializer, $id): Response
+    {
+        return $this->render('data_scene/newSceneD2.html.twig', [
+            //'scene' => $sceneData,
+        ]);   
+    }
 }

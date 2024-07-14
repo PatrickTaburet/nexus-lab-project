@@ -298,56 +298,42 @@ function sendData(){
 
     // Lorsque l'image est chargée, envoyez-la au serveur
     image.onload = function() {
-    const formData = new FormData(); // or new URLSearchParams()
-    formData.append('randomness', randomness);
-    formData.append('looping', looping);
-    formData.append('abstract', abstract);
-    formData.append('country1', country1 ? country1 : "");
-    formData.append('country2', country2? country2 : "");
-    formData.append('country3', country3? country3 : "");
-    formData.append('country4', country4? country4 : "");
-    formData.append('country5', country5? country5 : "");
-    formData.append('country6', country6? country6 : "");
-    formData.append('country7', country7? country7 : "");
-    formData.append('country8', country8? country8 : "");
-    formData.append('userId', userId);
-    formData.append('file', image.src);
-
-    console.log(formData.get('randomness'));
-    console.log(formData.get('looping'));
-    console.log(formData.get('abstract'));
-    console.log(formData.get('country1'));
-    console.log(formData.get('country2'));
-    console.log(formData.get('country3'));
-    console.log(formData.get('country4'));
-    console.log(formData.get('country5'));
-    console.log(formData.get('country6'));
-    console.log(formData.get('country7'));
-    console.log(formData.get('country8'));
-    console.log(formData.get('userId'));
-     console.log(formData.get('file'));
-  
-    fetch('/dataScene/sendDataD1', {
-        method: 'POST',
-        body: formData,
-        // headers: {
-        //     'Content-Type': 'multipart/form-data'
-        //   }
-    })
-    .then(response => {
-        if (!response.ok) {
-            throw new Error('Network response was not ok');
-        }
-        return response.json();
-    })
-    .then(data => {
-        console.log('Data sent successfully:', data);
-    // Redirection vers la page 'sceneD1'
-        window.location.href = data.redirectUrl;    
-    })
-    .catch(error => {
-        console.error('There was a problem sending the data:', error);
-    });
+        const formData = new FormData(); // or new URLSearchParams()
+        formData.append('randomness', randomness);
+        formData.append('looping', looping);
+        formData.append('abstract', abstract);
+        formData.append('country1', country1 ? country1 : "");
+        formData.append('country2', country2? country2 : "");
+        formData.append('country3', country3? country3 : "");
+        formData.append('country4', country4? country4 : "");
+        formData.append('country5', country5? country5 : "");
+        formData.append('country6', country6? country6 : "");
+        formData.append('country7', country7? country7 : "");
+        formData.append('country8', country8? country8 : "");
+        formData.append('userId', userId);
+        formData.append('file', image.src);
+    
+        fetch('/dataScene/sendDataD1', {
+            method: 'POST',
+            body: formData,
+            // headers: {
+            //     'Content-Type': 'multipart/form-data'
+            //   }
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then(data => {
+            console.log('Data sent successfully:', data);
+        // Redirection vers la page 'sceneD1'
+            window.location.href = data.redirectUrl;    
+        })
+        .catch(error => {
+            console.error('There was a problem sending the data:', error);
+        });
     };
 }
 

@@ -2,20 +2,21 @@
 
 namespace App\Entity;
 
+
 use DateTimeImmutable;
-use Doctrine\ORM\Mapping as ORM;
-use App\Repository\SceneD1Repository;
+use App\Repository\SceneD2Repository;
 use Doctrine\Common\Collections\Collection;
 use Symfony\Component\HttpFoundation\File\File;
-use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass=SceneD1Repository::class) 
+ * @ORM\Entity(repositoryClass=SceneD2Repository::class)
  * @Vich\Uploadable
  */
-class SceneD1
+class SceneD2
 {
     /**
      * @ORM\Id
@@ -26,73 +27,73 @@ class SceneD1
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
+     * @ORM\Column(type="integer")
      * @Groups ("sceneDataRecup")
      */
-    private $country1;
+    private $divFactor;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
+     * @ORM\Column(type="integer")
      * @Groups ("sceneDataRecup")
      */
-    private $country2;
+    private $copy;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
+     * @ORM\Column(type="integer")
      * @Groups ("sceneDataRecup")
      */
-    private $country3;
-
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     * @Groups ("sceneDataRecup")
-     */
-    private $country4;
-
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     * @Groups ("sceneDataRecup")
-     */
-    private $country5;
-
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     * @Groups ("sceneDataRecup")
-     */
-    private $country6;
-
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     * @Groups ("sceneDataRecup")
-     */
-    private $country7;
-
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     * @Groups ("sceneDataRecup")
-     */
-    private $country8;
+    private $deformation;
 
     /**
      * @ORM\Column(type="float")
      * @Groups ("sceneDataRecup")
      */
-    private $randomness;
+    private $sizeFactor;
+
+    /**
+     * @ORM\Column(type="integer")
+     * @Groups ("sceneDataRecup")
+     */
+    private $angle;
+
+    /**
+     * @ORM\Column(type="float")
+     * @Groups ("sceneDataRecup")
+     */
+    private $opacity;
+
+    /**
+     * @ORM\Column(type="integer")
+     * @Groups ("sceneDataRecup")
+     */
+    private $filters;
+
+    /**
+     * @ORM\Column(type="integer")
+     * @Groups ("sceneDataRecup")
+     */
+    private $division;
+
+    /**
+     * @ORM\Column(type="integer")
+     * @Groups ("sceneDataRecup")
+     */
+    private $colorRange;
 
     /**
      * @ORM\Column(type="boolean")
      * @Groups ("sceneDataRecup")
      */
-    private $looping;
+    private $glitch;
 
     /**
      * @ORM\Column(type="boolean")
      * @Groups ("sceneDataRecup")
      */
-    private $abstract;
-    
+    private $noise;
+
     /**
-     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="sceneD1")
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="sceneD2")
      * @ORM\JoinColumn(nullable=false)
      * @Groups ("sceneDataRecup")
      */
@@ -101,7 +102,7 @@ class SceneD1
     /**
      * @ORM\ManyToMany(targetEntity=User::class)
      * @ORM\JoinColumn(nullable=false)
-     * @ORM\JoinTable("user_D1artwork_like")
+     * @ORM\JoinTable("user_D2artwork_like")
      */
     private $likes;
 
@@ -114,11 +115,11 @@ class SceneD1
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $comment;
-    
+ 
     // --------- VICH UPLOADER-----------------
 
     /**
-     * @Vich\UploadableField(mapping="sceneD1Images", fileNameProperty="imageName")
+     * @Vich\UploadableField(mapping="sceneD2Images", fileNameProperty="imageName")
      * @var File|null
      */
     private $imageFile;
@@ -133,8 +134,9 @@ class SceneD1
     */
     private $updatedAt;
 
+    
 
-//-------------------------------------------------------------------------------------------
+    //-------------------------------------------------------------------------------------------
 
     public function __construct()
     {
@@ -146,138 +148,137 @@ class SceneD1
         return $this->id;
     }
 
-    public function getCountry1(): ?string
+    public function getDivFactor(): ?int
     {
-        return $this->country1;
+        return $this->divFactor;
     }
 
-    public function setCountry1(?string $country1): self
+    public function setDivFactor(int $divFactor): self
     {
-        $this->country1 = $country1;
+        $this->divFactor = $divFactor;
 
         return $this;
     }
 
-    public function getCountry2(): ?string
+    public function getCopy(): ?int
     {
-        return $this->country2;
+        return $this->copy;
     }
 
-    public function setCountry2(?string $country2): self
+    public function setCopy(int $copy): self
     {
-        $this->country2 = $country2;
+        $this->copy = $copy;
 
         return $this;
     }
 
-    public function getCountry3(): ?string
+    public function getDeformation(): ?int
     {
-        return $this->country3;
+        return $this->deformation;
     }
 
-    public function setCountry3(?string $country3): self
+    public function setDeformation(int $deformation): self
     {
-        $this->country3 = $country3;
+        $this->deformation = $deformation;
 
         return $this;
     }
 
-    public function getCountry4(): ?string
+    public function getSizeFactor(): ?float
     {
-        return $this->country4;
+        return $this->sizeFactor;
     }
 
-    public function setCountry4(?string $country4): self
+    public function setSizeFactor(float $sizeFactor): self
     {
-        $this->country4 = $country4;
+        $this->sizeFactor = $sizeFactor;
 
         return $this;
     }
 
-    public function getCountry5(): ?string
+    public function getAngle(): ?int
     {
-        return $this->country5;
+        return $this->angle;
     }
 
-    public function setCountry5(?string $country5): self
+    public function setAngle(int $angle): self
     {
-        $this->country5 = $country5;
+        $this->angle = $angle;
 
         return $this;
     }
 
-    public function getCountry6(): ?string
+    public function getOpacity(): ?float
     {
-        return $this->country6;
+        return $this->opacity;
     }
 
-    public function setCountry6(?string $country6): self
+    public function setOpacity(float $opacity): self
     {
-        $this->country6 = $country6;
+        $this->opacity = $opacity;
 
         return $this;
     }
 
-    public function getCountry7(): ?string
+    public function getFilters(): ?int
     {
-        return $this->country7;
+        return $this->filters;
     }
 
-    public function setCountry7(?string $country7): self
+    public function setFilters(int $filters): self
     {
-        $this->country7 = $country7;
+        $this->filters = $filters;
 
         return $this;
     }
 
-    public function getCountry8(): ?string
+    public function getDivision(): ?int
     {
-        return $this->country8;
+        return $this->division;
     }
 
-    public function setCountry8(?string $country8): self
+    public function setDivision(int $division): self
     {
-        $this->country8 = $country8;
+        $this->division = $division;
 
         return $this;
     }
 
-    public function getRandomness(): ?float
+    public function getColorRange(): ?int
     {
-        return $this->randomness;
+        return $this->colorRange;
     }
 
-    public function setRandomness(float $randomness): self
+    public function setColorRange(int $colorRange): self
     {
-        $this->randomness = $randomness;
+        $this->colorRange = $colorRange;
 
         return $this;
     }
 
-    public function isLooping(): ?bool
+    public function getGlitch(): ?int
     {
-        return $this->looping;
+        return $this->glitch;
     }
 
-    public function setLooping(bool $looping): self
+    public function setGlitch(int $glitch): self
     {
-        $this->looping = $looping;
+        $this->glitch = $glitch;
 
         return $this;
     }
 
-    public function isAbstract(): ?bool
+    public function getNoise(): ?int
     {
-        return $this->abstract;
+        return $this->noise;
     }
 
-    public function setAbstract(bool $abstract): self
+    public function setNoise(int $noise): self
     {
-        $this->abstract = $abstract;
+        $this->noise = $noise;
 
         return $this;
     }
-    
     public function getUser(): ?User
     {
         return $this->user;
@@ -313,7 +314,7 @@ class SceneD1
 
         return $this;
     }
-    
+
     // ---------- Vich Uploader - Screen Artwork ---------- //
 
 
@@ -364,8 +365,7 @@ class SceneD1
         return $this;
     }
 
-
-    // Likes settings
+     // Likes settings
 
     /**
      * @return Collection<int, likes>

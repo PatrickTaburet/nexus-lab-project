@@ -6,6 +6,7 @@ use App\Form\SortArtworkType;
 use App\Repository\Scene1Repository;
 use App\Repository\Scene2Repository;
 use App\Repository\SceneD1Repository;
+use App\Repository\SceneD2Repository;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -28,13 +29,14 @@ class MainController extends AbstractController
      /**
      * @Route("/gallery", name="gallery", methods= {"GET", "POST"})
      */
-    public function gallery(Request $request, Scene1Repository $repo, SceneD1Repository $repo2, Scene2Repository $repo3, PaginatorInterface $paginator): Response
+    public function gallery(Request $request, Scene1Repository $repo, SceneD1Repository $repo2, Scene2Repository $repo3, SceneD2Repository $repo4, PaginatorInterface $paginator): Response
     {
         $session = $request->getSession();
         $scenesG1 = $repo -> findAll(); 
         $scenesD1 = $repo2 -> findAll();
         $scenesG2 = $repo3 -> findAll();
-        $allScenes = array_merge($scenesG1, $scenesD1, $scenesG2);
+        $scenesD2 = $repo4 -> findAll();
+        $allScenes = array_merge($scenesG1, $scenesD1, $scenesG2, $scenesD2);
 
         $form = $this->createForm(SortArtworkType::class);
         $form->handleRequest($request);
