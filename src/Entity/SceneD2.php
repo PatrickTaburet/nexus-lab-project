@@ -93,6 +93,12 @@ class SceneD2
     private $noise;
 
     /**
+     * @ORM\Column(type="string", length=255)
+     * @Groups ("sceneDataRecup")
+     */
+    private $colorsValue;
+
+    /**
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="sceneD2")
      * @ORM\JoinColumn(nullable=false)
      * @Groups ("sceneDataRecup")
@@ -134,10 +140,7 @@ class SceneD2
     */
     private $updatedAt;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $colorsValue;
+ 
 
     
 
@@ -319,6 +322,17 @@ class SceneD2
 
         return $this;
     }
+    public function getColorsValue(): ?string
+    {
+        return $this->colorsValue;
+    }
+
+    public function setColorsValue(string $colorsValue): self
+    {
+        $this->colorsValue = $colorsValue;
+
+        return $this;
+    }
 
     // ---------- Vich Uploader - Screen Artwork ---------- //
 
@@ -397,17 +411,5 @@ class SceneD2
     public function isLikedByUser(User $user): bool
     {
         return $this->likes->contains($user);
-    }
-
-    public function getColorsValue(): ?string
-    {
-        return $this->colorsValue;
-    }
-
-    public function setColorsValue(string $colorsValue): self
-    {
-        $this->colorsValue = $colorsValue;
-
-        return $this;
     }
 }

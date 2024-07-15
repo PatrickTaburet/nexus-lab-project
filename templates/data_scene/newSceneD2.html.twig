@@ -152,11 +152,15 @@
     </div>
     <div id="dataScene" data-scene="{{ scene|json_encode }}"></div> 
 </div>
-{% if app.user %}
+
     <script>
-        var userId = {{ app.user.id }};
+        window.colorsValue = {{ scene.colorsValue is defined and scene.colorsValue is not empty ? scene.colorsValue | json_encode | raw : 'null' }};
+        window.newColors = colorsValue !== 'null' ? JSON.parse(colorsValue) : null;       
+        {% if app.user %}
+            let userId = {{ app.user.id }};
+        {% endif %}
     </script>
-{% endif %}
+
 
 <script defer src="{{ asset('js/sketchSceneD2.js') }}" ></script>
 

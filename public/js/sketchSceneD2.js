@@ -30,6 +30,7 @@ let noiseCheckbox;
 let glitchCheckbox;
 let reloadButton;
 
+
 function preload() {
     USrowData = loadJSON("/data/dataS2/Us_pop.txt");
     CHIrowData = loadJSON("/data/dataS2/India_pop.txt");
@@ -70,12 +71,23 @@ function setupColors(){
     chinaColor = select(".chinaColor");
     usaColor= select(".usaColor");
     indiaColor= select(".indiaColor");
-
-    colors = {
-        china: colors.china | 255,
-        india: colors.india | 150,
-        usa: colors.usa | 50,
-    };
+        
+    if (window.newColors){
+        colors = {
+            china: newColors.usa,
+            india: newColors.china,
+            usa: newColors.india,
+        };
+        chinaColor.style("color", HSBtoHex(colors).china);
+        usaColor.style("color", HSBtoHex(colors).usa);
+        indiaColor.style("color", HSBtoHex(colors).india);
+    }else{
+        colors = {
+            china: colors.china | 255,
+            india: colors.india | 150,
+            usa: colors.usa | 50,
+        };
+    }
 }
 
 function setup() {
@@ -154,12 +166,18 @@ function mouseClicked() {
 }
 
 function changeColors() {
-    
+
     //Hue value
     colors.usa = random(360) + colorRangeSlider.value();
     colors.china = random(360)+ colorRangeSlider.value();
     colors.india = random(360)+ colorRangeSlider.value();
 
+    chinaColor.style("color", HSBtoHex(colors).china);
+    usaColor.style("color", HSBtoHex(colors).usa);
+    indiaColor.style("color", HSBtoHex(colors).india);
+}
+
+function HSBtoHex(colors){
     let chinaHue =  colors.china % 360;
     let usaHue = colors.usa % 360;
     let indiaHue = colors.india % 360;
@@ -175,9 +193,11 @@ function changeColors() {
     let usaHex = '#' + hex(usaColorHSB.levels[0], 2) + hex(usaColorHSB.levels[1], 2) + hex(usaColorHSB.levels[2], 2);
     let indiaHex = '#' + hex(indiaColorHSB.levels[0], 2) + hex(indiaColorHSB.levels[1], 2) + hex(indiaColorHSB.levels[2], 2);
 
-    chinaColor.style("color", chinaHex);
-    usaColor.style("color", usaHex);
-    indiaColor.style("color", indiaHex);
+    return hexColors = {
+        china : chinaHex,
+        usa : usaHex,
+        india : indiaHex
+    }
 }
 
 // Random origins
@@ -354,6 +374,7 @@ function sendData(){
     let colorRange = colorRangeSlider.value();
     let glitch = glitchCheckbox.checked() ? 1 : 0;
     let noise = noiseCheckbox.checked() ? 1 : 0;
+    let colorsValue = JSON.stringify(colors);
    
     // Capture l'image du canva dans un format base64
     const myCanvas = document.getElementById("myCanvas");
@@ -378,23 +399,10 @@ function sendData(){
         formData.append('colorRange', colorRange);
         formData.append('glitch', glitch);
         formData.append('noise', noise);
+        formData.append('colorsValue', colorsValue);
     
         formData.append('userId', userId);
         formData.append('file', image.src);
-
-        console.log(formData.get('divFactor'));
-        console.log(formData.get('copy'));
-        console.log(formData.get('deformation'));
-        console.log(formData.get('sizeFactor'));
-        console.log(formData.get('angle'));
-        console.log(formData.get('opacity'));
-        console.log(formData.get('filters'));
-        console.log(formData.get('division'));
-        console.log(formData.get('colorRange'));
-        console.log(formData.get('glitch'));
-        console.log(formData.get('noise'));
-        console.log(formData.get('userId'));
-        console.log(formData.get('file'));
     
         fetch('/dataScene/sendDataD2', {
             method: 'POST',

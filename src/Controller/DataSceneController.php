@@ -182,6 +182,7 @@ class DataSceneController extends AbstractController
         $noise = $request->request->get('noise');
         $userId = $request->request->get('userId');
         $imgFile = $request->request->get('file');
+        $colorsValue = $request->request->get('colorsValue');
         
         
         // Decode the base64 string and save it as a .png file
@@ -214,7 +215,8 @@ class DataSceneController extends AbstractController
             $colorRange !== null &&
             $glitch !== null &&
             $noise !== null &&
-            $userId  !== null
+            $userId  !== null &&
+            $colorsValue !== null
             ) {
             $data = new SceneD2;
             $data ->setDivFactor($divFactor);
@@ -228,6 +230,7 @@ class DataSceneController extends AbstractController
             $data ->setColorRange($colorRange);
             $data ->setGlitch($glitch);
             $data ->setNoise($noise);
+            $data ->setColorsValue($colorsValue);
             $data ->setUser($user);
 
          // Link image to the upload file
@@ -277,10 +280,11 @@ class DataSceneController extends AbstractController
     public function newSceneD2(SceneD2Repository $repo, SerializerInterface $serializer, $id): Response
     {
         $scene = $repo -> find($id); 
-
         $json = $serializer->serialize($scene,'json',['groups'=> 'sceneDataRecup']);
-            // Décoder le JSON en tableau associatif
+        // Décoder le JSON en tableau associatif
         $sceneData = json_decode($json, true);
+    
+
         return $this->render('data_scene/newSceneD2.html.twig', [
             'scene' => $sceneData,
         ]);   
