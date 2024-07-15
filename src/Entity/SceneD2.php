@@ -134,6 +134,11 @@ class SceneD2
     */
     private $updatedAt;
 
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $colorsValue;
+
     
 
     //-------------------------------------------------------------------------------------------
@@ -392,5 +397,17 @@ class SceneD2
     public function isLikedByUser(User $user): bool
     {
         return $this->likes->contains($user);
+    }
+
+    public function getColorsValue(): ?string
+    {
+        return $this->colorsValue;
+    }
+
+    public function setColorsValue(string $colorsValue): self
+    {
+        $this->colorsValue = $colorsValue;
+
+        return $this;
     }
 }

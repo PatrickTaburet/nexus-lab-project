@@ -274,10 +274,15 @@ class DataSceneController extends AbstractController
      /**
     * @Route("/dataScene/newScene-D2/{id}", name="newSceneD2", methods= {"GET"}))
     */
-    public function newSceneD2(SceneD1Repository $repo, SerializerInterface $serializer, $id): Response
+    public function newSceneD2(SceneD2Repository $repo, SerializerInterface $serializer, $id): Response
     {
+        $scene = $repo -> find($id); 
+
+        $json = $serializer->serialize($scene,'json',['groups'=> 'sceneDataRecup']);
+            // Décoder le JSON en tableau associatif
+        $sceneData = json_decode($json, true);
         return $this->render('data_scene/newSceneD2.html.twig', [
-            //'scene' => $sceneData,
+            'scene' => $sceneData,
         ]);   
     }
 }

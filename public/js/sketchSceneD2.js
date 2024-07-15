@@ -16,8 +16,8 @@ let opacitySlider;
 let colorsButton;
 let colorRangeSlider;
 let filterSlider;
-let glitchMode = false;
-let noiseMode = false;
+let glitchMode;
+let noiseMode;
 let blendModes=[];
 let opacityValue;
 let blendModeValue;
@@ -59,7 +59,8 @@ function setupButtons(){
         window.location.reload();
     });
     colorsButton.mousePressed(changeColors);
-
+    glitchMode = glitchCheckbox.checked();
+    noiseMode = noiseCheckbox.checked();
     noiseCheckbox.changed(toggleNoiseMode);
     glitchCheckbox.changed(toggleGlitchMode);
 
@@ -153,6 +154,8 @@ function mouseClicked() {
 }
 
 function changeColors() {
+    
+    //Hue value
     colors.usa = random(360) + colorRangeSlider.value();
     colors.china = random(360)+ colorRangeSlider.value();
     colors.india = random(360)+ colorRangeSlider.value();
@@ -161,9 +164,10 @@ function changeColors() {
     let usaHue = colors.usa % 360;
     let indiaHue = colors.india % 360;
 
+    //HSB color value
     let chinaColorHSB = color(chinaHue, 100, 100);
-    let usaColorHSB = color(usaHue % 360, 100, 100);
-    let indiaColorHSB = color(indiaHue % 360, 100, 100);
+    let usaColorHSB = color(usaHue, 100, 100);
+    let indiaColorHSB = color(indiaHue, 100, 100);
 
 
     // Hexadécimal conversion

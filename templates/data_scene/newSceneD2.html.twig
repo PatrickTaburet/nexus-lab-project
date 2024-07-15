@@ -71,53 +71,52 @@
                 </div>
                 <div class="separator"></div>
                 <div class="card-content">
-                   
                     <div class="paramBottom">
                         <div class="sliderBox">
                             <p>Division factor</p>
                             <div class="range-wrap">
-                                <input class="divFactorSlider range" type="range" min="1" max="7" step="1" value="1">
+                                <input class="divFactorSlider range" type="range" min="1" max="7" step="1" value="{{scene.divFactor}}">
                                 <output class="bubble"></output>
                             </div>
                             <p>Copy</p>
                             <div class="range-wrap">
-                                <input class="numCopySlider range" type="range" min="1" max="15" step="1" value="3">
+                                <input class="numCopySlider range" type="range" min="1" max="15" step="1" value="{{scene.copy}}">
                                 <output class="bubble"></output>
                             </div>
                             <p>Deformation</p>
                             <div class="range-wrap">
-                                <input class="deformationSlider range" type="range" min="0" max="50" step="1" value="0">
+                                <input class="deformationSlider range" type="range" min="0" max="50" step="1" value="{{scene.deformation}}">
                                 <output class="bubble"></output>
                             </div>
                             <p>Size factor</p>
                             <div class="range-wrap">
-                                <input class="sizeFactorSlider range" type="range" min="0.2" max="5" step="0.1" value="1">
+                                <input class="sizeFactorSlider range" type="range" min="0.2" max="5" step="0.1" value="{{scene.sizeFactor}}">
                                 <output class="bubble"></output>
                             </div>
                             <p>Division angle</p>
                             <div class="range-wrap">
-                                <input class="angleDivSlider range" type="range" min="2" max="50" step="1" value="20">
+                                <input class="angleDivSlider range" type="range" min="2" max="50" step="1" value="{{scene.angle}}">
                                 <output class="bubble"></output>
                             </div>
                             <p>Opacity</p>
                             <div class="range-wrap">
-                                <input class="opacitySlider range" type="range" min="0.01" max="1" step="0.005" value="0.23">
+                                <input class="opacitySlider range" type="range" min="0.01" max="1" step="0.005" value="{{scene.opacity}}">
                                 <output class="bubble"></output>
                             </div>
                             <p>Filters</p>
                             <div class="range-wrap">
-                                <input class="filterSlider range" type="range" min="0" max="4" step="1" value="0">
+                                <input class="filterSlider range" type="range" min="0" max="4" step="1" value="{{scene.filters}}">
                                 <output class="bubble"></output>
                             </div>
                             <p>Division</p>
                             <div class="range-wrap">
-                                <input class="divSlider range" type="range" min="1" max="23" step="1" value="6">
+                                <input class="divSlider range" type="range" min="1" max="23" step="1" value="{{scene.division}}">
                                 <output class="bubble"></output>
                             </div>
                             <div style="border: solid, 2px; padding:10px;">
                                 <p>Color range</p>
                                 <div class="range-wrap">
-                                    <input class="colorRangeSlider range" type="range" min="-180" max="180" step="1" value="0">
+                                    <input class="colorRangeSlider range" type="range" min="-180" max="180" step="1" value="{{scene.colorRange}}">
                                     <output class="bubble"></output>
                                 </div>
                                 <button style="font-size: 20px; font-weight: 700;" class="colorsButton customButton">COLOR</button>
@@ -131,11 +130,11 @@
                         <div>
                             <div class="checkboxContainer">
                                 <p>GLITCH</p>
-                                <input type="checkbox" id="glitchCheckbox" class="checkbox">
+                                <input type="checkbox" id="glitchCheckbox" class="checkbox" {% if scene.glitch == 1 %}checked{% endif %}>
                             </div>
                             <div class="checkboxContainer">
                                 <p>NOISE</p>
-                                <input type="checkbox" id="noiseCheckbox" class="checkbox">
+                                <input type="checkbox" id="noiseCheckbox" class="checkbox" {% if scene.noise == 1 %}checked{% endif %}>
                             </div>
                         </div>
                  
@@ -151,7 +150,7 @@
             </div>
         </div>
     </div>
-    <div id="dataScene" style="display:none;" ></div>
+    <div id="dataScene" data-scene="{{ scene|json_encode }}"></div> 
 </div>
 {% if app.user %}
     <script>
