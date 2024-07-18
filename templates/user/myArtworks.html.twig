@@ -11,14 +11,14 @@
 
 {# Modale : Delete artwork  #}
     <div class="modaleBackground hidden">
-    <div class="superModale hidden">
-        <div class="headerModale">
-            <h1>Delete ArtWork</h1>
-            <button class="closeButton">X</button>
+        <div class="superModale hidden">
+            <div class="headerModale">
+                <h1>Delete ArtWork</h1>
+                <button class="closeButton customButton closeModaleStyle">X</button>
+            </div>
+            <div class="modaleContent">
+            </div>
         </div>
-        <div class="modaleContent">
-        </div>
-    </div>
     </div>
 {# End modale #}
 
@@ -39,24 +39,25 @@
 			</tr>
 		</thead>
         <tbody>
+        
         {% for artwork in artworks.scenesG %}
+        {% set entityName = artwork|class_name|split('\\')|last %}  {# Extract entity name from artwork object #}
             {% if (is_granted('ROLE_USER') and artwork.user == app.user)%}
             <tr>
                 <td>
                     <a href="{{ vich_uploader_asset(artwork, 'imageFile') }}"  data-lightbox="artwork" data-title="{{ artwork.title }}">
                         <img src="{{ vich_uploader_asset(artwork, 'imageFile') }}" alt="artwork_picture" class="artworkImg">
                     </a>
-                {# <img class="artworkImg" src="{{ vich_uploader_asset(artwork, 'imageFile')}}" alt="artwork_picture"> #}
                 </td>
                 <td>{{artwork.title}}</td>
                 <td class="commentTable">{{artwork.comment}}</td>
                 <td class="likeTable">{{artwork.likes|length}}</td>
                 <td class="dateTable">{{artwork.updatedAt|date('F j, Y, g:i a')}}</td>
                 <td>
-                    <a href="{{ path('editArtwork', {'id': artwork.id, 'entity': 'Scene1'})}}" class="customButton">Update</a>
+                    <a href="{{ path('editArtwork', {'id': artwork.id, 'entity': entityName})}}" class="customButton generateButton">Update</a>
                     <button 
                         class="buttonModaleG1 customButton generateButton"
-                        data-delete-url="{{ path('deleteArtwork', {'id': artwork.id , 'entity': "Scene1"}) }}">
+                        data-delete-url="{{ path('deleteArtwork', {'id': artwork.id , 'entity': entityName}) }}">
                         Delete
                     </button>
                 </td> 
@@ -80,19 +81,25 @@
 			</tr>
 		</thead>
         <tbody>
-        {% for artwork in artworks.sceneD1 %}
+        {% for artwork in artworks.sceneD %}
+            {% set entityName = artwork|class_name|split('\\')|last %} 
+
             {% if (is_granted('ROLE_USER') and artwork.user == app.user)%}
             <tr>
-                <td><img class="artworkImg" src="{{ vich_uploader_asset(artwork, 'imageFile')}}" alt="artwork_picture"></td>
+                <td>
+                    <a href="{{ vich_uploader_asset(artwork, 'imageFile') }}"  data-lightbox="artwork" data-title="{{ artwork.title }}">
+                        <img src="{{ vich_uploader_asset(artwork, 'imageFile') }}" alt="artwork_picture" class="artworkImg">
+                    </a>
+                </td>
                 <td>{{artwork.title}}</td>
                 <td class="commentTable">{{artwork.comment}}</td>
                 <td class="likeTable">{{artwork.likes|length}}</td>
                 <td class="dateTable">{{artwork.updatedAt|date('F j, Y, g:i a')}}</td>
                 <td>
-                    <a href="{{ path('editArtwork', {'id': artwork.id, 'entity': 'SceneD1'})}}" class="customButton">Update</a>
+                    <a href="{{ path('editArtwork', {'id': artwork.id, 'entity': entityName})}}" class="customButton generateButton">Update</a>
                     <button 
                         class="buttonModaleD1 customButton generateButton"
-                        data-delete-url="{{ path('deleteArtwork', {'id': artwork.id , 'entity': "SceneD1"}) }}">
+                        data-delete-url="{{ path('deleteArtwork', {'id': artwork.id , 'entity': entityName}) }}">
                         Delete
                     </button> 
                 </td> 

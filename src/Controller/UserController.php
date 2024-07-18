@@ -7,11 +7,14 @@ use App\Form\EditUserType;
 use App\Form\ArtistRoleType;
 use App\Form\UserPasswordType;
 use App\Form\SaveArtworkD1Type;
+use App\Form\SaveArtworkD2Type;
 use App\Form\SaveArtworkG1Type;
+use App\Form\SaveArtworkG2Type;
 use App\Repository\UserRepository;
 use App\Repository\Scene1Repository;
 use App\Repository\Scene2Repository;
 use App\Repository\SceneD1Repository;
+use App\Repository\SceneD2Repository;
 use App\Repository\ArtistRoleRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -127,11 +130,10 @@ class UserController extends AbstractController
     /**
     * @Route("/myArtworks/{id}", name="myArtworks", methods= {"GET", "POST"})
     */
-    public function myArtworks( Scene1Repository $repoG1,  Scene2Repository $repoG2,SceneD1Repository $repoD1, $id) : Response
+    public function myArtworks( Scene1Repository $repoG1,  Scene2Repository $repoG2,SceneD1Repository $repoD1, SceneD2Repository $repoD2, $id) : Response
     {       
 
         $sceneG1 = $repoG1->findAll(); 
-
         $sceneG2 = $repoG2->findAll(); 
 
         $allScenesG = array_merge($sceneG1, $sceneG2);
@@ -139,13 +141,17 @@ class UserController extends AbstractController
         usort($allScenesG, function($a, $b) {
             return ($b->getUpdatedAt() <=> $a->getUpdatedAt());
         });
+
         $sceneD1 = $repoD1->findAll();
-        usort($sceneD1, function($a, $b) {
+        $sceneD2 = $repoD2->findAll();
+        $allScenesD = array_merge($sceneD1, $sceneD2);
+
+        usort($allScenesD, function($a, $b) {
             return ($b->getUpdatedAt() <=> $a->getUpdatedAt());
         });
         $data = [
             'scenesG' =>  $allScenesG,
-            'sceneD1' => $sceneD1,
+            'sceneD' => $allScenesD,
         ];
         
         return $this->render('user/myArtworks.html.twig', [
@@ -155,7 +161,7 @@ class UserController extends AbstractController
      /**
     * @Route("/myArtworks/delete/{id}/{entity}", name="deleteArtwork", methods= {"GET", "POST"})
     */
-    public function Delete(EntityManagerInterface $entityManager, Scene1Repository $repoG1, SceneD1Repository $repoD1, $id, $entity): Response
+    public function Delete(EntityManagerInterface $entityManager, Scene1Repository $repoG1, Scene2Repository $repoG2, SceneD1Repository $repoD1, SceneD2Repository $repoD2, $id, $entity): Response
     {
 
         $currentUser = $this->getUser();
@@ -171,6 +177,22 @@ class UserController extends AbstractController
             $userId = $artwork->getUser()->getId();   
         } elseif ($entity === 'SceneD1'){
             $artwork = $repoD1->find($id);
+
+            if ($artwork->getUser()!== $currentUser) {
+                throw new AccessDeniedHttpException('You are not allowed to delete this artwork.');
+            }
+
+            $userId = $artwork->getUser()->getId();
+        } elseif ($entity === 'SceneD2'){
+            $artwork = $repoD2->find($id);
+
+            if ($artwork->getUser()!== $currentUser) {
+                throw new AccessDeniedHttpException('You are not allowed to delete this artwork.');
+            }
+
+            $userId = $artwork->getUser()->getId();
+        } elseif ($entity === 'Scene2'){
+            $artwork = $repoG2->find($id);
 
             if ($artwork->getUser()!== $currentUser) {
                 throw new AccessDeniedHttpException('You are not allowed to delete this artwork.');
@@ -195,7 +217,7 @@ class UserController extends AbstractController
     /**
     * @Route("/myArtworks/update/{id}/{entity}", name="editArtwork", methods= {"GET", "POST"})
     */
-    public function Update(Request $request, EntityManagerInterface $entityManager, Scene1Repository $repoG1, SceneD1Repository $repoD1, $id, $entity): Response
+    public function Update(Request $request, EntityManagerInterface $entityManager, Scene1Repository $repoG1, Scene2Repository $repoG2,SceneD2Repository $repoD2, SceneD1Repository $repoD1, $id, $entity): Response
     {
         $currentUser = $this->getUser();
 
@@ -206,7 +228,13 @@ class UserController extends AbstractController
             }
             $userId = $artwork->getUser()->getId();
             $form = $this->createForm(SaveArtworkG1Type::class, $artwork);
-           
+        } elseif ($entity === 'Scene2'){
+            $artwork = $repoG2->find($id);
+            if ($artwork->getUser()!== $currentUser) {
+                throw new AccessDeniedHttpException('You are not allowed to edit this artwork.');
+            }
+            $userId = $artwork->getUser()->getId();
+            $form = $this->createForm(SaveArtworkG2Type::class, $artwork);
         } elseif ($entity === 'SceneD1'){
             $artwork = $repoD1->find($id);
             if ($artwork->getUser()!== $currentUser) {
@@ -214,6 +242,13 @@ class UserController extends AbstractController
             }
             $userId = $artwork->getUser()->getId();
             $form = $this->createForm(SaveArtworkD1Type::class, $artwork);
+        } elseif ($entity === 'SceneD2'){
+            $artwork = $repoD2->find($id);
+            if ($artwork->getUser()!== $currentUser) {
+                throw new AccessDeniedHttpException('You are not allowed to edit this artwork.');
+            }
+            $userId = $artwork->getUser()->getId();
+            $form = $this->createForm(SaveArtworkD2Type::class, $artwork);
         } else { 
             throw new NotFoundHttpException('Entity not found');
         }

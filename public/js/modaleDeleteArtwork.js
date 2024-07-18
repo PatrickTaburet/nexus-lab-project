@@ -1,6 +1,5 @@
-
-const buttons = document.querySelectorAll('.buttonModaleG1,.buttonModaleD1');
-buttons.forEach(button => {
+let modalButtons = document.querySelectorAll('.buttonModaleG1,.buttonModaleD1');
+modalButtons.forEach(button => {
   button.addEventListener('click', openModal);
 });
 
@@ -20,7 +19,7 @@ function openModal(event){
   const modalContent = document.querySelector('.modaleContent');
   modalContent.innerHTML =  `
   <p>Do you want to delete this artwork from the gallery and the database ?</p> 
-  <a href="${deleteUrl}" class="customButton">Delete</a>
+  <a href="${deleteUrl}" class="customButton generateButton">Delete</a>
   `;
 }
 function closeModal(){

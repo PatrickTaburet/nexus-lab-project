@@ -89,7 +89,7 @@ Flash messages
     font-weight: 700;
     z-index: 500;
     position: absolute;
-    top: 60;
+    top: 60px;
     width: 100%;
 }
 .warningFlashMessages{

@@ -25,6 +25,7 @@
             </thead>
             <tbody>
             {%  for artwork in artworks %}
+            
                 <tr>
                     <td>{{artwork.id}}</td>
                     <td><img class="artworkImg" src="{{ vich_uploader_asset(artwork, 'imageFile')}}" alt="artwork_picture"></td>
@@ -49,6 +50,9 @@
                     {% elseif entityName == 'Scene2' %}
                         <a href="{{path('admin_edit_artwork', {'id' : artwork.id, 'entity': "Scene2"}) }}" class="customButton">Edit</a>
                         <a href="{{path('admin_delete_artwork', {'id' : artwork.id, 'entity': "Scene2"}) }}" class="customButton">Delete</a>
+                    {% elseif entityName == 'SceneD2' %}
+                        <a href="{{path('admin_edit_artwork', {'id' : artwork.id, 'entity': "SceneD2"}) }}" class="customButton">Edit</a>
+                        <a href="{{path('admin_delete_artwork', {'id' : artwork.id, 'entity': "SceneD2"}) }}" class="customButton">Delete</a>
                     {% endif %} 
                     </td> 
                     
