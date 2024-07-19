@@ -6,15 +6,14 @@ use App\Entity\User;
 use App\Form\RegistrationFormType;
 use App\Security\LoginAuthenticator;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Contracts\Translation\TranslatorInterface;
+use Symfony\Component\{
+    HttpFoundation\Response,
+    Routing\Annotation\Route,
+    HttpFoundation\Request,
+    PasswordHasher\Hasher\UserPasswordHasherInterface,
+    Security\Http\Authentication\UserAuthenticatorInterface
+};
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
-use Symfony\Component\Security\Http\Authentication\UserAuthenticatorInterface;
-// use App\Security\UserAuthenticator;
-// use Symfony\Component\Security\Http\Authenticator\AuthenticatorInterface;
 
 class RegistrationController extends AbstractController
 {

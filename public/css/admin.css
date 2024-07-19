@@ -214,7 +214,7 @@ Dashboard
 .download a:hover{
     color: var(--var-cyan);
 }
-hr{
+.hrStyle{
     height: 1px;
     width: 100%;
     background-color: var(--var-primary);

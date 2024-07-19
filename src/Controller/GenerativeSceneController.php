@@ -2,23 +2,31 @@
 
 namespace App\Controller;
 
-use App\Entity\User;
-use App\Entity\Scene1;
-use App\Entity\Scene2;
-use App\Form\SaveArtworkG1Type;
-use App\Form\SaveArtworkG2Type;
-use App\Repository\Scene1Repository;
-use App\Repository\Scene2Repository;
+use App\Entity\{
+    User,
+    Scene1,
+    Scene2
+};
+use App\Form\{
+    SaveArtworkG1Type,
+    SaveArtworkG2Type,
+};
+use App\Repository\{
+    Scene1Repository,
+    Scene2Repository
+};
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Security\Core\Security;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
-use Vich\UploaderBundle\Handler\DownloadHandler;
-use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\Serializer\SerializerInterface;
-use Symfony\Component\HttpFoundation\File\UploadedFile;
-use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
+use Symfony\Component\HttpFoundation\{
+    Request,
+    Response,
+    JsonResponse,
+    File\UploadedFile,
+};
+use Symfony\Component\{
+    Routing\Annotation\Route,
+    Serializer\SerializerInterface,
+    Serializer\Normalizer\NormalizerInterface
+};
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 

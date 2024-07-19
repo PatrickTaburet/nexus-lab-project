@@ -1,18 +1,21 @@
 <?php
 
 namespace App\Controller;
-
-use App\Entity\Scene1;
-use App\Repository\Scene1Repository;
-use App\Repository\Scene2Repository;
-use App\Repository\SceneD1Repository;
-use App\Repository\SceneD2Repository;
+use App\Repository\{
+    Scene1Repository,
+    Scene2Repository,
+    SceneD1Repository,
+    SceneD2Repository,
+};
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\{
+    HttpFoundation\Response,
+    Routing\Annotation\Route,
+    HttpKernel\Exception\NotFoundHttpException
+};
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+
+
 
 class LikeController extends AbstractController
 {

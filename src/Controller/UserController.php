@@ -3,28 +3,35 @@
 namespace App\Controller;
 
 use App\Entity\ArtistRole;
-use App\Form\EditUserType;
-use App\Form\ArtistRoleType;
-use App\Form\UserPasswordType;
-use App\Form\SaveArtworkD1Type;
-use App\Form\SaveArtworkD2Type;
-use App\Form\SaveArtworkG1Type;
-use App\Form\SaveArtworkG2Type;
-use App\Repository\UserRepository;
-use App\Repository\Scene1Repository;
-use App\Repository\Scene2Repository;
-use App\Repository\SceneD1Repository;
-use App\Repository\SceneD2Repository;
-use App\Repository\ArtistRoleRepository;
+use App\Form\{
+    EditUserType,
+    SaveArtworkD1Type,
+    SaveArtworkD2Type,
+    SaveArtworkG1Type,
+    SaveArtworkG2Type,
+    UserPasswordType,
+    ArtistRoleType,
+};
+use App\Repository\{
+    Scene1Repository,
+    Scene2Repository,
+    SceneD1Repository,
+    SceneD2Repository,
+    UserRepository
+};
+use Symfony\Component\{
+    HttpFoundation\Response,
+    Routing\Annotation\Route,
+    HttpFoundation\Request,
+    PasswordHasher\Hasher\UserPasswordHasherInterface,
+};
+use Symfony\Component\HttpKernel\Exception\{
+    NotFoundHttpException,
+    AccessDeniedHttpException
+};
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Security\Core\Security;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
-use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
+
 
 /**
 * @Route("/profile")

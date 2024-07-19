@@ -2,13 +2,15 @@
 
 namespace App\Controller;
 
+use Symfony\Component\{
+    HttpFoundation\Request,
+    HttpFoundation\Response,
+    Routing\Annotation\Route
+};
 use App\Entity\AddScene;
 use App\Form\AddSceneType;
 use App\Repository\AddSceneRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 /**

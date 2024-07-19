@@ -24,7 +24,7 @@
             <div><p>Bio :  </p>{{request.bio}} lore</div>
             <div><p>Exemples :  </p>{{request.exemples}}</div>
             <div><p>Portfolio :  </p>{{request.portfolio}}</div>
-            <hr>
+            <hr class="hrStyle">
             <div class="deleteButtonBox">
                 <a href="{{ path('admin_delete_request', {'id' : request.id, 'entity': "ArtistRole"}) }}" class="customButton adminButton">Delete request</a>   
             </div>
@@ -43,14 +43,14 @@
             </div>
             <div><p>Name :</p>{{request.title}}</div>
             <div><p>Bio :</p>{{request.description}}</div>
-            <hr>
+            <hr class="hrStyle">
             <div class="sceneImgDiv">
                 <img class="sceneImg" src="{{ vich_uploader_asset(request, 'imageFile')}}" alt="scene_picture">
             </div>
             <div class="download">
                 <a href="{{ asset('code/' ~ request.codeFile) }}" download>Download Code File</a>
             </div>
-            <hr>
+            <hr class="hrStyle">
             <div class="deleteButtonBox">
                 <a href="{{ path('admin_delete_request', {'id' : request.id, 'entity': "AddScene"}) }}" class="customButton adminButton">Delete request</a>   
             </div>

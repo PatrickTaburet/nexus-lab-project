@@ -2,28 +2,32 @@
 
 namespace App\Controller;
 
-use App\Entity\AddScene;
-use App\Entity\ArtistRole;
-use App\Form\EditUserType;
-use App\Form\SaveArtworkD1Type;
-use App\Form\SaveArtworkD2Type;
-use App\Form\SaveArtworkG1Type;
-use App\Form\SaveArtworkG2Type;
-use Doctrine\ORM\EntityManager;
-use App\Repository\UserRepository;
-use App\Repository\Scene1Repository;
-use App\Repository\Scene2Repository;
-use App\Repository\SceneD1Repository;
-use App\Repository\SceneD2Repository;
-use App\Repository\AddSceneRepository;
-use App\Repository\ArtistRoleRepository;
+use App\Form\{
+    EditUserType,
+    SaveArtworkD1Type,
+    SaveArtworkD2Type,
+    SaveArtworkG1Type,
+    SaveArtworkG2Type,
+};
+use App\Repository\{
+    UserRepository,
+    Scene1Repository,
+    Scene2Repository,
+    SceneD1Repository,
+    SceneD2Repository,
+    AddSceneRepository,
+    ArtistRoleRepository
+};
+use Symfony\Component\ {
+    HttpFoundation\Request,
+    HttpFoundation\Response,
+    Routing\Annotation\Route,
+    HttpKernel\Exception\NotFoundHttpException
+};
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+
 
 /**
  * @Route("/admin", name="admin_")

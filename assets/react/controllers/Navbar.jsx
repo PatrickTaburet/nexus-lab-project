@@ -58,7 +58,7 @@ export default function Navbar ({props}) {
       </div> ) 
     const adminButton = (props.user && props.role.includes("ROLE_ADMIN"))?
       (<div className={`${modStyles.modaleRowButtons}`}>
-        <MyButton myStyle="whiteButton" to="/admin/dashboard">Admin Dashboard</MyButton><hr className={`${modStyles.adminHr}`}/>
+        <MyButton myStyle="whiteButton" to="/admin/dashboard">Admin Dashboard</MyButton><hr className={`${modStyles.adminHr2}`}/>
       </div> ) : "";
 
 
@@ -120,25 +120,25 @@ export default function Navbar ({props}) {
                 <img src="/images/design/circle2.png" alt="cyber-circle" className={`${modStyles.modaleProfileCircle}`}/>
                 <img src={props.userImg} alt={props.username} className={`${modStyles.modaleImg}`}/>
             </div>
-            <hr />
+            <hr className={`${modStyles.adminHr}`}/>
             <div className={`${modStyles.modaleRow}`}>
                 Pseudo : {props.username}
             </div>
-            <hr />
+            <hr className={`${modStyles.adminHr}`}/>
             <div className={`${modStyles.modaleRow}`}>
                 Email : {props.email}
             </div> 
-            <hr />
+            <hr className={`${modStyles.adminHr}`}/>
             <div className={`${modStyles.modaleRow}`}>
                 Role : {props.role[0] ? "USER" : ""}{props.role[1] ? " / ARTIST" : ""}{props.role[2] ? " / ADMIN" : ""}
             </div>
-            <hr />
+            <hr className={`${modStyles.adminHr}`}/>
             <div className={`${modStyles.modaleRow}`}>
                 <MyButton myStyle="marginButton" to="profile/edit" id={props.userId}>Edit Profile</MyButton>
                 <MyButton myStyle="marginButton" to="profile/myArtworks" id={props.userId}>My Artworks</MyButton>
             </div>
               {modaleButtons}
-            <hr />
+            <hr className={`${modStyles.adminHr}`}/>
               {adminButton}
             <div className={`${modStyles.modaleBottom}`}> 
               <a className={`${modStyles.logout}`} href="/logout">Log out</a>
