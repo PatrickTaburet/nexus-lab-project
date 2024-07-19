@@ -25,7 +25,6 @@
             </thead>
             <tbody>
             {%  for artwork in artworks %}
-            
                 <tr>
                     <td>{{artwork.id}}</td>
                     <td><img class="artworkImg" src="{{ vich_uploader_asset(artwork, 'imageFile')}}" alt="artwork_picture"></td>
@@ -38,22 +37,9 @@
                     <td class="likeTable">{{artwork.likes|length}}</td>
                     <td class="dateTable">{{artwork.updatedAt|date('F j, Y, g:i a')}}</td>
                     <td>
-                    {# Check which entity this artwork comes from to be sure to delete only one #}
                     {% set entityName = artwork|class_name|split('\\')|last %} 
-    
-                    {% if entityName == 'Scene1' %}
-                        <a href="{{path('admin_edit_artwork', {'id' : artwork.id, 'entity': "Scene1"}) }}" class="customButton">Edit</a>
-                        <a href="{{path('admin_delete_artwork', {'id' : artwork.id, 'entity': "Scene1"}) }}" class="customButton">Delete</a>
-                    {% elseif entityName == 'SceneD1' %}
-                        <a href="{{path('admin_edit_artwork', {'id' : artwork.id, 'entity': "SceneD1"}) }}" class="customButton">Edit</a>
-                        <a href="{{path('admin_delete_artwork', {'id' : artwork.id, 'entity': "SceneD1"}) }}" class="customButton">Delete</a>
-                    {% elseif entityName == 'Scene2' %}
-                        <a href="{{path('admin_edit_artwork', {'id' : artwork.id, 'entity': "Scene2"}) }}" class="customButton">Edit</a>
-                        <a href="{{path('admin_delete_artwork', {'id' : artwork.id, 'entity': "Scene2"}) }}" class="customButton">Delete</a>
-                    {% elseif entityName == 'SceneD2' %}
-                        <a href="{{path('admin_edit_artwork', {'id' : artwork.id, 'entity': "SceneD2"}) }}" class="customButton">Edit</a>
-                        <a href="{{path('admin_delete_artwork', {'id' : artwork.id, 'entity': "SceneD2"}) }}" class="customButton">Delete</a>
-                    {% endif %} 
+                        <a href="{{path('admin_edit_artwork', {'id' : artwork.id, 'entity': entityName}) }}" class="customButton">Edit</a>
+                        <a href="{{path('admin_delete_artwork', {'id' : artwork.id, 'entity': entityName}) }}" class="customButton">Delete</a>
                     </td> 
                     
                 </tr>

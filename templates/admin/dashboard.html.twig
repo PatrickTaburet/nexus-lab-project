@@ -15,54 +15,22 @@
         <a href="{{ path('admin_users')}}" class="customButton adminButton">Edit Users</a> 
         <a href="{{ path('admin_gallery')}}" class="customButton adminButton">Edit Gallery</a> 
     </div>
-    <div class="dashboardTop">
-        <div class="requestContainer">
-            <h2 class="subTitle">Artist role requests</h2>
-            <div class="requestContent">
-                <table class="table dashboardTable">
-                    <thead>
-                        <th>User</th>
-                        <th>Date</th>
-                        <th>Action</th>
-                    </thead>
-                    <tbody>
-                    {% for request in roleRequests %}
-                        <tr>
-                            <td>{{request.user.pseudo}}</td>
-                            <td>{{request.createdAt|date('F j, Y, g:i a')}}</td>
-                            <td><a href="{{path('admin_show_request', {'id' : request.id, 'entity': "ArtistRole"}) }}" class="customButton">Open</a>
-                        </tr>
-                    {% endfor %}
-                    </tbody>
-                </table>
-            </div>
-            
-        </div>
-        <div class="requestContainer">
-            <h2 class="subTitle">New scene proposals</h2>
-            <div class="requestContent">
-                <table class="table dashboardTable">
-                    <thead>
-                        <th>User</th>
-                        <th>Date</th>
-                        <th>Action</th>
-                    </thead>
-                    <tbody>
-                    {% for request in sceneRequests %}
-                        <tr>
-                            <td>{{request.user.pseudo}}</td>
-                            <td>{{request.updatedAt|date('F j, Y, g:i a')}}</td>
-                            <td><a href="{{path('admin_show_request', {'id' : request.id, 'entity': "AddScene"}) }}" class="customButton">Open</a></td>
-                        </tr>
-                    {% endfor %}
-                    </tbody>
-                </table>
-            </div>
-           
-        </div>
+    <div class="dashboardTop"> 
+        {% block request_tables %}
+            {% include 'admin/_request_table.html.twig' with {
+                title: 'Artist role requests',
+                requests: roleRequests,
+                entity: 'ArtistRole',
+                dateField: 'createdAt'
+            } %}
+            {% include 'admin/_request_table.html.twig' with {
+                title: 'New scene proposals',
+                requests: sceneRequests,
+                entity: 'AddScene',
+                dateField: 'updatedAt'
+            } %}
+        {% endblock %}
     </div>
 </div>
-
-
 
 {% endblock %}
