@@ -1,17 +1,22 @@
 <?php
 
 namespace App\Entity;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
-use Symfony\Component\Validator\Constraints as Assert;
+use Doctrine\Common\Collections\{
+    Collection,
+    ArrayCollection
+};
 use DateTimeImmutable;
 use Doctrine\ORM\Mapping as ORM;
-use App\Repository\UserRepository;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
-use Symfony\Component\HttpFoundation\File\File;
-use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\{
+    HttpFoundation\File\File,
+    Security\Core\User\UserInterface,
+    Security\Core\User\PasswordAuthenticatedUserInterface,
+    Validator\Constraints as Assert
+};
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
-use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
+use App\Repository\UserRepository;
+
 
 /** 
  * @ORM\Entity(repositoryClass=UserRepository::class)

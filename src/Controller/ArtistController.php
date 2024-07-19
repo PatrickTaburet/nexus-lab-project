@@ -8,6 +8,7 @@ use Symfony\Component\{
     Routing\Annotation\Route
 };
 use App\Entity\AddScene;
+use App\Entity\User;
 use App\Form\AddSceneType;
 use App\Repository\AddSceneRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -70,6 +71,10 @@ class ArtistController extends AbstractController
     public function artistDashboard(AddSceneRepository $newScene): Response
     {
         $user = $this->getUser();
+        if (!$user instanceof User) {
+            // Gérez le cas où l'utilisateur n'est pas connecté ou est d'un type inattendu
+            throw $this->createAccessDeniedException('You must be logged in to access this page.');
+        }
         $userId = $user->getId();
         $sceneRequests = $newScene->findby(['user' => $userId]);
         // Sorting all requests by creation date

@@ -3,10 +3,12 @@
 namespace App\Form;
 
 use App\Entity\ArtistRole;
-use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\{
+    Form\AbstractType,
+    Form\FormBuilderInterface,
+    Form\Extension\Core\Type\SubmitType,
+    OptionsResolver\OptionsResolver
+};
 
 class ArtistRoleType extends AbstractType
 {

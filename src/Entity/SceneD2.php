@@ -4,13 +4,17 @@ namespace App\Entity;
 
 
 use DateTimeImmutable;
-use App\Repository\SceneD2Repository;
-use Doctrine\Common\Collections\Collection;
-use Symfony\Component\HttpFoundation\File\File;
-use Symfony\Component\Serializer\Annotation\Groups;
+use Doctrine\Common\Collections\{
+    Collection,
+    ArrayCollection
+};
+use Symfony\Component\{
+    HttpFoundation\File\File,
+    Serializer\Annotation\Groups
+};
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
-use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\SceneD2Repository;
 
 /**
  * @ORM\Entity(repositoryClass=SceneD2Repository::class)
