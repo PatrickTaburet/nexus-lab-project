@@ -244,7 +244,7 @@ Update button style
 
 /* Gradiant Style */
 
-.buttonGradient{
+.buttonGradient, .buttonGradientOff{
     align-items: center;
     /* background-color: rgb(5, 6, 45); */
     background-image: linear-gradient(144deg, #AF40FF, #5B42F3 50%, #00DDEB), linear-gradient(144deg, #AF40FF, #5B42F3 50%, #00DDEB), linear-gradient(144deg, #AF40FF, #5B42F3 50%, #00DDEB);

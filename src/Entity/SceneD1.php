@@ -2,10 +2,6 @@
 
 namespace App\Entity;
 
-use Doctrine\Common\Collections\{
-    Collection,
-    ArrayCollection
-};
 use Symfony\Component\{
     HttpFoundation\File\File,
     Serializer\Annotation\Groups
@@ -13,22 +9,13 @@ use Symfony\Component\{
 use DateTimeImmutable;
 use Doctrine\ORM\Mapping as ORM;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
-use App\Repository\SceneD1Repository;
 
 /**
  * @ORM\Entity(repositoryClass=SceneD1Repository::class) 
  * @Vich\Uploadable
  */
-class SceneD1
+class SceneD1 extends BaseScene
 {
-    /**
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
-     * @Groups ("sceneDataRecup")
-     */
-    private $id;
-
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      * @Groups ("sceneDataRecup")
@@ -94,32 +81,28 @@ class SceneD1
      * @Groups ("sceneDataRecup")
      */
     private $abstract;
+
+    // --------- Communs settings -----------------
     
     /**
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="sceneD1")
      * @ORM\JoinColumn(nullable=false)
-     * @Groups ("sceneDataRecup")
      */
-    private $user;
+    protected $user;
 
     /**
      * @ORM\ManyToMany(targetEntity=User::class)
      * @ORM\JoinColumn(nullable=false)
      * @ORM\JoinTable("user_D1artwork_like")
      */
-    private $likes;
-
-    /**
-     * @ORM\Column(type="string", length=100, nullable=true)
-     */
-    private $title;
-
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $comment;
+    protected $likes;
     
     // --------- VICH UPLOADER-----------------
+
+    /**
+    * @ORM\Column(type="datetime_immutable", nullable=true)
+    */
+    private $updatedAt;
 
     /**
      * @Vich\UploadableField(mapping="sceneD1Images", fileNameProperty="imageName")
@@ -127,28 +110,7 @@ class SceneD1
      */
     private $imageFile;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $imageName;
-
-    /**
-    * @ORM\Column(type="datetime_immutable", nullable=true)
-    */
-    private $updatedAt;
-
-
 //-------------------------------------------------------------------------------------------
-
-    public function __construct()
-    {
-        $this->likes = new ArrayCollection();
-    }
-
-    public function getId(): ?int
-    {
-        return $this->id;
-    }
 
     public function getCountry1(): ?string
     {
@@ -282,52 +244,9 @@ class SceneD1
         return $this;
     }
     
-    public function getUser(): ?User
-    {
-        return $this->user;
-    }
-
-    public function setUser(?User $user): self
-    {
-        $this->user = $user;
-
-        return $this;
-    }
-
-    public function getTitle(): ?string
-    {
-        return $this->title;
-    }
-
-    public function setTitle(?string $title): self
-    {
-        $this->title = $title;
-
-        return $this;
-    }
-
-    public function getComment(): ?string
-    {
-        return $this->comment;
-    }
-
-    public function setComment(?string $comment): self
-    {
-        $this->comment = $comment;
-
-        return $this;
-    }
-    
     // ---------- Vich Uploader - Screen Artwork ---------- //
 
-
     /**
-     * If manually uploading a file (i.e. not using Symfony Form) ensure an instance
-     * of 'UploadedFile' is injected into this setter to trigger the update. If this
-     * bundle's configuration parameter 'inject_on_load' is set to 'true' this setter
-     * must be able to accept an instance of 'File' as the bundle will inject one here
-     * during Doctrine hydration.
-     *
      * @param File|\Symfony\Component\HttpFoundation\File\UploadedFile|null $imageFile
      */
     public function setImageFile(?File $imageFile = null): void
@@ -346,16 +265,6 @@ class SceneD1
         return $this->imageFile;
     }
 
-    public function setImageName(?string $imageName): void
-    {
-        $this->imageName = $imageName;
-    }
-
-    public function getImageName(): ?string
-    {
-        return $this->imageName;
-    }
-
     public function getUpdatedAt(): ?DateTimeImmutable
     {
         return $this->updatedAt;
@@ -366,35 +275,5 @@ class SceneD1
         $this->updatedAt = $updatedAt;
 
         return $this;
-    }
-
-
-    // Likes settings
-
-    /**
-     * @return Collection<int, likes>
-     */
-    public function getLikes(): Collection
-    {
-        return $this->likes;
-    }
-    public function addLike(User $like): self 
-    {
-        if (!$this->likes->contains($like)){
-            $this->likes[] = $like;
-        }
-        return $this;
-    }
-
-    public function removeLike(User $like): self
-    {
-        $this->likes->removeElement($like);
-
-        return $this;
-    }
-
-    public function isLikedByUser(User $user): bool
-    {
-        return $this->likes->contains($user);
     }
 }

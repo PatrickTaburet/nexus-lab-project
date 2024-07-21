@@ -45,7 +45,9 @@ h2{
 .optionContainer:hover {
     cursor: pointer;
 }
-
+.incoming{
+    color: rgb(180, 180, 180);
+}
 /* scenes home */
 .scenesContainer{
     display: flex;
