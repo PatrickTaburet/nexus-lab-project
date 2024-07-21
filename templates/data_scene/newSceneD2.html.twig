@@ -73,46 +73,27 @@
                 <div class="card-content">
                     <div class="paramBottom">
                         <div class="sliderBox">
-                            <p>Division factor</p>
-                            <div class="range-wrap">
-                                <input class="divFactorSlider range" type="range" min="1" max="7" step="1" value="{{scene.divFactor}}">
-                                <output class="bubble"></output>
-                            </div>
-                            <p>Copy</p>
-                            <div class="range-wrap">
-                                <input class="numCopySlider range" type="range" min="1" max="15" step="1" value="{{scene.copy}}">
-                                <output class="bubble"></output>
-                            </div>
-                            <p>Deformation</p>
-                            <div class="range-wrap">
-                                <input class="deformationSlider range" type="range" min="0" max="50" step="1" value="{{scene.deformation}}">
-                                <output class="bubble"></output>
-                            </div>
-                            <p>Size factor</p>
-                            <div class="range-wrap">
-                                <input class="sizeFactorSlider range" type="range" min="0.2" max="5" step="0.1" value="{{scene.sizeFactor}}">
-                                <output class="bubble"></output>
-                            </div>
-                            <p>Division angle</p>
-                            <div class="range-wrap">
-                                <input class="angleDivSlider range" type="range" min="2" max="50" step="1" value="{{scene.angle}}">
-                                <output class="bubble"></output>
-                            </div>
-                            <p>Opacity</p>
-                            <div class="range-wrap">
-                                <input class="opacitySlider range" type="range" min="0.01" max="1" step="0.005" value="{{scene.opacity}}">
-                                <output class="bubble"></output>
-                            </div>
-                            <p>Filters</p>
-                            <div class="range-wrap">
-                                <input class="filterSlider range" type="range" min="0" max="4" step="1" value="{{scene.filters}}">
-                                <output class="bubble"></output>
-                            </div>
-                            <p>Division</p>
-                            <div class="range-wrap">
-                                <input class="divSlider range" type="range" min="1" max="23" step="1" value="{{scene.division}}">
-                                <output class="bubble"></output>
-                            </div>
+
+                            {# Parameters sliders #}
+                            
+                            {% set sliders = [
+                                { 'label': 'Division factor', 'class': 'divFactorSlider', 'min': 1, 'max': 7, 'step': 1, 'value': scene.divFactor },
+                                { 'label': 'Copy', 'class': 'numCopySlider', 'min': 1, 'max': 15, 'step': 1, 'value': scene.copy },
+                                { 'label': 'Deformation', 'class': 'deformationSlider', 'min': 0, 'max': 50, 'step': 1, 'value': scene.deformation },
+                                { 'label': 'Size factor', 'class': 'sizeFactorSlider', 'min': 0.2, 'max': 5, 'step': 0.1, 'value': scene.sizeFactor },
+                                { 'label': 'Division angle', 'class': 'angleDivSlider', 'min': 2, 'max': 50, 'step': 1, 'value': scene.angle },
+                                { 'label': 'Opacity', 'class': 'opacitySlider', 'min': 0.01, 'max': 1, 'step': 0.005, 'value': scene.opacity },
+                                { 'label': 'Filters', 'class': 'filterSlider', 'min': 0, 'max': 4, 'step': 1, 'value': scene.filters },
+                                { 'label': 'Division', 'class': 'divSlider', 'min': 1, 'max': 23, 'step': 1, 'value': scene.division }
+                            ] %}
+                            {% for slider in sliders %}
+                                <p>{{ slider.label }}</p>
+                                <div class="range-wrap">
+                                    <input class="{{ slider.class }} range" type="range" min="{{ slider.min }}" max="{{ slider.max }}" step="{{ slider.step }}" value="{{ slider.value }}">
+                                    <output class="bubble"></output>
+                                </div>
+                            {% endfor %}
+                           
                             <div style="border: solid, 2px; padding:10px;">
                                 <p>Color range</p>
                                 <div class="range-wrap">

@@ -13,7 +13,6 @@
 <div class="openReqContainer">
     <div class="openReqContent">
         {% if type == 'ArtistRole' %} 
-       
             <h2>Artist role request</h2>
             <div><p>Id : </p>{{request.id}}</div>
             <div><p>Date :  </p>{{request.createdAt|date('F j, Y, g:i a')}}</div>
@@ -54,7 +53,6 @@
             <div class="deleteButtonBox">
                 <a href="{{ path('admin_delete_request', {'id' : request.id, 'entity': "AddScene"}) }}" class="customButton adminButton">Delete request</a>   
             </div>
-
         {% endif %}
     </div>
 

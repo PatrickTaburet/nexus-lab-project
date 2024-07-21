@@ -33,7 +33,7 @@
         {% endblock %}
 
     <!-- Loading SVG screen -->
-        {{ include("./main/_loaderScreen.html.twig") }}
+        {{ include("./partials/_loaderScreen.svg.html.twig") }}
         
     <!-- Main pages content -->
         <main>
@@ -61,7 +61,7 @@
  
     <!-- Footer -->
         {% block footer %}
-           {{ include("./main/_footer.html.twig") }}
+           {{ include("./partials/_footer.html.twig") }}
         {% endblock %}
    
         {% block javascripts %}

@@ -72,40 +72,17 @@
                 </div>
                 <div class="separator"></div>
                 <div class="card-content">
+
+                   {# Countries select input #}
+                   
                     <div class="inputBox">
-                        <select name="country" class="country" id="country0" >
-                            <option >{% if scene.country1 %}{{scene.country1}}{% else %}Select a country{% endif %}</option> 
-                        
-                        </select>
-                        <select name="country" class="country" id="country1">
-                            <option>{% if scene.country2 %}{{scene.country2}}{% else %}Select a country{% endif %}</option>
-                        
-                        </select>
-                        <select name="country" class="country" id="country2">
-                            <option>{% if scene.country3 %}{{scene.country3}}{% else %}Select a country{% endif %}</option>
-                        
-                        </select>
-                        <select name="country" class="country" id="country3">
-                            <option>{% if scene.country4 %}{{scene.country4}}{% else %}Select a country{% endif %}</option>
-                        
-                        </select>
-                        <select name="country" class="country" id="country4">
-                            <option>{% if scene.country5 %}{{scene.country5}}{% else %}Select a country{% endif %}</option>
-                        
-                        </select>
-                        <select name="country" class="country" id="country5">
-                            <option>{% if scene.country6 %}{{scene.country6}}{% else %}Select a country{% endif %}</option>
-                        
-                        </select>
-                        <select name="country" class="country" id="country6">
-                            <option>{% if scene.country7 %}{{scene.country7}}{% else %}Select a country{% endif %}</option>
-                        
-                        </select>
-                        <select name="country" class="country" id="country7">
-                            <option>{% if scene.country8 %}{{scene.country8}}{% else %}Select a country{% endif %}</option>
-                        
-                        </select>
+                        {% for i in 0..7 %}
+                            <select name="country" class="country" id="country{{ i }}">
+                                <option>{% if attribute(scene, 'country' ~ (i + 1)) %}{{ attribute(scene, 'country' ~ (i + 1)) }}{% else %}Select a country{% endif %}</option>
+                            </select>
+                        {% endfor %}
                     </div>
+
                     <div class="paramBottom">
                         <div class="sliderBox">
                             <p>Randomness</p>

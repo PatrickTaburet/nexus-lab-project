@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use DateTimeImmutable;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\ArtistRoleRepository;
 
 /**
  * @ORM\Entity(repositoryClass=ArtistRoleRepository::class)

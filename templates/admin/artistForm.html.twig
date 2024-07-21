@@ -14,32 +14,21 @@
 
     <div class="form spinningLight">
       {{ form_start(form) }}
-        
-        <div class="form-group-top">
-          {{ form_widget(form.name, { "attr": {"class" : "form-control" } }) }}
+        {% set form_classes = {'class': 'form-control'} %}
+        {% set form_fields = {
+        'name': 'Name',
+        'firstname': 'Firstname',
+        'bio': 'Bio',
+        'exemples': 'Exemples',
+        'portfolio': 'Portfolio'
+      } %}
+      {% for field, label in form_fields %}
+        <div class="form-group{{ field == 'name' ? '-top' : (field == 'bio' ? '-textArea' : '') }}">
+          {{ form_widget(attribute(form, field), {'attr': form_classes}) }}
           <div class="cut"></div>
-          <label for="name" class="placeholder">Name</label>
+          <label for="{{ field }}" class="placeholder">{{ label }}</label>
         </div>
-        <div class="form-group">
-          {{ form_widget(form.firstname, { "attr": {"class" : "form-control" } }) }}
-          <div class="cut"></div>
-          <label for="firstname" class="placeholder">Firstname</label>
-        </div>
-        <div class="form-group-textArea">
-          {{ form_widget(form.bio, { "attr": {"class" : "form-control" } }) }}    
-          <div class="cut"></div>
-          <label for="bio" class="placeholder">Bio</label>     
-        </div>
-        <div class="form-group">
-          {{ form_widget(form.exemples, { "attr": {"class" : "form-control" } }) }}
-          <div class="cut"></div>
-          <label for="exemples" class="placeholder">Exemples</label> 
-        </div>
-        <div class="form-group">        
-          {{ form_widget(form.portfolio, { "attr": {"class" : "form-control" } }) }}
-          <div class="cut"></div>
-          <label for="portfolio" class="placeholder">Portfolio</label> 
-        </div>
+      {% endfor %}
         <div class="buttonBox">        
           {{ form_label(form.submit) }}
           {{ form_widget(form.submit, { "attr": {"class" : "customButton" } }) }}
