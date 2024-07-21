@@ -16,7 +16,7 @@ use Symfony\Component\{
     OptionsResolver\OptionsResolver
 };
 
-abstract class SaveArtworkBaseType extends AbstractType
+abstract class BaseSaveArtworkType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
