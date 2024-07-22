@@ -35,18 +35,14 @@ class GenerativeSceneController extends AbstractController
 
 // ----------- SCENE G1 : Random Line Walkers -----------
 
-    /**
-     * @Route("/sceneG1", name="sceneG1")
-     */
+    #[Route("sceneG1", name: "sceneG1")]
     public function sceneG1(): Response
     {
         return $this->render('generative_scene/sceneG1.html.twig', [
         ]);
     }   
 
-     /**
-     * @Route("/generative/newScene-G1/{id}", name="newSceneG1", methods= {"GET"}))
-     */
+    #[Route("/generative/newScene-G1/{id}", name: "newSceneG1", methods: ["GET"])]
     public function newSceneG1(Scene1Repository $repo, SerializerInterface $serializer, $id): Response
     {
         $scene = $repo -> find($id); 
@@ -67,9 +63,7 @@ class GenerativeSceneController extends AbstractController
         ]);   
     }
 
-    /**
-    * @Route("/generative/sendDataG1", name="send_data_G1", methods={"POST"})
-    */
+    #[Route("/generative/sendDataG1", name: "send_data_G1", methods: ["POST"])]
     public function sendData(Request $request, EntityManagerInterface $entityManager): Response
     {
         
@@ -87,20 +81,22 @@ class GenerativeSceneController extends AbstractController
         // Decode the base64 string and save it as a .png file
         $imageData = base64_decode(preg_replace('#^data:image/\w+;base64,#i', '', $imgFile));
 
-    
-        // Créer un fichier temporaire à partir des données image
+        // Create a temporary file from the image data
         $tempFile = tmpfile();
 
-        // Écrire les données image dans le fichier temporaire
+        // Write the image data to the temporary file
         fwrite($tempFile, $imageData);
-        // Obtenir le chemin absolu du fichier temporaire
+
+        // Get the absolute path of the temporary file
         $tempFilePath = stream_get_meta_data($tempFile)['uri'];
+
          // Get the image name
          $imageName = pathinfo($tempFilePath, PATHINFO_FILENAME) . '.png';
+
         // Créer un nouvel objet UploadedFile
         $imageFile = new UploadedFile($tempFilePath,  $imageName, 'image/png', null, true);
 
-        $user = $this->getDoctrine()
+        $user = $entityManager
         ->getRepository(User::class)
         ->find($userId);
         
@@ -127,7 +123,6 @@ class GenerativeSceneController extends AbstractController
         // Link image to the upload file
             $data->setImageFile($imageFile);
 
-            $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($data);
             $entityManager->flush();
 
@@ -144,9 +139,7 @@ class GenerativeSceneController extends AbstractController
         
     }
 
-    /**
-    * @Route("generative/saveSceneG1/{id}", name="saveG1")
-    */
+    #[Route("generative/saveSceneG1/{id}", name: "saveG1")]
     public function saveArtwork(Request $request, EntityManagerInterface $entityManager, Scene1Repository $repo, $id): Response
     {
         $scene = $repo->find($id);
@@ -169,18 +162,14 @@ class GenerativeSceneController extends AbstractController
 // ----------- SCENE G2 : Noise Orbit -----------
 
 
-    /**
-     * @Route("/sceneG2", name="sceneG2")
-     */
+    #[Route("sceneG2", name: "sceneG2")]
     public function sceneG2(): Response
     {
         return $this->render('generative_scene/sceneG2.html.twig', [
         ]);
     }   
 
-    /**
-    * @Route("/generative/sendDataG2", name="send_data_G2", methods={"POST"})
-    */
+    #[Route("/generative/sendDataG2", name: "send_data_G2", methods: ["POST"])]
     public function sendDataToSceneG2(Request $request, EntityManagerInterface $entityManager): Response
     {
         $hue = $request->request->get('hue');
@@ -212,7 +201,7 @@ class GenerativeSceneController extends AbstractController
         // Créer un nouvel objet UploadedFile
         $imageFile = new UploadedFile($tempFilePath,  $imageName, 'image/png', null, true);
 
-        $user = $this->getDoctrine()
+        $user = $entityManager
         ->getRepository(User::class)
         ->find($userId);
         
@@ -242,7 +231,6 @@ class GenerativeSceneController extends AbstractController
             $data ->setUser($user);
             $data->setImageFile($imageFile);
 
-            $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($data);
             $entityManager->flush();
 
@@ -258,9 +246,7 @@ class GenerativeSceneController extends AbstractController
             return new Response('Error: Missing data!', Response::HTTP_BAD_REQUEST);   
     }
 
-    /**
-     * @Route("/generative/newScene-G2/{id}", name="newSceneG2", methods= {"GET"}))
-     */
+    #[Route("/generative/newScene-G2/{id}", name: "newSceneG2", methods: ["GET"])]
     public function newSceneG2(Scene2Repository $repo, SerializerInterface $serializer, $id): Response
     {
         $scene = $repo -> find($id); 
@@ -275,9 +261,7 @@ class GenerativeSceneController extends AbstractController
         ]);   
     }
 
-    /**
-    * @Route("generative/saveSceneG2/{id}", name="saveG2")
-    */
+    #[Route("generative/saveSceneG2/{id}", name: "saveG2")]
     public function saveArtworkG2(Request $request, EntityManagerInterface $entityManager, Scene2Repository $repo, $id): Response
     {
         $scene = $repo->find($id);

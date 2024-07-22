@@ -8,10 +8,12 @@ use Symfony\Component\{
     HttpFoundation\File\File,
     Serializer\Annotation\Groups
 };
-use Vich\UploaderBundle\Mapping\Annotation as Vich;
+use Vich\UploaderBundle\Mapping\{
+    Annotation as Vich,
+    Annotation\UploadableField
+};
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\SceneD2Repository;
-use Vich\UploaderBundle\Mapping\Annotation\UploadableField;
 
 #[ORM\Entity(repositoryClass: SceneD2Repository::class)]
 #[Vich\Uploadable]
@@ -74,7 +76,6 @@ class SceneD2 extends BaseScene
     #[ORM\JoinColumn(nullable: false)]
     protected $user;
 
-
     #[ORM\ManyToMany(targetEntity: User::class)]
     #[ORM\JoinColumn(nullable: false)]
     #[ORM\JoinTable(name: "user_D2artwork_like")]
@@ -85,7 +86,7 @@ class SceneD2 extends BaseScene
     #[ORM\Column(type: "datetime_immutable", nullable: true)]
     private $updatedAt;
 
-     #[UploadableField(mapping: "sceneD2Images", fileNameProperty: "imageName")]
+    #[UploadableField(mapping: "sceneD2Images", fileNameProperty: "imageName")]
     private ?File $imageFile = null;
 
     //-------------------------------------------------------------------------------------------
@@ -236,6 +237,9 @@ class SceneD2 extends BaseScene
 
     // ---------- Vich Uploader - Screen Artwork ---------- //
 
+    /**
+     * @param File|\Symfony\Component\HttpFoundation\File\UploadedFile|null $imageFile
+     */
     public function setImageFile(?File $imageFile = null): void
     {
         $this->imageFile = $imageFile;

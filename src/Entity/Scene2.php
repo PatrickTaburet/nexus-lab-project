@@ -5,10 +5,14 @@ namespace App\Entity;
 use DateTimeImmutable;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\Collection;
-use Symfony\Component\HttpFoundation\File\File;
-use Symfony\Component\Serializer\Annotation\Groups;
-use Vich\UploaderBundle\Mapping\Annotation as Vich;
-use Vich\UploaderBundle\Mapping\Annotation\UploadableField;
+use Symfony\Component\{
+    HttpFoundation\File\File,
+    Serializer\Annotation\Groups
+};
+use Vich\UploaderBundle\Mapping\{
+    Annotation as Vich,
+    Annotation\UploadableField
+};
 use App\Repository\Scene2Repository;
 
 #[ORM\Entity(repositoryClass: Scene2Repository::class)]
@@ -199,6 +203,9 @@ class Scene2 extends BaseScene
 
     // ---------- Vich Uploader - Screen Artwork ---------- //
     
+    /**
+     * @param File|\Symfony\Component\HttpFoundation\File\UploadedFile|null $imageFile
+     */
     public function setImageFile(?File $imageFile = null): void
     {
         $this->imageFile = $imageFile;

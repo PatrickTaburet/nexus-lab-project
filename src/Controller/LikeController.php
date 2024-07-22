@@ -19,9 +19,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class LikeController extends AbstractController
 {
-    /**
-     * @Route("/like/artwork/{id}/{entity}", name="artwork_like")
-     */
+    #[Route("/like/artwork/{id}/{entity}", name: "artwork_like")]
     public function like(EntityManagerInterface $entityManager, Scene1Repository $repoG1, Scene2Repository $repoG2, SceneD1Repository $repoD1, SceneD2Repository $repoD2, $id, $entity): Response
     {
         $user = $this->getUser();

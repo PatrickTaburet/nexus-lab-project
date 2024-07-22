@@ -29,14 +29,12 @@ use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
 
 
-/**
- * @Route("/admin", name="admin_")
- */
+#[Route("/admin", name: "admin_")]
+
 class AdminController extends AbstractController
 {
-     /**
-    * @Route("/dashboard", name="dashboard")
-    */
+
+    #[Route("/dashboard", name: "dashboard")]
     public function dashboard(ArtistRoleRepository $role, AddSceneRepository $newScene): Response
     {
         $roleRequests = $role->findAll();
@@ -58,9 +56,7 @@ class AdminController extends AbstractController
 
     // Users manager dashboard
 
-     /**
-    * @Route("/users", name="users")
-    */
+    #[Route("/users", name: "users")]
     public function usersList(UserRepository $users, PaginatorInterface $paginator, Request $request): Response
     {
         // IMPLEMENTER LA LOGIQUE DE TRI (en fonction des like) ET DE PAGINATION
@@ -74,9 +70,8 @@ class AdminController extends AbstractController
             'users' => $allUsers
         ]);
     }
-    /**
-    * @Route("/users/edit/{id}", name="edit_user", methods= {"GET", "POST"})
-    */
+
+    #[Route("/users/edit/{id}", name: "edit_user", methods: ["GET", "POST"])]
     public function editUser(Request $request, UserRepository $repo, EntityManagerInterface $entityManager, $id) : Response
     {       
             $user = $repo->find($id);
@@ -122,9 +117,7 @@ class AdminController extends AbstractController
             ]);
     } 
 
-      /**
-     * @Route("/users/delete/{id}", name="delete_user", methods= {"GET"})
-     */
+    #[Route("/users/delete/{id}", name: "delete_user", methods: ["GET"])]
     public function deleteUser(UserRepository $repo, EntityManagerInterface $entityManager, $id): Response
     {
         $user = $repo->find($id);
@@ -141,9 +134,7 @@ class AdminController extends AbstractController
         return $this->redirectToRoute('admin_users');
     }
 
-      /**
-     * @Route("/confirm/{id}", name="confirm")
-     */
+    #[Route("/confirm/{id}", name: "confirm")]
     public function confirmDelete(UserRepository $users,  $id): Response
     {
         return $this->render('admin/confirm.html.twig', [
@@ -153,9 +144,7 @@ class AdminController extends AbstractController
 
     // Gallery manager dashboard
     
-    /**
-     * @Route("/gallery", name="gallery")
-     */
+    #[Route("/gallery", name: "gallery")]
     public function gallery(Scene1Repository $repoG1, Scene2Repository $repoG2, SceneD1Repository $repoD1, SceneD2Repository $repoD2, PaginatorInterface $paginator, Request $request): Response
     {
         $scenes = $repoG1 -> findAll(); 
@@ -176,9 +165,7 @@ class AdminController extends AbstractController
         ]);   
     }
     
-      /**
-     * @Route("/gallery/delete/{id}/{entity}", name="delete_artwork", methods= {"GET", "POST"})
-     */
+    #[Route("/gallery/delete/{id}/{entity}", name: "delete_artwork", methods: ["GET", "POST"])]
     public function deleteArtwork(Scene1Repository $repoG1, Scene2Repository $repoG2, SceneD1Repository $repoD1, SceneD2Repository $repoD2,EntityManagerInterface $entityManager, $id, $entity): Response
     {
         if($entity === 'Scene1'){
@@ -204,9 +191,8 @@ class AdminController extends AbstractController
         $this->addFlash('success', 'Artwork '.$artworkTitle.' delete succeed');
         return $this->redirectToRoute('admin_gallery');
     }
-    /**
-    * @Route("/gallery/edit/{id}/{entity}", name="edit_artwork", methods= {"GET", "POST"})
-    */
+
+    #[Route("/gallery/edit/{id}/{entity}", name: "edit_artwork", methods: ["GET", "POST"])]
     public function editArtwork(Request $request, Scene1Repository $repoG1, Scene2Repository $repoG2, SceneD1Repository $repoD1, SceneD2Repository $repoD2, EntityManagerInterface $entityManager, $id, $entity) : Response
     {       
         
@@ -250,9 +236,7 @@ class AdminController extends AbstractController
             ]);
     } 
 
-    /**
-    * @Route("/request/{entity}/{id}", name="show_request", methods= {"GET", "POST"})
-    */
+    #[Route("/request/{entity}/{id}", name: "show_request", methods: ["GET", "POST"])]
     public function showRequest(ArtistRoleRepository $artistReq, AddSceneRepository $sceneReq, $id, $entity): Response
     {
         $request = null;
@@ -273,9 +257,7 @@ class AdminController extends AbstractController
         ]);
     }
 
-    /**
-    * @Route("/delete/request/{entity}/{id}", name="delete_request", methods= {"GET", "POST"})
-    */
+    #[Route("/delete/request/{entity}/{id}", name: "delete_request", methods: ["GET", "POST"])]
     public function deleteRequest(EntityManagerInterface $entityManager, ArtistRoleRepository $artistReq, AddSceneRepository $sceneReq, $id, $entity): Response
     {
         if($entity === 'ArtistRole'){
@@ -290,10 +272,4 @@ class AdminController extends AbstractController
         $this->addFlash('success', 'Request successfully deleted');
         return $this->redirectToRoute('admin_dashboard');
     }
-
-   
-
-
-
-
 }

@@ -23,91 +23,74 @@ use App\Repository\UserRepository;
  * @UniqueEntity(fields={"email"}, message="There is already an account with this email")
  * @Vich\Uploadable
  */
+#[ORM\Entity(repositoryClass: UserRepository::class)]
+#[UniqueEntity(fields: ["email"], message: "There is already an account with this email")]
+#[Vich\Uploadable]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
-    /**
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: "integer")]
     private $id;
 
-    /**
-     * @ORM\Column(type="string", length=180, unique=true)
-     * @Assert\Email()
-     */
+    #[ORM\Column(type: "string", length: 180, unique: true)]
+    #[Assert\Email]
     private $email;
 
-    /**
-     * @ORM\Column(type="string", length=50)
-    */
+    #[ORM\Column(type: "string", length: 50)]
     private $pseudo;
 
-    /**
-     * @ORM\Column(type="json")
-     */
+    #[ORM\Column(type: "json")]
     private $roles = [];
 
     /**
      * @var string The hashed password
-     * @ORM\Column(type="string")
      */
+    #[ORM\Column(type: "string")]
     private $password;
 
-    /**
-     * @ORM\Column(type="datetime_immutable")
-     */
+    #[ORM\Column(type: "datetime_immutable")]
     private $createdAt;
 
     // ------- VICH UPLOADER --------
 
-    /**
-    * @Vich\UploadableField(mapping="picture_profile", fileNameProperty="imageName")
-    * @Assert\File(
-    *     maxSize = "2048M",
-    *     maxSizeMessage = "The file is too large ({{ size }} MB). Maximum file size is {{ limit }} MB.",
-    *     mimeTypes = {"image/jpeg", "image/png", "image/gif"},
-    *     mimeTypesMessage = "Please upload a valid image file (JPG, PNG, GIF)" 
-    * )
-    * @var File|null
-    */
-    private $imageFile;
+    #[Vich\UploadableField(mapping: "picture_profile", fileNameProperty: "imageName")]
+    #[Assert\File(
+        maxSize: "2048M",
+        maxSizeMessage: "The file is too large ({{ size }} MB). Maximum file size is {{ limit }} MB.",
+        mimeTypes: ["image/jpeg", "image/png", "image/gif"],
+        mimeTypesMessage: "Please upload a valid image file (JPG, PNG, GIF)"
+    )]
+    private ?File $imageFile = null;
 
-    /**
-     * @ORM\Column(nullable="true")
-     */
+    #[ORM\Column(nullable: true)]
     private $imageName;
 
-    /**
-    * @ORM\Column(type="datetime_immutable", nullable=true)
-    */
+    #[ORM\Column(type: "datetime_immutable", nullable: true)]
     private $updatedAt;
 
-    // ------- Generative art scenes --------
+        // ------- Generative art scenes --------
 
-    /**
-     * @ORM\OneToMany(targetEntity=Scene1::class, mappedBy="user")
-     */
+    #[ORM\OneToMany(targetEntity: Scene1::class, mappedBy: "user")]
     private $Scene1;
 
-    /**
-     * @ORM\OneToMany(targetEntity=SceneD1::class, mappedBy="user")
-     */
+    #[ORM\OneToMany(targetEntity: Scene2::class, mappedBy: "user")]
+    private $Scene2;
+
+       // ------- Data art scenes --------
+
+    #[ORM\OneToMany(targetEntity: SceneD1::class, mappedBy: "user")]
     private $sceneD1;
 
-    /**
-     * @ORM\OneToMany(targetEntity=SceneD2::class, mappedBy="user")
-     */
+    #[ORM\OneToMany(targetEntity: SceneD2::class, mappedBy: "user")]
     private $sceneD2;
 
-    /**
-    * @ORM\OneToOne(targetEntity="App\Entity\ArtistRole", mappedBy="user")
-    */
+       // ------- Requests --------
+
+    #[ORM\OneToOne(targetEntity: ArtistRole::class, mappedBy: "user")]
     private $role_request;
 
-    /**
-     * @ORM\OneToMany(targetEntity=AddScene::class, mappedBy="user")
-     */
+    #[ORM\OneToMany(targetEntity: AddScene::class, mappedBy: "user")]
     private $add_scene;
 
 
@@ -119,6 +102,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->imageName = 'no-profile.jpg'; // Define default image
         $this->imageFile = null;
         $this->Scene1 = new ArrayCollection();
+        $this->Scene2 = new ArrayCollection();
         $this->sceneD1 = new ArrayCollection();
         $this->sceneD2 = new ArrayCollection();
         $this->add_scene = new ArrayCollection();
@@ -322,6 +306,36 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
             // set the owning side to null (unless already changed)
             if ($scene1->getUser() === $this) {
                 $scene1->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Scene2>
+     */
+    public function getScene2(): Collection
+    {
+        return $this->Scene2;
+    }
+
+    public function addScene2(Scene2 $scene2): self
+    {
+        if (!$this->Scene2->contains($scene2)) {
+            $this->Scene2[] = $scene2;
+            $scene2->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeScene2(Scene2 $scene2): self
+    {
+        if ($this->Scene2->removeElement($scene2)) {
+            // set the owning side to null (unless already changed)
+            if ($scene2->getUser() === $this) {
+                $scene2->setUser(null);
             }
         }
 

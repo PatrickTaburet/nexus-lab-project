@@ -31,18 +31,16 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class DataSceneController extends AbstractController
 {
-    /**
-     * @Route("/sceneD1", name="sceneD1")
-     */
+
+    #[Route("sceneD1", name: "sceneD1")]
     public function sceneD1(): Response
     {
         return $this->render('data_scene/sceneD1.html.twig', [
             'controller_name' => 'DataSceneController',
         ]);
     }
-    /**
-    * @Route("/dataScene/newScene-D1/{id}", name="newSceneD1", methods= {"GET"}))
-    */
+
+    #[Route("/dataScene/newScene-D1/{id}", name: "newSceneD1", methods: ["GET"])]
     public function newSceneD1(SceneD1Repository $repo, SerializerInterface $serializer, $id): Response
     {
         $scene = $repo -> find($id); 
@@ -62,9 +60,7 @@ class DataSceneController extends AbstractController
         ]);   
     }
     
-    /**
-    * @Route("/dataScene/sendDataD1", name="send_data_D1", methods={"POST"})
-    */
+    #[Route("/dataScene/sendDataD1", name: "send_data_D1", methods: ["POST"])]
     public function sendDataToSceneD1(Request $request, EntityManagerInterface $entityManager, Security $security): Response
     {
         $randomness = $request->request->get('randomness');
@@ -123,7 +119,6 @@ class DataSceneController extends AbstractController
          // Link image to the upload file
             $data->setImageFile($imageFile);
 
-            $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($data);
             $entityManager->flush();
 
@@ -139,9 +134,7 @@ class DataSceneController extends AbstractController
             return new Response('Error: Missing data!', Response::HTTP_BAD_REQUEST);
     }
 
-    /**
-    * @Route("dataScene/saveSceneD1/{id}", name="saveD1")
-    */
+    #[Route("dataScene/saveSceneD1/{id}", name: "saveD1")]
     public function saveArtwork(Request $request, EntityManagerInterface $entityManager, SceneD1Repository $repo, $id): Response
     {
         $scene = $repo->find($id);
@@ -163,9 +156,7 @@ class DataSceneController extends AbstractController
 
     //  ---------- Scene D2 -------------
 
-    /**
-    * @Route("/sceneD2", name="sceneD2")
-    */
+    #[Route("/sceneD2", name: "sceneD2")]
     public function sceneD2(): Response
     {
         return $this->render('data_scene/sceneD2.html.twig', [
@@ -173,9 +164,7 @@ class DataSceneController extends AbstractController
         ]);
     }
 
-     /**
-    * @Route("/dataScene/sendDataD2", name="send_data_D2", methods={"POST"})
-    */
+    #[Route("/dataScene/sendDataD2", name: "send_data_D2", methods: ["POST"])]
     public function sendDataToSceneD2(Request $request, EntityManagerInterface $entityManager, Security $security): Response
     {
         $divFactor = $request->request->get('divFactor');
@@ -245,7 +234,6 @@ class DataSceneController extends AbstractController
          // Link image to the upload file
             $data->setImageFile($imageFile);
 
-            $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($data);
             $entityManager->flush();
 
@@ -261,9 +249,7 @@ class DataSceneController extends AbstractController
             return new Response('Error: Missing data!', Response::HTTP_BAD_REQUEST);
     }
 
-     /**
-    * @Route("dataScene/saveSceneD2/{id}", name="saveD2")
-    */
+    #[Route("dataScene/saveSceneD2/{id}", name: "saveD2")]
     public function saveArtworkD2(Request $request, EntityManagerInterface $entityManager, SceneD2Repository $repo, $id): Response
     {
         $scene = $repo->find($id);
@@ -283,9 +269,7 @@ class DataSceneController extends AbstractController
         ]);
     }   
     
-     /**
-    * @Route("/dataScene/newScene-D2/{id}", name="newSceneD2", methods= {"GET"}))
-    */
+    #[Route("/dataScene/newScene-D2/{id}", name: "newSceneD2", methods:['GET'])]
     public function newSceneD2(SceneD2Repository $repo, SerializerInterface $serializer, $id): Response
     {
         $scene = $repo -> find($id); 

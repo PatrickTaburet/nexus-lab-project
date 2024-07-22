@@ -32,17 +32,11 @@ use Symfony\Component\HttpKernel\Exception\{
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
-
-/**
-* @Route("/profile")
-*/
-
+#[Route("/profile")]
 class UserController extends AbstractController
 {
     
-    /**
-    * @Route("/edit/{id}", name="profile", methods= {"GET", "POST"})
-    */
+    #[Route("/edit/{id}", name: "profile", methods: ["GET", "POST"])]
     public function editUser(EntityManagerInterface $entityManager,Request $request, UserRepository $repo, $id) : Response
     {       
             $user = $repo->find($id);
@@ -88,9 +82,7 @@ class UserController extends AbstractController
             ]);
     } 
     
-    /**
-    * @Route("/edit/password/{id}", name="editPassword", methods= {"GET", "POST"})
-    */
+    #[Route("/edit/password/{id}", name: "editPassword", methods: ["GET", "POST"])]
     public function editPassword(EntityManagerInterface $entityManager, Request $request, UserRepository $repo, $id, UserPasswordHasherInterface $hasher ): Response
     {
         $user = $repo->find($id);
@@ -134,9 +126,8 @@ class UserController extends AbstractController
         ]);
     }
 
-    /**
-    * @Route("/myArtworks/{id}", name="myArtworks", methods= {"GET", "POST"})
-    */
+
+    #[Route("/myArtworks/{id}", name: "myArtworks", methods: ["GET", "POST"])]
     public function myArtworks( Scene1Repository $repoG1,  Scene2Repository $repoG2,SceneD1Repository $repoD1, SceneD2Repository $repoD2, $id) : Response
     {       
 
@@ -165,9 +156,8 @@ class UserController extends AbstractController
             'artworks' => $data,
         ]);
     } 
-     /**
-    * @Route("/myArtworks/delete/{id}/{entity}", name="deleteArtwork", methods= {"GET", "POST"})
-    */
+
+    #[Route("/myArtworks/delete/{id}/{entity}", name: "deleteArtwork", methods: ["GET", "POST"])]
     public function Delete(EntityManagerInterface $entityManager, Scene1Repository $repoG1, Scene2Repository $repoG2, SceneD1Repository $repoD1, SceneD2Repository $repoD2, $id, $entity): Response
     {
 
@@ -220,10 +210,8 @@ class UserController extends AbstractController
             'id' => $userId
         ]);
     }
-      
-    /**
-    * @Route("/myArtworks/update/{id}/{entity}", name="editArtwork", methods= {"GET", "POST"})
-    */
+
+    #[Route("/myArtworks/update/{id}/{entity}", name: "editArtwork", methods: ["GET", "POST"])]
     public function Update(Request $request, EntityManagerInterface $entityManager, Scene1Repository $repoG1, Scene2Repository $repoG2,SceneD2Repository $repoD2, SceneD1Repository $repoD1, $id, $entity): Response
     {
         $currentUser = $this->getUser();
@@ -279,9 +267,7 @@ class UserController extends AbstractController
         ]);
     }
     
-    /**
-    * @Route("/roleRequest", name="roleRequest", methods= {"GET", "POST"})
-    */
+    #[Route("/roleRequest", name: "roleRequest", methods: ["GET", "POST"])]
     public function roleRequest( EntityManagerInterface $entityManager, Request $request): Response
     {   
          // Check if the current user has already sent a role request

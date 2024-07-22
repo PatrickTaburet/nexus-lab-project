@@ -167,6 +167,9 @@ class Scene1 extends BaseScene
 
         // ---------- Vich Uploader - Screen Artwork ---------- //
     
+    /**
+     * @param File|\Symfony\Component\HttpFoundation\File\UploadedFile|null $imageFile
+     */
     public function setImageFile(?File $imageFile = null): void
     {
         $this->imageFile = $imageFile;
