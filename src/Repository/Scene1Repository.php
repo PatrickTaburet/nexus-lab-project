@@ -6,9 +6,9 @@ use App\Entity\Scene1;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
- * @extends AbstractSceneRepository<Scene1>
+ * @extends BaseSceneRepository<Scene1>
  */
-class Scene1Repository extends AbstractSceneRepository
+class Scene1Repository extends BaseSceneRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
