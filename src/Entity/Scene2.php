@@ -8,100 +8,72 @@ use Doctrine\Common\Collections\Collection;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
+use Vich\UploaderBundle\Mapping\Annotation\UploadableField;
+use App\Repository\Scene2Repository;
 
-/**
- * @ORM\Entity(repositoryClass=Scene2Repository::class)
- * @Vich\Uploadable
- */
+#[ORM\Entity(repositoryClass: Scene2Repository::class)]
+#[Vich\Uploadable]
 class Scene2 extends BaseScene
 {
-    /**
-     * @ORM\Column(type="integer")
-     * @Groups ("sceneDataRecup")
-     */
+
+    #[ORM\Column(type: "integer")]
+    #[Groups("sceneDataRecup")]
     private $hue;
 
-    /**
-     * @ORM\Column(type="integer")
-     * @Groups ("sceneDataRecup")
-     */
+    #[ORM\Column(type: "integer")]
+    #[Groups("sceneDataRecup")]
     private $colorRange;
 
-    /**
-     * @ORM\Column(type="integer")
-     * @Groups ("sceneDataRecup")
-     */
+    #[ORM\Column(type: "integer")]
+    #[Groups("sceneDataRecup")]
     private $brightness;
 
-    /**
-     * @ORM\Column(type="float")
-     * @Groups ("sceneDataRecup")
-     */
+    #[ORM\Column(type: "float")]
+    #[Groups("sceneDataRecup")]
     private $movement;
 
-    /**
-     * @ORM\Column(type="float")
-     * @Groups ("sceneDataRecup")
-     */
+    #[ORM\Column(type: "float")]
+    #[Groups("sceneDataRecup")]
     private $deformA;
 
-    /**
-     * @ORM\Column(type="float")
-     * @Groups ("sceneDataRecup")
-     */
+    #[ORM\Column(type: "float")]
+    #[Groups("sceneDataRecup")]
     private $deformB;
 
-    /**
-     * @ORM\Column(type="float")
-     * @Groups ("sceneDataRecup")
-     */
+    #[ORM\Column(type: "float")]
+    #[Groups("sceneDataRecup")]
     private $shape;
 
-    /**
-     * @ORM\Column(type="float")
-     * @Groups ("sceneDataRecup")
-     */
+    #[ORM\Column(type: "float")]
+    #[Groups("sceneDataRecup")]
     private $rings;
 
-    /**
-     * @ORM\Column(type="float")
-     * @Groups ("sceneDataRecup")
-     */
+    #[ORM\Column(type: "float")]
+    #[Groups("sceneDataRecup")]
     private $diameter;
 
-    /**
-     * @ORM\Column(type="float")
-     * @Groups ("sceneDataRecup")
-     */
+    #[ORM\Column(type: "float")]
+    #[Groups("sceneDataRecup")]
     private $zoom;
 
     // --------- Communs settings -----------------
     
-    /**
-     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="Scene2")
-     * @ORM\JoinColumn(nullable=false)
-     */
+    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: "Scene2")]
+    #[ORM\JoinColumn(nullable: false)]
     protected $user;
 
-    /**
-     * @ORM\ManyToMany(targetEntity=User::class)
-     * @ORM\JoinColumn(nullable=false)
-     * @ORM\JoinTable("user_G2artwork_like")
-     */
+    #[ORM\ManyToMany(targetEntity: User::class)]
+    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\JoinTable(name: "user_G2artwork_like")]
     protected $likes;
 
     // --------- VICH UPLOADER-----------------
 
-    /**
-    * @ORM\Column(type="datetime_immutable", nullable=true)
-    */
+    #[ORM\Column(type: "datetime_immutable", nullable: true)]
     private $updatedAt;
 
-    /**
-     * @Vich\UploadableField(mapping="scene2Images", fileNameProperty="imageName")
-     * @var File|null
-     */
-    private $imageFile;   
+    #[UploadableField(mapping: "scene2Images", fileNameProperty: "imageName")]
+    private ?File $imageFile = null;
 
 //-------------------------------------------------------------------------------------------
 
@@ -227,9 +199,6 @@ class Scene2 extends BaseScene
 
     // ---------- Vich Uploader - Screen Artwork ---------- //
     
-    /**
-     * @param File|\Symfony\Component\HttpFoundation\File\UploadedFile|null $imageFile
-     */
     public function setImageFile(?File $imageFile = null): void
     {
         $this->imageFile = $imageFile;

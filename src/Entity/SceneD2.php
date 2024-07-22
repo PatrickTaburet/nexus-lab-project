@@ -11,29 +11,22 @@ use Symfony\Component\{
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\SceneD2Repository;
+use Vich\UploaderBundle\Mapping\Annotation\UploadableField;
 
-/**
- * @ORM\Entity(repositoryClass=SceneD2Repository::class)
- * @Vich\Uploadable
- */
+#[ORM\Entity(repositoryClass: SceneD2Repository::class)]
+#[Vich\Uploadable]
 class SceneD2 extends BaseScene
 {
-    /**
-     * @ORM\Column(type="integer")
-     * @Groups ("sceneDataRecup")
-     */
+    #[ORM\Column(type: "integer")]
+    #[Groups("sceneDataRecup")]
     private $divFactor;
 
-    /**
-     * @ORM\Column(type="integer")
-     * @Groups ("sceneDataRecup")
-     */
+    #[ORM\Column(type: "integer")]
+    #[Groups("sceneDataRecup")]
     private $copy;
 
-    /**
-     * @ORM\Column(type="integer")
-     * @Groups ("sceneDataRecup")
-     */
+    #[ORM\Column(type: "integer")]
+    #[Groups("sceneDataRecup")]
     private $deformation;
 
     /**
@@ -42,81 +35,58 @@ class SceneD2 extends BaseScene
      */
     private $sizeFactor;
 
-    /**
-     * @ORM\Column(type="integer")
-     * @Groups ("sceneDataRecup")
-     */
+    #[ORM\Column(type: "integer")]
+    #[Groups("sceneDataRecup")]
     private $angle;
 
-    /**
-     * @ORM\Column(type="float")
-     * @Groups ("sceneDataRecup")
-     */
+    #[ORM\Column(type: "float")]
+    #[Groups("sceneDataRecup")]
     private $opacity;
 
-    /**
-     * @ORM\Column(type="integer")
-     * @Groups ("sceneDataRecup")
-     */
+    #[ORM\Column(type: "integer")]
+    #[Groups("sceneDataRecup")]
     private $filters;
 
-    /**
-     * @ORM\Column(type="integer")
-     * @Groups ("sceneDataRecup")
-     */
+    #[ORM\Column(type: "integer")]
+    #[Groups("sceneDataRecup")]
     private $division;
 
-    /**
-     * @ORM\Column(type="integer")
-     * @Groups ("sceneDataRecup")
-     */
+    #[ORM\Column(type: "integer")]
+    #[Groups("sceneDataRecup")]
     private $colorRange;
 
-    /**
-     * @ORM\Column(type="boolean")
-     * @Groups ("sceneDataRecup")
-     */
+ 
+    #[ORM\Column(type: "boolean")]
+    #[Groups("sceneDataRecup")]
     private $glitch;
 
-    /**
-     * @ORM\Column(type="boolean")
-     * @Groups ("sceneDataRecup")
-     */
+    #[ORM\Column(type: "boolean")]
+    #[Groups("sceneDataRecup")]
     private $noise;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     * @Groups ("sceneDataRecup")
-     */
+    #[ORM\Column(type: "string", length: 255)]
+    #[Groups("sceneDataRecup")]
     private $colorsValue;
 
     // --------- Communs settings -----------------
 
-    /**
-     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="sceneD2")
-     * @ORM\JoinColumn(nullable=false)
-     */
+    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: "sceneD2")]
+    #[ORM\JoinColumn(nullable: false)]
     protected $user;
 
-    /**
-     * @ORM\ManyToMany(targetEntity=User::class)
-     * @ORM\JoinColumn(nullable=false)
-     * @ORM\JoinTable("user_D2artwork_like")
-     */
+
+    #[ORM\ManyToMany(targetEntity: User::class)]
+    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\JoinTable(name: "user_D2artwork_like")]
     protected $likes;
  
     // --------- VICH UPLOADER-----------------
 
-    /**
-    * @ORM\Column(type="datetime_immutable", nullable=true)
-    */
+    #[ORM\Column(type: "datetime_immutable", nullable: true)]
     private $updatedAt;
 
-    /**
-     * @Vich\UploadableField(mapping="sceneD2Images", fileNameProperty="imageName")
-     * @var File|null
-     */
-    private $imageFile;
+     #[UploadableField(mapping: "sceneD2Images", fileNameProperty: "imageName")]
+    private ?File $imageFile = null;
 
     //-------------------------------------------------------------------------------------------
 
@@ -266,10 +236,6 @@ class SceneD2 extends BaseScene
 
     // ---------- Vich Uploader - Screen Artwork ---------- //
 
-
-    /**
-     * @param File|\Symfony\Component\HttpFoundation\File\UploadedFile|null $imageFile
-     */
     public function setImageFile(?File $imageFile = null): void
     {
         $this->imageFile = $imageFile;
