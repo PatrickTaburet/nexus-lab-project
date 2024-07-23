@@ -14,46 +14,33 @@ use Doctrine\Common\Collections\{
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\MappedSuperclass
- * @Vich\Uploadable
- */
+
+#[ORM\MappedSuperclass]
+#[Vich\Uploadable]
 abstract class BaseScene
 {
-    /**
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
-     * @Groups ("sceneDataRecup")
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: "integer")]
+    #[Groups("sceneDataRecup")]
     protected $id;
 
-    /**
-     * @ORM\Column(type="string", length=100, nullable=true)
-     */
+    #[ORM\Column(type: "string", length: 100, nullable: true)]
     protected $title;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
+    #[ORM\Column(type: "string", length: 255, nullable: true)]
     protected $comment;
 
-    /**
-    * @ORM\ManyToOne(targetEntity=User::class)
-    * @Groups ("sceneDataRecup")
-    */
+    #[ORM\ManyToOne(targetEntity: User::class)]
+    #[Groups("sceneDataRecup")]
     protected $user;
     
-    /**
-    * @ORM\ManyToMany(targetEntity=User::class)
-    */
+    #[ORM\ManyToMany(targetEntity: User::class)]
     protected $likes;
 
   // --------- VICH UPLOADER-----------------
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
+    #[ORM\Column(type: "string", length: 255, nullable: true)]
     private $imageName;
 
 //-------------------------------------------------------------------------------------------

@@ -19,18 +19,15 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class MainController extends AbstractController
 {
-    /**
-     * @Route("/", name="home")
-     */
+    #[Route("/", name: "home")]
     public function index(): Response
     {
         return $this->render('main/home.html.twig', [
             'controller_name' => 'MainController',
         ]);
     }
-     /**
-     * @Route("/gallery", name="gallery", methods= {"GET", "POST"})
-     */
+
+    #[Route("/gallery", name: "gallery", methods: ["GET", "POST"])]
     public function gallery(Request $request, Scene1Repository $repo, SceneD1Repository $repo2, Scene2Repository $repo3, SceneD2Repository $repo4, PaginatorInterface $paginator): Response
     {
         $session = $request->getSession();
@@ -84,49 +81,42 @@ class MainController extends AbstractController
         ]);   
     }
     
-    /**
-    * @Route("/create", name="create")
-    */
+    #[Route("/create", name: "create")]
     public function create(): Response
     {
         return $this->render('main/create.html.twig', [
         ]);   
     }
-    /**
-    * @Route("/create/generative-art", name="generativeHome")
-    */
+
+    #[Route("/create/generative-art", name: "generativeHome")]
     public function generativeHome(): Response
     {
         return $this->render('main/generativeHome.html.twig', [
         ]);   
     }
-    /**
-    * @Route("/create/data-art", name="dataArtHome")
-    */
+
+    #[Route("/create/data-art", name: "dataArtHome")]
     public function dataArtHome(): Response
     {
         return $this->render('main/dataArtHome.html.twig', [
         ]);   
     }
-    /**
-    * @Route("/privacy-policy", name="privacyPolicy")
-    */
+
+    #[Route("/privacy-policy", name: "privacyPolicy")]
     public function privacyPolicy(): Response
     {
         return $this->render('main/privacyPolicy.html.twig', [
         ]);   
     }
-    /**
-    * @Route("/community", name="community")
-    */
+
+    #[Route("/community", name: "community")]
     public function community(): Response
     {
         return $this->render('main/community.html.twig', [  
         ]);   
     }
-    /**
-    * @Route("/contact", name="contact")
-    */
+
+    #[Route("/contact", name: "contact")]
     public function contact(): Response
     {
         return $this->render('main/contact.html.twig', [  

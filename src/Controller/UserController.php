@@ -32,21 +32,15 @@ use Symfony\Component\HttpKernel\Exception\{
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
-
-/**
-* @Route("/profile")
-*/
-
+#[Route("/profile")]
 class UserController extends AbstractController
 {
     
-    /**
-    * @Route("/edit/{id}", name="profile", methods= {"GET", "POST"})
-    */
-    public function editUser(EntityManagerInterface $entityManager,Request $request, UserRepository $repo, $id) : Response
+    #[Route("/edit/{id}", name: "profile", methods: ["GET", "POST"])]
+    public function editUser(EntityManagerInterface $entityManager, Request $request, UserRepository $repo, $id) : Response
     {       
             $user = $repo->find($id);
-
+            $oldAvatar = $user->getImageName();
             // Check if the user is logged
             if (!$this->getUser()) {
                 return $this->redirectToRoute('gallery');
@@ -64,23 +58,34 @@ class UserController extends AbstractController
             $userForm -> handleRequest($request);
             
             if ($userForm->isSubmitted() && $userForm->isValid()) {
-                // limit the file upload to 5MB maximum
-                if ($user->getImageFile() && $user->getImageFile()->getSize() > 5000000) {
-                    $user->setImageFile(null);
-                    $this->addFlash('warning', 'The file is too large. Maximum file size is 5 MB.');
-                    return $this->render('user/editUser.html.twig', [
-                        'user' => $user,
-                        'userForm' => $userForm->createView(),
-                    ]);
+
+                // Check if the new avatar is different from the old one and from the default image
+                $formData = $userForm->getData();
+                $newAvatarFile = $formData->getImageFile();
+                if($newAvatarFile){
+                    $newAvatar = $newAvatarFile->getClientOriginalName();
+                    if ($newAvatar !== $oldAvatar) {
+                        // Check if the new avatar already exists in the directory
+                        $avatarDir = $this->getParameter('kernel.project_dir') . '/public/images/avatar/';
+                        if (!file_exists($avatarDir . $newAvatar)) {
+                            // Delete the old avatar file
+                            if ($oldAvatar && $oldAvatar !== 'no-profile.jpg') {
+                                unlink($avatarDir . $oldAvatar);
+                            }
+                        }
+                    }
                 }
-             
+
                 $entityManager->persist($user);
                 $entityManager->flush();
-                $user->removeFile(); // Delete the object file after persist to avoid serialize errors
-                $this ->addFlash('success', 'User informations successfully edited');
+                $userEmail = $user->getEmail();
+                $this ->addFlash('success', 'User '.$userEmail.' edit succeed');
 
                 return $this->redirectToRoute('home');
             }
+
+            // Clear the object file after persist and before render to avoid serialize errors
+            $user->removeFile();
 
             return $this->render('user/editUser.html.twig', [
                 'user' => $user,
@@ -88,9 +93,7 @@ class UserController extends AbstractController
             ]);
     } 
     
-    /**
-    * @Route("/edit/password/{id}", name="editPassword", methods= {"GET", "POST"})
-    */
+    #[Route("/edit/password/{id}", name: "editPassword", methods: ["GET", "POST"])]
     public function editPassword(EntityManagerInterface $entityManager, Request $request, UserRepository $repo, $id, UserPasswordHasherInterface $hasher ): Response
     {
         $user = $repo->find($id);
@@ -134,9 +137,8 @@ class UserController extends AbstractController
         ]);
     }
 
-    /**
-    * @Route("/myArtworks/{id}", name="myArtworks", methods= {"GET", "POST"})
-    */
+
+    #[Route("/myArtworks/{id}", name: "myArtworks", methods: ["GET", "POST"])]
     public function myArtworks( Scene1Repository $repoG1,  Scene2Repository $repoG2,SceneD1Repository $repoD1, SceneD2Repository $repoD2, $id) : Response
     {       
 
@@ -165,9 +167,8 @@ class UserController extends AbstractController
             'artworks' => $data,
         ]);
     } 
-     /**
-    * @Route("/myArtworks/delete/{id}/{entity}", name="deleteArtwork", methods= {"GET", "POST"})
-    */
+
+    #[Route("/myArtworks/delete/{id}/{entity}", name: "deleteArtwork", methods: ["GET", "POST"])]
     public function Delete(EntityManagerInterface $entityManager, Scene1Repository $repoG1, Scene2Repository $repoG2, SceneD1Repository $repoD1, SceneD2Repository $repoD2, $id, $entity): Response
     {
 
@@ -220,10 +221,8 @@ class UserController extends AbstractController
             'id' => $userId
         ]);
     }
-      
-    /**
-    * @Route("/myArtworks/update/{id}/{entity}", name="editArtwork", methods= {"GET", "POST"})
-    */
+
+    #[Route("/myArtworks/update/{id}/{entity}", name: "editArtwork", methods: ["GET", "POST"])]
     public function Update(Request $request, EntityManagerInterface $entityManager, Scene1Repository $repoG1, Scene2Repository $repoG2,SceneD2Repository $repoD2, SceneD1Repository $repoD1, $id, $entity): Response
     {
         $currentUser = $this->getUser();
@@ -279,9 +278,7 @@ class UserController extends AbstractController
         ]);
     }
     
-    /**
-    * @Route("/roleRequest", name="roleRequest", methods= {"GET", "POST"})
-    */
+    #[Route("/roleRequest", name: "roleRequest", methods: ["GET", "POST"])]
     public function roleRequest( EntityManagerInterface $entityManager, Request $request): Response
     {   
          // Check if the current user has already sent a role request

@@ -14,14 +14,11 @@ use App\Repository\AddSceneRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
-/**
-* @Route("/artist", name="artist_")
-*/
+#[Route("/artist", name: "artist_")]
 class ArtistController extends AbstractController
 {
- /**
-    * @Route("/add-new-scene", name="addScene", methods= {"GET", "POST"})
-    */
+
+    #[Route("/add-new-scene", name: "addScene", methods: ["GET", "POST"])]
     public function addScene( EntityManagerInterface $entityManager, Request $request): Response
     {   
         $sceneRequest = new AddScene(); 
@@ -65,9 +62,7 @@ class ArtistController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/dashboard", name="artistDashboard")
-     */
+    #[Route("/dashboard", name: "artistDashboard")]
     public function artistDashboard(AddSceneRepository $newScene): Response
     {
         $user = $this->getUser();
@@ -87,9 +82,8 @@ class ArtistController extends AbstractController
         ]);
     }
     
-    /**
-    * @Route("/delete/request/{id}", name="delete_request", methods= {"GET", "POST"})
-    */
+
+    #[Route("/delete/request/{id}", name: "delete_request", methods: ["GET", "POST"])]
     public function deleteSceneRequest(EntityManagerInterface $entityManager, AddSceneRepository $sceneReq, $id): Response
     {
         $request = $sceneReq->find($id);

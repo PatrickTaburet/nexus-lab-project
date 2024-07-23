@@ -102,6 +102,9 @@ Flash messages
     top: 60;
     width: 100%;
 }
+.alert{
+    color: red;
+}
 
 /* 
 ========================

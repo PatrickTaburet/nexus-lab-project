@@ -9,7 +9,7 @@ use Doctrine\Persistence\ManagerRegistry;
  * @template T of object
  * @extends ServiceEntityRepository<T>
  */
-abstract class AbstractSceneRepository extends ServiceEntityRepository
+abstract class BaseSceneRepository extends ServiceEntityRepository
 {
     /**
      * @param ManagerRegistry $registry

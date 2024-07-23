@@ -9,106 +9,76 @@ use Symfony\Component\{
 use DateTimeImmutable;
 use Doctrine\ORM\Mapping as ORM;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
+use App\Repository\SceneD1Repository;
+use Vich\UploaderBundle\Mapping\Annotation\UploadableField;
 
-/**
- * @ORM\Entity(repositoryClass=SceneD1Repository::class) 
- * @Vich\Uploadable
- */
+#[ORM\Entity(repositoryClass: SceneD1Repository::class)]
+#[Vich\Uploadable]
 class SceneD1 extends BaseScene
 {
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     * @Groups ("sceneDataRecup")
-     */
+    #[ORM\Column(type: "string", length: 255, nullable: true)]
+    #[Groups("sceneDataRecup")]
     private $country1;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     * @Groups ("sceneDataRecup")
-     */
+    #[ORM\Column(type: "string", length: 255, nullable: true)]
+    #[Groups("sceneDataRecup")]
     private $country2;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     * @Groups ("sceneDataRecup")
-     */
+    #[ORM\Column(type: "string", length: 255, nullable: true)]
+    #[Groups("sceneDataRecup")]
     private $country3;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     * @Groups ("sceneDataRecup")
-     */
+    #[ORM\Column(type: "string", length: 255, nullable: true)]
+    #[Groups("sceneDataRecup")]
     private $country4;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     * @Groups ("sceneDataRecup")
-     */
+    #[ORM\Column(type: "string", length: 255, nullable: true)]
+    #[Groups("sceneDataRecup")]
     private $country5;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     * @Groups ("sceneDataRecup")
-     */
+    #[ORM\Column(type: "string", length: 255, nullable: true)]
+    #[Groups("sceneDataRecup")]
     private $country6;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     * @Groups ("sceneDataRecup")
-     */
+    #[ORM\Column(type: "string", length: 255, nullable: true)]
+    #[Groups("sceneDataRecup")]
     private $country7;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     * @Groups ("sceneDataRecup")
-     */
+    #[ORM\Column(type: "string", length: 255, nullable: true)]
+    #[Groups("sceneDataRecup")]
     private $country8;
 
-    /**
-     * @ORM\Column(type="float")
-     * @Groups ("sceneDataRecup")
-     */
+    #[ORM\Column(type: "float")]
+    #[Groups("sceneDataRecup")]
     private $randomness;
 
-    /**
-     * @ORM\Column(type="boolean")
-     * @Groups ("sceneDataRecup")
-     */
+    #[ORM\Column(type: "boolean")]
+    #[Groups("sceneDataRecup")]
     private $looping;
 
-    /**
-     * @ORM\Column(type="boolean")
-     * @Groups ("sceneDataRecup")
-     */
+    #[ORM\Column(type: "boolean")]
+    #[Groups("sceneDataRecup")]
     private $abstract;
 
     // --------- Communs settings -----------------
     
-    /**
-     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="sceneD1")
-     * @ORM\JoinColumn(nullable=false)
-     */
+    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: "sceneD1")]
+    #[ORM\JoinColumn(nullable: false)]
     protected $user;
 
-    /**
-     * @ORM\ManyToMany(targetEntity=User::class)
-     * @ORM\JoinColumn(nullable=false)
-     * @ORM\JoinTable("user_D1artwork_like")
-     */
+    #[ORM\ManyToMany(targetEntity: User::class)]
+    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\JoinTable(name: "user_D1artwork_like")]
     protected $likes;
     
     // --------- VICH UPLOADER-----------------
 
-    /**
-    * @ORM\Column(type="datetime_immutable", nullable=true)
-    */
+    #[ORM\Column(type: "datetime_immutable", nullable: true)]
     private $updatedAt;
 
-    /**
-     * @Vich\UploadableField(mapping="sceneD1Images", fileNameProperty="imageName")
-     * @var File|null
-     */
-    private $imageFile;
+
+    #[UploadableField(mapping: "sceneD1Images", fileNameProperty: "imageName")]
+    private ?File $imageFile = null;
 
 //-------------------------------------------------------------------------------------------
 

@@ -6,9 +6,7 @@ use DateTimeImmutable;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\ArtistRoleRepository;
 
-/**
- * @ORM\Entity(repositoryClass=ArtistRoleRepository::class)
- */
+#[ORM\Entity(repositoryClass: ArtistRoleRepository::class)]
 class ArtistRole
 {
     public function __construct()
@@ -16,47 +14,31 @@ class ArtistRole
         $this->createdAt = new DateTimeImmutable();
     }
     
-    /**
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: "integer")]
     private $id;
 
-    /**
-     * @ORM\Column(type="string", length=100)
-     */
+    #[ORM\Column(type: "string", length: 100)]
     private $firstname;
 
-    /**
-     * @ORM\Column(type="string", length=100)
-     */
+    #[ORM\Column(type: "string", length: 100)]
     private $name;
 
-    /**
-     * @ORM\Column(type="text")
-     */
+    #[ORM\Column(type: "text")]
     private $bio;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
+    #[ORM\Column(type: "string", length: 255, nullable: true)]
     private $exemples;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
+    #[ORM\Column(type: "string", length: 255)]
     private $portfolio;
 
-    /**
-    * @ORM\Column(type="datetime_immutable", nullable=true)
-    */
+    #[ORM\Column(type: "datetime_immutable", nullable: true)]
     private $createdAt;
 
-   /**
-     * @ORM\OneToOne(targetEntity="App\Entity\User",  inversedBy="role_request")
-     * @ORM\JoinColumn(name="user_id", referencedColumnName="id")
-     */ 
+    #[ORM\OneToOne(targetEntity: User::class, inversedBy: "role_request")]
+    #[ORM\JoinColumn(name: "user_id", referencedColumnName: "id")]
     private $user;
     
 

@@ -9,87 +9,63 @@ use Symfony\Component\{
 };
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\Scene1Repository;
+use Vich\UploaderBundle\Mapping\Annotation\UploadableField;
 
-/**
- * @ORM\Entity(repositoryClass=Scene1Repository::class)
- * @Vich\Uploadable
- */
+#[ORM\Entity(repositoryClass: Scene1Repository::class)]
+#[Vich\Uploadable]
 class Scene1 extends BaseScene
 {
-    /**
-     * @ORM\Column(type="integer")
-     * @Groups ("sceneDataRecup")
-     */
+    #[ORM\Column(type: "integer")]
+    #[Groups("sceneDataRecup")]
     private $color;
 
-    /**
-     * @ORM\Column(type="integer")
-     * @Groups ("sceneDataRecup")
-     */
+    #[ORM\Column(type: "integer")]
+    #[Groups("sceneDataRecup")]
     private $saturation;
 
-    /**
-     * @ORM\Column(type="float")
-     * @Groups ("sceneDataRecup")
-     */
+    #[ORM\Column(type: "float")]
+    #[Groups("sceneDataRecup")]
     private $opacity;
 
-    /**
-     * @ORM\Column(type="float")
-     * @Groups ("sceneDataRecup")
-     */
+    #[ORM\Column(type: "float")]
+    #[Groups("sceneDataRecup")]
     private $weight;
 
-    /**
-     * @ORM\Column(type="integer")
-     * @Groups ("sceneDataRecup")
-     */
+    #[ORM\Column(type: "integer")]
+    #[Groups("sceneDataRecup")]
     private $num_line;
 
-    /**
-     * @ORM\Column(type="float")
-     * @Groups ("sceneDataRecup")
-     */
+    #[ORM\Column(type: "float")]
+    #[Groups("sceneDataRecup")]
     private $velocity;
 
-    /**
-     * @ORM\Column(type="integer")
-     * @Groups ("sceneDataRecup")
-     */
+    #[ORM\Column(type: "integer")]
+    #[Groups("sceneDataRecup")]
     private $noiseOctave;
 
-    /**
-     * @ORM\Column(type="float")
-     * @Groups ("sceneDataRecup")
-     */
+    #[ORM\Column(type: "float")]
+    #[Groups("sceneDataRecup")]
     private $noiseFalloff;
     
     // --------- Communs settings -----------------
 
-    /**
-     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="Scene1")
-     * @ORM\JoinColumn(nullable=false)
-     */
+    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: "Scene1")]
+    #[ORM\JoinColumn(nullable: false)]
     protected $user;
-    
-    /**
-     * @ORM\ManyToMany(targetEntity=User::class)
-     * @ORM\JoinColumn(nullable=false)
-     * @ORM\JoinTable("user_G1artwork_like")
-     */
+
+    #[ORM\ManyToMany(targetEntity: User::class)]
+    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\JoinTable(name: "user_G1artwork_like")]
     protected $likes;
 
     // --------- VICH UPLOADER-----------------
-    /**
-    * @ORM\Column(type="datetime_immutable", nullable=true)
-    */
+
+    #[ORM\Column(type: "datetime_immutable", nullable: true)]
     private $updatedAt;
     
-    /**
-     * @Vich\UploadableField(mapping="scene1Images", fileNameProperty="imageName")
-     * @var File|null
-     */
-    private $imageFile;
+    #[UploadableField(mapping: "scene1Images", fileNameProperty: "imageName")]
+    private ?File $imageFile = null;
 
 //-------------------------------------------------------------------------------------------
 
