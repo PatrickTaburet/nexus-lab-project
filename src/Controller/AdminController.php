@@ -104,12 +104,14 @@ class AdminController extends AbstractController
                 $entityManager -> persist($user);
                 $entityManager -> flush();
                 $userEmail = $user->getEmail();
-                $user->removeFile(); // Delete the object file after persist to avoid errors
                 $this ->addFlash('success', 'User '.$userEmail.' edit succeed');
 
                 return $this->redirectToRoute('admin_users');
             }
 
+            // Clear the object file after persist and before render to avoid serialize errors
+            $user->removeFile();
+            
             return $this->render('user/editUser.html.twig', [
                 'user' => $user,
                 'userForm' => $userForm->createView(),

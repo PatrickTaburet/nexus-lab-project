@@ -37,7 +37,7 @@ class UserController extends AbstractController
 {
     
     #[Route("/edit/{id}", name: "profile", methods: ["GET", "POST"])]
-    public function editUser(EntityManagerInterface $entityManager,Request $request, UserRepository $repo, $id) : Response
+    public function editUser(EntityManagerInterface $entityManager, Request $request, UserRepository $repo, $id) : Response
     {       
             $user = $repo->find($id);
             $oldAvatar = $user->getImageName();
@@ -76,26 +76,16 @@ class UserController extends AbstractController
                     }
                 }
 
-                // limit the file upload to 5MB maximum
-                if ($user->getImageFile() && $user->getImageFile()->getSize() > 5000000) {
-                    $user->setImageFile(null);
-                    $this->addFlash('warning', 'The file is too large. Maximum file size is 5 MB.');
-                    return $this->render('user/editUser.html.twig', [
-                        'user' => $user,
-                        'userForm' => $userForm->createView(),
-                    ]);
-                }
-             
                 $entityManager->persist($user);
                 $entityManager->flush();
-                  // Clear the imageFile property to avoid serialization issues
-                $user->setImageFile(null);
                 $userEmail = $user->getEmail();
-                $user->removeFile(); // Delete the object file after persist to avoid serialize errors
                 $this ->addFlash('success', 'User '.$userEmail.' edit succeed');
 
                 return $this->redirectToRoute('home');
             }
+
+            // Clear the object file after persist and before render to avoid serialize errors
+            $user->removeFile();
 
             return $this->render('user/editUser.html.twig', [
                 'user' => $user,
