@@ -2,7 +2,7 @@ vich_uploader:
     db_driver: orm
 
     metadata:
-        type: annontations
+        type: attribute
 
     mappings:
         picture_profile:

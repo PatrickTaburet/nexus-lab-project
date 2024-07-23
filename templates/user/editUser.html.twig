@@ -44,6 +44,13 @@
             {{ form_label(userForm.imageFile) }}
             {{ form_widget(userForm.imageFile, { "attr": {"class" : "img-control" } }) }}
           </div>
+          {% if userForm.imageFile.vars.errors|length > 0 %}
+            <div class="alert">
+                {% for error in userForm.imageFile.vars.errors %}
+                    <p>{{ error.message }}</p>
+                {% endfor %}
+            </div>
+          {% endif %}
           <div class="buttonBox">        
             {{ form_label(userForm.Submit) }}
             {{ form_widget(userForm.Submit) }}

@@ -40,7 +40,7 @@ class UserController extends AbstractController
     public function editUser(EntityManagerInterface $entityManager,Request $request, UserRepository $repo, $id) : Response
     {       
             $user = $repo->find($id);
-
+            $oldAvatar = $user->getImageName();
             // Check if the user is logged
             if (!$this->getUser()) {
                 return $this->redirectToRoute('gallery');
@@ -58,6 +58,24 @@ class UserController extends AbstractController
             $userForm -> handleRequest($request);
             
             if ($userForm->isSubmitted() && $userForm->isValid()) {
+
+                // Check if the new avatar is different from the old one and from the default image
+                $formData = $userForm->getData();
+                $newAvatarFile = $formData->getImageFile();
+                if($newAvatarFile){
+                    $newAvatar = $newAvatarFile->getClientOriginalName();
+                    if ($newAvatar !== $oldAvatar) {
+                        // Check if the new avatar already exists in the directory
+                        $avatarDir = $this->getParameter('kernel.project_dir') . '/public/images/avatar/';
+                        if (!file_exists($avatarDir . $newAvatar)) {
+                            // Delete the old avatar file
+                            if ($oldAvatar && $oldAvatar !== 'no-profile.jpg') {
+                                unlink($avatarDir . $oldAvatar);
+                            }
+                        }
+                    }
+                }
+
                 // limit the file upload to 5MB maximum
                 if ($user->getImageFile() && $user->getImageFile()->getSize() > 5000000) {
                     $user->setImageFile(null);
@@ -70,8 +88,11 @@ class UserController extends AbstractController
              
                 $entityManager->persist($user);
                 $entityManager->flush();
+                  // Clear the imageFile property to avoid serialization issues
+                $user->setImageFile(null);
+                $userEmail = $user->getEmail();
                 $user->removeFile(); // Delete the object file after persist to avoid serialize errors
-                $this ->addFlash('success', 'User informations successfully edited');
+                $this ->addFlash('success', 'User '.$userEmail.' edit succeed');
 
                 return $this->redirectToRoute('home');
             }
