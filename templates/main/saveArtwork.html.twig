@@ -28,7 +28,9 @@
           <div class="buttonBox">        
             {{ form_label(form.submit) }}
             {{ form_widget(form.submit, { "attr": {"class" : "customButton" } }) }}
-            <a href="{{ path('home')}}"  class="customButton">Back</a>
+
+            {% set entityName = scene|class_name|split('\\')|last %} 
+            <a href="{{ path('deleteArtwork', { 'id': scene.id, 'entity': entityName,'redirect': true }) }}" class="customButton">Back</a>
           </div> 
 
         {{ form_end(form) }}

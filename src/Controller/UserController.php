@@ -169,53 +169,41 @@ class UserController extends AbstractController
     } 
 
     #[Route("/myArtworks/delete/{id}/{entity}", name: "deleteArtwork", methods: ["GET", "POST"])]
-    public function Delete(EntityManagerInterface $entityManager, Scene1Repository $repoG1, Scene2Repository $repoG2, SceneD1Repository $repoD1, SceneD2Repository $repoD2, $id, $entity): Response
+    public function Delete(EntityManagerInterface $entityManager, Scene1Repository $repoG1, Scene2Repository $repoG2, SceneD1Repository $repoD1, SceneD2Repository $repoD2, $id, $entity, Request $request): Response
     {
 
         $currentUser = $this->getUser();
 
-        if($entity === 'Scene1'){
-            $artwork = $repoG1-> find($id);
-
-            // Check if actual user is link to this artwork
-            if ($artwork->getUser()!== $currentUser) {
-                throw new AccessDeniedHttpException('You are not allowed to delete this artwork.');
-            }
-
-            $userId = $artwork->getUser()->getId();   
-        } elseif ($entity === 'SceneD1'){
-            $artwork = $repoD1->find($id);
-
-            if ($artwork->getUser()!== $currentUser) {
-                throw new AccessDeniedHttpException('You are not allowed to delete this artwork.');
-            }
-
-            $userId = $artwork->getUser()->getId();
-        } elseif ($entity === 'SceneD2'){
-            $artwork = $repoD2->find($id);
-
-            if ($artwork->getUser()!== $currentUser) {
-                throw new AccessDeniedHttpException('You are not allowed to delete this artwork.');
-            }
-
-            $userId = $artwork->getUser()->getId();
-        } elseif ($entity === 'Scene2'){
-            $artwork = $repoG2->find($id);
-
-            if ($artwork->getUser()!== $currentUser) {
-                throw new AccessDeniedHttpException('You are not allowed to delete this artwork.');
-            }
-
-            $userId = $artwork->getUser()->getId();
-        } else { 
-            throw new NotFoundHttpException('Entity not found');
+        switch ($entity) {
+            case 'Scene1':
+                $artwork = $repoG1->find($id);
+                break;
+            case 'SceneD1':
+                $artwork = $repoD1->find($id);
+                break;
+            case 'SceneD2':
+                $artwork = $repoD2->find($id);
+                break;
+            case 'Scene2':
+                $artwork = $repoG2->find($id);
+                break;
+            default:
+                throw new NotFoundHttpException('Entity not found');
         }
 
+        if (!$artwork || $artwork->getUser() !== $currentUser) {
+            throw new AccessDeniedHttpException('You are not allowed to delete this artwork.');
+        }
+        $userId = $artwork->getUser()->getId();  
+       
         $entityManager->remove($artwork);
         $entityManager->flush();
 
         $this->addFlash('success', 'Artwork removed from gallery!'); 
-
+        // Check if redirect parameter is present and true
+        if ($request->query->get('redirect')) {
+            return $this->redirectToRoute('home');
+        }
     
         return $this->redirectToRoute('myArtworks', [
             'id' => $userId
@@ -227,52 +215,40 @@ class UserController extends AbstractController
     {
         $currentUser = $this->getUser();
 
-        if($entity === 'Scene1'){
-            $artwork = $repoG1-> find($id);
-            if ($artwork->getUser()!== $currentUser) {
-                throw new AccessDeniedHttpException('You are not allowed to edit this artwork.');
-            }
-            $userId = $artwork->getUser()->getId();
-            $form = $this->createForm(SaveArtworkG1Type::class, $artwork);
-        } elseif ($entity === 'Scene2'){
-            $artwork = $repoG2->find($id);
-            if ($artwork->getUser()!== $currentUser) {
-                throw new AccessDeniedHttpException('You are not allowed to edit this artwork.');
-            }
-            $userId = $artwork->getUser()->getId();
-            $form = $this->createForm(SaveArtworkG2Type::class, $artwork);
-        } elseif ($entity === 'SceneD1'){
-            $artwork = $repoD1->find($id);
-            if ($artwork->getUser()!== $currentUser) {
-                throw new AccessDeniedHttpException('You are not allowed to edit this artwork.');
-            }
-            $userId = $artwork->getUser()->getId();
-            $form = $this->createForm(SaveArtworkD1Type::class, $artwork);
-        } elseif ($entity === 'SceneD2'){
-            $artwork = $repoD2->find($id);
-            if ($artwork->getUser()!== $currentUser) {
-                throw new AccessDeniedHttpException('You are not allowed to edit this artwork.');
-            }
-            $userId = $artwork->getUser()->getId();
-            $form = $this->createForm(SaveArtworkD2Type::class, $artwork);
-        } else { 
+        $entityMappings = [
+            'Scene1' => ['repo' => $repoG1, 'formType' => SaveArtworkG1Type::class],
+            'Scene2' => ['repo' => $repoG2, 'formType' => SaveArtworkG2Type::class],
+            'SceneD1' => ['repo' => $repoD1, 'formType' => SaveArtworkD1Type::class],
+            'SceneD2' => ['repo' => $repoD2, 'formType' => SaveArtworkD2Type::class],
+        ];
+
+        if (!isset($entityMappings[$entity])) {
             throw new NotFoundHttpException('Entity not found');
         }
 
-        $form -> handleRequest($request);
-        if ( $form->isSubmitted() && $form->isValid()){
+        $repo = $entityMappings[$entity]['repo'];
+        $formType = $entityMappings[$entity]['formType'];
+        
+        $artwork = $repo->find($id);
+        if (!$artwork || $artwork->getUser() !== $currentUser) {
+            throw new AccessDeniedHttpException('You are not allowed to edit this artwork.');
+        }
 
+        $form = $this->createForm($formType, $artwork);
+        $form->handleRequest($request);
+
+        if ( $form->isSubmitted() && $form->isValid()){
             $entityManager->persist($artwork);
             $entityManager->flush();
 
             $this->addFlash('success', 'Artwork updated successfully'); 
           
             return $this->redirectToRoute('myArtworks', [
-                'id' => $userId
+                'id' => $artwork->getUser()->getId()
             ]);
         }
         return $this->render('user/editArtwork.html.twig', [
-            'userId' => $userId,
+            'userId' => $artwork->getUser()->getId(),
             'form' => $form->createView(),
             'artwork' => $artwork
         ]);
