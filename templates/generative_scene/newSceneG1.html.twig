@@ -11,16 +11,7 @@
 
 {# Modale : save artwork  #}
 
-<div class="modaleBackground hidden">
-    <div class="superModale hidden">
-        <div class="headerModale">
-            <p>Save ArtWork</p>
-            <button class="closeButton customButton closeModaleStyle">X</button>
-        </div>
-        <p>Do you want to save this artwork and share it in the Gallery?</p> 
-        <button id="sendDataButton" class="customButton generateButton">Save</button>
-    </div>
-</div>
+{% include 'partials/_modale_saveArtwork.html.twig' %}
 
 {# End modale #}
 
@@ -72,62 +63,30 @@
                 </div>
                 <div class="separator"></div>
                 <div class="card-content">
+
+                    {# Parameters sliders #}
+
+                    {% set sliders = [
+                        {'label': 'Color', 'id': 'colorSlider', 'min': 1, 'max': 360, 'value': scene.color, 'step': 10},
+                        {'label': 'Number of lines', 'id': 'lineSlider', 'min': 1, 'max': 200, 'value': scene.num_line, 'step': 1},
+                        {'label': 'Weight', 'id': 'weightSlider', 'min': 0.2, 'max': 10, 'value': scene.weight, 'step': 0.1},
+                        {'label': 'Saturation', 'id': 'saturationSlider', 'min': 0, 'max': 100, 'value': scene.saturation, 'step': 5},
+                        {'label': 'Opacity', 'id': 'opacitySlider', 'min': 0.05, 'max': 1, 'value': scene.opacity, 'step': 0.05},
+                        {'label': 'Velocity', 'id': 'velocitySlider', 'min': 0, 'max': 15, 'value': scene.velocity, 'step': 0.1},
+                        {'label': 'Noise octaves', 'id': 'noiseOctaveSlider', 'min': 0, 'max': 10, 'value': scene.noiseOctave, 'step': 1},
+                        {'label': 'Noise falloff', 'id': 'noiseFalloffSlider', 'min': 0, 'max': 1, 'value': scene.noiseFalloff, 'step': 0.05}
+                    ] %}
+
+                    {% for slider in sliders %}
                     <div class="sliderBox">
-                        <p>Color</p>
-                        <div class="range-wrap colorSlider">
-                            <input type="range" class="range" id="colorSlider" min="1" max="360" value="{{scene.color}}" step="10">
-                            <output class="bubble"></output>
-                        </div>
-                    </div>
-                    <div class="sliderBox">
-                        <p>Number of lines</p>
+                        <p>{{ slider.label }}</p>
                         <div class="range-wrap">
-                            <input type="range" class="range" id="lineSlider" min="1" max="200" value="{{scene.num_line}}" step="1">   
+                            <input type="range" class="range" id="{{ slider.id }}" min="{{ slider.min }}" max="{{ slider.max }}" value="{{ slider.value }}" step="{{ slider.step }}">
                             <output class="bubble"></output>
                         </div>
                     </div>
-                    <div class="sliderBox">
-                        <p>Weight</p>
-                        <div class="range-wrap">
-                            <input type="range" class="range" id="weightSlider" min="0.2" max="10" value="{{scene.weight}}"step="0.1">
-                            <output class="bubble"></output>
-                        </div>
-                    </div>
-                    <div class="sliderBox">
-                        <p>Saturation</p>
-                        <div class="range-wrap">
-                            <input type="range" id="saturationSlider" class="range" min="0" max="100" value="{{scene.saturation}}" step="5">
-                            <output class="bubble"></output>
-                        </div>
-                    </div>
-                    <div class="sliderBox">
-                        <p>Opacity</p>
-                        <div class="range-wrap">
-                            <input type="range" id="opacitySlider" class="range" min="0.05" max="1" value="{{scene.opacity}}" step="0.05">
-                            <output class="bubble"></output>
-                        </div>
-                    </div>
-                    <div class="sliderBox">
-                        <p>Velocity</p>
-                        <div class="range-wrap">
-                            <input type="range" id="velocitySlider" class="range" min="0" max="15" value="{{scene.velocity}}" step="0.1">
-                            <output class="bubble"></output>
-                        </div>
-                    </div>
-                    <div class="sliderBox">
-                        <p>Noise octaves</p>
-                        <div class="range-wrap">
-                            <input type="range" id="noiseOctaveSlider" class="range" min="0" max="10" value="{{scene.noiseOctave}}" step="1">
-                            <output class="bubble"></output>
-                        </div>
-                    </div>
-                    <div class="sliderBox">
-                        <p>Noise falloff</p>
-                        <div class="range-wrap">
-                            <input type="range" id="noiseFalloffSlider" class="range" min="0" max="1" value="{{scene.noiseFalloff}}" step="0.05">
-                            <output class="bubble"></output>
-                        </div>
-                    </div>
+                    {% endfor %}
+
                     <div class="checkboxContainer">
                         <p>Stop and go</p>
                         <input type="checkbox" id="checkboxStop">

@@ -9,18 +9,11 @@
 
 {% block body %}
 
+
 {# Modale : save artwork  #}
 
-<div class="modaleBackground hidden">
-    <div class="superModale hidden">
-        <div class="headerModale">
-            <h1>Save ArtWork</h1>
-            <button class="closeButton customButton closeModaleStyle">X</button>
-        </div>
-        <p>Do you want to save this artwork and share it in the Gallery?</p> 
-        <button id="sendDataButton" class="customButton generateButton">Save</button>
-    </div>
-</div>
+{% include 'partials/_modale_saveArtwork.html.twig' %}
+
 {# End modale #}
 
 {# ---------------------- #}
@@ -71,49 +64,30 @@
                 </div>
                 <div class="separator"></div>
                 <div class="card-content">
-                   
                     <div class="paramBottom">
                         <div class="sliderBox">
-                            <p>Division factor</p>
-                            <div class="range-wrap">
-                                <input class="divFactorSlider range" type="range" min="1" max="7" step="1" value="1">
-                                <output class="bubble"></output>
-                            </div>
-                            <p>Copy</p>
-                            <div class="range-wrap">
-                                <input class="numCopySlider range" type="range" min="1" max="15" step="1" value="3">
-                                <output class="bubble"></output>
-                            </div>
-                            <p>Deformation</p>
-                            <div class="range-wrap">
-                                <input class="deformationSlider range" type="range" min="0" max="50" step="1" value="0">
-                                <output class="bubble"></output>
-                            </div>
-                            <p>Size factor</p>
-                            <div class="range-wrap">
-                                <input class="sizeFactorSlider range" type="range" min="0.2" max="5" step="0.1" value="1">
-                                <output class="bubble"></output>
-                            </div>
-                            <p>Division angle</p>
-                            <div class="range-wrap">
-                                <input class="angleDivSlider range" type="range" min="2" max="50" step="1" value="20">
-                                <output class="bubble"></output>
-                            </div>
-                            <p>Opacity</p>
-                            <div class="range-wrap">
-                                <input class="opacitySlider range" type="range" min="0.01" max="1" step="0.005" value="0.23">
-                                <output class="bubble"></output>
-                            </div>
-                            <p>Filters</p>
-                            <div class="range-wrap">
-                                <input class="filterSlider range" type="range" min="0" max="4" step="1" value="0">
-                                <output class="bubble"></output>
-                            </div>
-                            <p>Division</p>
-                            <div class="range-wrap">
-                                <input class="divSlider range" type="range" min="1" max="23" step="1" value="6">
-                                <output class="bubble"></output>
-                            </div>
+
+                            {# Parameters sliders #}
+
+                            {% set sliders = [
+                                {'label': 'Division factor', 'class': 'divFactorSlider', 'min': 1, 'max': 7, 'step': 1, 'value': 1},
+                                {'label': 'Copy', 'class': 'numCopySlider', 'min': 1, 'max': 15, 'step': 1, 'value': 3},
+                                {'label': 'Deformation', 'class': 'deformationSlider', 'min': 0, 'max': 50, 'step': 1, 'value': 0},
+                                {'label': 'Size factor', 'class': 'sizeFactorSlider', 'min': 0.2, 'max': 5, 'step': 0.1, 'value': 1},
+                                {'label': 'Division angle', 'class': 'angleDivSlider', 'min': 2, 'max': 50, 'step': 1, 'value': 20},
+                                {'label': 'Opacity', 'class': 'opacitySlider', 'min': 0.01, 'max': 1, 'step': 0.005, 'value': 0.23},
+                                {'label': 'Filters', 'class': 'filterSlider', 'min': 0, 'max': 4, 'step': 1, 'value': 0},
+                                {'label': 'Division', 'class': 'divSlider', 'min': 1, 'max': 23, 'step': 1, 'value': 6}
+                            ] %}
+                            
+                            {% for slider in sliders %}
+                                <p>{{ slider.label }}</p>
+                                <div class="range-wrap">
+                                    <input class="{{ slider.class }} range" type="range" min="{{ slider.min }}" max="{{ slider.max }}" step="{{ slider.step }}" value="{{ slider.value }}">
+                                    <output class="bubble"></output>
+                                </div>
+                            {% endfor %}
+
                             <div style="border: solid, 2px; padding:10px;">
                                 <p>Color range</p>
                                 <div class="range-wrap">

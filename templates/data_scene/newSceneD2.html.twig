@@ -11,16 +11,8 @@
 
 {# Modale : save artwork  #}
 
-<div class="modaleBackground hidden">
-    <div class="superModale hidden">
-        <div class="headerModale">
-            <h1>Save ArtWork</h1>
-            <button class="closeButton customButton closeModaleStyle">X</button>
-        </div>
-        <p>Do you want to save this artwork and share it in the Gallery?</p> 
-        <button id="sendDataButton" class="customButton generateButton">Save</button>
-    </div>
-</div>
+{% include 'partials/_modale_saveArtwork.html.twig' %}
+
 {# End modale #}
 
 {# ---------------------- #}
@@ -86,6 +78,7 @@
                                 { 'label': 'Filters', 'class': 'filterSlider', 'min': 0, 'max': 4, 'step': 1, 'value': scene.filters },
                                 { 'label': 'Division', 'class': 'divSlider', 'min': 1, 'max': 23, 'step': 1, 'value': scene.division }
                             ] %}
+                            
                             {% for slider in sliders %}
                                 <p>{{ slider.label }}</p>
                                 <div class="range-wrap">

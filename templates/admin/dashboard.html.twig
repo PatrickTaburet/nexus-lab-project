@@ -16,14 +16,14 @@
         <a href="{{ path('admin_gallery')}}" class="customButton adminButton">Edit Gallery</a> 
     </div>
     <div class="dashboardTop"> 
-        {% block request_tables %}
-            {% include 'admin/_request_table.html.twig' with {
+        {% block dashboard_requestTable %}
+            {% include 'partials/_dashboard_requestTable.html.twig' with {
                 title: 'Artist role requests',
                 requests: roleRequests,
                 entity: 'ArtistRole',
                 dateField: 'createdAt'
             } %}
-            {% include 'admin/_request_table.html.twig' with {
+            {% include 'partials/_dashboard_requestTable.html.twig' with {
                 title: 'New scene proposals',
                 requests: sceneRequests,
                 entity: 'AddScene',

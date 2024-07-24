@@ -11,16 +11,8 @@
 
 {# Modale : save artwork  #}
 
-<div class="modaleBackground hidden">
-    <div class="superModale hidden">
-        <div class="headerModale">
-            <h1>Save ArtWork</h1>
-            <button class="closeButton customButton closeModaleStyle">X</button>
-        </div>
-        <p>Do you want to save this artwork and share it in the Gallery?</p> 
-        <button id="sendDataButton" class="customButton generateButton">Save</button>
-    </div>
-</div>
+{% include 'partials/_modale_saveArtwork.html.twig' %}
+
 {# End modale #}
 
 {# ---------------------- #}
@@ -72,38 +64,11 @@
                 <div class="separator"></div>
                 <div class="card-content">
                     <div class="inputBox">
-                        <select name="country" class="country" id="country0">
+                        {% for i in 0..7 %}
+                        <select name="country" class="country" id="country{{ i }}">
                             <option>Select a country</option>
-                        
                         </select>
-                        <select name="country" class="country" id="country1">
-                            <option>Select a country</option>
-                        
-                        </select>
-                        <select name="country" class="country" id="country2">
-                            <option>Select a country</option>
-                        
-                        </select>
-                        <select name="country" class="country" id="country3">
-                            <option>Select a country</option>
-                        
-                        </select>
-                        <select name="country" class="country" id="country4">
-                            <option>Select a country</option>
-                        
-                        </select>
-                        <select name="country" class="country" id="country5">
-                            <option>Select a country</option>
-                        
-                        </select>
-                        <select name="country" class="country" id="country6">
-                            <option>Select a country</option>
-                        
-                        </select>
-                        <select name="country" class="country" id="country7">
-                            <option>Select a country</option>
-                        
-                        </select>
+                        {% endfor %}
                     </div>
                     <div class="paramBottom">
                         <div class="sliderBox">

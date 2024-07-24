@@ -9,17 +9,11 @@
 {% block body %}
 
 {# Modale : save artwork  #}
-    <div class="modaleBackground hidden">
-    <div class="superModale hidden">
-        <div class="headerModale">
-            <p>Save ArtWork</p>
-            <button class="closeButton customButton closeModaleStyle">X</button>
-        </div>
-        <p>Do you want to save this artwork and share it in the Gallery?</p> 
-        <button id="sendDataButton" class="customButton generateButton">Save</button>
-    </div>
-    </div>
+
+{% include 'partials/_modale_saveArtwork.html.twig' %}
+
 {# End modale #}
+
 {# ---------------------- #}
 <div class="headerTitle">
     <img class="titleImg" src={{asset("/images/design/title2.png")}} alt="Title square">
@@ -63,76 +57,32 @@
                 </div>
                 <div class="separator"></div>
                 <div class="card-content">
-                    <div class="sliderBox">
-                        <p>Hue color</p>
-                        <div class="range-wrap colorSlider">
-                            <input type="range" class="hueSlider range" min="0" max="360" value="{{scene.hue}}" step="1">
-                            <output class="bubble"></output>
+                
+                    {# Parameters sliders #}
+
+                    {% set sliders = [
+                        {'label': 'Hue color', 'id': 'hueSlider', 'min': 0, 'max': 360, 'value': scene.hue, 'step': 1},
+                        {'label': 'Color range', 'id': 'colorRangeSlider', 'min': 0, 'max': 1200, 'value': scene.colorRange, 'step': 1},
+                        {'label': 'Brightness', 'id': 'brightnessSlider', 'min': 0, 'max': 100, 'value': scene.brightness, 'step': 1},
+                        {'label': 'Movement', 'id': 'moveSlider', 'min': 0, 'max': 1, 'value': scene.movement, 'step': 0.005},
+                        {'label': 'Deformation A', 'id': 'deformSlider', 'min': 0, 'max': 10, 'value': scene.deformA, 'step': 0.005},
+                        {'label': 'Deformation B', 'id': 'deformSlider2', 'min': 0, 'max': 10, 'value': scene.deformB, 'step': 0.005},
+                        {'label': 'Shape', 'id': 'shapeSlider', 'min': 1, 'max': 10, 'value': scene.shape, 'step': 0.5},
+                        {'label': 'Rings', 'id': 'ringsSlider', 'min': 0, 'max': 0.3, 'value': scene.rings, 'step': 0.0005},
+                        {'label': 'Diameter', 'id': 'diameterSlider', 'min': 0.001, 'max': 2.5, 'value': scene.diameter, 'step': 0.005},
+                        {'label': 'Zoom', 'id': 'zoomSlider', 'min': 0, 'max': 5, 'value': scene.zoom, 'step': 0.005}
+                    ] %}
+
+                    {% for slider in sliders %}
+                        <div class="sliderBox">
+                            <p>{{ slider.label }}</p>
+                            <div class="range-wrap">
+                                <input type="range" class="range {{ slider.id }}" id="{{ slider.id }}" min="{{ slider.min }}" max="{{ slider.max }}" value="{{ slider.value }}" step="{{ slider.step }}">
+                                <output class="bubble"></output>
+                            </div>
                         </div>
-                    </div>
-                    <div class="sliderBox">
-                        <p>Color range </p>
-                        <div class="range-wrap">
-                            <input type="range" class="colorRangeSlider range" min="0" max="1200" value="{{scene.colorRange}}" step="1">
-                            <output class="bubble"></output>
-                        </div>
-                    </div>
-                    <div class="sliderBox">
-                        <p>Brightness</p>
-                        <div class="range-wrap">
-                            <input type="range" class="range brightnessSlider" min="0" max="100" value="{{scene.brightness}}" step="1">
-                            <output class="bubble"></output>
-                        </div>
-                    </div>
-                    <div class="sliderBox">
-                        <p>Movement</p>
-                        <div class="range-wrap">
-                            <input type="range" class="range moveSlider" min="0" max="1" value="{{scene.movement}}" step="0.005">
-                            <output class="bubble"></output>
-                        </div>
-                    </div>
-                    <div class="sliderBox">
-                        <p>Deformation A</p>
-                        <div class="range-wrap">
-                            <input type="range" class="range deformSlider" min="0" max="10" value="{{scene.deformA}}" step="0.005">
-                            <output class="bubble"></output>
-                        </div>
-                    </div>
-                    <div class="sliderBox">
-                        <p>Deformation B</p>
-                        <div class="range-wrap">
-                            <input type="range" class="deformSlider2 range" min="0" max="10" value="{{scene.deformB}}" step="0.005">
-                            <output class="bubble"></output>
-                        </div>
-                    </div>
-                    <div class="sliderBox">
-                        <p>Shape</p>
-                        <div class="range-wrap">
-                            <input type="range" class="range shapeSlider" min="1" max="10" value="{{scene.shape}}" step="0.5">
-                            <output class="bubble"></output>
-                        </div>
-                    </div>
-                    <div class="sliderBox">
-                        <p>Rings</p>
-                        <div class="range-wrap">
-                            <input type="range" class="range ringsSlider" min="0" max="0.3" value="{{scene.rings}}" step="0.0005">
-                            <output class="bubble"></output>
-                        </div>
-                    </div>
-                    <div class="sliderBox">
-                        <p>Diameter</p>
-                        <div class="range-wrap">
-                            <input type="range" class="range diameterSlider" min="0.001" max="2.5" value="{{scene.diameter}}" step="0.005"> 
-                            <output class="bubble"></output>
-                        </div>
-                    </div>
-                    <div class="sliderBox">
-                        <p>Zoom</p>
-                        <div class="range-wrap">
-                            <input type="range" class="range zoomSlider" min="0" max="5" value="{{scene.zoom}}" step="0.005">
-                            <output class="bubble"></output>
-                        </div>
-                    </div>
+                    {% endfor %}
+
                     <div class="buttonBox">
                         <button id="resetButton" class="customButton generateButton">Reset</button>
                         {% if app.user %}
