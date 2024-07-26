@@ -31,6 +31,12 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class DataSceneController extends AbstractController
 {
+    private SerializerInterface $serializer;
+
+    public function __construct(SerializerInterface $serializer)
+    {
+        $this->serializer = $serializer;
+    }
 
     #[Route("sceneD1", name: "sceneD1")]
     public function sceneD1(): Response
@@ -41,27 +47,36 @@ class DataSceneController extends AbstractController
     }
 
     #[Route("/dataScene/newScene-D1/{id}", name: "newSceneD1", methods: ["GET"])]
-    public function newSceneD1(SceneD1Repository $repo, SerializerInterface $serializer, $id): Response
+    public function newSceneD1(
+        SceneD1Repository $repo,
+        $id
+    ): Response
     {
         $scene = $repo -> find($id); 
-
+        if (!$scene) {
+            throw $this->createNotFoundException('Scene not found.');
+        }
         // NORMALIZED + ENCODE METHOD :
         // //transform complex object in an associative array (only group sceneDataRecup to avoid infinite loop with the user entity)
         // $sceneNormalized = $normalizer->normalize($scene, null, ['groups'=> 'sceneDataRecup']);
         // // then encore into json format
         // $json = json_encode($sceneNormalized);
 
-        // SERIALIZER METHOD :
-        $json = $serializer->serialize($scene,'json',['groups'=> 'sceneDataRecup']);
-            // Décoder le JSON en tableau associatif
+        // Serializer method :
+        $json = $this->serializer->serialize($scene, 'json', ['groups' => 'sceneDataRecup']);
         $sceneData = json_decode($json, true);
+
         return $this->render('data_scene/newSceneD1.html.twig', [
             'scene' => $sceneData,
         ]);   
     }
     
     #[Route("/dataScene/sendDataD1", name: "send_data_D1", methods: ["POST"])]
-    public function sendDataToSceneD1(Request $request, EntityManagerInterface $entityManager, Security $security): Response
+    public function sendDataToSceneD1(
+        Request $request,
+        EntityManagerInterface $entityManager,
+        Security $security
+    ): Response
     {
         $randomness = $request->request->get('randomness');
         $looping = $request->request->get('looping');
@@ -128,31 +143,40 @@ class DataSceneController extends AbstractController
          // Catch the id of the scene object to make redirection in js to the "saveArtwork form" after saving data in database.
 
             $id = $data->getId();
-            return new JsonResponse(['message' => 'Data successfully saved!', 'redirectUrl' => $this->generateUrl('saveD1', ['id' => $id])]);
+            return new JsonResponse(['message' => 'Data successfully saved!', 'redirectUrl' => $this->generateUrl('saveSceneD', ['id' => $id, 'entity' => 'SceneD1'])]);
             // redirection managed in javascript
         } 
             return new Response('Error: Missing data!', Response::HTTP_BAD_REQUEST);
     }
 
-    #[Route("dataScene/saveSceneD1/{id}", name: "saveD1")]
-    public function saveArtwork(Request $request, EntityManagerInterface $entityManager, SceneD1Repository $repo, $id): Response
-    {
-        $scene = $repo->find($id);
-        $form = $this->createForm(SaveArtworkD1Type::class, $scene);
-        $form->handleRequest($request);
+    // #[Route("dataScene/saveSceneD1/{id}", name: "saveD1")]
+    // public function saveArtwork(
+    //     Request $request,
+    //     EntityManagerInterface $entityManager,
+    //     SceneD1Repository $repo,
+    //     $id
+    // ): Response
+    // {
+    //     $scene = $repo->find($id);
+    //     if (!$scene) {
+    //         throw $this->createNotFoundException('Scene not found');
+    //     }
 
-        if ($form->isSubmitted() && $form->isValid()) { 
-            $entityManager->persist($scene);
-            $entityManager->flush();
+    //     $form = $this->createForm(SaveArtworkD1Type::class, $scene);
+    //     $form->handleRequest($request);
 
-            $this->addFlash('success', 'Artwork save in the gallery'); 
-            return $this->redirectToRoute('sceneD1');
-        }
-        return $this->render('main/saveArtwork.html.twig', [
-            'form' => $form->createView(),
-            'scene' => $scene
-        ]);
-    }   
+    //     if ($form->isSubmitted() && $form->isValid()) { 
+    //         $entityManager->persist($scene);
+    //         $entityManager->flush();
+
+    //         $this->addFlash('success', 'Artwork save in the gallery'); 
+    //         return $this->redirectToRoute('sceneD1');
+    //     }
+    //     return $this->render('main/saveArtwork.html.twig', [
+    //         'form' => $form->createView(),
+    //         'scene' => $scene
+    //     ]);
+    // }   
 
     //  ---------- Scene D2 -------------
 
@@ -243,17 +267,57 @@ class DataSceneController extends AbstractController
          // Catch the id of the scene object to make redirection in js to the "saveArtwork form" after saving data in database.
 
             $id = $data->getId();
-            return new JsonResponse(['message' => 'Data successfully saved!', 'redirectUrl' => $this->generateUrl('saveD2', ['id' => $id])]);
+            return new JsonResponse(['message' => 'Data successfully saved!', 'redirectUrl' => $this->generateUrl('saveSceneD', ['id' => $id, 'entity' => 'SceneD2'])]);
             // redirection managed in javascript
         } 
             return new Response('Error: Missing data!', Response::HTTP_BAD_REQUEST);
     }
 
-    #[Route("dataScene/saveSceneD2/{id}", name: "saveD2")]
-    public function saveArtworkD2(Request $request, EntityManagerInterface $entityManager, SceneD2Repository $repo, $id): Response
+
+    #[Route("/dataScene/newScene-D2/{id}", name: "newSceneD2", methods:['GET'])]
+    public function newSceneD2(SceneD2Repository $repo, $id): Response
     {
+        $scene = $repo -> find($id); 
+        $json = $this->serializer->serialize($scene,'json',['groups'=> 'sceneDataRecup']);
+        // Décoder le JSON en tableau associatif
+        $sceneData = json_decode($json, true);
+    
+        return $this->render('data_scene/newSceneD2.html.twig', [
+            'scene' => $sceneData,
+        ]);   
+    }
+
+  //  ----------  Global functions -------------
+
+    #[Route("dataScene/saveSceneD/{entity}/{id}", name: "saveSceneD")]
+    public function saveArtworkD2(Request $request,
+        EntityManagerInterface $entityManager,
+        $id,
+        $entity
+    ): Response
+    {
+        switch ($entity) {
+            case 'SceneD1':
+                $repo = $entityManager->getRepository(SceneD1::class);
+                $formType = SaveArtworkD1Type::class;
+                $redirectRoute = 'sceneD1';
+                break;
+
+            case 'SceneD2':
+                $repo = $entityManager->getRepository(SceneD2::class);
+                $formType = SaveArtworkD2Type::class;
+                $redirectRoute = 'sceneD2';
+                break;
+
+            default:
+                throw $this->createNotFoundException('Invalid entity type.');
+        }
+
         $scene = $repo->find($id);
-        $form = $this->createForm(SaveArtworkD2Type::class, $scene);
+        if (!$scene) {
+            throw $this->createNotFoundException('Scene not found');
+        }
+        $form = $this->createForm($formType, $scene);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) { 
@@ -261,25 +325,13 @@ class DataSceneController extends AbstractController
             $entityManager->flush();
 
             $this->addFlash('success', 'Artwork save in the gallery'); 
-            return $this->redirectToRoute('sceneD2');
+            return $this->redirectToRoute($redirectRoute);
         }
         return $this->render('main/saveArtwork.html.twig', [
             'form' => $form->createView(),
             'scene' => $scene
         ]);
     }   
-    
-    #[Route("/dataScene/newScene-D2/{id}", name: "newSceneD2", methods:['GET'])]
-    public function newSceneD2(SceneD2Repository $repo, SerializerInterface $serializer, $id): Response
-    {
-        $scene = $repo -> find($id); 
-        $json = $serializer->serialize($scene,'json',['groups'=> 'sceneDataRecup']);
-        // Décoder le JSON en tableau associatif
-        $sceneData = json_decode($json, true);
-    
 
-        return $this->render('data_scene/newSceneD2.html.twig', [
-            'scene' => $sceneData,
-        ]);   
-    }
+
 }

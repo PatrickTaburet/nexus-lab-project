@@ -72,11 +72,12 @@ class ArtistController extends AbstractController
         }
         $userId = $user->getId();
         $sceneRequests = $newScene->findby(['user' => $userId]);
-        // Sorting all requests by creation date
-        usort($sceneRequests, function($a, $b) {
-            return ($b->getUpdatedAt() <=> $a->getUpdatedAt());
-        });
-
+            // Sorting all requests by creation date
+        $sceneRequests = $newScene->findBy(
+            ['user' => $userId],
+            ['updatedAt' => 'DESC']
+        );
+    
         return $this->render('artist/myScenes.html.twig', [
            'sceneRequests' => $sceneRequests,
         ]);

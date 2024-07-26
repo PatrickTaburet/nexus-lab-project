@@ -65,7 +65,12 @@ class AdminController extends AbstractController
     }
 
     #[Route("/users/edit/{id}", name: "edit_user", methods: ["GET", "POST"])]
-    public function editUser(Request $request, UserRepository $repo, EntityManagerInterface $entityManager, $id) : Response
+    public function editUser(
+        Request $request,
+        UserRepository $repo,
+        EntityManagerInterface $entityManager,
+        $id
+    ) : Response
     {       
             $user = $repo->find($id);
             $oldAvatar = $user->getImageName();
@@ -113,7 +118,11 @@ class AdminController extends AbstractController
     } 
 
     #[Route("/users/delete/{id}", name: "delete_user", methods: ["GET"])]
-    public function deleteUser(UserRepository $repo, EntityManagerInterface $entityManager, $id): Response
+    public function deleteUser(
+        UserRepository $repo,
+        EntityManagerInterface $entityManager,
+        $id
+    ): Response
     {
         $user = $repo->find($id);
         
@@ -278,7 +287,8 @@ class AdminController extends AbstractController
     }
 
     #[Route("/delete/request/{entity}/{id}", name: "delete_request", methods: ["GET", "POST"])]
-    public function deleteRequest(EntityManagerInterface $entityManager,
+    public function deleteRequest(
+        EntityManagerInterface $entityManager,
         ArtistRoleRepository $artistRoleRepo,
         AddSceneRepository $addSceneRepo,
         $id,
