@@ -35,18 +35,12 @@ class AdminController extends AbstractController
 {
 
     #[Route("/dashboard", name: "dashboard")]
-    public function dashboard(ArtistRoleRepository $role, AddSceneRepository $newScene): Response
+    public function dashboard(ArtistRoleRepository $roleRepo, AddSceneRepository $newSceneRepo): Response
     {
-        $roleRequests = $role->findAll();
-        $sceneRequests = $newScene->findAll();
-
-        // Sorting all requests by creation date
-        usort($roleRequests, function($a, $b) {
-            return ($b->getCreatedAt() <=> $a->getCreatedAt());
-        });
-        usort($sceneRequests, function($a, $b) {
-            return ($b->getUpdatedAt() <=> $a->getUpdatedAt());
-        });
+       
+         // Fetch and sort scene requests directly in the query
+        $roleRequests = $roleRepo->findBy([], ['createdAt' => 'DESC']);
+        $sceneRequests = $newSceneRepo->findBy([], ['updatedAt' => 'DESC']);
 
         return $this->render('admin/dashboard.html.twig', [
            'roleRequests' => $roleRequests,
@@ -59,7 +53,6 @@ class AdminController extends AbstractController
     #[Route("/users", name: "users")]
     public function usersList(UserRepository $users, PaginatorInterface $paginator, Request $request): Response
     {
-        // IMPLEMENTER LA LOGIQUE DE TRI (en fonction des like) ET DE PAGINATION
         $data = $users->findAll();
         $allUsers = $paginator->paginate(
             $data,
@@ -147,7 +140,14 @@ class AdminController extends AbstractController
     // Gallery manager dashboard
     
     #[Route("/gallery", name: "gallery")]
-    public function gallery(Scene1Repository $repoG1, Scene2Repository $repoG2, SceneD1Repository $repoD1, SceneD2Repository $repoD2, PaginatorInterface $paginator, Request $request): Response
+    public function gallery(
+        Scene1Repository $repoG1,
+        Scene2Repository $repoG2,
+        SceneD1Repository $repoD1,
+        SceneD2Repository $repoD2,
+        PaginatorInterface $paginator,
+        Request $request
+    ): Response
     {
         $scenes = $repoG1 -> findAll(); 
         $scenes2= $repoD1 -> findAll();
@@ -168,26 +168,33 @@ class AdminController extends AbstractController
     }
     
     #[Route("/gallery/delete/{id}/{entity}", name: "delete_artwork", methods: ["GET", "POST"])]
-    public function deleteArtwork(Scene1Repository $repoG1, Scene2Repository $repoG2, SceneD1Repository $repoD1, SceneD2Repository $repoD2,EntityManagerInterface $entityManager, $id, $entity): Response
+    public function deleteArtwork(
+        Scene1Repository $repoG1,
+        Scene2Repository $repoG2,
+        SceneD1Repository $repoD1,
+        SceneD2Repository $repoD2,
+        EntityManagerInterface $entityManager,
+        $id,
+        $entity
+    ): Response
     {
-        if($entity === 'Scene1'){
-            $artwork = $repoG1-> find($id);
-            $entityManager->remove($artwork);
-           
-        } elseif ($entity === 'SceneD1'){
-            $artwork = $repoD1->find($id);
-            $entityManager->remove($artwork);
-        } elseif ($entity === 'SceneD2'){
-            $artwork = $repoD2->find($id);
-            $entityManager->remove($artwork);
-        } elseif ($entity === 'Scene2'){
-            $artwork = $repoG2->find($id);
-            $entityManager->remove($artwork);
-        } else { 
+        $repositoryMap = [
+            'Scene1' => $repoG1,
+            'Scene2' => $repoG2,
+            'SceneD1' => $repoD1,
+            'SceneD2' => $repoD2,
+        ];
+        if (!array_key_exists($entity, $repositoryMap)) {
             throw new NotFoundHttpException('Entity not found');
         }
-        $artworkTitle = $artwork->getTitle();
 
+        $artwork = $repositoryMap[$entity]->find($id);
+        if ($artwork === null) {
+            throw new NotFoundHttpException('Artwork not found');
+        }
+        
+        $artworkTitle = $artwork->getTitle();
+        $entityManager->remove($artwork);
         $entityManager->flush();
 
         $this->addFlash('success', 'Artwork '.$artworkTitle.' delete succeed');
@@ -195,63 +202,74 @@ class AdminController extends AbstractController
     }
 
     #[Route("/gallery/edit/{id}/{entity}", name: "edit_artwork", methods: ["GET", "POST"])]
-    public function editArtwork(Request $request, Scene1Repository $repoG1, Scene2Repository $repoG2, SceneD1Repository $repoD1, SceneD2Repository $repoD2, EntityManagerInterface $entityManager, $id, $entity) : Response
+    public function editArtwork(
+        Request $request,
+        Scene1Repository $repoG1,
+        Scene2Repository $repoG2,
+        SceneD1Repository $repoD1,
+        SceneD2Repository $repoD2,
+        EntityManagerInterface $entityManager,
+        $id,
+        $entity
+    ) : Response
     {       
-        
-        if($entity === 'Scene1'){
-            $artwork = $repoG1-> find($id);
-            $userId = $artwork->getUser()->getId();   
-            $form = $this->createForm(SaveArtworkG1Type::class, $artwork);
-        } elseif ($entity === 'SceneD1'){
-            $artwork = $repoD1->find($id);
-            $userId = $artwork->getUser()->getId();   
-            $form = $this->createForm(SaveArtworkD1Type::class, $artwork);
-        } elseif ($entity === 'SceneD2'){
-            $artwork = $repoD2->find($id);
-            $userId = $artwork->getUser()->getId();   
-            $form = $this->createForm(SaveArtworkD2Type::class, $artwork);
-        } elseif ($entity === 'Scene2'){
-            $artwork = $repoG2->find($id);
-            $userId = $artwork->getUser()->getId();   
-            $form = $this->createForm(SaveArtworkG2Type::class, $artwork);
-
-        } else { 
+        $entityMap = [
+            'Scene1' => [ $repoG1, SaveArtworkG1Type::class ],
+            'Scene2' => [ $repoG2, SaveArtworkG2Type::class ],
+            'SceneD1' => [ $repoD1, SaveArtworkD1Type::class ],
+            'SceneD2' => [ $repoD2, SaveArtworkD2Type::class ],
+        ];
+        if (!array_key_exists($entity, $entityMap)) {
             throw new NotFoundHttpException('Entity not found');
         }
-            
-            $form -> handleRequest($request);
+        [$repository, $formType] = $entityMap[$entity];
 
-            if ($form->isSubmitted() && $form->isValid()) {
+        $artwork = $repository->find($id);
+        if ($artwork === null) {
+            throw new NotFoundHttpException('Artwork not found');
+        }
+        $form = $this->createForm($formType, $artwork);
+        $form -> handleRequest($request);
 
-                $entityManager -> persist($artwork);
-                $entityManager -> flush();
-                $artworkTitle = $artwork->getTitle();
-                $this ->addFlash('success', 'Artwork '.$artworkTitle.' edit succeed');
+        if ($form->isSubmitted() && $form->isValid()) {
 
-                return $this->redirectToRoute('admin_gallery');
-            }
+            $entityManager -> persist($artwork);
+            $entityManager -> flush();
+            $artworkTitle = $artwork->getTitle();
+            $this ->addFlash('success', 'Artwork '.$artworkTitle.' edit succeed');
 
-            return $this->render('user/editArtwork.html.twig', [
-                'artwork' => $artwork,
-                'form' => $form->createView(),
-                'userId' => $userId
-            ]);
+            return $this->redirectToRoute('admin_gallery');
+        }
+
+        return $this->render('user/editArtwork.html.twig', [
+            'artwork' => $artwork,
+            'form' => $form->createView(),
+            'userId' => $artwork->getUser()->getId()
+        ]);
     } 
 
     #[Route("/request/{entity}/{id}", name: "show_request", methods: ["GET", "POST"])]
-    public function showRequest(ArtistRoleRepository $artistReq, AddSceneRepository $sceneReq, $id, $entity): Response
+    public function showRequest(
+        ArtistRoleRepository $artistRoleRepo,
+        AddSceneRepository $addSceneRepo,
+        $id,
+        $entity
+    ): Response
     {
-        $request = null;
-        $type = '';
-        if($entity === 'ArtistRole'){
-            $request = $artistReq->find($id);
-            $type = $request->getType();
+        $repositoryMap = [
+            'ArtistRole' => $artistRoleRepo,
+            'AddScene' => $addSceneRepo,
+        ];
+
+        if (!array_key_exists($entity, $repositoryMap)) {
+            throw new NotFoundHttpException('Entity not found');
         }
-        if($entity === 'AddScene'){
-            $request = $sceneReq->find($id);
-            $type = $request->getType();
+        $request = $repositoryMap[$entity]->find($id);
+
+        if ($request === null) {
+            throw new NotFoundHttpException('Request not found');
         }
-       
+        $type = $request->getType();       
 
         return $this->render('admin/request.html.twig', [
            'request' => $request,
@@ -260,18 +278,27 @@ class AdminController extends AbstractController
     }
 
     #[Route("/delete/request/{entity}/{id}", name: "delete_request", methods: ["GET", "POST"])]
-    public function deleteRequest(EntityManagerInterface $entityManager, ArtistRoleRepository $artistReq, AddSceneRepository $sceneReq, $id, $entity): Response
+    public function deleteRequest(EntityManagerInterface $entityManager,
+        ArtistRoleRepository $artistRoleRepo,
+        AddSceneRepository $addSceneRepo,
+        $id,
+        $entity
+    ): Response
     {
-        if($entity === 'ArtistRole'){
-            $request = $artistReq->find($id);
-            $entityManager->remove($request);
+        $repositoryMap = [
+            'ArtistRole' => $artistRoleRepo,
+            'AddScene' => $addSceneRepo,
+        ];
+
+        if (!array_key_exists($entity, $repositoryMap)) {
+            throw new NotFoundHttpException('Entity not found');
         }
-        if($entity === 'AddScene'){
-            $request = $sceneReq->find($id);
-            $entityManager->remove($request);
-        }
+        $request = $repositoryMap[$entity]->find($id);
+        $entityManager->remove($request);
         $entityManager->flush();
+        
         $this->addFlash('success', 'Request successfully deleted');
+
         return $this->redirectToRoute('admin_dashboard');
     }
 }

@@ -139,25 +139,23 @@ class UserController extends AbstractController
 
 
     #[Route("/myArtworks/{id}", name: "myArtworks", methods: ["GET", "POST"])]
-    public function myArtworks( Scene1Repository $repoG1,  Scene2Repository $repoG2,SceneD1Repository $repoD1, SceneD2Repository $repoD2, $id) : Response
+    public function myArtworks(
+        Scene1Repository $repoG1,
+        Scene2Repository $repoG2,
+        SceneD1Repository $repoD1,
+        SceneD2Repository $repoD2,
+        $id,
+    ) : Response
     {       
-
-        $sceneG1 = $repoG1->findAll(); 
-        $sceneG2 = $repoG2->findAll(); 
-
+        // sorting generatives artworks by creaton date in the request
+        $sceneG1 = $repoG1->findBy(['user' => $id], ['updatedAt' => 'DESC']);
+        $sceneG2 = $repoG2->findBy(['user' => $id], ['updatedAt' => 'DESC']);
         $allScenesG = array_merge($sceneG1, $sceneG2);
-        // sorting generatives artworks by creaton date
-        usort($allScenesG, function($a, $b) {
-            return ($b->getUpdatedAt() <=> $a->getUpdatedAt());
-        });
 
-        $sceneD1 = $repoD1->findAll();
-        $sceneD2 = $repoD2->findAll();
+        $sceneD1 = $repoD1->findBy(['user' => $id], ['updatedAt' => 'DESC']);
+        $sceneD2 = $repoD2->findBy(['user' => $id], ['updatedAt' => 'DESC']);
         $allScenesD = array_merge($sceneD1, $sceneD2);
 
-        usort($allScenesD, function($a, $b) {
-            return ($b->getUpdatedAt() <=> $a->getUpdatedAt());
-        });
         $data = [
             'scenesG' =>  $allScenesG,
             'sceneD' => $allScenesD,
@@ -169,7 +167,16 @@ class UserController extends AbstractController
     } 
 
     #[Route("/myArtworks/delete/{id}/{entity}", name: "deleteArtwork", methods: ["GET", "POST"])]
-    public function Delete(EntityManagerInterface $entityManager, Scene1Repository $repoG1, Scene2Repository $repoG2, SceneD1Repository $repoD1, SceneD2Repository $repoD2, $id, $entity, Request $request): Response
+    public function Delete(
+        EntityManagerInterface $entityManager,
+        Scene1Repository $repoG1,
+        Scene2Repository $repoG2,
+        SceneD1Repository $repoD1,
+        SceneD2Repository $repoD2,
+        $id,
+        $entity,
+        Request $request
+    ): Response
     {
 
         $currentUser = $this->getUser();
