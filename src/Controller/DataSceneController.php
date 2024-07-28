@@ -290,7 +290,7 @@ class DataSceneController extends AbstractController
   //  ----------  Global functions -------------
 
     #[Route("dataScene/saveSceneD/{entity}/{id}", name: "saveSceneD")]
-    public function saveArtworkD2(Request $request,
+    public function saveArtworkD(Request $request,
         EntityManagerInterface $entityManager,
         $id,
         $entity

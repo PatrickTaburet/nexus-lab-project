@@ -53,7 +53,7 @@ class GenerativeSceneController extends AbstractController
         // // then encore into json format
         // $json = json_encode($sceneNormalized);
 
-        // SERIALIZER METHOD :
+        // Serializer method :
         $json = $serializer->serialize($scene,'json',['groups'=> 'sceneDataRecup']); 
             // Décoder le JSON en tableau associatif
         $sceneData = json_decode($json, true);
@@ -131,33 +131,12 @@ class GenerativeSceneController extends AbstractController
 
         // Catch the id of the scene object to make redirection in js to the "saveArtwork form" after saving data in database.
             $id = $data->getId();
-            return new JsonResponse(['message' => 'Data successfully saved!', 'redirectUrl' => $this->generateUrl('saveG1', ['id' => $id])]);
+            return new JsonResponse(['message' => 'Data successfully saved!', 'redirectUrl' => $this->generateUrl('saveSceneG', ['id' => $id, 'entity' => 'Scene1'])]);
 
         // redirection managed in javascript
         } 
             return new Response('Error: Missing data!', Response::HTTP_BAD_REQUEST);
-        
     }
-
-    #[Route("generative/saveSceneG1/{id}", name: "saveG1")]
-    public function saveArtwork(Request $request, EntityManagerInterface $entityManager, Scene1Repository $repo, $id): Response
-    {
-        $scene = $repo->find($id);
-        $form = $this->createForm(SaveArtworkG1Type::class, $scene);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) { 
-            $entityManager->persist($scene);
-            $entityManager->flush();
-
-            $this->addFlash('success', 'Artwork save in the gallery'); 
-            return $this->redirectToRoute('sceneG1');
-        }
-        return $this->render('main/saveArtwork.html.twig', [
-            'form' => $form->createView(),
-            'scene' => $scene
-        ]);
-    }   
 
 // ----------- SCENE G2 : Noise Orbit -----------
 
@@ -239,7 +218,7 @@ class GenerativeSceneController extends AbstractController
 
         // Catch the id of the scene object to make redirection in js to the "saveArtwork form" after saving data in database.
             $id = $data->getId();
-            return new JsonResponse(['message' => 'Data successfully saved!', 'redirectUrl' => $this->generateUrl('saveG2', ['id' => $id])]);
+            return new JsonResponse(['message' => 'Data successfully saved!', 'redirectUrl' => $this->generateUrl('saveSceneG', ['id' => $id, 'entity' => 'Scene2'])]);
 
         // redirection managed in javascript
         } 
@@ -247,7 +226,11 @@ class GenerativeSceneController extends AbstractController
     }
 
     #[Route("/generative/newScene-G2/{id}", name: "newSceneG2", methods: ["GET"])]
-    public function newSceneG2(Scene2Repository $repo, SerializerInterface $serializer, $id): Response
+    public function newSceneG2(
+        Scene2Repository $repo,
+        SerializerInterface $serializer,
+        $id
+    ): Response
     {
         $scene = $repo -> find($id); 
 
@@ -261,11 +244,37 @@ class GenerativeSceneController extends AbstractController
         ]);   
     }
 
-    #[Route("generative/saveSceneG2/{id}", name: "saveG2")]
-    public function saveArtworkG2(Request $request, EntityManagerInterface $entityManager, Scene2Repository $repo, $id): Response
+     //  ----------  Global functions -------------
+
+     #[Route("dataScene/saveSceneG/{entity}/{id}", name: "saveSceneG")]
+     public function saveArtworkG(Request $request,
+         EntityManagerInterface $entityManager,
+         $id,
+         $entity
+    ): Response
     {
+        switch ($entity) {
+            case 'Scene1':
+                $repo = $entityManager->getRepository(Scene1::class);
+                $formType = SaveArtworkG1Type::class;
+                $redirectRoute = 'sceneG1';
+                break;
+
+            case 'Scene2':
+                $repo = $entityManager->getRepository(Scene2::class);
+                $formType = SaveArtworkG2Type::class;
+                $redirectRoute = 'sceneG2';
+                break;
+
+            default:
+                throw $this->createNotFoundException('Invalid entity type.');
+        }
+
         $scene = $repo->find($id);
-        $form = $this->createForm(SaveArtworkG2Type::class, $scene);
+        if (!$scene) {
+            throw $this->createNotFoundException('Scene not found');
+        }
+        $form = $this->createForm($formType, $scene);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) { 
@@ -273,12 +282,11 @@ class GenerativeSceneController extends AbstractController
             $entityManager->flush();
 
             $this->addFlash('success', 'Artwork save in the gallery'); 
-            return $this->redirectToRoute('sceneG2');
+            return $this->redirectToRoute($redirectRoute);
         }
         return $this->render('main/saveArtwork.html.twig', [
             'form' => $form->createView(),
             'scene' => $scene
         ]);
     }   
-
 }
