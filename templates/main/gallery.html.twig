@@ -84,9 +84,9 @@
                             </div>
                         </div>
                         <div class="buttonBox">
-                        {# Scene G1 #}
-                            {% if entityName == "Scene1" %}
-                            <a href="{{ path('newSceneG1', {'id': scene.id})}}">
+                            {# Scenes Generative-art #}
+                            {% if entityName == "Scene1" or entityName == "Scene2" %}
+                            <a href="{{ path('newSceneG', {'id': scene.id, 'entity': entityName})}}">
                                 <div class="slideButton">
                                     <div class="slideButtonIcon">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle></svg>
@@ -96,9 +96,9 @@
                                     </div>
                                 </div>
                             </a>
-                            {# Scene G2 #}
-                            {% elseif entityName == "Scene2" %}
-                            <a href="{{ path('newSceneG2', {'id': scene.id})}}">
+                            {# Scenes Data-art #}
+                           {% elseif entityName == "SceneD1" or entityName == "SceneD2" %}
+                            <a href="{{ path('newSceneD', {'id': scene.id, 'entity': entityName})}}">
                                 <div class="slideButton">
                                     <div class="slideButtonIcon">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle></svg>
@@ -108,30 +108,7 @@
                                     </div>
                                 </div>
                             </a>
-                            {# Scene D1 #}
-                            {% elseif entityName == "SceneD1" %}
-                            <a href="{{ path('newSceneD1', {'id': scene.id})}}">
-                                <div class="slideButton">
-                                    <div class="slideButtonIcon">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle></svg>
-                                    </div>
-                                    <div class="slideButtonLabel">
-                                        Open scene with last parameters
-                                    </div>
-                                </div>
-                            </a>
-                            {# Scene D2 #}
-                            {% elseif entityName == "SceneD2" %}
-                            <a href="{{ path('newSceneD2', {'id': scene.id})}}">
-                                <div class="slideButton">
-                                    <div class="slideButtonIcon">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle></svg>
-                                    </div>
-                                    <div class="slideButtonLabel">
-                                        Open scene with last parameters
-                                    </div>
-                                </div>
-                            </a>
+                           
                             {% endif %}
                         </div>
                     </div>

@@ -24,13 +24,10 @@ use Symfony\Component\HttpFoundation\{
 };
 use Symfony\Component\{
     Routing\Annotation\Route,
-    Serializer\SerializerInterface,
     Serializer\Normalizer\NormalizerInterface
 };
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
-
-class GenerativeSceneController extends AbstractController
+class GenerativeSceneController extends BaseSceneController
 {
 
 // ----------- SCENE G1 : Random Line Walkers -----------
@@ -41,27 +38,6 @@ class GenerativeSceneController extends AbstractController
         return $this->render('generative_scene/sceneG1.html.twig', [
         ]);
     }   
-
-    #[Route("/generative/newScene-G1/{id}", name: "newSceneG1", methods: ["GET"])]
-    public function newSceneG1(Scene1Repository $repo, SerializerInterface $serializer, $id): Response
-    {
-        $scene = $repo -> find($id); 
-
-        // NORMALIZED + ENCODE METHOD :
-        // //transform complex object in an associative array (only group sceneDataRecup to avoid infinite loop with the user entity)
-        // $sceneNormalized = $normalizer->normalize($scene, null, ['groups'=> 'sceneDataRecup']);
-        // // then encore into json format
-        // $json = json_encode($sceneNormalized);
-
-        // Serializer method :
-        $json = $serializer->serialize($scene,'json',['groups'=> 'sceneDataRecup']); 
-            // Décoder le JSON en tableau associatif
-        $sceneData = json_decode($json, true);
-
-        return $this->render('generative_scene/newSceneG1.html.twig', [
-            'scene' => $sceneData,
-        ]);   
-    }
 
     #[Route("/generative/sendDataG1", name: "send_data_G1", methods: ["POST"])]
     public function sendData(Request $request, EntityManagerInterface $entityManager): Response
@@ -225,29 +201,10 @@ class GenerativeSceneController extends AbstractController
             return new Response('Error: Missing data!', Response::HTTP_BAD_REQUEST);   
     }
 
-    #[Route("/generative/newScene-G2/{id}", name: "newSceneG2", methods: ["GET"])]
-    public function newSceneG2(
-        Scene2Repository $repo,
-        SerializerInterface $serializer,
-        $id
-    ): Response
-    {
-        $scene = $repo -> find($id); 
-
-        // SERIALIZER METHOD :
-        $json = $serializer->serialize($scene,'json',['groups'=> 'sceneDataRecup']); 
-            // Décoder le JSON en tableau associatif
-        $sceneData = json_decode($json, true);
-
-        return $this->render('generative_scene/newSceneG2.html.twig', [
-            'scene' => $sceneData,
-        ]);   
-    }
-
      //  ----------  Global functions -------------
 
-     #[Route("dataScene/saveSceneG/{entity}/{id}", name: "saveSceneG")]
-     public function saveArtworkG(Request $request,
+    #[Route("dataScene/saveSceneG/{entity}/{id}", name: "saveSceneG")]
+    public function saveArtworkG(Request $request,
          EntityManagerInterface $entityManager,
          $id,
          $entity
@@ -288,5 +245,31 @@ class GenerativeSceneController extends AbstractController
             'form' => $form->createView(),
             'scene' => $scene
         ]);
-    }   
+    }  
+
+    #[Route("/generative/newScene/{entity}/{id}", name: "newSceneG", methods: ["GET"])]
+    public function getSceneData(
+        Scene1Repository $RepoG1,
+        Scene2Repository $RepoG2,
+        string $entity,
+        int $id
+    ): Response
+    {
+        if ($entity === 'Scene1') {
+            $scene = $RepoG1->find($id);
+            $return = 'newSceneG1';
+        } elseif ($entity === 'Scene2') {
+            $scene = $RepoG2->find($id);
+            $return = 'newSceneG2';
+        } else {
+            throw new \InvalidArgumentException("Invalid scene name : $entity");
+        }
+
+        $json = $this->serializer->serialize($scene, 'json', ['groups' => 'sceneDataRecup']);
+        $sceneData = json_decode($json, true);
+        return $this->render("generative_scene/$return.html.twig", [
+            'scene' => $sceneData,
+        ]);   
+    } 
 }
+
