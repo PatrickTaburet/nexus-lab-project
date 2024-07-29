@@ -147,15 +147,20 @@ class UserController extends AbstractController
         $id,
     ) : Response
     {       
-        // sorting generatives artworks by creaton date in the request
-        $sceneG1 = $repoG1->findBy(['user' => $id], ['updatedAt' => 'DESC']);
-        $sceneG2 = $repoG2->findBy(['user' => $id], ['updatedAt' => 'DESC']);
+       
+        $sceneG1 = $repoG1->findBy(['user' => $id]);
+        $sceneG2 = $repoG2->findBy(['user' => $id]);
+        $sceneD1 = $repoD1->findBy(['user' => $id]);
+        $sceneD2 = $repoD2->findBy(['user' => $id]);
         $allScenesG = array_merge($sceneG1, $sceneG2);
-
-        $sceneD1 = $repoD1->findBy(['user' => $id], ['updatedAt' => 'DESC']);
-        $sceneD2 = $repoD2->findBy(['user' => $id], ['updatedAt' => 'DESC']);
         $allScenesD = array_merge($sceneD1, $sceneD2);
-
+        usort($allScenesG, function($a, $b) {
+            return $b->getUpdatedAt() <=> $a->getUpdatedAt();
+        });
+    
+        usort($allScenesD, function($a, $b) {
+            return $b->getUpdatedAt() <=> $a->getUpdatedAt();
+        });
         $data = [
             'scenesG' =>  $allScenesG,
             'sceneD' => $allScenesD,

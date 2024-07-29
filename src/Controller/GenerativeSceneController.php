@@ -15,7 +15,6 @@ use App\Repository\{
     Scene1Repository,
     Scene2Repository
 };
-use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\{
     Request,
     Response,
@@ -40,7 +39,7 @@ class GenerativeSceneController extends BaseSceneController
     }   
 
     #[Route("/generative/sendDataG1", name: "send_data_G1", methods: ["POST"])]
-    public function sendData(Request $request, EntityManagerInterface $entityManager): Response
+    public function sendData(Request $request): Response
     {
         
         $color = $request->request->get('color');
@@ -72,7 +71,7 @@ class GenerativeSceneController extends BaseSceneController
         // Créer un nouvel objet UploadedFile
         $imageFile = new UploadedFile($tempFilePath,  $imageName, 'image/png', null, true);
 
-        $user = $entityManager
+        $user = $this->entityManager
         ->getRepository(User::class)
         ->find($userId);
         
@@ -99,15 +98,15 @@ class GenerativeSceneController extends BaseSceneController
         // Link image to the upload file
             $data->setImageFile($imageFile);
 
-            $entityManager->persist($data);
-            $entityManager->flush();
+            $this->entityManager->persist($data);
+            $this->entityManager->flush();
 
         // Delete the temporary file
             fclose($tempFile);
 
         // Catch the id of the scene object to make redirection in js to the "saveArtwork form" after saving data in database.
             $id = $data->getId();
-            return new JsonResponse(['message' => 'Data successfully saved!', 'redirectUrl' => $this->generateUrl('saveSceneG', ['id' => $id, 'entity' => 'Scene1'])]);
+            return new JsonResponse(['message' => 'Data successfully saved!', 'redirectUrl' => $this->generateUrl('saveScene', ['id' => $id, 'entity' => 'Scene1'])]);
 
         // redirection managed in javascript
         } 
@@ -125,7 +124,7 @@ class GenerativeSceneController extends BaseSceneController
     }   
 
     #[Route("/generative/sendDataG2", name: "send_data_G2", methods: ["POST"])]
-    public function sendDataToSceneG2(Request $request, EntityManagerInterface $entityManager): Response
+    public function sendDataToSceneG2(Request $request): Response
     {
         $hue = $request->request->get('hue');
         $colorRange = $request->request->get('colorRange');
@@ -156,7 +155,7 @@ class GenerativeSceneController extends BaseSceneController
         // Créer un nouvel objet UploadedFile
         $imageFile = new UploadedFile($tempFilePath,  $imageName, 'image/png', null, true);
 
-        $user = $entityManager
+        $user = $this->entityManager
         ->getRepository(User::class)
         ->find($userId);
         
@@ -186,90 +185,19 @@ class GenerativeSceneController extends BaseSceneController
             $data ->setUser($user);
             $data->setImageFile($imageFile);
 
-            $entityManager->persist($data);
-            $entityManager->flush();
+            $this->entityManager->persist($data);
+            $this->entityManager->flush();
 
         // Delete the temporary file
             fclose($tempFile);
 
         // Catch the id of the scene object to make redirection in js to the "saveArtwork form" after saving data in database.
             $id = $data->getId();
-            return new JsonResponse(['message' => 'Data successfully saved!', 'redirectUrl' => $this->generateUrl('saveSceneG', ['id' => $id, 'entity' => 'Scene2'])]);
+            return new JsonResponse(['message' => 'Data successfully saved!', 'redirectUrl' => $this->generateUrl('saveScene', ['id' => $id, 'entity' => 'Scene2'])]);
 
         // redirection managed in javascript
         } 
             return new Response('Error: Missing data!', Response::HTTP_BAD_REQUEST);   
     }
-
-     //  ----------  Global functions -------------
-
-    #[Route("dataScene/saveSceneG/{entity}/{id}", name: "saveSceneG")]
-    public function saveArtworkG(Request $request,
-         EntityManagerInterface $entityManager,
-         $id,
-         $entity
-    ): Response
-    {
-        switch ($entity) {
-            case 'Scene1':
-                $repo = $entityManager->getRepository(Scene1::class);
-                $formType = SaveArtworkG1Type::class;
-                $redirectRoute = 'sceneG1';
-                break;
-
-            case 'Scene2':
-                $repo = $entityManager->getRepository(Scene2::class);
-                $formType = SaveArtworkG2Type::class;
-                $redirectRoute = 'sceneG2';
-                break;
-
-            default:
-                throw $this->createNotFoundException('Invalid entity type.');
-        }
-
-        $scene = $repo->find($id);
-        if (!$scene) {
-            throw $this->createNotFoundException('Scene not found');
-        }
-        $form = $this->createForm($formType, $scene);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) { 
-            $entityManager->persist($scene);
-            $entityManager->flush();
-
-            $this->addFlash('success', 'Artwork save in the gallery'); 
-            return $this->redirectToRoute($redirectRoute);
-        }
-        return $this->render('main/saveArtwork.html.twig', [
-            'form' => $form->createView(),
-            'scene' => $scene
-        ]);
-    }  
-
-    #[Route("/generative/newScene/{entity}/{id}", name: "newSceneG", methods: ["GET"])]
-    public function getSceneData(
-        Scene1Repository $RepoG1,
-        Scene2Repository $RepoG2,
-        string $entity,
-        int $id
-    ): Response
-    {
-        if ($entity === 'Scene1') {
-            $scene = $RepoG1->find($id);
-            $return = 'newSceneG1';
-        } elseif ($entity === 'Scene2') {
-            $scene = $RepoG2->find($id);
-            $return = 'newSceneG2';
-        } else {
-            throw new \InvalidArgumentException("Invalid scene name : $entity");
-        }
-
-        $json = $this->serializer->serialize($scene, 'json', ['groups' => 'sceneDataRecup']);
-        $sceneData = json_decode($json, true);
-        return $this->render("generative_scene/$return.html.twig", [
-            'scene' => $sceneData,
-        ]);   
-    } 
 }
 

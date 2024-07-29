@@ -23,10 +23,7 @@ use Symfony\Component\HttpFoundation\{
 use Symfony\Component\{
     Routing\Annotation\Route,
     Serializer\SerializerInterface,
-    Security\Core\Security
 };
-use Doctrine\ORM\EntityManagerInterface;
-
 
 class DataSceneController extends BaseSceneController
 {
@@ -43,8 +40,6 @@ class DataSceneController extends BaseSceneController
     #[Route("/dataScene/sendDataD1", name: "send_data_D1", methods: ["POST"])]
     public function sendDataToSceneD1(
         Request $request,
-        EntityManagerInterface $entityManager,
-        Security $security
     ): Response
     {
         $randomness = $request->request->get('randomness');
@@ -64,7 +59,6 @@ class DataSceneController extends BaseSceneController
         
         // Decode the base64 string and save it as a .png file
         $imageData = base64_decode(preg_replace('#^data:image/\w+;base64,#i', '', $imgFile));
-
     
         // Créer un fichier temporaire à partir des données image
         $tempFile = tmpfile();
@@ -79,7 +73,7 @@ class DataSceneController extends BaseSceneController
         $imageFile = new UploadedFile($tempFilePath,  $imageName, 'image/png', null, true);
 
         // Get the logged user
-        $user = $security->getUser();
+        $user = $this->security->getUser();
         
         if ($randomness !== null &&
             $looping !== null &&
@@ -103,8 +97,8 @@ class DataSceneController extends BaseSceneController
          // Link image to the upload file
             $data->setImageFile($imageFile);
 
-            $entityManager->persist($data);
-            $entityManager->flush();
+            $this->entityManager->persist($data);
+            $this->entityManager->flush();
 
          // Delete the temporary file
             fclose($tempFile);
@@ -112,7 +106,7 @@ class DataSceneController extends BaseSceneController
          // Catch the id of the scene object to make redirection in js to the "saveArtwork form" after saving data in database.
 
             $id = $data->getId();
-            return new JsonResponse(['message' => 'Data successfully saved!', 'redirectUrl' => $this->generateUrl('saveSceneD', ['id' => $id, 'entity' => 'SceneD1'])]);
+            return new JsonResponse(['message' => 'Data successfully saved!', 'redirectUrl' => $this->generateUrl('saveScene', ['id' => $id, 'entity' => 'SceneD1'])]);
             // redirection managed in javascript
         } 
             return new Response('Error: Missing data!', Response::HTTP_BAD_REQUEST);
@@ -129,7 +123,7 @@ class DataSceneController extends BaseSceneController
     }
 
     #[Route("/dataScene/sendDataD2", name: "send_data_D2", methods: ["POST"])]
-    public function sendDataToSceneD2(Request $request, EntityManagerInterface $entityManager, Security $security): Response
+    public function sendDataToSceneD2(Request $request): Response
     {
         $divFactor = $request->request->get('divFactor');
         $copy = $request->request->get('copy');
@@ -164,7 +158,7 @@ class DataSceneController extends BaseSceneController
         $imageFile = new UploadedFile($tempFilePath,  $imageName, 'image/png', null, true);
 
         // Get the logged user
-        $user = $security->getUser();
+        $user = $this->security->getUser();
         
         if ($divFactor !== null &&
             $copy !== null &&
@@ -198,8 +192,8 @@ class DataSceneController extends BaseSceneController
          // Link image to the upload file
             $data->setImageFile($imageFile);
 
-            $entityManager->persist($data);
-            $entityManager->flush();
+            $this->entityManager->persist($data);
+            $this->entityManager->flush();
 
          // Delete the temporary file
             fclose($tempFile);
@@ -207,82 +201,9 @@ class DataSceneController extends BaseSceneController
          // Catch the id of the scene object to make redirection in js to the "saveArtwork form" after saving data in database.
 
             $id = $data->getId();
-            return new JsonResponse(['message' => 'Data successfully saved!', 'redirectUrl' => $this->generateUrl('saveSceneD', ['id' => $id, 'entity' => 'SceneD2'])]);
+            return new JsonResponse(['message' => 'Data successfully saved!', 'redirectUrl' => $this->generateUrl('saveScene', ['id' => $id, 'entity' => 'SceneD2'])]);
             // redirection managed in javascript
         } 
             return new Response('Error: Missing data!', Response::HTTP_BAD_REQUEST);
     }
-
-
-  //  ----------  Global functions -------------
-
-    #[Route("dataScene/saveSceneD/{entity}/{id}", name: "saveSceneD")]
-    public function saveArtworkD(Request $request,
-        EntityManagerInterface $entityManager,
-        $id,
-        $entity
-    ): Response
-    {
-        switch ($entity) {
-            case 'SceneD1':
-                $repo = $entityManager->getRepository(SceneD1::class);
-                $formType = SaveArtworkD1Type::class;
-                $redirectRoute = 'sceneD1';
-                break;
-
-            case 'SceneD2':
-                $repo = $entityManager->getRepository(SceneD2::class);
-                $formType = SaveArtworkD2Type::class;
-                $redirectRoute = 'sceneD2';
-                break;
-
-            default:
-                throw $this->createNotFoundException('Invalid entity type.');
-        }
-
-        $scene = $repo->find($id);
-        if (!$scene) {
-            throw $this->createNotFoundException('Scene not found');
-        }
-        $form = $this->createForm($formType, $scene);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) { 
-            $entityManager->persist($scene);
-            $entityManager->flush();
-
-            $this->addFlash('success', 'Artwork save in the gallery'); 
-            return $this->redirectToRoute($redirectRoute);
-        }
-        return $this->render('main/saveArtwork.html.twig', [
-            'form' => $form->createView(),
-            'scene' => $scene
-        ]);
-    }   
-
-    #[Route("/dataScene/newScene/{entity}/{id}", name: "newSceneD", methods: ["GET"])]
-    public function getSceneData(
-        SceneD1Repository $RepoD1,
-        SceneD2Repository $RepoD2,
-        string $entity,
-        int $id
-    ): Response
-    {
-        if ($entity === 'SceneD1') {
-            $scene = $RepoD1->find($id);
-            $return = 'newSceneD1';
-        } elseif ($entity === 'SceneD2') {
-            $scene = $RepoD2->find($id);
-            $return = 'newSceneD2';
-        } else {
-            throw $this->createNotFoundException("Scene not found : $entity.");
-        }
-
-        $json = $this->serializer->serialize($scene, 'json', ['groups' => 'sceneDataRecup']);
-        $sceneData = json_decode($json, true);
-        return $this->render("data_scene/$return.html.twig", [
-            'scene' => $sceneData,
-        ]);   
-    } 
-
 }
