@@ -6,14 +6,6 @@ use App\Entity\{
     SceneD1,
     SceneD2,
 };
-use App\Form\{
-    SaveArtworkD1Type,
-    SaveArtworkD2Type
-};
-use App\Repository\{
-    SceneD1Repository,
-    SceneD2Repository,
-};
 use Symfony\Component\HttpFoundation\{
     Response,
     Request,
@@ -22,12 +14,13 @@ use Symfony\Component\HttpFoundation\{
 };
 use Symfony\Component\{
     Routing\Annotation\Route,
-    Serializer\SerializerInterface,
 };
 
 class DataSceneController extends BaseSceneController
 {
 
+    
+    //  ---------- Scene D1 : Worldwide CO2 -------------
 
     #[Route("sceneD1", name: "sceneD1")]
     public function sceneD1(): Response
@@ -112,7 +105,7 @@ class DataSceneController extends BaseSceneController
             return new Response('Error: Missing data!', Response::HTTP_BAD_REQUEST);
     }
 
-    //  ---------- Scene D2 -------------
+    //  ---------- Scene D2 : Exploding population -------------
 
     #[Route("/sceneD2", name: "sceneD2")]
     public function sceneD2(): Response

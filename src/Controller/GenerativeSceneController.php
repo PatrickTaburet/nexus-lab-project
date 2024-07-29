@@ -7,24 +7,13 @@ use App\Entity\{
     Scene1,
     Scene2
 };
-use App\Form\{
-    SaveArtworkG1Type,
-    SaveArtworkG2Type,
-};
-use App\Repository\{
-    Scene1Repository,
-    Scene2Repository
-};
 use Symfony\Component\HttpFoundation\{
     Request,
     Response,
     JsonResponse,
     File\UploadedFile,
 };
-use Symfony\Component\{
-    Routing\Annotation\Route,
-    Serializer\Normalizer\NormalizerInterface
-};
+use Symfony\Component\Routing\Annotation\Route;
 
 class GenerativeSceneController extends BaseSceneController
 {
