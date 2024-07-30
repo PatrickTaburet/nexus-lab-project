@@ -183,6 +183,15 @@ Data vizyalise scenes
 UI pannel 
 ========================
 */
+.colorPannel{
+  border: solid, 2px;
+  padding:10px;
+  color: white;
+  display: flex ;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
 
 .parametersBox{
   display: flex;
@@ -717,7 +726,8 @@ Media queries
     width: 100%;
   }
   .parametersBox .card{
-    min-height: 500px;
+    min-height: none;
+    height: auto;
   }
   .titleImg{
     top: 85px;
@@ -787,7 +797,6 @@ Media queries
   .parametersBox .card-content {
     display: flex;
     flex-direction: row; 
-   
     position: relative;
   }
   .parametersBox .card-border {
@@ -800,7 +809,7 @@ Media queries
     position: relative;
     background: rgba(0,0,0,.5);
     width: 70%;
-    height: 42vw;
+ 
     padding: var(--var-notchSize/2) var(--var-notchSize);
     box-shadow: inset 0 0 10px var(--var-primary);
     clip-path: polygon(40px 0, 100% 0%, 100% calc(100% - 40px), calc(100% - 40px) 100%, 0 100%, 0 40px);
@@ -818,18 +827,22 @@ Media queries
   .checkboxContainer{
     margin: 0;
   }
+  .checkboxContainerParent{
+    display: flex;
+  }
   
   /* ------- Sliders -------*/
   .sliderBox{
-    width: 80%;
+    width: 40%;
   }
   .sliderBoxD2{
     flex-wrap: wrap;
     gap: 15px;
-
+    width: 100%;
+    max-height: 30vw;
   }
   .range-wrap {
-    width: 40%;
+    width: 20%;
     padding: 0.7em 0; /*  Giving more room for hover  */
     margin: 5px 0 0 0 ;
   }
