@@ -428,7 +428,7 @@ box-shadow: inset -1px -1px 4px #417f0b,
 
 .generateButton{
   font-size: 20px;
-  min-width: 150px;
+  min-width: 100px;
 }
 #submitButton, #reloadButton{
   font-size: 20px;
@@ -442,9 +442,9 @@ Modale
 */
 
 .superModale{
+  padding: 20px;
   background-color:var(--var-purple-dark);
-  width: 350px;
-  height: 210px;
+  width: 380px;
   position: absolute;
   top: 10%;
   z-index: 5;
@@ -453,15 +453,19 @@ Modale
   justify-content: space-between;
   align-items: center;
   text-align: center;
+  gap: 15px;
   box-shadow: rgb(38, 57, 77) 0px 20px 30px -10px;
   opacity: 0;
   border-radius: 10px;
   color: white;
 }
-.superModale p {
+/* .superModale p {
   text-align: center;
   margin: 10px;
-}
+} */
+.titleModale{
+  font-size: 30px;
+ }
 .modaleBackground{
   background-color: rgba(128, 128, 128, 0.525);
   width: 100%;
@@ -641,7 +645,7 @@ Media queries
   }
   
   .generateButton{
-    min-width: 100px;
+    min-width: 110px;
     max-width: 200px;
   }
 
@@ -804,7 +808,7 @@ Media queries
   }
   
   .generateButton{
-    min-width: 50px;
+    min-width: 110px;
     max-width: 100px;
   }
   .checkboxContainer{

@@ -1,4 +1,7 @@
-
+html {
+  --scroll-behavior: smooth;
+  scroll-behavior: smooth;
+}
 main {
 	margin: 0;
 	background: linear-gradient(45deg, #49a09d, #5f2c82);
@@ -9,13 +12,25 @@ main {
   text-align: center;
 }
 h1{
-    margin: 23px 23px 8px 23px;
-    font-size: 50px;
+    margin: 53px 23px 8px 23px;
+    font-size: 60px;
 } 
+h2::before {
+  content: "";
+  display: block;
+  height: 80px; 
+  margin-top: -150px; 
+  visibility: hidden;
+}
 h2{
     margin: 18px;
-    font-size: 30px;
+    font-size: 40px;
     font-weight: 400;
+    height: 150px;
+    margin-bottom: 30px;
+    padding-top: 30px;
+    display: flex;
+    align-items: center;
 }
 
 .tableContainer {
@@ -161,6 +176,111 @@ background-color: rgba(255,255,255,0.3);
   margin: auto;
   margin-bottom: 20px;
 }
+
+/* 
+========================
+FLying card
+========================
+*/
+
+.flyingCard{
+  transition: 0.2s ease-in-out;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  gap: 30px;
+  position: fixed;
+  bottom: 80px;
+  left: 50px;
+  z-index: 100;
+}
+.flyingCard a{
+  font-size:15px;
+  padding: 20px;
+
+}
+
+
+/* ------- SciFi box card -------*/
+  
+.card {
+  animation: apparition 2s, voleCourbe  6s infinite;
+  animation-delay: 0s, 1.8s;
+  animation-timing-function: ease-in-out;
+  transition: transform 0.5s ease-in-out;
+  /* animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1); */
+
+  background: rgba(0,0,0,.5);
+  width: 100%;
+  height: 100%;
+  padding: var(--var-notchSize/2) var(--var-notchSize);
+  box-shadow: inset 0 0 10px var(--var-primary);
+  clip-path: polygon(40px 0, 100% 0%, 100% calc(100% - 40px), calc(100% - 40px) 100%, 0 100%, 0 40px);
+  padding: 10px;
+
+  
+  .separator{
+    height: 1px;
+    width: 100%;
+    background-color: var(--var-primary);
+    margin: 10px 0;
+    box-shadow: 0 0 10px var(--var-primary);
+  }
+  
+  .card-content {
+    text-shadow: 0px 0px 5px rgba(255,255,255,.2);
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    margin: 10px;
+  }
+}
+  
+.card-border {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  filter: drop-shadow(0px 0px 3px var(--var-primary));
+}
+.card:hover {
+  background-color: #00dbeb27;
+  animation-play-state: paused;
+}
+/* ---- Animations ---- */
+
+@keyframes apparition {
+  0% {
+    transform: translateY(250px);
+    opacity: 0;
+  }
+  70% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+
+@keyframes voleCourbe {
+  0% {
+    transform: translate(0, 0);
+  }
+  25% {
+    transform: translate(10px, -5px) rotate(3deg);
+  }
+  50% {
+    transform: translate(0, -15px) rotate(-3deg);
+  }
+  75% {
+    transform: translate(-10px, -5px) rotate(3deg);
+  }
+  100% {
+    transform: translate(0, 0);
+  }
+}
 /* 
 ========================
 LightBox
@@ -203,5 +323,34 @@ Media queries
 @media screen and (max-width: 900px) {
   h1{
     font-size: 40px;
+  }
+
+.flyingCard{
+  transition: 0.2s ease-in-out;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  gap: 30px;
+  position: fixed;
+  bottom: 60px;
+  left: 15px;
+  z-index: 100;
+}
+.flyingCard a{
+  font-size:14px;
+  padding: 15px;
+
+}
+
+  .card{
+    width: 90%;
+    .separator{
+      height: 1px;
+      width: 90%;
+      background-color: var(--var-primary);
+      margin: 5px 0;
+
+    }
   }
 }

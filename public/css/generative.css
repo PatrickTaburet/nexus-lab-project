@@ -366,13 +366,16 @@ UI pannel style
   filter: drop-shadow(0px 0px 3px var(--var-primary));
 }
   
-
-/* ------- Modale -------*/
+/* 
+========================
+Modale
+========================
+*/
 
 .superModale{
+  padding: 20px;
   background-color:var(--var-purple-dark);
-  width: 350px;
-  height: 210px;
+  width: 380px;
   position: absolute;
   top: 10%;
   z-index: 5;
@@ -381,15 +384,20 @@ UI pannel style
   justify-content: space-between;
   align-items: center;
   text-align: center;
+  gap: 15px;
   box-shadow: rgb(38, 57, 77) 0px 20px 30px -10px;
   opacity: 0;
   border-radius: 10px;
   color: white;
 }
-.superModale p {
+/* .superModale p {
   text-align: center;
   margin: 10px;
-}
+  
+} */
+ .titleModale{
+  font-size: 30px;
+ }
 .modaleBackground{
   background-color: rgba(128, 128, 128, 0.525);
   width: 100%;
@@ -614,6 +622,7 @@ Media queries
 
 @media screen and (max-width: 1200px)
 {
+
   main {
     overflow:initial;
     position: relative;
@@ -711,7 +720,7 @@ Media queries
   }
   
   .generateButton{
-    min-width: 50px;
+    min-width: 110px;
     max-width: 100px;
   }
   .checkboxContainer{
@@ -897,6 +906,7 @@ Media queries
   main {
     overflow-x: hidden;
   }
+
   .descriptionBox .card-title{
     font-size: 20px;
     padding: 4px 0 8px 0;
