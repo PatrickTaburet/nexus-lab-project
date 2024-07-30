@@ -207,6 +207,7 @@ UI pannel
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  flex-wrap: wrap;
 }
 
 .sliderBox{
@@ -217,7 +218,9 @@ UI pannel
   color: white;
   width: 90%;
 }
-
+.sliderBoxD2{
+  
+}
 
 /* Select */
 
@@ -676,16 +679,12 @@ Media queries
     width: 100%;
     padding: 0.7em 0;
     margin-bottom: 10px;
-
+    min-width: 100px;
   }
 
   /* .range-wrap::before {
     height: 7px;
   } */
-
-  .range-wrap{
-    min-width: 200px;
-  }
 
 
 
@@ -751,8 +750,16 @@ Media queries
   }
   .paramBottom{
     padding-bottom: 40px;
+    display: flex;
+    flex-wrap: wrap;
+    min-width: none;
+    width: 100%;
   }
+  /* .paramBottomD2{
+    background-color: #00DDEB;
+    flex-direction: column;
 
+  } */
   /* Sketch */
 
   #myCanvas{
@@ -774,16 +781,13 @@ Media queries
     width: 100%;
     height: 100%;
     margin:30px;
-    /* margin-left: 0;
-    margin-top: -100px; */
     min-width:0;
   }
  
   .parametersBox .card-content {
     display: flex;
     flex-direction: row; 
-    height:auto;
-    flex-wrap: nowrap;
+   
     position: relative;
   }
   .parametersBox .card-border {
@@ -817,9 +821,13 @@ Media queries
   
   /* ------- Sliders -------*/
   .sliderBox{
-    width: 30%;
+    width: 80%;
   }
+  .sliderBoxD2{
+    flex-wrap: wrap;
+    gap: 15px;
 
+  }
   .range-wrap {
     width: 40%;
     padding: 0.7em 0; /*  Giving more room for hover  */
@@ -1028,7 +1036,7 @@ Media queries
 
   /* Sliders */
   .sliderBox{
-    width: 40%;
+    width: 80%;
     margin: 0 7px 0 7px
   }
 
