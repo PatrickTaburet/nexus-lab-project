@@ -9,23 +9,23 @@ class SceneData
     private string $formType;
     private string $routeName;
     private string $newRouteName;
-    private string $viewType;
-    private string $repositoryClass;
+    private string $sceneType;
+    private object $repository;
 
     public function __construct(
         string $entityClass,
         string $formType,
         string $routeName,
         string $newRouteName, 
-        string $viewType = 'default',
-        string $repositoryClass = '')
+        string $sceneType = 'default',
+        object $repository = null)
     {
         $this->entityClass = $entityClass;
         $this->formType = $formType;
         $this->routeName = $routeName;
         $this->newRouteName = $newRouteName;
-        $this->viewType = $viewType;
-        $this->repositoryClass = $repositoryClass;
+        $this->sceneType = $sceneType;
+        $this->repository = $repository;
     }
 
     public function getEntityClass(): string
@@ -49,11 +49,16 @@ class SceneData
 
     public function getSceneType(): string
     {
-        return $this->viewType;
+        return $this->sceneType;
     }
 
-    public function getRepositoryClass(): string
+    public function getRepository(): object
     {
-        return $this->repositoryClass;
+        return $this->repository;
+    }
+
+    public function setRepository(object $repository): void
+    {
+        $this->repository = $repository;
     }
 }

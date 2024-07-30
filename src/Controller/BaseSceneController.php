@@ -38,21 +38,36 @@ abstract class BaseSceneController extends AbstractController
     protected  SerializerInterface $serializer;
     protected EntityManagerInterface $entityManager;
     protected Security $security;
+    protected SceneD1Repository $sceneD1Repo;
+    protected SceneD2Repository $sceneD2Repo;
+    protected Scene1Repository $scene1Repo;
+    protected Scene2Repository $scene2Repo;
     
-      public function __construct(SerializerInterface $serializer, EntityManagerInterface $entityManager, Security $security)
-    {
+    public function __construct(
+        SerializerInterface $serializer,
+        EntityManagerInterface $entityManager,
+        Security $security,
+        SceneD1Repository $sceneD1Repo,
+        SceneD2Repository $sceneD2Repo,
+        Scene1Repository $scene1Repo,
+        Scene2Repository $scene2Repo
+    ) {
         $this->serializer = $serializer;
         $this->entityManager = $entityManager;
         $this->security = $security;
+        $this->sceneD1Repo = $sceneD1Repo;
+        $this->sceneD2Repo = $sceneD2Repo;
+        $this->scene1Repo = $scene1Repo;
+        $this->scene2Repo = $scene2Repo;
     }
 
     private function getSceneProps(string $entity): ?SceneData
     {
         $data = [
-            'SceneD1' => new SceneData(SceneD1::class, SaveArtworkD1Type::class, 'sceneD1', 'newSceneD1', 'data_scene', SceneD1Repository::class),
-            'SceneD2' => new SceneData(SceneD2::class, SaveArtworkD2Type::class, 'sceneD2', 'newSceneD2','data_scene', SceneD2Repository::class),
-            'Scene1' => new SceneData(Scene1::class, SaveArtworkG1Type::class, 'sceneG1', 'newSceneG1','generative_scene', Scene1Repository::class),
-            'Scene2' => new SceneData(Scene2::class, SaveArtworkG2Type::class, 'sceneG2', 'newSceneG2', 'generative_scene', Scene2Repository::class)
+            'SceneD1' => new SceneData(SceneD1::class, SaveArtworkD1Type::class, 'sceneD1', 'newSceneD1', 'data_scene', $this->sceneD1Repo),
+            'SceneD2' => new SceneData(SceneD2::class, SaveArtworkD2Type::class, 'sceneD2', 'newSceneD2','data_scene', $this->sceneD2Repo),
+            'Scene1' => new SceneData(Scene1::class, SaveArtworkG1Type::class, 'sceneG1', 'newSceneG1','generative_scene', $this->scene1Repo),
+            'Scene2' => new SceneData(Scene2::class, SaveArtworkG2Type::class, 'sceneG2', 'newSceneG2', 'generative_scene', $this->scene2Repo)
         ];
         return $data[$entity] ?? null;
     }
@@ -89,43 +104,17 @@ abstract class BaseSceneController extends AbstractController
         ]);
     }   
 
-        #[Route("/newScene/{entity}/{id}", name: "newScene", methods: ["GET"])]
+    #[Route("/newScene/{entity}/{id}", name: "newScene", methods: ["GET"])]
     public function getSceneData(string $entity, int $id): Response
     {
-        
-        $sceneData = $this->getSceneProps($entity);
-        var_dump($sceneData->getSceneType());
-        if (!$sceneData) {
-            throw $this->createNotFoundException("Scene not found: $entity.");
-        }
-        $repo = $this->entityManager->getRepository($sceneData->getRepositoryClass());
-        $scene = $repo->find($id);
-        if (!$scene) {
-            throw $this->createNotFoundException('Scene not found');
-        }
+       $sceneDataObj = $this->getSceneProps($entity);
 
+        $scene = $sceneDataObj->getRepository()->find($id);
         $json = $this->serializer->serialize($scene, 'json', ['groups' => 'sceneDataRecup']);
         $sceneData = json_decode($json, true);
 
-        return $this->render("{$sceneData->getSceneType()}/{$sceneData->getNewRouteName()}.html.twig", [
+        return $this->render("{$sceneDataObj->getSceneType()}/{$sceneDataObj->getNewRouteName()}.html.twig", [
             'scene' => $sceneData,
-        ]);
-        // $repositories = [
-        //     'Scene1' => [$RepoG1, "newSceneG1", "generative_scene"],
-        //     'Scene2' => [$RepoG2, "newSceneG2", "generative_scene"],
-        //     'SceneD1' => [$RepoD1, "newSceneD1", "data_scene"],
-        //     'SceneD2' => [$RepoD2, "newSceneD2", "data_scene"]
-        // ];
-        // if (!array_key_exists($entity, $repositories)) {
-        //     throw $this->createNotFoundException("Scene not found: $entity.");
-        // }
-        // $scene = $repositories[$entity][0]->find($id);
-        // $return = $repositories[$entity][1];
-       
-       // $sceneType = $repositories[$entity][2];
-
-        // return $this->render("$sceneType/$return.html.twig", [
-        //     'scene' => $sceneData,
-        // ]);   
+        ]);   
     } 
 }
