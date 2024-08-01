@@ -227,9 +227,6 @@ UI pannel
   color: white;
   width: 90%;
 }
-.sliderBoxD2{
-  
-}
 
 /* Select */
 
@@ -765,11 +762,7 @@ Media queries
     min-width: none;
     width: 100%;
   }
-  /* .paramBottomD2{
-    background-color: #00DDEB;
-    flex-direction: column;
 
-  } */
   /* Sketch */
 
   #myCanvas{
@@ -837,11 +830,15 @@ Media queries
   }
   .sliderBoxD2{
     flex-wrap: wrap;
-    gap: 15px;
     width: 100%;
-    max-height: 30vw;
+    max-height: 28vw;
+    gap: 15px;
+    padding: 15px;
+    margin-bottom: 20px;
+
   }
   .range-wrap {
+    min-width: 150px;
     width: 20%;
     padding: 0.7em 0; /*  Giving more room for hover  */
     margin: 5px 0 0 0 ;
@@ -941,6 +938,18 @@ Media queries
   .inputBox select {
     min-width: 160px;
   }
+  .sliderBoxD2{
+    flex-wrap: wrap;
+    width: 100%!important;
+    max-height: 32vw;
+    gap: 15px;
+    padding: 15px;
+    margin-bottom: 20px;
+  }
+  .parametersBox .card {
+    width: 85%;
+    height: 100%;
+  }
 }
 
 
@@ -973,7 +982,7 @@ Media queries
     transition: max-height 1s ease-out;
   }
   .card-title:hover + .arrow1 + .separator + .card-content .descriptionContent {
-    max-height: 500px; /* Ajustez la hauteur selon vos besoins */
+    max-height: 500px;
   }
   .card-title:hover + .arrow1{
     display: none;
@@ -1042,20 +1051,17 @@ Media queries
   .parametersBox .card-border {
     width: 100%;
   }
-  .parametersBox .card {
-    width: 85%;
-    height: 100%;
-  }
+
 
   /* Sliders */
   .sliderBox{
     width: 80%;
     margin: 0 7px 0 7px
   }
-
-  .range-wrap{
-    min-width: 150px;
+  .sliderBoxD2{
+    max-height: 48vw;
   }
+ 
   /* Decors */
   .arrow1{
     rotate: 180deg;
@@ -1076,6 +1082,27 @@ Media queries
   }
 }
 
+/* ----------------------------- < 720px ------------------------------ */
+
+@media screen and (max-width: 720px)
+{
+  .sliderBoxD2{
+    max-height: 400px;
+  }
+  .range-wrap{
+    min-width: 160px;
+  }
+
+  .checkboxContainerParent{
+    flex-direction: column;
+  }
+  .card-content{
+    padding-left: 50px;
+  }
+  .card-contentD2{
+    padding-left: 0!important;
+  }
+}
 /* ----------------------------- < 500px ------------------------------ */
 
 @media screen and (max-width: 500px)
@@ -1156,5 +1183,12 @@ Media queries
   }
   .parametersBox .card{
     height: 100%;
+  }
+  .sliderBoxD2{
+    flex-wrap: nowrap;
+    max-height: none;
+  }
+  .card-content{
+    padding-left: 0;
   }
 }
