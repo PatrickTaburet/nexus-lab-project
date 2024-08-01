@@ -810,7 +810,7 @@ Media queries
   }
   .buttonBox{
     flex-direction: row;
-    margin: 15px 0 0 0;
+    margin: 0;
   }
   
   .generateButton{
@@ -1097,11 +1097,11 @@ Media queries
     flex-direction: column;
   }
   .card-content{
-    padding-left: 50px;
-  }
-  .card-contentD2{
-    padding-left: 0!important;
-  }
+    padding-left: 30px;
+  } 
+#card-contentD2{
+  padding-left: 0!important;
+}
 }
 /* ----------------------------- < 500px ------------------------------ */
 
