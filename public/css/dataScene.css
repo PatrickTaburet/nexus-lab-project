@@ -184,15 +184,33 @@ UI pannel
 ========================
 */
 .colorPannel{
-  border: solid, 2px;
-  padding:10px;
+  border: 1px solid var(--var-primary);
+  animation: border-glow 1.3s ease-in-out infinite alternate;
+  border-radius: 10px;
+  padding:12px;
+  margin:10px;
+  background-color: rgba(255, 255, 255, 0.055);
   color: white;
   display: flex ;
   justify-content: center;
   align-items: center;
   flex-direction: column;
 }
+@keyframes border-glow {
+  from {
+      box-shadow: 0 0 2px var(--var-primary);
+  }
+  to {
+      box-shadow: 0 0 9px var(--var-primary);
+  }
+}
 
+.colorText{
+  display: flex; 
+  gap: 20px; 
+  font-weight: 700;
+  font-size: 28px;
+}
 .parametersBox{
   display: flex;
   flex-direction: column;
@@ -288,7 +306,8 @@ UI pannel
     padding: 1em 0; /*  Giving more room for hover  */
     margin: 0 25px 0 25px;
   }
-  
+
+
   /* Custom Bar */
 
   .range-wrap::before {
@@ -552,6 +571,7 @@ Media queries
 
 @media screen and (max-width: 1500px)
 {
+
   .mainContainer{
     flex-direction: column;
     
@@ -642,7 +662,7 @@ Media queries
     margin-top: 0px;
     min-width: 250px;
   }
- 
+
 
   .buttonBox{
     display: flex;
@@ -680,12 +700,24 @@ Media queries
   .sliderBox{
     width: 60%;
   }
+  .sliderBoxD2{
 
+     margin-right: 40px; 
+  
+  }
   .range-wrap {
     width: 100%;
     padding: 0.7em 0;
     margin-bottom: 10px;
     min-width: 100px;
+    max-width: 180px;
+  }
+  .colorText{
+    display: flex; 
+    gap: 20px; 
+    font-weight: 700;
+    font-size: 23px;
+    padding: 3px;
   }
 
   /* .range-wrap::before {
@@ -786,7 +818,9 @@ Media queries
     margin:30px;
     min-width:0;
   }
- 
+  .paramBottomD2{
+    margin-right: 0;
+  }
   .parametersBox .card-content {
     display: flex;
     flex-direction: row; 
@@ -835,7 +869,7 @@ Media queries
     gap: 15px;
     padding: 15px;
     margin-bottom: 20px;
-
+    margin-right: 0; 
   }
   .range-wrap {
     min-width: 150px;
@@ -935,6 +969,7 @@ Media queries
   .paramBottom{
     padding: 0;
   }
+  
   .inputBox select {
     min-width: 160px;
   }
@@ -987,6 +1022,13 @@ Media queries
   .card-title:hover + .arrow1{
     display: none;
   }
+  .card {
+    #card-contentD2 {
+      margin-right: 20px;
+    }
+    
+  }
+
   /* label */
 
   
@@ -1099,9 +1141,35 @@ Media queries
   .card-content{
     padding-left: 30px;
   } 
-#card-contentD2{
-  padding-left: 0!important;
-}
+  #card-contentD2{
+    padding-left: 0!important;
+  }
+
+  .colorPannel{
+    border: 1px solid var(--var-primary);
+    animation: border-glow 1.3s ease-in-out infinite alternate;
+    border-radius: 10px;
+    padding:12px;
+    margin:10px;
+    background-color: rgba(255, 255, 255, 0.055);
+    color: white;
+    display: flex ;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+  }
+  .colorText{
+    display: flex; 
+    gap: 20px; 
+    font-weight: 700;
+    font-size: 24px;
+  }
+  .colorsButton{
+    font-size: 15px!important;
+    min-width : 120px;
+    min-height: 40px;
+  }
+
 }
 /* ----------------------------- < 500px ------------------------------ */
 
@@ -1167,7 +1235,12 @@ Media queries
     width: 100%;
     flex-direction: column;
     margin-top: 20px;
+    /* padding-right: 20px; */
+
   }
+  /* .paramBottomD2{
+    padding-right: 20px;
+  } */
   .buttonBox{
     flex-direction: row;
   }
@@ -1191,4 +1264,5 @@ Media queries
   .card-content{
     padding-left: 0;
   }
+
 }
