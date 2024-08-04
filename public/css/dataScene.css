@@ -188,8 +188,8 @@ UI pannel
   animation: border-glow 1.3s ease-in-out infinite alternate;
   border-radius: 10px;
   padding:12px;
-  margin:10px;
   background-color: rgba(255, 255, 255, 0.055);
+  margin:30px 10px 30px 10px;
   color: white;
   display: flex ;
   justify-content: center;
@@ -244,6 +244,9 @@ UI pannel
   flex-direction: column;
   color: white;
   width: 90%;
+}
+.sliderBoxD2{
+  margin: 0;
 }
 
 /* Select */
@@ -702,8 +705,7 @@ Media queries
   }
   .sliderBoxD2{
 
-     margin-right: 40px; 
-  
+   
   }
   .range-wrap {
     width: 100%;
@@ -864,12 +866,13 @@ Media queries
   }
   .sliderBoxD2{
     flex-wrap: wrap;
-    width: 100%;
-    max-height: 28vw;
+     width: 500px;
+    max-height: 380px;
     gap: 15px;
-    padding: 15px;
+    margin: 40px 0 40px 0;
+    /*padding: 15px;
     margin-bottom: 20px;
-    margin-right: 0; 
+    margin-right: 0;  */
   }
   .range-wrap {
     min-width: 150px;
@@ -973,14 +976,7 @@ Media queries
   .inputBox select {
     min-width: 160px;
   }
-  .sliderBoxD2{
-    flex-wrap: wrap;
-    width: 100%!important;
-    max-height: 32vw;
-    gap: 15px;
-    padding: 15px;
-    margin-bottom: 20px;
-  }
+  
   .parametersBox .card {
     width: 85%;
     height: 100%;
@@ -1101,7 +1097,8 @@ Media queries
     margin: 0 7px 0 7px
   }
   .sliderBoxD2{
-    max-height: 48vw;
+    margin: 40px 0 45px 0;
+
   }
  
   /* Decors */
@@ -1129,10 +1126,10 @@ Media queries
 @media screen and (max-width: 720px)
 {
   .sliderBoxD2{
-    max-height: 400px;
+   
   }
   .range-wrap{
-    min-width: 160px;
+    min-width: 130px;
   }
 
   .checkboxContainerParent{
@@ -1258,8 +1255,10 @@ Media queries
     height: 100%;
   }
   .sliderBoxD2{
-    flex-wrap: nowrap;
-    max-height: none;
+    margin-top: 2px;
+  }
+  .range-wrap{
+    min-width: 115px;
   }
   .card-content{
     padding-left: 0;

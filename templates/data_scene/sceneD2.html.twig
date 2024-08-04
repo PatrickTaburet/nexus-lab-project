@@ -86,14 +86,12 @@
                             ] %}
                             
                             {% for slider in sliders %}
-                            <div>
+                            
                                 <p>{{ slider.label }}</p>
                                 <div class="range-wrap">
                                     <input class="{{ slider.class }} range" type="range" min="{{ slider.min }}" max="{{ slider.max }}" step="{{ slider.step }}" value="{{ slider.value }}">
                                     <output class="bubble"></output>
-                                </div>
-                            </div>
-                           
+                                </div> 
                             {% endfor %}
                         </div>
                         <div class="colorPannel">
@@ -109,7 +107,7 @@
                                 <p style="color: rgb(0, 138, 5);" class="indiaColor">INDIA</p>
                             </div>
                         </div>
-                        <div class="checkboxContainerParent">
+                        <div class="    ">
                             <div class="checkboxContainer">
                                 <p>GLITCH</p>
                                 <input type="checkbox" id="glitchCheckbox" class="checkbox">
