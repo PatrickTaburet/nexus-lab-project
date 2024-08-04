@@ -15,8 +15,9 @@
     <div class="firstBox ">
       <div class="subBox">
         <h1>Collaborative platform for generative art and creative coding</h1>
-        <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Rerum perferendis quidem repudiandae sit sapiente aliquid architecto porro ut odio quam praesentium possimus ex adipisci pariatur nesciunt minus magnam, optio eos.</p>
-        <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Rerum perferendis quidem repudiandae sit sapiente aliquid architecto porro ut odio quam praesentium possimus ex adipisci pariatur nesciunt minus magnam, optio eos.</p>
+        <p>Welcome to NexusLab! <br><br> If you're interested in generative art, creative coding, or if you just want to have fun creating unique and original artworks, you're in the right place !</p>
+        <p>This platform aims to bring together a community around creative coding, focused on sharing, creativity,  and interactivity.</p>
+        <p>Come explore the little-known world of incredible visuals that can be produced by algorithms, lines of code, or simple data packets.</p>
         <div {{ react_component('MyButtonTwig', {"props": {
                   "myStyle":"",
                   "to":"/gallery",
@@ -43,11 +44,12 @@
     <div class="secondBox">
       <div class="secondBoxCenter">
         <h1 class="element">Create your own artwork</h1>
-        <p class="element">Lorem ipsum dolor sit amet consectetur adipisicing elit. Numquam, explicabo voluptates. Iure quo est officiis, earum aspernatur magni dignissimos perspiciatis sunt alias quasi ab repellendus, commodi architecto soluta nobis sapiente!</p>
+        <p class="element">Have fun manipulating the image through the work of artist members ! <br><br> Play with the settings of each scene to create visuals that are often surprising and unexpected! When you're happy with the result, save your artwork to share it in the gallery and let the community enjoy it!</p>
+        <p class="element">Choose between generative art, where the algorithm is the sole master of creation, and data visualization art, where the code uses data to transform information into visual art.</p>
         <div class="element" {{ react_component('MyButtonTwig', {"props": {
-                    "myStyle":"",
+                    "myStyle":"homeButton",
                     "to":"/create",
-                    "children" : "Start generate art"
+                    "children" : "Start create"
             }}) }}>
         </div>
       </div>
@@ -56,7 +58,8 @@
       <div class="codeImg spinningLight element"></div>
       <div class="bottomSubBox">
         <h1 class="element">Share your code</h1>
-        <p class="element">Lorem ipsum dolor sit amet consectetur adipisicing elit. Cumque, voluptatem reprehenderit! Esse deserunt ipsa expedita adipisci odit, labore consequuntur facilis facere reiciendis, eum quam quis nihil, amet numquam voluptates obcaecati.</p>
+        <p class="element">If you practice creative coding and want to share your work with the community, it's possible! <br><br> If you want to make one of your works available on NexusLab, just request the artist role and you'll have access to various features, including the ability to propose a generative art or data art scene.</p>
+        <p class="element">Whether you're an experienced coder or an enthusiastic amateur, don't hesitate to make a request. We will then work together to adapt the code for implementation on the platform.</p>
         {% if (is_granted ('ROLE_ARTIST')) %}
         <div class="element" {{ react_component('MyButtonTwig', {"props": {
             "myStyle":"",

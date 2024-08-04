@@ -184,6 +184,7 @@ SlidesShow
   width: 100%; /* add 20px to the width to make it larger than the slideshow */
   height: 100%;
   z-index: 0; /* make sure it's behind the slideshow */
+  height: 510px;
 }
 
 .slide-wrapper {
@@ -542,6 +543,7 @@ SlidesShow
   .slideshowBorder {
     scale: 1.02;
     clip-path: polygon(30px 0, 100% 0%, 100% calc(100% - 30px), calc(100% - 30px) 100%, 0 100%, 0 30px);
+    height: 260px;
   }
 
   .slide-wrapper {
@@ -679,10 +681,31 @@ SlidesShow
 
 
 @media screen and (max-width: 500px) {
+  .subBox h1{
+    font-size: 30px;
+  }
+  .subBox p{
+    font-size: 14px;
+    text-align: center;
+    font-weight: 400;
 
+  }
+  .secondBoxCenter{
+    height: 100%;
+  }
   .sliderWrapper{
     right: -170px;
     top: 50%;
+  }
+  .secondBoxCenter h1{
+    margin-bottom: 40px;
+    font-size: 30px;
+  }
+  .secondBoxCenter p{
+    margin-bottom: 30px;
+  }
+  .bottomBox {
+    padding: 0 70px 50px 70px;
   }
 
 }
