@@ -92,7 +92,13 @@ Generative scenes
     height: 100%;
     color: white;
 }
-
+.descriptionContent a{
+  color: #00DDEB;
+}
+.descriptionContent a:hover{
+  transition: 0.3s;
+  color: #ffffff;
+}
 /* Decors */
 
 .arrow1{

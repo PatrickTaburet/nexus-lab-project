@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}New Scene D1{% endblock %}
+{% block title %}CO2 Emissions Explorer{% endblock %}
 
 {% block stylesheets %}
     {{ parent() }}
@@ -19,7 +19,7 @@
 
 <div class="headerTitle">
     <img class="titleImg" src={{ asset("/images/design/title3.png")}} alt="Title square">
-    <h1>CO2 WORLDWIDE EMISSIONS</h1>
+    <h1>CO2 EMISSIONS EXPLORER</h1>
 </div>
 
 <div class="mainContainer">
@@ -40,7 +40,11 @@
                     <img class="arrow1" src={{ asset("/images/design/arrow.png")}} alt="Description arrow">
                     <div class="separator"></div>
                     <div class="card-content">
-                        <div class="descriptionContent">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Provident sapiente animi, atque fugiat, autem optio modi id sed voluptatem saepe nulla aliquam temporibus officiis consequatur amet dolorum voluptatum natus nihil.Lorem, ipsum dolor sit amet consectetur adipisicing elit. Provident sapiente animi, atque fugiat, autem optio modi id sed voluptatem saepe nulla aliquam temporibus officiis consequatur amet dolorum voluptatum natus nihil  </div>
+                        <div class="descriptionContent">
+                           Data set : CO2 Emissions for 194 Countries from 1990 to 2020, by Climate Watch <br><br>
+                           Select the countries you want to include in the image, then start the generation ! <br>
+                           You can compare the CO2 consumption of these countries over the past 30 years, or simply create original artwork by playing with this data !
+                        </div>
                     </div>
                 </div>
             </div>
@@ -91,7 +95,7 @@
                             <input type="checkbox" id="checkboxFlag" class="checkbox" {% if scene.abstract == 1 %}checked{% endif %}>
                         </div>
                         <div class="buttonBox"> 
-                            <button id="submitButton" type="submit" class="customButton">Submit</button>
+                            <button id="submitButton" type="submit" class="customButton">Start</button>
                             <button id="reloadButton" type="submit" class="customButton">Reload</button> 
                         </div>
                         {% if app.user %}

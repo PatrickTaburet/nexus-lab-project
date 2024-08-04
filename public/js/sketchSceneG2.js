@@ -14,7 +14,6 @@ let shapeSlider;
 let ringsSlider;
 let zoomSlider;
 let diameterSlider;
-let resetButton;
 
 // Setup 
 
@@ -37,12 +36,6 @@ function setup() {
     ringsSlider = select(".ringsSlider");
     zoomSlider = select(".zoomSlider");
     diameterSlider = select(".diameterSlider");
-
-    resetButton = select("#resetButton");
-
-    resetButton.mousePressed(() => {
-      window.location.reload(); // Reset the canvas to its initial state
-    });
 }
 
 function draw() {
@@ -137,12 +130,12 @@ function windowResized() {
     canvas.parent('sketch');
 }
 
-function reset () {
-    const squareSize = min(windowWidth-30, windowHeight-30);
-    resizeCanvas(squareSize, squareSize);
-    clear();
-    background(0,0,0);
-}
+// function reset () {
+//     const squareSize = min(windowWidth-30, windowHeight-30);
+//     resizeCanvas(squareSize, squareSize);
+//     clear();
+//     background(0,0,0);
+// }
 
 
 // --------- Send to backend ---------
