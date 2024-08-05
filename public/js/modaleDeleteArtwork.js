@@ -1,4 +1,4 @@
-let modalButtons = document.querySelectorAll('.buttonModaleG1,.buttonModaleD1');
+let modalButtons = document.querySelectorAll('.buttonModale');
 modalButtons.forEach(button => {
   button.addEventListener('click', openModal);
 });

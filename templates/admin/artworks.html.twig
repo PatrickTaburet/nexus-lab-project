@@ -19,12 +19,16 @@
                 <th>Author</th>
                 <th>Title</th>
                 <th>Comments</th>
+                <th>Scene</th>
                 <th>Likes</th>
                 <th>Date</th>
                 <th>Actions</th>
             </thead>
             <tbody>
+      
             {%  for artwork in artworks %}
+                {% set entityName = artwork|class_name|split('\\')|last %} 
+                {% set entityLabel = entities[entityName] %}
                 <tr>
                     <td>{{artwork.id}}</td>
                     <td><img class="artworkImg" src="{{ vich_uploader_asset(artwork, 'imageFile')}}" alt="artwork_picture"></td>
@@ -34,10 +38,11 @@
                     </td>
                     <td>{{artwork.title}}</td>
                     <td class="commentTable">{{artwork.comment}}</td>
+                    <td class="dateTable">{{entityLabel}}</td>
                     <td class="likeTable">{{artwork.likes|length}}</td>
                     <td class="dateTable">{{artwork.updatedAt|date('F j, Y, g:i a')}}</td>
                     <td>
-                    {% set entityName = artwork|class_name|split('\\')|last %} 
+                 
                         <a href="{{path('admin_edit_artwork', {'id' : artwork.id, 'entity': entityName}) }}" class="customButton">Edit</a>
                         <a href="{{path('admin_delete_artwork', {'id' : artwork.id, 'entity': entityName}) }}" class="customButton">Delete</a>
                     </td> 

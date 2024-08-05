@@ -22,7 +22,8 @@ use Symfony\Component\ {
     HttpFoundation\Request,
     HttpFoundation\Response,
     Routing\Annotation\Route,
-    HttpKernel\Exception\NotFoundHttpException
+    HttpKernel\Exception\NotFoundHttpException,
+    Yaml\Yaml
 };
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Doctrine\ORM\EntityManagerInterface;
@@ -53,7 +54,21 @@ class AdminController extends AbstractController
     #[Route("/users", name: "users")]
     public function usersList(UserRepository $users, PaginatorInterface $paginator, Request $request): Response
     {
-        $data = $users->findAll();
+       
+        $queryBuilder = $users->createQueryBuilder('u')
+        ->leftJoin('u.Scene1', 's1')
+        ->leftJoin('u.Scene2', 's2')
+        ->leftJoin('u.sceneD1', 'sd1')
+        ->leftJoin('u.sceneD2', 'sd2')
+        ->addSelect('s1', 's2', 'sd1', 'sd2');
+
+        $data = $queryBuilder->getQuery()->getResult();
+
+        foreach ($data as $user) {
+            $totalArtwork = count($user->getScene1()) + count($user->getScene2()) + count($user->getSceneD1()) + count($user->getSceneD2());
+            $user->totalArtwork = $totalArtwork;
+        }
+
         $allUsers = $paginator->paginate(
             $data,
             $request->query->getInt('page', 1),
@@ -158,6 +173,7 @@ class AdminController extends AbstractController
         Request $request
     ): Response
     {
+        $entities = Yaml::parseFile($this->getParameter('kernel.project_dir') . '/config/entities.yaml');
         $scenes = $repoG1 -> findAll(); 
         $scenes2= $repoD1 -> findAll();
         $scenes3= $repoG2 -> findAll();
@@ -172,7 +188,8 @@ class AdminController extends AbstractController
             9
         );
         return $this->render('admin/artworks.html.twig', [
-            'artworks' => $artworks
+            'artworks' => $artworks,
+            'entities' => $entities['entities']
         ]);   
     }
     

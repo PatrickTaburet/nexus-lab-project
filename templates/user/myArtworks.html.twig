@@ -21,6 +21,7 @@
         </div>
     </div>
 {# End modale #}
+
 <div class="flyingCard">
     <div class="card-border">
         <div class="card ">
@@ -36,89 +37,60 @@
 <h1 >MY ARTWORKS</h1>
 
 <div class="tableContainer">
-    <h2 id="generativeArt" class="ancre">Generative Art</h2>
-	<table class="table">
-		<thead>
-			<tr>
-			    <th scope="col">Picture</th>
-                <th scope="col">Title</th>
-                <th scope="col">Comment</th>
-                <th scope="col">Likes</th>
-                <th scope="col">Date</th>
-                <th scope="col">Action</th>
-			</tr>
-		</thead>
-        <tbody>
-        
-        {% for artwork in artworks.scenesG %}
-        {% set entityName = artwork|class_name|split('\\')|last %}  {# Extract entity name from artwork object #}
-            {% if (is_granted('ROLE_USER') and artwork.user == app.user)%}
-            <tr>
-                <td>
-                    <a href="{{ vich_uploader_asset(artwork, 'imageFile') }}"  data-lightbox="artwork" data-title="{{ artwork.title }}">
-                        <img src="{{ vich_uploader_asset(artwork, 'imageFile') }}" alt="artwork_picture" class="artworkImg">
-                    </a>
-                </td>
-                <td>{{artwork.title}}</td>
-                <td class="commentTable">{{artwork.comment}}</td>
-                <td class="likeTable">{{artwork.likes|length}}</td>
-                <td class="dateTable">{{artwork.updatedAt|date('F j, Y, g:i a')}}</td>
-                <td>
-                    <a href="{{ path('editArtwork', {'id': artwork.id, 'entity': entityName})}}" class="customButton generateButton">Update</a>
-                    <button 
-                        class="buttonModaleG1 customButton generateButton"
-                        data-delete-url="{{ path('deleteArtwork', {'id': artwork.id , 'entity': entityName}) }}">
-                        Delete
-                    </button>
-                </td> 
-            </tr> 
-            {% endif %}
-        {% endfor %} 
-        </tbody>
-	</table>
-
-    <h2 id="dataArt" class="ancre">Data Art</h2>
-
-	<table class="table">
-		<thead>
-			<tr>
-			    <th scope="col">Picture</th>
-                <th scope="col">Title</th>
-                <th scope="col">Comment</th>
-                <th scope="col">Likes</th>
-                <th scope="col">Date</th>
-                <th scope="col">Action</th>
-			</tr>
-		</thead>
-        <tbody>
-        {% for artwork in artworks.sceneD %}
-            {% set entityName = artwork|class_name|split('\\')|last %} 
-
-            {% if (is_granted('ROLE_USER') and artwork.user == app.user)%}
-            <tr>
-                <td>
-                    <a href="{{ vich_uploader_asset(artwork, 'imageFile') }}"  data-lightbox="artwork" data-title="{{ artwork.title }}">
-                        <img src="{{ vich_uploader_asset(artwork, 'imageFile') }}" alt="artwork_picture" class="artworkImg">
-                    </a>
-                </td>
-                <td>{{artwork.title}}</td>
-                <td class="commentTable">{{artwork.comment}}</td>
-                <td class="likeTable">{{artwork.likes|length}}</td>
-                <td class="dateTable">{{artwork.updatedAt|date('F j, Y, g:i a')}}</td>
-                <td>
-                    <a href="{{ path('editArtwork', {'id': artwork.id, 'entity': entityName})}}" class="customButton generateButton">Update</a>
-                    <button 
-                        class="buttonModaleD1 customButton generateButton"
-                        data-delete-url="{{ path('deleteArtwork', {'id': artwork.id , 'entity': entityName}) }}">
-                        Delete
-                    </button> 
-                </td> 
-            </tr> 
-            {% endif %}
-        {% endfor %} 
-        </tbody>
-	</table>
+    {% set categories = {'generativeArt': artworks.scenesG, 'dataArt': artworks.sceneD} %}
+    {% for category, artworks in categories %}
+        <h2 id="{{ category }}" class="ancre">{{ category|replace({'generativeArt': 'Generative Art', 'dataArt': 'Data Art'}) }}</h2>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">Picture</th>
+                    <th scope="col">Title</th>
+                    <th scope="col">Comment</th>
+                    <th scope="col">Scene</th>
+                    <th scope="col">Likes</th>
+                    <th scope="col">Date</th>
+                    <th scope="col">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for artwork in artworks %}
+                    {% set entityName = artwork|class_name|split('\\')|last %}
+                    {% set entityLabel = entities[entityName] %}
+                    {% if is_granted('ROLE_USER') and artwork.user == app.user %}
+                        <tr>
+                            <td>
+                                <a href="{{ vich_uploader_asset(artwork, 'imageFile') }}" data-lightbox="artwork" data-title="{{ artwork.title }}">
+                                    <img src="{{ vich_uploader_asset(artwork, 'imageFile') }}" alt="artwork_picture" class="artworkImg">
+                                </a>
+                            </td>
+                            <td>{{ artwork.title }}</td>
+                            <td class="commentTable">{{ artwork.comment }}</td>
+                            <td class="dateTable">{{ entityLabel }}</td>
+                            <td class="likeTable">{{ artwork.likes|length }}</td>
+                            <td class="dateTable">{{ artwork.updatedAt|date('F j, Y, g:i a') }}</td>
+                            <td>
+                                <a href="{{ path('editArtwork', {'id': artwork.id, 'entity': entityName}) }}" class="customButton generateButton">Update</a>
+                                <button class="buttonModale customButton generateButton" data-delete-url="{{ path('deleteArtwork', {'id': artwork.id, 'entity': entityName}) }}">Delete</button>
+                            </td>
+                        </tr>
+                    {% endif %}
+                {% endfor %}
+            </tbody>
+        </table>
+    {% endfor %}
 </div>
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 {% block javascripts %}

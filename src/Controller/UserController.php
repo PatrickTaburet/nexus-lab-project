@@ -24,6 +24,7 @@ use Symfony\Component\{
     Routing\Annotation\Route,
     HttpFoundation\Request,
     PasswordHasher\Hasher\UserPasswordHasherInterface,
+    Yaml\Yaml
 };
 use Symfony\Component\HttpKernel\Exception\{
     NotFoundHttpException,
@@ -148,7 +149,7 @@ class UserController extends AbstractController
         $id,
     ) : Response
     {       
-       
+        $entities = Yaml::parseFile($this->getParameter('kernel.project_dir') . '/config/entities.yaml');
         $sceneG1 = $repoG1->findBy(['user' => $id]);
         $sceneG2 = $repoG2->findBy(['user' => $id]);
         $sceneD1 = $repoD1->findBy(['user' => $id]);
@@ -169,6 +170,7 @@ class UserController extends AbstractController
         
         return $this->render('user/myArtworks.html.twig', [
             'artworks' => $data,
+            'entities' => $entities['entities']
         ]);
     } 
 
