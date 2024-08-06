@@ -20,7 +20,8 @@
             <th>Pseudo</th>
             <th>Roles</th>
             <th>Artworks</th>
-            <th>Scene</th>
+            <th>Likes</th>
+            <th>Scenes</th>
             <th>Actions</th>
         </thead>
         <tbody>
@@ -41,6 +42,7 @@
                     {% endfor %}
                 </td>
                 <td>{{user.totalArtwork}}</td>
+                <td>{{user.totalLikes}}</td>
                 <td>0</td>
                 <td><a href="{{path('admin_edit_user', {'id' : user.id}) }}" class="customButton">Edit</a>
                 {% if 'ROLE_ADMIN' not in user.roles %} {# to prevent the admin from deleting his own account #}

@@ -65,8 +65,25 @@ class AdminController extends AbstractController
         $data = $queryBuilder->getQuery()->getResult();
 
         foreach ($data as $user) {
+           
             $totalArtwork = count($user->getScene1()) + count($user->getScene2()) + count($user->getSceneD1()) + count($user->getSceneD2());
+            
+            $totalLikes = 0;
+            foreach ($user->getScene1() as $artwork) {
+                $totalLikes += count($artwork->getLikes());
+            }
+            foreach ($user->getScene2() as $artwork) {
+                $totalLikes += count($artwork->getLikes());
+            }
+            foreach ($user->getSceneD1() as $artwork) {
+                $totalLikes += count($artwork->getLikes());
+            }
+            foreach ($user->getSceneD2() as $artwork) {
+                $totalLikes += count($artwork->getLikes());
+            }
+    
             $user->totalArtwork = $totalArtwork;
+            $user->totalLikes = $totalLikes;
         }
 
         $allUsers = $paginator->paginate(

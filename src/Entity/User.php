@@ -77,6 +77,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(targetEntity: Scene2::class, mappedBy: "user")]
     private $Scene2;
 
+
        // ------- Data art scenes --------
 
     #[ORM\OneToMany(targetEntity: SceneD1::class, mappedBy: "user")]
@@ -219,6 +220,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         // If you store any temporary, sensitive data on the user, clear it here
         // $this->plainPassword = null;
     }
+    
 
     // ---------- Vich Uploader - Profile Picture ---------- //
 
@@ -341,6 +343,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
         return $this;
     }
+
+      // ---------- Data art scenes ---------- //
 
     /**
      * @return Collection<int, SceneD1>
