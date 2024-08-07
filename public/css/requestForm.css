@@ -11,10 +11,14 @@
 .headerUser{
     margin: 25px 0 5px 0;
     font-size: 47px;
-    padding-bottom: 30px;
+    padding-bottom: 10px;
     text-align: center;
 }
-
+.categoryLabel{
+    color: var(--var-cyan);
+    font-size: 30px;
+    margin-bottom: 20px;
+}
 .form{
     text-align: center;
     background-color: #15172b;

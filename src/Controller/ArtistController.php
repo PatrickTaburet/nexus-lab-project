@@ -18,8 +18,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 class ArtistController extends AbstractController
 {
 
-    #[Route("/add-new-scene", name: "addScene", methods: ["GET", "POST"])]
-    public function addScene( EntityManagerInterface $entityManager, Request $request): Response
+    #[Route("/add-new-scene/{id}", name: "addScene", methods: ["GET", "POST"])]
+    public function addScene( EntityManagerInterface $entityManager, Request $request, ?int $id ): Response
     {   
         $sceneRequest = new AddScene(); 
 
@@ -56,9 +56,10 @@ class ArtistController extends AbstractController
             return $this->redirectToRoute('home');
 
         } 
-
+        $category = ($id === 1) ? 'Generative Art' : ($id === 2 ? 'Data Art Visualization' : 'Unknown Category');
         return $this->render('artist/addScene.html.twig', [
             'form' => $form->createView(),
+            'category' => $category,
         ]);
     }
 

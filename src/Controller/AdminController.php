@@ -54,43 +54,37 @@ class AdminController extends AbstractController
     #[Route("/users", name: "users")]
     public function usersList(UserRepository $users, PaginatorInterface $paginator, Request $request): Response
     {
-       
         $queryBuilder = $users->createQueryBuilder('u')
-        ->leftJoin('u.Scene1', 's1')
-        ->leftJoin('u.Scene2', 's2')
-        ->leftJoin('u.sceneD1', 'sd1')
-        ->leftJoin('u.sceneD2', 'sd2')
-        ->addSelect('s1', 's2', 'sd1', 'sd2');
+            ->leftJoin('u.Scene1', 's1')->addSelect('s1')
+            ->leftJoin('u.Scene2', 's2')->addSelect('s2')
+            ->leftJoin('u.sceneD1', 'sd1')->addSelect('sd1')
+            ->leftJoin('u.sceneD2', 'sd2')->addSelect('sd2')
+            ->leftJoin('s1.likes', 'l1')->addSelect('l1')
+            ->leftJoin('s2.likes', 'l2')->addSelect('l2')
+            ->leftJoin('sd1.likes', 'l3')->addSelect('l3')
+            ->leftJoin('sd2.likes', 'l4')->addSelect('l4');
+    
+        $allUsers = $paginator->paginate(
+            $queryBuilder,
+            $request->query->getInt('page', 1),
+            9
+        );
 
-        $data = $queryBuilder->getQuery()->getResult();
-
-        foreach ($data as $user) {
-           
-            $totalArtwork = count($user->getScene1()) + count($user->getScene2()) + count($user->getSceneD1()) + count($user->getSceneD2());
+        foreach ($allUsers as $user) {
+            $totalArtwork = count($user->getScene1()) + count($user->getScene2()) + 
+                            count($user->getSceneD1()) + count($user->getSceneD2());
             
             $totalLikes = 0;
-            foreach ($user->getScene1() as $artwork) {
-                $totalLikes += count($artwork->getLikes());
-            }
-            foreach ($user->getScene2() as $artwork) {
-                $totalLikes += count($artwork->getLikes());
-            }
-            foreach ($user->getSceneD1() as $artwork) {
-                $totalLikes += count($artwork->getLikes());
-            }
-            foreach ($user->getSceneD2() as $artwork) {
-                $totalLikes += count($artwork->getLikes());
+            foreach ([$user->getScene1(), $user->getScene2(), $user->getSceneD1(), $user->getSceneD2()] as $artworks) {
+                foreach ($artworks as $artwork) {
+                    $totalLikes += count($artwork->getLikes());
+                }
             }
     
             $user->totalArtwork = $totalArtwork;
             $user->totalLikes = $totalLikes;
         }
-
-        $allUsers = $paginator->paginate(
-            $data,
-            $request->query->getInt('page', 1),
-            9
-        );
+    
         return $this->render('admin/users.html.twig', [
             'users' => $allUsers
         ]);

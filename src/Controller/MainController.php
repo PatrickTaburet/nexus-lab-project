@@ -92,6 +92,7 @@ class MainController extends AbstractController
     public function generativeHome(): Response
     {
         return $this->render('main/generativeHome.html.twig', [
+            'category' => 'generative-art'
         ]);   
     }
 
@@ -99,6 +100,7 @@ class MainController extends AbstractController
     public function dataArtHome(): Response
     {
         return $this->render('main/dataArtHome.html.twig', [
+            'category' => 'data-art'
         ]);   
     }
 
