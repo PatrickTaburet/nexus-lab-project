@@ -16,6 +16,7 @@ use Symfony\Component\{
 };
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use App\Repository\UserRepository;
+use ApiPlatform\Metadata\ApiResource;
 
 
 /** 
@@ -26,6 +27,7 @@ use App\Repository\UserRepository;
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[UniqueEntity(fields: ["email"], message: "There is already an account with this email")]
 #[Vich\Uploadable]
+#[ApiResource]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
