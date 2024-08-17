@@ -6,7 +6,10 @@ import NexusLabImage from './assets/NexusLab-full-purple.png';
 const HomeScreen = () => {
   return (
     <View style={styles.container}>
-      <Image source={NexusLabImage} style={styles.logo}/>
+      <Image 
+        source={NexusLabImage}
+        style={styles.logo}
+    />
     </View>
   )
 }
@@ -16,10 +19,14 @@ export default HomeScreen
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: colors.secondary_dark
+        backgroundColor: colors.secondary_dark,
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
     },
     logo : {
-        width: 400,
-        height: 300,
+        width: 300,
+        resizeMode: 'contain',
+        marginBottom: 200, 
     }
 })
