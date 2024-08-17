@@ -17,6 +17,14 @@ security:
         main:
             lazy: true
             provider: app_user_provider
+            stateless: false
+            json_login:
+                check_path: auth # The name in routes.yaml is enough for mapping
+                username_path: email
+                password_path: password
+                success_handler: lexik_jwt_authentication.handler.authentication_success
+                failure_handler: lexik_jwt_authentication.handler.authentication_failure
+            jwt: ~
             custom_authenticator: App\Security\LoginAuthenticator
             logout:
                 path: app_logout
