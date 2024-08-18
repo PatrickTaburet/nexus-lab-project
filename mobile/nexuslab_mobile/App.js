@@ -4,42 +4,26 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { NavigationContainer } from '@react-navigation/native';
 import HomeScreen from './src/screen/HomeScreen';
 import AppLoading from 'expo-app-loading';
-import {
-  useFonts,
-  Orbitron_400Regular,
-  Orbitron_500Medium,
-  Orbitron_600SemiBold,
-  Orbitron_700Bold,
-  Orbitron_800ExtraBold,
-  Orbitron_900Black,
-} from '@expo-google-fonts/orbitron';
+import { useCustomFonts } from './src/utils/fonts'; 
+import { globalStyles } from './src/utils/styles';  
 
 export default function App() {
-  let [fontsLoaded] = useFonts({
-    Orbitron_400Regular,
-    Orbitron_500Medium,
-    Orbitron_600SemiBold,
-    Orbitron_700Bold,
-    Orbitron_800ExtraBold,
-    Orbitron_900Black,
-  });
-
+  let [fontsLoaded] = useCustomFonts();
   if (!fontsLoaded) {
     return <AppLoading />;
-  } else {
-    return (
-      <NavigationContainer>
-        <Stack.Navigator 
-          screenOptions={{
-            headerShown: false,
-          }}
-        >
-          <Stack.Screen name="Home" component={HomeScreen} />
-          <Text>vddvffd</Text>
-        </Stack.Navigator>
-      </NavigationContainer>
-    );
   }
+  return (
+    <NavigationContainer>
+      <Stack.Navigator 
+        screenOptions={{
+          headerShown: false,
+        }}
+      >
+        <Stack.Screen name="Home" component={HomeScreen} />
+      
+      </Stack.Navigator>
+    </NavigationContainer>
+  );
 } 
 const Stack = createNativeStackNavigator();
 
