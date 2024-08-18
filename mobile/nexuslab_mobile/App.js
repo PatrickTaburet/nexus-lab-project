@@ -3,15 +3,26 @@ import { StyleSheet, Text, View } from 'react-native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { NavigationContainer } from '@react-navigation/native';
 import HomeScreen from './src/screen/HomeScreen';
-import AppLoading from 'expo-app-loading';
+import * as SplashScreen from 'expo-splash-screen';
 import { useCustomFonts } from './src/utils/fonts'; 
+import {useEffect } from 'react';
 import { globalStyles } from './src/utils/styles';  
+
+SplashScreen.preventAutoHideAsync();
 
 export default function App() {
   let [fontsLoaded] = useCustomFonts();
+
+  useEffect(() => {
+    if (fontsLoaded) {
+      SplashScreen.hideAsync();
+    }
+  }, [fontsLoaded]);
+
   if (!fontsLoaded) {
-    return <AppLoading />;
+    return null;
   }
+  
   return (
     <NavigationContainer>
       <Stack.Navigator 

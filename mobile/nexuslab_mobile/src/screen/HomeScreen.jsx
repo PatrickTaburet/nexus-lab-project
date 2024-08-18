@@ -2,13 +2,13 @@ import { Image, StyleSheet, Text, View } from 'react-native'
 import React from 'react'
 import { colors } from '../utils/colors'
 import NexusLabImage from '../assets/logo/NexusLab-full-purple.png';
-import { globalStyles } from '../utils/styles';
+import globalStyles from '../utils/styles';
 
 const HomeScreen = () => {
   return (
     <View style={styles.container}>
       <View style={styles.content}>
-        <Text style={[styles.headerText, globalStyles.text]}>vddvffd</Text>
+        <Text style={[styles.headerText, globalStyles.text3]}>vdddddddvffd</Text>
         <Image 
           source={NexusLabImage}
           style={styles.logo}
