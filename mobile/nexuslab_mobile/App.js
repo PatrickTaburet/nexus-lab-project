@@ -3,6 +3,8 @@ import { StyleSheet, Text, View } from 'react-native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { NavigationContainer } from '@react-navigation/native';
 import HomeScreen from './src/screen/HomeScreen';
+import LoginScreen from './src/screen/LoginScreen';
+import SignupScreen from './src/screen/SignupScreen';
 import * as SplashScreen from 'expo-splash-screen';
 import { useCustomFonts } from './src/utils/fonts'; 
 import {useEffect } from 'react';
@@ -31,6 +33,8 @@ export default function App() {
         }}
       >
         <Stack.Screen name="Home" component={HomeScreen} />
+        <Stack.Screen name="Login" component={LoginScreen}/>
+        <Stack.Screen name="Signup" component={SignupScreen}/>
       
       </Stack.Navigator>
     </NavigationContainer>

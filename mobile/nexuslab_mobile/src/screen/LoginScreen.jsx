@@ -3,47 +3,19 @@ import React from 'react'
 import { colors } from '../utils/colors'
 import NexusLabImage from '../assets/logo/NexusLab-full-purple.png';
 import globalStyles from '../utils/styles';
-import { useNavigation } from '@react-navigation/native';
 
-const HomeScreen = () => {
-  const navigation = useNavigation();
-
-  const HandleLogin = () => {
-    navigation.navigate('Login');
-  }
-  const HandleSignup = () => {
-    navigation.navigate('Signup');
-  }
-
+const LoginScreen = () => {
   return (
     <View style={styles.container}>
       <View style={styles.content}>
-        <Text style={[styles.headerText, globalStyles.text3]}>vdddddddvffd</Text>
-        <Image 
-          source={NexusLabImage}
-          style={styles.logo}
-        />
-    
-        <View style={styles.buttonContainer}>
-          <TouchableOpacity 
-            style={globalStyles.customButton}
-            onPress={HandleLogin}
-          >
-            <Text style={styles.text} >Login</Text>
-          </TouchableOpacity>
-          <TouchableOpacity 
-            style={globalStyles.customButton}
-            onPress={HandleSignup}
-          >
-            <Text style={styles.text} >Sign-up</Text>
-          </TouchableOpacity>
-        </View>
+        <Text style={[styles.headerText, globalStyles.text3]}>ffffffffff</Text>
+      
       </View>
     </View>
   )
 }
 
-export default HomeScreen
+export default LoginScreen
 
 const styles = StyleSheet.create({
     container: {

@@ -9,7 +9,6 @@ export const colors = {
     secondary_dark:'#7B6CD9',
     purple_dark: '#3A175F',
     
-
     soft_blue: 'hsl(215, 51%, 70%)',
     cyan: 'hsl(178, 100%, 50%)',
 
@@ -17,5 +16,4 @@ export const colors = {
     card_dark: 'hsl(216, 50%, 16%)',
     line_dark: 'hsl(215, 32%, 27%)',
     lightest: 'white',
-
 }
