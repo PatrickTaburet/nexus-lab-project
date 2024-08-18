@@ -1,9 +1,10 @@
-import { Image, StyleSheet, Text, View, TouchableOpacity } from 'react-native'
-import React from 'react'
-import { colors } from '../utils/colors'
+import { Image, StyleSheet, Text, View, TouchableOpacity } from 'react-native';
+import React from 'react';
+import { colors } from '../utils/colors';
 import NexusLabImage from '../assets/logo/NexusLab-full-purple.png';
 import globalStyles from '../utils/styles';
 import { useNavigation } from '@react-navigation/native';
+import MyButton from '../components/MyButton';
 
 const HomeScreen = () => {
   const navigation = useNavigation();
@@ -15,6 +16,7 @@ const HomeScreen = () => {
     navigation.navigate('Signup');
   }
 
+
   return (
     <View style={styles.container}>
       <View style={styles.content}>
@@ -25,18 +27,16 @@ const HomeScreen = () => {
         />
     
         <View style={styles.buttonContainer}>
-          <TouchableOpacity 
-            style={globalStyles.customButton}
-            onPress={HandleLogin}
+          <MyButton
+            HandlePress={HandleLogin}
           >
-            <Text style={styles.text} >Login</Text>
-          </TouchableOpacity>
-          <TouchableOpacity 
-            style={globalStyles.customButton}
-            onPress={HandleSignup}
+            Login
+          </MyButton>
+          <MyButton
+            HandlePress={HandleSignup}
           >
-            <Text style={styles.text} >Sign-up</Text>
-          </TouchableOpacity>
+            Sign-up
+          </MyButton>
         </View>
       </View>
     </View>
@@ -67,7 +67,6 @@ const styles = StyleSheet.create({
       fontSize: 40,
       textAlign: 'center',
       marginBottom: -200,
-      fontFamily: '',
     },
     buttonContainer:{
       flexDirection: 'row',
