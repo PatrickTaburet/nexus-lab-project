@@ -1,16 +1,28 @@
 import { Image, StyleSheet, Text, View, TouchableOpacity } from 'react-native'
 import React from 'react'
 import { colors } from '../utils/colors'
-import NexusLabImage from '../assets/logo/NexusLab-full-purple.png';
 import globalStyles from '../utils/styles';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+import { useNavigation } from '@react-navigation/native';
 
 const SignupScreen = () => {
+
+  const navigation = useNavigation();
+  const HandleBack = () => {
+    navigation.navigate('Home');
+  }
+
   return (
     <View style={styles.container}>
-      <View style={styles.content}>
+      <TouchableOpacity 
+        style={styles.backButton}
+        onPress={HandleBack}
+      >
+        <Ionicons name={"arrow-back-circle"} color={colors.lightest} size={50} />
+      </TouchableOpacity>
         <Text style={[styles.headerText, globalStyles.text3]}>SIGNUP</Text>
       
-      </View>
+
     </View>
   )
 }
@@ -23,29 +35,16 @@ const styles = StyleSheet.create({
       backgroundColor: colors.secondary_dark,
     },
     content : {
-      flex: 1,
-      justifyContent: 'center',
-      alignItems: 'center',
-      gap: 50
+
     },
-    logo : {
-        width: 300,
-        resizeMode: 'contain',
-        position: 'absolute',
-        bottom: -230,
+    backButton: {
+      position: 'absolute',
+      top: 50,
+      left : 20,
+      backgroundColor: "",
+      borderRadius: 25,
     },
-    headerText:{
-      color: 'white',
-      fontSize: 40,
-      textAlign: 'center',
-      marginBottom: -200,
-      fontFamily: '',
-    },
-    buttonContainer:{
-      flexDirection: 'row',
-      bottom:130,
-      position: 'absolute'
-    },
+
     text:{
       color: "white"
     }
