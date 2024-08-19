@@ -16,4 +16,5 @@ export const colors = {
     card_dark: 'hsl(216, 50%, 16%)',
     line_dark: 'hsl(215, 32%, 27%)',
     lightest: 'white',
+    web_black : '#181818',
 }

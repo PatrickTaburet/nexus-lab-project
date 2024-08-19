@@ -4,12 +4,16 @@ import { colors } from '../utils/colors'
 import globalStyles from '../utils/styles';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { useNavigation } from '@react-navigation/native';
+import MyButton from '../components/MyButton';
 
 const LoginScreen = () => {
 
   const navigation = useNavigation();
   const HandleBack = () => {
     navigation.navigate('Home');
+  }
+  const HandleSubmit = () => {
+    navigation.navigate('Login');
   }
 
   return (
@@ -22,7 +26,7 @@ const LoginScreen = () => {
       </TouchableOpacity>
       {/* Form */}
       <View style={styles.formContainer}>
-      <Text style={[styles.headerText, globalStyles.text3]}>LOGIN</Text>
+        <Text style={[styles.mainText, globalStyles.text3]}>LOGIN</Text>
         <View style={styles.inputContainer}>
           <Ionicons 
           name={"mail-outline"}
@@ -39,6 +43,12 @@ const LoginScreen = () => {
           />
           <TextInput placeholder='Enter your Password'/>
         </View>
+        <MyButton
+          HandlePress={HandleSubmit}
+          myStyle={styles.submitButton}
+        >
+          Submit
+        </MyButton>
       </View>
 
     </View>
@@ -50,10 +60,10 @@ export default LoginScreen
 const styles = StyleSheet.create({
     container: {
       flex: 1,
-      backgroundColor: colors.secondary_dark,
-      padding: 20
-      // justifyContent: 'center',
-      // alignItems: 'center',
+      backgroundColor: colors.web_black,
+      padding: 20,
+      justifyContent: 'center',
+      alignItems: 'center',
     },
 
     backButton: {
@@ -64,17 +74,20 @@ const styles = StyleSheet.create({
       borderRadius: 25,
     },
 
-    text:{
-      color: "white"
+    mainText:{
+      color: "rgb(217, 0, 255)",
+      marginBottom: 30,
     },
     formContainer : {
       marginTop: 20,
       justifyContent: "center",
       alignItems: "center",
-      height : '80%'
+      backgroundColor: '#222',
+      width: '100%',
+      paddingVertical: 40
     },
     inputContainer:{
-      marginVertical: 10,
+      marginVertical: 15,
       alignItems: "center",
       flexDirection: 'row',
       width: '80%',
@@ -85,5 +98,8 @@ const styles = StyleSheet.create({
     },
     inputIcon:{
       margin:7
+    },
+    submitButton:{
+      marginTop: 20
     }
 })

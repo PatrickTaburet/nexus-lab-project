@@ -11,10 +11,10 @@ const MyButton = ({children, myStyle, HandlePress}) => {
         colors={['#AF40FF', '#5B42F3', '#00DDEB']}
         start={{ x: 0, y: 0.3 }}
         end={{ x: 1, y: 0.7 }}
-        style={styles.gradient}
+        style={[styles.gradient, myStyle]}
       >
         <TouchableOpacity 
-          style={[styles.customButton, myStyle]}
+          style={[styles.customButton]}
           onPress={HandlePress}
         >
           <Text style={styles.text} >{children}</Text>
@@ -38,6 +38,8 @@ const styles = StyleSheet.create({
     backgroundColor: "yellow",
     borderRadius: 10,
     margin: 10,
+    minHeight: 40,
+    maxHeight: 50,
   },
   customButton:{
     alignItems: 'center',
@@ -56,6 +58,7 @@ const styles = StyleSheet.create({
     maxWidth: 150,
     minWidth: 110,
     minHeight: 40,
+    maxHeight: 50,
     padding: 10,
     paddingHorizontal: 14,
     margin: 3,
