@@ -80,7 +80,7 @@ const SignupScreen = () => {
           </View>
           <MyButton
             HandlePress={() => {
-              navigation.navigate('Login');
+              navigation.navigate('Home');
             }}
             myStyle={styles.submitButton}
           >
@@ -137,7 +137,8 @@ const styles = StyleSheet.create({
       margin:7
     },
     submitButton:{
-      marginTop: 40
+      marginTop: 40,
+      fontSize: 20
     },
     checkboxContainer:{
       flexDirection: 'row',

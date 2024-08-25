@@ -1,6 +1,8 @@
-import { TextInput, StyleSheet, Text, View, TouchableOpacity } from 'react-native'
-import React from 'react'
-import { colors } from '../utils/colors'
+import { TextInput, StyleSheet, Text, View, TouchableOpacity } from 'react-native';
+// import Checkbox from 'expo-checkbox';
+import { CheckBox } from 'rn-inkpad';
+import React, {useState} from 'react';
+import { colors } from '../utils/colors';
 import globalStyles from '../utils/styles';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { useNavigation } from '@react-navigation/native';
@@ -9,22 +11,19 @@ import MyButton from '../components/MyButton';
 const LoginScreen = () => {
 
   const navigation = useNavigation();
-  const HandleBack = () => {
-    navigation.navigate('Home');
-  }
-  const HandleSubmit = () => {
-    navigation.navigate('Login');
-  }
+  const [checked, setIsChecked] = useState(false);
 
   return (
     <View style={styles.container}>
       <TouchableOpacity 
         style={styles.backButton}
-        onPress={HandleBack}
+        onPress={() => navigation.navigate('Home')}
       >
         <Ionicons name={"arrow-back-circle"} color={colors.lightest} size={50} />
       </TouchableOpacity>
+
       {/* Form */}
+      
       <View style={styles.formContainer}>
         <Text style={[styles.mainText, globalStyles.text3]}>LOGIN</Text>
         <View style={styles.inputContainer}>
@@ -43,11 +42,29 @@ const LoginScreen = () => {
           />
           <TextInput placeholder='Enter your Password'/>
         </View>
+        <View style={styles.checkboxContainer}>
+          <CheckBox
+            checked={checked}
+            iconColor={'#FFFFFF'}
+            iconSize={18}
+            textStyle={{fontSize: 15, fontWeight: 700}}
+            textColor={"white"}
+            onChange={setIsChecked}
+            title={'Remember me'}
+          />
+          <TouchableOpacity
+            onPress={() => navigation.navigate('Signup')}
+          >
+            <Text style={[styles.signup, globalStyles.text2]}>Sign up</Text>
+          </TouchableOpacity>
+        </View>
         <MyButton
-          HandlePress={HandleSubmit}
+          HandlePress={() => {
+            navigation.navigate('Login');
+          }}
           myStyle={styles.submitButton}
         >
-          Submit
+          Login
         </MyButton>
       </View>
 
@@ -68,7 +85,7 @@ const styles = StyleSheet.create({
 
     backButton: {
       position: 'absolute',
-      top: 50,
+      top: 45,
       left : 20,
       backgroundColor: "",
       borderRadius: 25,
@@ -76,7 +93,7 @@ const styles = StyleSheet.create({
 
     mainText:{
       color: "rgb(217, 0, 255)",
-      marginBottom: 30,
+      marginBottom: 20,
     },
     formContainer : {
       marginTop: 20,
@@ -84,7 +101,7 @@ const styles = StyleSheet.create({
       alignItems: "center",
       backgroundColor: '#222',
       width: '100%',
-      paddingVertical: 40
+      paddingVertical: 30
     },
     inputContainer:{
       marginVertical: 15,
@@ -100,6 +117,18 @@ const styles = StyleSheet.create({
       margin:7
     },
     submitButton:{
-      marginTop: 20
+      marginTop: 40,
+      fontSize: 20
+    },
+    checkboxContainer:{
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      width: '80%',
+      marginLeft: 30
+    },
+    signup:{
+      fontSize: 20,
+      marginRight: 20,
+      color: "rgb(217, 0, 255)"
     }
 })

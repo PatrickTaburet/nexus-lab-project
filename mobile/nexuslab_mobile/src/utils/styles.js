@@ -11,7 +11,7 @@ const globalStyles = StyleSheet.create({
   },
   text3: {
     fontFamily:'Oxanium_400Regular',
-    fontSize: 34,
+    fontSize: 44,
   },
 
 
