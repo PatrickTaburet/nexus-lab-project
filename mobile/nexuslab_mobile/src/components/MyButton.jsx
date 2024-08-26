@@ -5,6 +5,18 @@ import { colors } from '../utils/colors'
 import { LinearGradient } from 'expo-linear-gradient';
 
 const MyButton = ({children, myStyle, HandlePress}) => {
+
+  const textStyle = {
+    ...myStyle,
+    marginTop: undefined,
+    marginBottom: undefined,
+    marginLeft: undefined,
+    marginRight: undefined,
+    padding: undefined,
+    paddingHorizontal: undefined,
+    paddingVertical: undefined,
+  };
+
   return (
     <View>
       <LinearGradient
@@ -17,7 +29,7 @@ const MyButton = ({children, myStyle, HandlePress}) => {
           style={[styles.customButton]}
           onPress={HandlePress}
         >
-          <Text style={styles.text} >{children}</Text>
+          <Text style={[styles.text, textStyle]} >{children}</Text>
         </TouchableOpacity>
       </LinearGradient>
     </View>

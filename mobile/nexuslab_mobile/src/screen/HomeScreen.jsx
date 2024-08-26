@@ -35,7 +35,7 @@ const HomeScreen = () => {
           <MyButton
             HandlePress={HandleSignup}
           >
-            Sign-up
+            Sign up
           </MyButton>
         </View>
       </View>
@@ -70,8 +70,9 @@ const styles = StyleSheet.create({
     },
     buttonContainer:{
       flexDirection: 'row',
-      bottom:130,
-      position: 'absolute'
+      bottom:100,
+      position: 'absolute',
+      height: 80
     },
     text:{
       color: "white"

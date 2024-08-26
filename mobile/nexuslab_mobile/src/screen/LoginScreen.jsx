@@ -9,22 +9,18 @@ import MyButton from '../components/MyButton';
 const LoginScreen = () => {
 
   const navigation = useNavigation();
-  const HandleBack = () => {
-    navigation.navigate('Home');
-  }
-  const HandleSubmit = () => {
-    navigation.navigate('Login');
-  }
 
   return (
     <View style={styles.container}>
       <TouchableOpacity 
         style={styles.backButton}
-        onPress={HandleBack}
+        onPress={() => navigation.navigate('Home')}
       >
         <Ionicons name={"arrow-back-circle"} color={colors.lightest} size={50} />
       </TouchableOpacity>
+
       {/* Form */}
+      
       <View style={styles.formContainer}>
         <Text style={[styles.mainText, globalStyles.text3]}>LOGIN</Text>
         <View style={styles.inputContainer}>
@@ -43,11 +39,29 @@ const LoginScreen = () => {
           />
           <TextInput placeholder='Enter your Password'/>
         </View>
+        <View style={styles.checkboxContainer}>
+          {/* <CheckBox
+            checked={checked}
+            iconColor={'#FFFFFF'}
+            iconSize={18}
+            textStyle={{fontSize: 15, fontWeight: 700}}
+            textColor={"white"}
+            onChange={setIsChecked}
+            title={'Remember me'}
+          /> */}
+          <TouchableOpacity
+            onPress={() => navigation.navigate('Signup')}
+          >
+            <Text style={[styles.signup, globalStyles.text2]}>Sign up</Text>
+          </TouchableOpacity>
+        </View>
         <MyButton
-          HandlePress={HandleSubmit}
+          HandlePress={() => {
+            navigation.navigate('Login');
+          }}
           myStyle={styles.submitButton}
         >
-          Submit
+          Login
         </MyButton>
       </View>
 
