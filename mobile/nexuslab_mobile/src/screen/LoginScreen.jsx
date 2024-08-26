@@ -1,12 +1,14 @@
 import { TextInput, StyleSheet, Text, View, TouchableOpacity } from 'react-native'
-import React from 'react'
+import React, {useState} from 'react';
 import { colors } from '../utils/colors'
 import globalStyles from '../utils/styles';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { useNavigation } from '@react-navigation/native';
 import MyButton from '../components/MyButton';
+import { Checkbox } from 'react-native-paper';
 
 const LoginScreen = () => {
+  const [checked, setChecked] = useState(false);
 
   const navigation = useNavigation();
 
@@ -39,16 +41,17 @@ const LoginScreen = () => {
           />
           <TextInput placeholder='Enter your Password'/>
         </View>
-        <View style={styles.checkboxContainer}>
-          {/* <CheckBox
-            checked={checked}
-            iconColor={'#FFFFFF'}
-            iconSize={18}
-            textStyle={{fontSize: 15, fontWeight: 700}}
-            textColor={"white"}
-            onChange={setIsChecked}
-            title={'Remember me'}
-          /> */}
+        <View style={styles.bottom}>
+          <View style={styles.checkboxContainer}>
+            <Checkbox
+              status={checked ? 'checked' : 'unchecked'}
+              onPress={() => setChecked(!checked)}
+              uncheckedColor={"white"}
+              color={"rgb(217, 0, 255)"}
+            />
+            <Text style={styles.checkboxText}>Remember me</Text>
+          </View>
+
           <TouchableOpacity
             onPress={() => navigation.navigate('Signup')}
           >
@@ -114,6 +117,25 @@ const styles = StyleSheet.create({
       margin:7
     },
     submitButton:{
-      marginTop: 20
+      marginTop: 20,
+      fontSize: 20
+    },
+    bottom:{
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+      width: '80%',
+    },
+    checkboxContainer:{
+      flexDirection: 'row',
+      alignItems: 'center',
+    },
+    checkboxText:{
+      color: "white",
+    },
+    signup:{
+      fontSize: 20,
+      marginRight: 20,
+      color: "rgb(217, 0, 255)"
     }
 })

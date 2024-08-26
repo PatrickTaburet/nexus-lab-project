@@ -7,7 +7,6 @@ const globalStyles = StyleSheet.create({
   },
   text2: {
     fontFamily:'Outfit_400Regular',
-    fontSize: 24,
   },
   text3: {
     fontFamily:'Oxanium_400Regular',
