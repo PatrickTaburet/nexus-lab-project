@@ -11,6 +11,7 @@ import {useEffect, useState} from 'react';
 import { globalStyles } from './src/utils/styles';  
 import WelcomeScreen from './src/screen/WelcomeScreen';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import AuthGuard from './src/services/AuthGuard';  // Importer le composant AuthGuard
 
 SplashScreen.preventAutoHideAsync();
 const Stack = createNativeStackNavigator();
@@ -46,19 +47,18 @@ export default function App() {
         screenOptions={{
           headerShown: false,
         }}
+        initialRouteName={isLoggedIn ? "Home" : "Welcome"}
       >
-      {isLoggedIn ? (
-        <>
-          <Stack.Screen name="Home" component={HomeScreen} />
-          {/* Ajouter d'autres écrans pour les utilisateurs connectés ici */}
-        </>
-      ) : (
-        <>
-          <Stack.Screen name="Welcome" component={WelcomeScreen} />
-          <Stack.Screen name="Login" component={LoginScreen} />
-          <Stack.Screen name="Signup" component={SignupScreen} />
-        </>
-      )}
+        <Stack.Screen name="Welcome" component={WelcomeScreen} />
+        <Stack.Screen name="Login" component={LoginScreen} />
+        <Stack.Screen name="Signup" component={SignupScreen} />
+        <Stack.Screen name="Home">
+          {() => (
+            <AuthGuard isLoggedIn={isLoggedIn}>
+              <HomeScreen />
+            </AuthGuard>
+          )}
+        </Stack.Screen>   
       </Stack.Navigator>
     </NavigationContainer>
   );
