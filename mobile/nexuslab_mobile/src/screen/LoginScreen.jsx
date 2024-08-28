@@ -6,17 +6,36 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import { useNavigation } from '@react-navigation/native';
 import MyButton from '../components/MyButton';
 import { Checkbox } from 'react-native-paper';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import api from '../services/api';
 
 const LoginScreen = () => {
-  const [checked, setChecked] = useState(false);
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
 
+  const [checked, setChecked] = useState(false);
   const navigation = useNavigation();
 
+  const handleLogin = async () => {
+    try {
+        const response = await api.post('/login_check', { email, password });
+        // console.log('API Response:', response.data);
+        const { token } = response.data;
+
+        await AsyncStorage.setItem('token', token);
+
+        navigation.navigate('Home');
+    } catch (err) {
+      console.log('Error:', err.response?.data);
+        setError('Invalid email or password');
+    }
+};
   return (
     <View style={styles.container}>
       <TouchableOpacity 
         style={styles.backButton}
-        onPress={() => navigation.navigate('Home')}
+        onPress={() => navigation.navigate('Welcome')}
       >
         <Ionicons name={"arrow-back-circle"} color={colors.lightest} size={50} />
       </TouchableOpacity>
@@ -27,11 +46,15 @@ const LoginScreen = () => {
         <Text style={[styles.mainText, globalStyles.text3]}>LOGIN</Text>
         <View style={styles.inputContainer}>
           <Ionicons 
-          name={"mail-outline"}
-          size={20}
-          style={styles.inputIcon}
+            name={"mail-outline"}
+            size={20}
+            style={styles.inputIcon}
           />
-          <TextInput placeholder='Enter your Email'/>
+          <TextInput 
+            placeholder='Enter your Email'
+            value={email}
+            onChangeText={text => setEmail(text)}
+          />
         </View>
         <View style={styles.inputContainer}>
           <Ionicons 
@@ -39,7 +62,12 @@ const LoginScreen = () => {
           size={20}
           style={styles.inputIcon}
           />
-          <TextInput placeholder='Enter your Password'/>
+          <TextInput 
+            placeholder='Enter your Password'
+            secureTextEntry={true}
+            value={password}
+            onChangeText={text => setPassword(text)}
+          />
         </View>
         <View style={styles.bottom}>
           <View style={styles.checkboxContainer}>
@@ -59,13 +87,12 @@ const LoginScreen = () => {
           </TouchableOpacity>
         </View>
         <MyButton
-          HandlePress={() => {
-            navigation.navigate('Login');
-          }}
+          HandlePress={handleLogin}
           myStyle={styles.submitButton}
         >
           Login
         </MyButton>
+        {error ? <Text>{error}</Text> : null}
       </View>
 
     </View>

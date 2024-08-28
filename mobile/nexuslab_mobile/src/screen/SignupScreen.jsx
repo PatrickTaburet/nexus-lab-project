@@ -16,7 +16,7 @@ const SignupScreen = () => {
     <View style={styles.container}>
       <TouchableOpacity 
         style={styles.backButton}
-        onPress={() => navigation.navigate('Home')}
+        onPress={() => navigation.navigate('Welcome')}
       >
       <Ionicons name={"arrow-back-circle"} color={colors.lightest} size={50} />
       </TouchableOpacity>
@@ -78,7 +78,7 @@ const SignupScreen = () => {
           </View>
           <MyButton
             HandlePress={() => {
-              navigation.navigate('Home');
+              navigation.navigate('Welcome');
             }}
             myStyle={styles.submitButton}
           >
