@@ -2,7 +2,6 @@ import { View, Text, Button, StyleSheet } from 'react-native';
 import React from 'react'
 import { CommonActions } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useNavigation } from '@react-navigation/native';
 
 const HomeScreen = ({ navigation, setIsLoggedIn })  => {
 

@@ -7,6 +7,7 @@ import { useNavigation } from '@react-navigation/native';
 import MyButton from '../components/MyButton';
 import { Checkbox } from 'react-native-paper';
 import api from '../services/api';
+import * as ImagePicker from 'expo-image-picker';
 
 const SignupScreen = () => {
 
@@ -16,6 +17,27 @@ const SignupScreen = () => {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [checked, setChecked] = useState(false);
+  const [profilePicture, setProfilePicture] = useState(null);
+
+  const handleSelectImage = async () => {
+    const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+    if (status !== 'granted') {
+      alert('Sorry, we need camera roll permissions to make this work!');
+      return;
+    }
+
+    // Launch image picker
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 1,
+    });
+
+    if (!result.canceled) {
+      setProfilePicture(result.uri);
+    }
+  };
 
   const handleRegister = async () => {
     if (password !== confirmPassword) {
@@ -23,13 +45,22 @@ const SignupScreen = () => {
       return;
     }
 
+    const formData = new FormData();
+    formData.append('username', username);
+    formData.append('email', email);
+    formData.append('password', password);
+    formData.append('confirmPassword', confirmPassword);
+
+    if (profilePicture) {
+      formData.append('profilePicture', {
+        uri: profilePicture,
+        type: profilePicture.type,
+        name: profilePicture.fileName,
+      });
+    }
+
     try {
-      const response = await api.post('/users', {
-        username,
-        email,
-        password,
-        confirmPassword
-      }, {
+      const response = await api.post('/users', formData, {
         headers: {
           'Content-Type': 'application/json',
         },
@@ -116,7 +147,12 @@ const SignupScreen = () => {
             size={20}
             style={styles.inputIcon}
             />
-            <TextInput placeholder='User picture'/>
+            <TouchableOpacity onPress={handleSelectImage} style={styles.imagePicker}>
+              <Text>Select Profile Picture</Text>
+            </TouchableOpacity>
+            {profilePicture && (
+              <Image source={{ uri: profilePicture }} style={styles.image} />
+            )}
           </View>
           <View style={styles.checkboxContainer}>
             <Checkbox
