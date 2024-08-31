@@ -6,11 +6,44 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import { useNavigation } from '@react-navigation/native';
 import MyButton from '../components/MyButton';
 import { Checkbox } from 'react-native-paper';
+import api from '../services/api';
 
 const SignupScreen = () => {
 
   const navigation = useNavigation();
+  const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
   const [checked, setChecked] = useState(false);
+
+  const handleRegister = async () => {
+    if (password !== confirmPassword) {
+      alert("Passwords do not match");
+      return;
+    }
+
+    try {
+      const response = await api.post('/users', {
+        username,
+        email,
+        password,
+        confirmPassword
+      }, {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+
+      if (response.status === 201) {
+        alert('Registration successful!');
+        navigation.navigate('Login');
+      }
+    } catch (error) {
+      console.error(error);
+      alert('An error occurred during registration.');
+    }
+  };
 
   return (
     <View style={styles.container}>
@@ -33,7 +66,11 @@ const SignupScreen = () => {
             size={20}
             style={styles.inputIcon}
             />
-            <TextInput placeholder='Username'/>
+            <TextInput 
+              placeholder='Username'
+              value={username}
+              onChangeText={setUsername}
+            />
           </View>
           <View style={styles.inputContainer}>
             <Ionicons 
@@ -41,7 +78,11 @@ const SignupScreen = () => {
             size={20}
             style={styles.inputIcon}
             />
-            <TextInput placeholder='Email'/>
+            <TextInput 
+              placeholder='Email'
+              value={email}
+              onChangeText={setEmail}
+            />
           </View>
           <View style={styles.inputContainer}>
             <Ionicons 
@@ -49,7 +90,12 @@ const SignupScreen = () => {
             size={20}
             style={styles.inputIcon}
             />
-            <TextInput placeholder='Password'/>
+            <TextInput 
+              placeholder='Password'
+              secureTextEntry={true}
+              value={password}
+              onChangeText={setPassword}
+            />          
           </View>
           <View style={styles.inputContainer}>
             <Ionicons 
@@ -57,7 +103,12 @@ const SignupScreen = () => {
             size={20}
             style={styles.inputIcon}
             />
-            <TextInput placeholder='Repeat Password'/>
+            <TextInput 
+              placeholder='Confirm Password'
+              secureTextEntry={true}
+              value={confirmPassword}
+              onChangeText={setConfirmPassword}
+            />
           </View>
           <View style={styles.inputContainer}>
             <Ionicons 
@@ -77,9 +128,7 @@ const SignupScreen = () => {
             <Text style={styles.checkboxText}>Agree terms</Text>
           </View>
           <MyButton
-            HandlePress={() => {
-              navigation.navigate('Welcome');
-            }}
+            HandlePress={handleRegister}
             myStyle={styles.submitButton}
           >
             Register

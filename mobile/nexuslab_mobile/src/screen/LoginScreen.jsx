@@ -9,13 +9,11 @@ import { Checkbox } from 'react-native-paper';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import api from '../services/api';
 
-const LoginScreen = ({ setIsLoggedIn  }) => {
+const LoginScreen = ({ navigation, setIsLoggedIn  }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
-
   const [checked, setChecked] = useState(false);
-  const navigation = useNavigation();
 
   const handleLogin = async () => {
     try {

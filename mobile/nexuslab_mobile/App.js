@@ -11,7 +11,7 @@ import {useEffect, useState} from 'react';
 import { globalStyles } from './src/utils/styles';  
 import WelcomeScreen from './src/screen/WelcomeScreen';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import AuthGuard from './src/services/AuthGuard';  // Importer le composant AuthGuard
+import AuthGuard from './src/services/AuthGuard'; 
 
 SplashScreen.preventAutoHideAsync();
 const Stack = createNativeStackNavigator();
@@ -25,7 +25,11 @@ const AuthNavigator = ({ isLoggedIn, setIsLoggedIn })  => {
       {isLoggedIn ? (
         <>
           <Stack.Screen name="Home">
-            {(props) => <HomeScreen {...props} setIsLoggedIn={setIsLoggedIn} />}
+            {(props) => (
+              <AuthGuard>
+                <HomeScreen {...props} setIsLoggedIn={setIsLoggedIn} />
+              </AuthGuard>
+              )}
           </Stack.Screen>
         </>
       ) : (
@@ -48,12 +52,16 @@ export default function App() {
   // console.log("is logged : " + isLoggedIn);
   useEffect(() => {
     const checkUserToken = async () => {
-      const token = await AsyncStorage.getItem('token');
-      // console.log('Stored token:', token);
-      setIsLoggedIn(!!token); // Convertit le token en booléen (true si présent, false si absent)
-      setLoading(false); // Terminer le chargement une fois que le token est vérifié
+      try {
+        const token = await AsyncStorage.getItem('token');
+        // console.log('Stored token:', token);
+        setIsLoggedIn(!!token); // Convertit le token en booléen (true si présent, false si absent)
+      } catch (error) {
+        console.error('Error checking user token:', error);
+      } finally {
+        setLoading(false);
+      }
     };
-
     checkUserToken();
   }, []);
 
@@ -61,7 +69,6 @@ export default function App() {
     if (fontsLoaded) {
       SplashScreen.hideAsync();
     }
-    console.log('Fonts loaded:', fontsLoaded); 
   }, [fontsLoaded]);
 
  if (loading || !fontsLoaded) {
