@@ -65,6 +65,18 @@ class api_RegistrationController extends AbstractController
             return new JsonResponse(['error' => 'Passwords do not match'], Response::HTTP_BAD_REQUEST);
         }
 
+        // Vérification si le pseudo existe déjà
+        $existingUserPseudo = $this->entityManager->getRepository(User::class)->findOneBy(['pseudo' => $username]);
+        if ($existingUserPseudo) {
+            return new JsonResponse(['error' => 'This username is already used.'], Response::HTTP_CONFLICT);
+        }
+
+        // Vérification si l'email existe déjà
+        $existingUserEmail = $this->entityManager->getRepository(User::class)->findOneBy(['email' => $email]);
+        if ($existingUserEmail) {
+            return new JsonResponse(['error' => 'This email is already used.'], Response::HTTP_CONFLICT);
+        }
+
         $user = new User();
         $user->setPseudo($data['username']);
         $user->setEmail($data['email']);

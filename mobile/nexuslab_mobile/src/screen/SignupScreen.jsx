@@ -18,6 +18,7 @@ const SignupScreen = () => {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [checked, setChecked] = useState(false);
   const [profilePicture, setProfilePicture] = useState(null);
+  const [error, setError] = useState('');
 
   const handleSelectImage = async () => {
     const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
@@ -32,7 +33,7 @@ const SignupScreen = () => {
       aspect: [4, 3],
       quality: 1,
     });
-    console.log("1 " + result);
+    //console.log("1 " + result);
     if (!result.canceled) {
     const uri = result.assets[0].uri;
     const name = uri.split('/').pop();
@@ -44,12 +45,12 @@ const SignupScreen = () => {
       name: name,
     });
     }
-    console.log("2 " + profilePicture);
+    //console.log("2 " + profilePicture);
   };
 
   const handleRegister = async () => {
     if (password !== confirmPassword) {
-      alert("Passwords do not match");
+      setError("Passwords do not match");
       return;
     }
 
@@ -59,7 +60,7 @@ const SignupScreen = () => {
     formData.append('password', password);
     formData.append('confirmPassword', confirmPassword);
 
-    console.log("3 " + profilePicture);
+    //console.log("3 " + profilePicture);
 
     if (profilePicture) {
       formData.append('profilePicture', {
@@ -68,7 +69,7 @@ const SignupScreen = () => {
         name: profilePicture.name,
       });
     }
-    console.log("4" + formData);
+    //console.log("4" + formData);
     try {
       const response = await api.post('/users', formData, {
         headers: {
@@ -81,8 +82,12 @@ const SignupScreen = () => {
         navigation.navigate('Login');
       }
     } catch (error) {
-      console.error(error);
-      alert('An error occurred during registration.');
+      if (error.response) {
+        const errorMessage = error.response.data.error || 'An error occurred during registration.';
+        setError(errorMessage);
+      } else {
+        setError('An error occurred during registration.');
+      }
     }
   };
 
@@ -180,6 +185,7 @@ const SignupScreen = () => {
           >
             Register
           </MyButton>
+          {error ? <Text style={globalStyles.warning} >{error}</Text> : null}
         </View>
       </ScrollView>
     </View>
