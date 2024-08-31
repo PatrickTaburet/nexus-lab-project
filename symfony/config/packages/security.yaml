@@ -14,17 +14,31 @@ security:
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
-        main:
-            lazy: true
+
+        # API Firewall, use JWT for mobiles app
+        api:
+            pattern: ^/api
+            stateless: true
             provider: app_user_provider
-            stateless: false
+            jwt: ~
             json_login:
-                check_path: auth # The name in routes.yaml is enough for mapping
+                check_path: auth
                 username_path: email
                 password_path: password
                 success_handler: lexik_jwt_authentication.handler.authentication_success
                 failure_handler: lexik_jwt_authentication.handler.authentication_failure
-            jwt: ~
+
+        # Main firewall for symfony apllication
+        main:
+            lazy: true
+            provider: app_user_provider
+            stateless: false
+            form_login:
+                check_path: app_login
+                login_path: app_login
+                # default_target_path: home
+                use_referer: true
+                enable_csrf: true
             custom_authenticator: App\Security\LoginAuthenticator
             logout:
                 path: app_logout
@@ -33,10 +47,6 @@ security:
                 secret:   '%kernel.secret%' # required
                 lifetime: 604800 # 1 week in seconds
             entry_point: App\Security\LoginAuthenticator
-            form_login:
-                # default_target_path: home
-                use_referer: true
-                enable_csrf: true
             
             # activate different ways to authenticate
             # https://symfony.com/doc/current/security.html#the-firewall

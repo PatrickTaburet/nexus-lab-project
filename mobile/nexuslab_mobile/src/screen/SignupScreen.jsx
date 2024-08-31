@@ -1,22 +1,96 @@
-import { ScrollView, TextInput, StyleSheet, Text, View, TouchableOpacity } from 'react-native'
+import { ScrollView, TextInput, StyleSheet, Text, View, TouchableOpacity, Image } from 'react-native'
 import React, {useState} from 'react'
 import { colors } from '../utils/colors'
 import globalStyles from '../utils/styles';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { useNavigation } from '@react-navigation/native';
 import MyButton from '../components/MyButton';
-import { CheckBox } from 'rn-inkpad';
+import { Checkbox } from 'react-native-paper';
+import api from '../services/api';
+import * as ImagePicker from 'expo-image-picker';
 
 const SignupScreen = () => {
 
   const navigation = useNavigation();
-  const [checked, setIsChecked] = useState(false);
+  const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [checked, setChecked] = useState(false);
+  const [profilePicture, setProfilePicture] = useState(null);
+
+  const handleSelectImage = async () => {
+    const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+    if (status !== 'granted') {
+      alert('Sorry, we need camera roll permissions to make this work!');
+      return;
+    }
+
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 1,
+    });
+    console.log("1 " + result);
+    if (!result.canceled) {
+    const uri = result.assets[0].uri;
+    const name = uri.split('/').pop();
+    const type = 'image/' + name.split('.').pop();
+
+    setProfilePicture({
+      uri: uri,
+      type: type,
+      name: name,
+    });
+    }
+    console.log("2 " + profilePicture);
+  };
+
+  const handleRegister = async () => {
+    if (password !== confirmPassword) {
+      alert("Passwords do not match");
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append('username', username);
+    formData.append('email', email);
+    formData.append('password', password);
+    formData.append('confirmPassword', confirmPassword);
+
+    console.log("3 " + profilePicture);
+
+    if (profilePicture) {
+      formData.append('profilePicture', {
+        uri: profilePicture.uri,
+        type: profilePicture.type,
+        name: profilePicture.name,
+      });
+    }
+    console.log("4" + formData);
+    try {
+      const response = await api.post('/users', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+
+      if (response.status === 201) {
+        alert('Registration successful!');
+        navigation.navigate('Login');
+      }
+    } catch (error) {
+      console.error(error);
+      alert('An error occurred during registration.');
+    }
+  };
 
   return (
     <View style={styles.container}>
       <TouchableOpacity 
         style={styles.backButton}
-        onPress={() => navigation.navigate('Home')}
+        onPress={() => navigation.navigate('Welcome')}
       >
       <Ionicons name={"arrow-back-circle"} color={colors.lightest} size={50} />
       </TouchableOpacity>
@@ -33,7 +107,11 @@ const SignupScreen = () => {
             size={20}
             style={styles.inputIcon}
             />
-            <TextInput placeholder='Username'/>
+            <TextInput 
+              placeholder='Username'
+              value={username}
+              onChangeText={setUsername}
+            />
           </View>
           <View style={styles.inputContainer}>
             <Ionicons 
@@ -41,7 +119,11 @@ const SignupScreen = () => {
             size={20}
             style={styles.inputIcon}
             />
-            <TextInput placeholder='Email'/>
+            <TextInput 
+              placeholder='Email'
+              value={email}
+              onChangeText={setEmail}
+            />
           </View>
           <View style={styles.inputContainer}>
             <Ionicons 
@@ -49,7 +131,12 @@ const SignupScreen = () => {
             size={20}
             style={styles.inputIcon}
             />
-            <TextInput placeholder='Password'/>
+            <TextInput 
+              placeholder='Password'
+              secureTextEntry={true}
+              value={password}
+              onChangeText={setPassword}
+            />          
           </View>
           <View style={styles.inputContainer}>
             <Ionicons 
@@ -57,7 +144,12 @@ const SignupScreen = () => {
             size={20}
             style={styles.inputIcon}
             />
-            <TextInput placeholder='Repeat Password'/>
+            <TextInput 
+              placeholder='Confirm Password'
+              secureTextEntry={true}
+              value={confirmPassword}
+              onChangeText={setConfirmPassword}
+            />
           </View>
           <View style={styles.inputContainer}>
             <Ionicons 
@@ -65,23 +157,25 @@ const SignupScreen = () => {
             size={20}
             style={styles.inputIcon}
             />
-            <TextInput placeholder='User picture'/>
+            <TouchableOpacity onPress={handleSelectImage} style={styles.imagePicker}>
+              <Text>{profilePicture ? 'Change Profile Picture' : 'Select Profile Picture'}</Text>
+            </TouchableOpacity>
           </View>
+          {profilePicture && (
+            <Image source={{ uri: profilePicture.uri }} style={styles.image} />
+          )}
+          
           <View style={styles.checkboxContainer}>
-            <CheckBox
-              checked={checked}
-              iconColor={'#FFFFFF'}
-              iconSize={18}
-              textStyle={{fontSize: 15, fontWeight: 700}}
-              textColor={"white"}
-              onChange={setIsChecked}
-              title={'Agree terms'}
+            <Checkbox
+              status={checked ? 'checked' : 'unchecked'}
+              onPress={() => setChecked(!checked)}
+              uncheckedColor={"white"}
+              color={"rgb(217, 0, 255)"}
             />
+            <Text style={styles.checkboxText}>Agree terms</Text>
           </View>
           <MyButton
-            HandlePress={() => {
-              navigation.navigate('Home');
-            }}
+            HandlePress={handleRegister}
             myStyle={styles.submitButton}
           >
             Register
@@ -115,6 +209,12 @@ const styles = StyleSheet.create({
     text:{
       color: "white"
     },
+    image: {
+      width: 100,
+      height: 100,
+      borderRadius: 50,
+      marginTop: 10,
+    },
     formContainer : {
       marginTop: 95,
       justifyContent: "center",
@@ -142,8 +242,9 @@ const styles = StyleSheet.create({
     },
     checkboxContainer:{
       flexDirection: 'row',
-      justifyContent: 'space-between',
-      width: '80%',
-      marginLeft: 30
+      alignItems: 'center',
+    },
+    checkboxText:{
+      color: "white",
     },
 })

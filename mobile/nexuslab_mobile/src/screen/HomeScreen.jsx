@@ -1,80 +1,48 @@
-import { Image, StyleSheet, Text, View, TouchableOpacity } from 'react-native';
-import React from 'react';
-import { colors } from '../utils/colors';
-import NexusLabImage from '../assets/logo/NexusLab-full-purple.png';
-import globalStyles from '../utils/styles';
-import { useNavigation } from '@react-navigation/native';
-import MyButton from '../components/MyButton';
+import { View, Text, Button, StyleSheet } from 'react-native';
+import React from 'react'
+import { CommonActions } from '@react-navigation/native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const HomeScreen = () => {
-  const navigation = useNavigation();
+const HomeScreen = ({ navigation, setIsLoggedIn })  => {
 
-  const HandleLogin = () => {
-    navigation.navigate('Login');
-  }
-  const HandleSignup = () => {
-    navigation.navigate('Signup');
-  }
-
+  const handleLogout = async () => {
+    try {
+      await AsyncStorage.removeItem('token');
+      setIsLoggedIn(false);
+      navigation.dispatch(
+        CommonActions.reset({
+          index: 0,
+          routes: [
+            { name: 'Welcome' },
+          ],
+        })
+      );
+    } catch (err) {
+      console.log('Erreur lors de la déconnexion:', err);
+    }
+  };
 
   return (
-    <View style={styles.container}>
-      <View style={styles.content}>
-        <Text style={[styles.headerText, globalStyles.text3]}>vdddddddvffd</Text>
-        <Image 
-          source={NexusLabImage}
-          style={styles.logo}
-        />
-    
-        <View style={styles.buttonContainer}>
-          <MyButton
-            HandlePress={HandleLogin}
-          >
-            Login
-          </MyButton>
-          <MyButton
-            HandlePress={HandleSignup}
-          >
-            Sign up
-          </MyButton>
-        </View>
+      <View style={styles.container}>
+        <Text style={styles.text}>Bienvenue sur HomeScreen!</Text>
+
+        <Button title="Logout" onPress={handleLogout} />
       </View>
-    </View>
   )
 }
 
 export default HomeScreen
 
 const styles = StyleSheet.create({
-    container: {
-      flex: 1,
-      backgroundColor: colors.secondary_dark,
-    },
-    content : {
-      flex: 1,
-      justifyContent: 'center',
-      alignItems: 'center',
-      gap: 50
-    },
-    logo : {
-        width: 300,
-        resizeMode: 'contain',
-        position: 'absolute',
-        bottom: -230,
-    },
-    headerText:{
-      color: 'white',
-      fontSize: 40,
-      textAlign: 'center',
-      marginBottom: -200,
-    },
-    buttonContainer:{
-      flexDirection: 'row',
-      bottom:100,
-      position: 'absolute',
-      height: 80
-    },
-    text:{
-      color: "white"
-    }
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  text: {
+    fontSize: 20,
+    marginBottom: 20,
+  },
+
+
 })
