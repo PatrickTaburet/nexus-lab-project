@@ -32,26 +32,36 @@ class api_RegistrationController extends AbstractController
     #[Route('/api/users', name: 'api_user_register', methods: ['POST'])]
     public function register(Request $request): JsonResponse
     {
-        $data = json_decode($request->getContent(), true);
-
-        if (!$data) {
-            return new JsonResponse(['error' => 'Invalid JSON'], Response::HTTP_BAD_REQUEST);
-        }
+        $username = $request->request->get('username');
+        $email = $request->request->get('email');
+        $password = $request->request->get('password');
+        $confirmPassword = $request->request->get('confirmPassword');
+        $profilePicture = $request->files->get('profilePicture');
+        $data = [
+            'username' => $username,
+            'email' => $email,
+            'password' => $password,
+            'confirmPassword' => $confirmPassword,
+        ];
 
         $constraints = new Assert\Collection([
             'username' => [new Assert\NotBlank(), new Assert\Type('string')],
             'email' => [new Assert\NotBlank(), new Assert\Email()],
-            'password' => [new Assert\NotBlank(), new Assert\Type('string')],
-            'confirmPassword' => [new Assert\NotBlank(), new Assert\Type('string')],
+            'password' => [new Assert\NotBlank(), new Assert\Length(['min' => 6])],
+            'confirmPassword' => [new Assert\NotBlank(), new Assert\EqualTo($password)],
         ]);
 
         $violations = $this->validator->validate($data, $constraints);
 
         if (count($violations) > 0) {
-            return new JsonResponse(['error' => (string) $violations], Response::HTTP_BAD_REQUEST);
+            $errors = [];
+            foreach ($violations as $violation) {
+                $errors[] = $violation->getPropertyPath() . ': ' . $violation->getMessage();
+            }
+            return new JsonResponse(['error' => $errors], Response::HTTP_BAD_REQUEST);
         }
 
-        if ($data['password'] !== $data['confirmPassword']) {
+        if ($password !== $confirmPassword) {
             return new JsonResponse(['error' => 'Passwords do not match'], Response::HTTP_BAD_REQUEST);
         }
 
@@ -61,6 +71,12 @@ class api_RegistrationController extends AbstractController
         $user->setPassword(
             $this->passwordHasher->hashPassword($user, $data['password'])
         );
+
+        if ($profilePicture) {
+            $fileName = uniqid() . '.' . $profilePicture->guessExtension();
+            $profilePicture->move($this->getParameter('avatar_directory'), $fileName);
+            $user->setImageName($fileName);
+        }
 
         $this->entityManager->persist($user);
         $this->entityManager->flush();

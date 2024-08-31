@@ -1,4 +1,4 @@
-import { ScrollView, TextInput, StyleSheet, Text, View, TouchableOpacity } from 'react-native'
+import { ScrollView, TextInput, StyleSheet, Text, View, TouchableOpacity, Image } from 'react-native'
 import React, {useState} from 'react'
 import { colors } from '../utils/colors'
 import globalStyles from '../utils/styles';
@@ -26,17 +26,25 @@ const SignupScreen = () => {
       return;
     }
 
-    // Launch image picker
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
       allowsEditing: true,
       aspect: [4, 3],
       quality: 1,
     });
-
+    console.log("1 " + result);
     if (!result.canceled) {
-      setProfilePicture(result.uri);
+    const uri = result.assets[0].uri;
+    const name = uri.split('/').pop();
+    const type = 'image/' + name.split('.').pop();
+
+    setProfilePicture({
+      uri: uri,
+      type: type,
+      name: name,
+    });
     }
+    console.log("2 " + profilePicture);
   };
 
   const handleRegister = async () => {
@@ -51,18 +59,20 @@ const SignupScreen = () => {
     formData.append('password', password);
     formData.append('confirmPassword', confirmPassword);
 
+    console.log("3 " + profilePicture);
+
     if (profilePicture) {
       formData.append('profilePicture', {
-        uri: profilePicture,
+        uri: profilePicture.uri,
         type: profilePicture.type,
-        name: profilePicture.fileName,
+        name: profilePicture.name,
       });
     }
-
+    console.log("4" + formData);
     try {
       const response = await api.post('/users', formData, {
         headers: {
-          'Content-Type': 'application/json',
+          'Content-Type': 'multipart/form-data',
         },
       });
 
@@ -148,12 +158,13 @@ const SignupScreen = () => {
             style={styles.inputIcon}
             />
             <TouchableOpacity onPress={handleSelectImage} style={styles.imagePicker}>
-              <Text>Select Profile Picture</Text>
+              <Text>{profilePicture ? 'Change Profile Picture' : 'Select Profile Picture'}</Text>
             </TouchableOpacity>
-            {profilePicture && (
-              <Image source={{ uri: profilePicture }} style={styles.image} />
-            )}
           </View>
+          {profilePicture && (
+            <Image source={{ uri: profilePicture.uri }} style={styles.image} />
+          )}
+          
           <View style={styles.checkboxContainer}>
             <Checkbox
               status={checked ? 'checked' : 'unchecked'}
@@ -197,6 +208,12 @@ const styles = StyleSheet.create({
     },
     text:{
       color: "white"
+    },
+    image: {
+      width: 100,
+      height: 100,
+      borderRadius: 50,
+      marginTop: 10,
     },
     formContainer : {
       marginTop: 95,
