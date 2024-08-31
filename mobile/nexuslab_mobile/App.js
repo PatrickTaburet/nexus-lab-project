@@ -16,14 +16,40 @@ import AuthGuard from './src/services/AuthGuard';  // Importer le composant Auth
 SplashScreen.preventAutoHideAsync();
 const Stack = createNativeStackNavigator();
 
+const AuthNavigator = ({ isLoggedIn, setIsLoggedIn })  => {
+  return (
+    <Stack.Navigator 
+      screenOptions={{ headerShown: false }}
+      initialRouteName={isLoggedIn ? "Home" : "Welcome"}
+    >
+      {isLoggedIn ? (
+        <>
+          <Stack.Screen name="Home">
+            {(props) => <HomeScreen {...props} setIsLoggedIn={setIsLoggedIn} />}
+          </Stack.Screen>
+        </>
+      ) : (
+        <>
+          <Stack.Screen name="Welcome" component={WelcomeScreen} />
+          <Stack.Screen name="Login">
+            {(props) => <LoginScreen {...props} setIsLoggedIn={setIsLoggedIn} />}
+          </Stack.Screen>
+          <Stack.Screen name="Signup" component={SignupScreen} />
+        </>
+      )}
+    </Stack.Navigator>
+  );
+};
+
 export default function App() {
   const [fontsLoaded] = useCustomFonts();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [loading, setLoading] = useState(true);
-
+  // console.log("is logged : " + isLoggedIn);
   useEffect(() => {
     const checkUserToken = async () => {
       const token = await AsyncStorage.getItem('token');
+      // console.log('Stored token:', token);
       setIsLoggedIn(!!token); // Convertit le token en booléen (true si présent, false si absent)
       setLoading(false); // Terminer le chargement une fois que le token est vérifié
     };
@@ -35,6 +61,7 @@ export default function App() {
     if (fontsLoaded) {
       SplashScreen.hideAsync();
     }
+    console.log('Fonts loaded:', fontsLoaded); 
   }, [fontsLoaded]);
 
  if (loading || !fontsLoaded) {
@@ -43,23 +70,7 @@ export default function App() {
   
   return (
     <NavigationContainer>
-      <Stack.Navigator 
-        screenOptions={{
-          headerShown: false,
-        }}
-        initialRouteName={isLoggedIn ? "Home" : "Welcome"}
-      >
-        <Stack.Screen name="Welcome" component={WelcomeScreen} />
-        <Stack.Screen name="Login" component={LoginScreen} />
-        <Stack.Screen name="Signup" component={SignupScreen} />
-        <Stack.Screen name="Home">
-          {() => (
-            <AuthGuard isLoggedIn={isLoggedIn}>
-              <HomeScreen />
-            </AuthGuard>
-          )}
-        </Stack.Screen>   
-      </Stack.Navigator>
+      <AuthNavigator isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn}  />
     </NavigationContainer>
   );
 } 

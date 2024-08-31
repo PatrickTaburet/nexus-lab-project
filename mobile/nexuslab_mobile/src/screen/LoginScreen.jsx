@@ -9,7 +9,7 @@ import { Checkbox } from 'react-native-paper';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import api from '../services/api';
 
-const LoginScreen = () => {
+const LoginScreen = ({ setIsLoggedIn  }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
@@ -20,11 +20,11 @@ const LoginScreen = () => {
   const handleLogin = async () => {
     try {
         const response = await api.post('/login_check', { email, password });
-        // console.log('API Response:', response.data);
+        //  console.log('API Response:', response.data);
         const { token } = response.data;
 
         await AsyncStorage.setItem('token', token);
-
+        setIsLoggedIn(true);
         navigation.navigate('Home');
     } catch (err) {
       console.log('Error:', err.response?.data);
@@ -92,7 +92,7 @@ const LoginScreen = () => {
         >
           Login
         </MyButton>
-        {error ? <Text>{error}</Text> : null}
+        {error ? <Text style={globalStyles.warning} >{error}</Text> : null}
       </View>
 
     </View>

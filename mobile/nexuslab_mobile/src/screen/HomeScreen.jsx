@@ -2,12 +2,14 @@ import { View, Text, Button, StyleSheet } from 'react-native';
 import React from 'react'
 import { CommonActions } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useNavigation } from '@react-navigation/native';
 
-const HomeScreen = ({ navigation })  => {
-
+const HomeScreen = ({ setIsLoggedIn })  => {
+  const navigation = useNavigation();
   const handleLogout = async () => {
     try {
       await AsyncStorage.removeItem('token');
+      setIsLoggedIn(false);
       navigation.dispatch(
         CommonActions.reset({
           index: 0,

@@ -12,6 +12,11 @@ const globalStyles = StyleSheet.create({
     fontFamily:'Oxanium_400Regular',
     fontSize: 34,
   },
+  warning: {
+    color: 'red',
+    fontSize: 16,
+    fontFamily:'Outfit_400Regular',
+  }
 
 
 });
