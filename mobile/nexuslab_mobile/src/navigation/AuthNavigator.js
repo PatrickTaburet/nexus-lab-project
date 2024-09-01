@@ -5,6 +5,7 @@ import LoginScreen from '../screen/auth/LoginScreen';
 import SignupScreen from '../screen/auth/SignupScreen';
 import TabNavigator from './TabNavigator';
 import AuthGuard from '../services/AuthGuard';
+import MainNavigator from './MainNavigator';
 
 const Stack = createNativeStackNavigator();
 
@@ -18,7 +19,7 @@ const AuthNavigator = ({ isLoggedIn, setIsLoggedIn })  => {
           <Stack.Screen name="TabNavigator">
             {(props) => (
               <AuthGuard>
-                <TabNavigator {...props} setIsLoggedIn={setIsLoggedIn} />
+                <MainNavigator {...props} setIsLoggedIn={setIsLoggedIn} />
               </AuthGuard>
               )}
           </Stack.Screen>
