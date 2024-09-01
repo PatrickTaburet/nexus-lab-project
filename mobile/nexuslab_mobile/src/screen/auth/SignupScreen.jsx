@@ -1,12 +1,12 @@
 import { ScrollView, TextInput, StyleSheet, Text, View, TouchableOpacity, Image } from 'react-native'
 import React, {useState} from 'react'
-import { colors } from '../utils/colors'
-import globalStyles from '../utils/styles';
+import { colors } from '../../utils/colors'
+import globalStyles from '../../utils/styles';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { useNavigation } from '@react-navigation/native';
-import MyButton from '../components/MyButton';
+import MyButton from '../../components/MyButton';
 import { Checkbox } from 'react-native-paper';
-import api from '../services/api';
+import api from '../../services/api';
 import * as ImagePicker from 'expo-image-picker';
 
 const SignupScreen = () => {
@@ -177,7 +177,7 @@ const SignupScreen = () => {
               uncheckedColor={"white"}
               color={"rgb(217, 0, 255)"}
             />
-            <Text style={styles.checkboxText}>Agree terms</Text>
+            <Text style={styles.checkboxText} onPress={() => setChecked(!checked)}>Agree terms</Text>
           </View>
           <MyButton
             HandlePress={handleRegister}

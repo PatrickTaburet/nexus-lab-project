@@ -1,10 +1,10 @@
 import { Image, StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 import React from 'react';
-import { colors } from '../utils/colors';
-import NexusLabImage from '../assets/logo/NexusLab-full-purple.png';
-import globalStyles from '../utils/styles';
+import { colors } from '../../utils/colors';
+import NexusLabImage from '../../assets/logo/NexusLab-full-purple.png';
+import globalStyles from '../../utils/styles';
 import { useNavigation } from '@react-navigation/native';
-import MyButton from '../components/MyButton';
+import MyButton from '../../components/MyButton';
 
 const WelcomeScreen = () => {
   const navigation = useNavigation();

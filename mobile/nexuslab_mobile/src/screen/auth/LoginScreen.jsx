@@ -1,13 +1,13 @@
 import { TextInput, StyleSheet, Text, View, TouchableOpacity } from 'react-native'
 import React, {useState} from 'react';
-import { colors } from '../utils/colors'
-import globalStyles from '../utils/styles';
+import { colors } from '../../utils/colors'
+import globalStyles from '../../utils/styles';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { useNavigation } from '@react-navigation/native';
-import MyButton from '../components/MyButton';
+import MyButton from '../../components/MyButton';
 import { Checkbox } from 'react-native-paper';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import api from '../services/api';
+import api from '../../services/api';
 
 const LoginScreen = ({ navigation, setIsLoggedIn  }) => {
   const [email, setEmail] = useState('');
@@ -28,7 +28,7 @@ const LoginScreen = ({ navigation, setIsLoggedIn  }) => {
 
         await AsyncStorage.setItem('token', token);
         setIsLoggedIn(true);
-        navigation.navigate('Home');
+        navigation.replace('TabNavigator');
     } catch (err) {
       console.log('Error:', err.response?.data);
         setError('Invalid email or password');
@@ -80,7 +80,7 @@ const LoginScreen = ({ navigation, setIsLoggedIn  }) => {
               uncheckedColor={"white"}
               color={"rgb(217, 0, 255)"}
             />
-            <Text style={styles.checkboxText}>Remember me</Text>
+            <Text style={styles.checkboxText} onPress={() => setChecked(!checked)}>Forgot password?</Text>
           </View>
 
           <TouchableOpacity
