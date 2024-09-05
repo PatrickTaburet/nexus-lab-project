@@ -19,11 +19,6 @@ use App\Repository\UserRepository;
 use ApiPlatform\Metadata\ApiResource;
 
 
-/** 
- * @ORM\Entity(repositoryClass=UserRepository::class)
- * @UniqueEntity(fields={"email"}, message="There is already an account with this email")
- * @Vich\Uploadable
- */
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[UniqueEntity(fields: ["email"], message: "There is already an account with this email")]
 #[Vich\Uploadable]

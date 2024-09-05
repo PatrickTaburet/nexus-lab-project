@@ -1,10 +1,39 @@
 import { View, Text, Button, StyleSheet, TouchableOpacity, SafeAreaView  } from 'react-native';
-import React from 'react'
-import { CommonActions } from '@react-navigation/native';
+import React, { useState, useEffect } from 'react'
+import { CommonActions, useIsFocused } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Ionicons } from '@expo/vector-icons';
+import api from '../services/api';
 
 const ProfileScreen = ({ navigation, setIsLoggedIn })  => {
+
+  const [userData, setUserData] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const isFocused = useIsFocused();
+
+  const fetchUserData = async () => {
+    try {
+ 
+        const response = await api.get('/users/5', {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        });
+        setUserData(response.data);
+        console.log(response.data);
+      
+    } catch (error) {
+      console.error('Erreur lors de la récupération des informations utilisateur:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    if (isFocused) {
+      fetchUserData();  // Appeler l'API pour obtenir les informations utilisateur à chaque fois que l'écran est focalisé
+    }
+  }, [isFocused]);
 
   const handleLogout = async () => {
     try {
@@ -22,6 +51,15 @@ const ProfileScreen = ({ navigation, setIsLoggedIn })  => {
       console.log('Erreur lors de la déconnexion:', err);
     }
   };
+
+  if (loading) {
+    return (
+      <SafeAreaView style={styles.safeArea}>
+        <Text style={styles.text}>Chargement...</Text>
+      </SafeAreaView>
+    );
+  }
+
   return (
     <SafeAreaView style={styles.safeArea}>
       <View style={styles.header}>
@@ -30,7 +68,15 @@ const ProfileScreen = ({ navigation, setIsLoggedIn })  => {
         </TouchableOpacity>
       </View>
       <View style={styles.container}>
-        <Text style={styles.text}>Bienvenue sur ProfileScreen!</Text>
+         {userData ? (
+          <>
+            <Text style={styles.text}>Bienvenue, {userData.pseudo}!</Text>
+            <Text style={styles.text}>Email: {userData.email}</Text>
+            {/* Ajoutez d'autres champs utilisateur ici */}
+          </>
+        ) : (
+          <Text style={styles.text}>Aucune donnée utilisateur disponible</Text>
+        )}
         <Button title="Logout" onPress={handleLogout} />
       </View>
     </SafeAreaView>

@@ -69,7 +69,6 @@ const SignupScreen = () => {
         name: profilePicture.name,
       });
     }
-    //console.log("4" + formData);
     try {
       const response = await api.post('/users', formData, {
         headers: {
