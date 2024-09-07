@@ -1,8 +1,8 @@
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-
+import config from '../config/config'; 
 const api = axios.create({
-    baseURL: 'http://192.168.1.12:8000/api', 
+    baseURL: `${config.apiUrl}/api`, 
 });
 
 api.interceptors.request.use(async config => {
@@ -13,7 +13,7 @@ api.interceptors.request.use(async config => {
     return config;
 });
 // api.interceptors.response.use(
-//     response => response,
+//     response => response,    
 //     error => {
 //       console.log("Erreur de réponse:", error.response);
 //       return Promise.reject(error);

@@ -1,9 +1,12 @@
-import { View, Text, Button, StyleSheet, TouchableOpacity, SafeAreaView  } from 'react-native';
+import { View, Text, Button, StyleSheet, TouchableOpacity, SafeAreaView, Image } from 'react-native';
 import React, { useState, useEffect } from 'react'
 import { CommonActions, useIsFocused } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Ionicons } from '@expo/vector-icons';
 import api from '../services/api';
+import {jwtDecode} from 'jwt-decode';
+import config from '../config/config'; 
+
 
 const ProfileScreen = ({ navigation, setIsLoggedIn })  => {
 
@@ -13,14 +16,16 @@ const ProfileScreen = ({ navigation, setIsLoggedIn })  => {
 
   const fetchUserData = async () => {
     try {
- 
-        const response = await api.get('/users/5', {
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        });
-        setUserData(response.data);
-        console.log(response.data);
+      const token = await AsyncStorage.getItem('token');
+      const decodedToken = jwtDecode(token);
+      const userId = decodedToken.id;
+      const response = await api.get(`/users/${userId}`, {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+      setUserData(response.data);
+      console.log(response.data);
       
     } catch (error) {
       console.error('Erreur lors de la récupération des informations utilisateur:', error);
@@ -60,6 +65,8 @@ const ProfileScreen = ({ navigation, setIsLoggedIn })  => {
     );
   }
 
+  const imageUrl = userData ? `${config.apiUrl}/images/avatar/${userData.imageName}` : null; 
+
   return (
     <SafeAreaView style={styles.safeArea}>
       <View style={styles.header}>
@@ -70,8 +77,13 @@ const ProfileScreen = ({ navigation, setIsLoggedIn })  => {
       <View style={styles.container}>
          {userData ? (
           <>
-            <Text style={styles.text}>Bienvenue, {userData.pseudo}!</Text>
+            <Image
+              source={{ uri: imageUrl }}
+              style={styles.profileImage}
+            />
+            <Text style={styles.text}>Pseudo : {userData.pseudo}</Text>
             <Text style={styles.text}>Email: {userData.email}</Text>
+            <Text style={styles.text}>Role: {userData.roles}</Text>
             {/* Ajoutez d'autres champs utilisateur ici */}
           </>
         ) : (
@@ -107,6 +119,10 @@ const styles = StyleSheet.create({
     fontSize: 20,
     marginBottom: 20,
   },
-
-
+  profileImage: {
+    width: 150,
+    height: 150,
+    borderRadius: 50,
+    margin: 20,
+  },
 })
