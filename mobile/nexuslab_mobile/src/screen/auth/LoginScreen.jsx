@@ -124,6 +124,7 @@ const styles = StyleSheet.create({
     mainText:{
       color: "rgb(217, 0, 255)",
       marginBottom: 20,
+      fontSize: 44
     },
     formContainer : {
       marginTop: 20,

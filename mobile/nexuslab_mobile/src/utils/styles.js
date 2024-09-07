@@ -10,7 +10,7 @@ const globalStyles = StyleSheet.create({
   },
   text3: {
     fontFamily:'Oxanium_400Regular',
-    fontSize: 44,
+
   },
   warning: {
     color: 'red',

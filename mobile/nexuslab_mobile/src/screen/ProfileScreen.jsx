@@ -1,4 +1,4 @@
-import { View, Text, Button, StyleSheet, TouchableOpacity, SafeAreaView, Image } from 'react-native';
+import { View, Text, Button, StyleSheet, TouchableOpacity, SafeAreaView, Image, Animated, Easing } from 'react-native';
 import React, { useState, useEffect } from 'react'
 import { CommonActions, useIsFocused } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -6,13 +6,16 @@ import { Ionicons } from '@expo/vector-icons';
 import api from '../services/api';
 import {jwtDecode} from 'jwt-decode';
 import config from '../config/config'; 
-
+import { colors } from '../utils/colors'
+import MyButton from '../components/MyButton';
+import globalStyles from '../utils/styles';
 
 const ProfileScreen = ({ navigation, setIsLoggedIn })  => {
 
   const [userData, setUserData] = useState(null);
   const [loading, setLoading] = useState(true);
   const isFocused = useIsFocused();
+  const [rotation] = useState(new Animated.Value(0));
 
   const fetchUserData = async () => {
     try {
@@ -34,10 +37,23 @@ const ProfileScreen = ({ navigation, setIsLoggedIn })  => {
     }
   };
 
+  const startRotationAnimation = () => {
+    Animated.loop(
+      Animated.timing(rotation, {
+        toValue: 1,
+        duration: 10000, // Durée d'une rotation complète en millisecondes
+        useNativeDriver: true,
+        easing: Easing.linear
+
+      })
+    ).start();
+  };
+
   useEffect(() => {
     if (isFocused) {
       fetchUserData();  // Appeler l'API pour obtenir les informations utilisateur à chaque fois que l'écran est focalisé
     }
+    startRotationAnimation();
   }, [isFocused]);
 
   const handleLogout = async () => {
@@ -65,7 +81,13 @@ const ProfileScreen = ({ navigation, setIsLoggedIn })  => {
     );
   }
 
-  const imageUrl = userData ? `${config.apiUrl}/images/avatar/${userData.imageName}` : null; 
+  const avatarUrl = userData ? `${config.apiUrl}/images/avatar/${userData.imageName}` : null; 
+  const decorUrl = `${config.apiUrl}/images/design/circle2.png`;
+  
+  const spin = rotation.interpolate({
+    inputRange: [0, 1],
+    outputRange: ['0deg', '360deg'],
+  });
 
   return (
     <SafeAreaView style={styles.safeArea}>
@@ -78,8 +100,16 @@ const ProfileScreen = ({ navigation, setIsLoggedIn })  => {
          {userData ? (
           <>
             <Image
-              source={{ uri: imageUrl }}
+              source={{ uri: avatarUrl }}
               style={styles.profileImage}
+            />
+                      
+            <Animated.Image
+              source={{ uri: decorUrl }}
+              style={[
+                styles.circleImg,
+                { transform: [{ rotate: spin }] }
+              ]}
             />
             <Text style={styles.text}>Pseudo : {userData.pseudo}</Text>
             <Text style={styles.text}>Email: {userData.email}</Text>
@@ -89,7 +119,40 @@ const ProfileScreen = ({ navigation, setIsLoggedIn })  => {
         ) : (
           <Text style={styles.text}>Aucune donnée utilisateur disponible</Text>
         )}
-        <Button title="Logout" onPress={handleLogout} />
+        <View style={styles.globalButtonBox}>
+          <View style={styles.userButtonBox}>
+            <MyButton
+              // HandlePress={}
+              myStyle={styles.submitButton}
+            >
+              Edit Profile
+            </MyButton>
+            <MyButton
+              // HandlePress={}
+              myStyle={styles.submitButton}
+            >
+              My Artwork
+            </MyButton>
+          </View>
+          <MyButton
+            // HandlePress={}
+            myStyle={styles.secondButton}
+            isSecondary={true} 
+          >
+            Artist Dashboard
+          </MyButton>
+        </View>
+       
+        <MyButton
+          // HandlePress={}
+          myStyle={styles.secondButton}
+          isSecondary={true} 
+        >
+          Admin Dashboard
+        </MyButton>
+        <TouchableOpacity onPress={handleLogout}>
+          <Text style={[styles.logoutText, globalStyles.text3]}>Logout</Text>
+        </TouchableOpacity>
       </View>
     </SafeAreaView>
   );
@@ -100,7 +163,8 @@ export default ProfileScreen
 const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
-    backgroundColor: 'white',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+
   },
   header: {
     flexDirection: 'row',
@@ -114,15 +178,49 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+    marginBottom: 50,
+    gap: 15
   },
   text: {
     fontSize: 20,
     marginBottom: 20,
   },
-  profileImage: {
-    width: 150,
-    height: 150,
-    borderRadius: 50,
-    margin: 20,
+  logoutText:{
+    fontSize: 23,
+    color: colors.primary
   },
+  profileImage: {
+    width: 127,
+    height: 127,
+    borderRadius: 70,
+    zIndex:2,
+    marginBottom: 10,
+    marginTop: 50
+  },
+  circleImg:{
+    width: 170,
+    height: 170,
+    position: "absolute",
+    top : 15,
+    marginBottom: 30
+  },
+  secondButton:{
+    width: 150,
+    margin: 0,
+    color: 'black'
+  },
+  submitButton:{
+    margin: 0,
+  },
+  userButtonBox:{
+    display:"flex",
+    flexDirection: "row",
+    marginBottom: 20,
+    height: 50,
+    gap: 15
+  },
+  globalButtonBox:{
+    display:"flex",
+    alignItems:'center',
+  }
 })

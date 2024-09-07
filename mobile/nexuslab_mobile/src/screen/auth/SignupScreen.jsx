@@ -210,6 +210,7 @@ const styles = StyleSheet.create({
     mainText:{
       color: "rgb(217, 0, 255)",
       marginBottom: 30,
+      fontSize: 44
     },
     text:{
       color: "white"

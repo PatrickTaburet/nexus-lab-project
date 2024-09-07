@@ -4,7 +4,7 @@ import globalStyles from '../utils/styles';
 import { colors } from '../utils/colors'
 import { LinearGradient } from 'expo-linear-gradient';
 
-const MyButton = ({children, myStyle, HandlePress}) => {
+const MyButton = ({children, myStyle, HandlePress, isSecondary  }) => {
 
   const textStyle = {
     ...myStyle,
@@ -17,6 +17,10 @@ const MyButton = ({children, myStyle, HandlePress}) => {
     paddingVertical: undefined,
   };
 
+  const buttonStyle = [
+    styles.customButton,
+    isSecondary ? styles.secondaryBackground : styles.primaryBackground,
+  ];
   return (
     <View>
       <LinearGradient
@@ -26,7 +30,7 @@ const MyButton = ({children, myStyle, HandlePress}) => {
         style={[styles.gradient, myStyle]}
       >
         <TouchableOpacity 
-          style={[styles.customButton]}
+          style={buttonStyle}
           onPress={HandlePress}
         >
           <Text style={[styles.text, textStyle]} >{children}</Text>
@@ -44,10 +48,10 @@ const styles = StyleSheet.create({
     color: "white",
     fontFamily: 'Outfit_400Regular',
     fontSize: 16,
+    textAlign: 'center'
   },
   gradient: {
     flex: 1,
-    backgroundColor: "yellow",
     borderRadius: 10,
     margin: 10,
     minHeight: 40,
@@ -77,5 +81,12 @@ const styles = StyleSheet.create({
     shadowInset: { offset: { width: 0, height: 0 }, opacity: 1, radius: 10, color: colors.primary },
     cursor: 'pointer',
     color: '#FFFFFF',
+  },
+  secondaryBackground:{
+    backgroundColor: 'rgba(255, 226, 255, 0.7)',
+
+  },
+  primaryBackground:{
+
   }
 })
