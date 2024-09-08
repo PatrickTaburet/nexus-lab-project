@@ -3,7 +3,6 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import WelcomeScreen from '../screen/auth/WelcomeScreen';
 import LoginScreen from '../screen/auth/LoginScreen';
 import SignupScreen from '../screen/auth/SignupScreen';
-import TabNavigator from './TabNavigator';
 import AuthGuard from '../services/AuthGuard';
 import MainNavigator from './MainNavigator';
 
@@ -18,7 +17,7 @@ const AuthNavigator = ({ isLoggedIn, setIsLoggedIn })  => {
         <>
           <Stack.Screen name="TabNavigator">
             {(props) => (
-              <AuthGuard>
+              <AuthGuard setIsLoggedIn={setIsLoggedIn}>
                 <MainNavigator {...props} setIsLoggedIn={setIsLoggedIn} />
               </AuthGuard>
               )}

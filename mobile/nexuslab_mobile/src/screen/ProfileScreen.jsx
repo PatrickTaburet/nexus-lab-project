@@ -105,6 +105,7 @@ const ProfileScreen = ({ navigation, setIsLoggedIn })  => {
     return height;
   };
   return (
+    <SafeAreaView style={styles.safeArea}> 
     <ImageBackground
     source={require('../assets/design/backgroundProfile.jpg')}
     style={styles.backgroundImage}
@@ -148,16 +149,10 @@ const ProfileScreen = ({ navigation, setIsLoggedIn })  => {
               // HandlePress={}
               myStyle={styles.submitButton}
             >
-              Edit Profile
-            </MyButton>
-            <MyButton
-              // HandlePress={}
-              myStyle={styles.submitButton}
-            >
               My Artwork
             </MyButton>
           </View>
-          {userData.roles[1] && (
+          {userData && userData.roles[1] ? (
             <MyButton
               // HandlePress={}
               myStyle={styles.secondButton}
@@ -165,9 +160,9 @@ const ProfileScreen = ({ navigation, setIsLoggedIn })  => {
             >
               Artist Dashboard
             </MyButton>
-          )}
+          ) : null }
         </View>
-        {userData.roles[2] && (
+        {userData &&userData.roles[2] ? (
           <MyButton
             // HandlePress={}
             myStyle={styles.secondButton}
@@ -175,13 +170,14 @@ const ProfileScreen = ({ navigation, setIsLoggedIn })  => {
           >
             Admin Dashboard
           </MyButton>
-        )}
+        ) : null}
         <TouchableOpacity onPress={handleLogout}>
           <Text style={[styles.logoutText, globalStyles.text3]}>Logout</Text>
         </TouchableOpacity>
       </View>
     </SafeAreaView>
     </ImageBackground>
+    </SafeAreaView>
 
   );
 }
@@ -195,7 +191,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   safeArea:{
-    flex: 1
+    flex: 1,
+    backgroundColor: 'black', 
   },
   globalContainer : {
     backgroundColor: 'rgba(0, 0, 0, 0.6)',
