@@ -5,7 +5,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { CommonActions } from '@react-navigation/native';
 import { jwtDecode } from 'jwt-decode';
 
-const AuthGuard = ({ children, setIsLoggedIn }) => {
+const AuthGuard = ({ children }) => {
   const navigation = useNavigation();
   const [isChecking, setIsChecking] = useState(true);
 
@@ -37,7 +37,6 @@ const AuthGuard = ({ children, setIsLoggedIn }) => {
         //   );
         //   return;
         // }
-        setIsLoggedIn(true);
       } catch (error) {
         console.error('Error checking authentication:', error);
         navigation.dispatch(
@@ -54,7 +53,7 @@ const AuthGuard = ({ children, setIsLoggedIn }) => {
     };
 
     checkAuth();
-  }, [navigation, setIsLoggedIn]);
+  }, [navigation]);
 
   if (isChecking) {
     return (

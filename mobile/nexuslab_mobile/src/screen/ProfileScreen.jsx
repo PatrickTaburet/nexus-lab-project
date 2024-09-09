@@ -15,7 +15,7 @@ import { useAuth } from '../navigation/AuthContext';
 
 const ProfileScreen = ({ navigation })  => {
 
-  const api = useApi();
+  const {api} = useApi();
   const {isLoggedIn, handleLogout } = useAuth();
   const [userData, setUserData] = useState(null);
   const [loading, setLoading] = useState(true);

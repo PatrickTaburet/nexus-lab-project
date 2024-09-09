@@ -7,6 +7,7 @@ import config from '../config/config';
 import { CommonActions } from '@react-navigation/native';
 
 const useApi = () => {
+
   const { setIsLoggedIn } = useAuth();
   const navigation = useNavigation();
 
@@ -15,6 +16,7 @@ const useApi = () => {
   });
 
   api.interceptors.request.use(async config => {
+    console.log('ddfv')
     const token = await AsyncStorage.getItem('token');
     console.log("api token : " + token);
     if (token) {
@@ -27,6 +29,7 @@ const useApi = () => {
     (response) => response,
     async (error) => {
       if (error.response && error.response.status === 401) {
+        console.log("Unauthorized access - possibly due to invalid token or session");
         await AsyncStorage.removeItem('token');
         setIsLoggedIn(false);
         navigation.dispatch(
@@ -40,7 +43,25 @@ const useApi = () => {
     }
   );
 
-  return api;
+  const signup = async (userData) => {
+    try {
+      const response = await api.post('/users', userData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+
+      return response.data;
+    } catch (error) {
+      console.error('Signup error:', error);
+      throw error; // Relancer l'erreur pour la gérer dans le composant appelant
+    }
+  };
+
+  return {
+    api,
+    signup,
+  };
 };
 
 export default useApi;

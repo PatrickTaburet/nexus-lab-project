@@ -11,11 +11,11 @@ import useApi from '../../hooks/useApi';
 import { useAuth } from '../../navigation/AuthContext';
 
 const LoginScreen = ({ navigation }) => {
+  const {api} = useApi();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [checked, setChecked] = useState(false);
-  const api = useApi();
   const { isLoggedIn, setIsLoggedIn } = useAuth();
 
   const handleLogin = async () => {

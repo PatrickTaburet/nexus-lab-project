@@ -19,7 +19,7 @@ const SignupScreen = () => {
   const [checked, setChecked] = useState(false);
   const [profilePicture, setProfilePicture] = useState(null);
   const [error, setError] = useState('');
-  const api = useApi();
+  const { signup } = useApi();
 
   const handleSelectImage = async () => {
     const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
@@ -71,13 +71,8 @@ const SignupScreen = () => {
       });
     }
     try {
-      const response = await api.post('/users', formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-      });
-
-      if (response.status === 201) {
+      const response = await signup(formData);
+      if (response) {
         alert('Registration successful!');
         navigation.navigate('Login');
       }
