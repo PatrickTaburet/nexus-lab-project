@@ -16,9 +16,7 @@ const useApi = () => {
   });
 
   api.interceptors.request.use(async config => {
-    console.log('ddfv')
     const token = await AsyncStorage.getItem('token');
-    console.log("api token : " + token);
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }

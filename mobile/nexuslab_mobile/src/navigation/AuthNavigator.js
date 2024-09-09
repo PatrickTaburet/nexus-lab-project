@@ -15,11 +15,13 @@ const AuthNavigator = ({ isLoggedIn })  => {
     >
       {isLoggedIn ? (
         <>
+         {/* <Stack.Screen name="TabNavigator" component={MainNavigator} /> */}
+          
           <Stack.Screen name="TabNavigator">
             {(props) => (
-              // <AuthGuard setIsLoggedIn={setIsLoggedIn}>
+              <AuthGuard >
                 <MainNavigator/>
-              // </AuthGuard>
+              </AuthGuard>
               )}
           </Stack.Screen>
         </>

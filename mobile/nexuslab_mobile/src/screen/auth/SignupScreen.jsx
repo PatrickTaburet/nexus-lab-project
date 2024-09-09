@@ -34,7 +34,7 @@ const SignupScreen = () => {
       aspect: [4, 3],
       quality: 1,
     });
-    //console.log("1 " + result);
+
     if (!result.canceled) {
     const uri = result.assets[0].uri;
     const name = uri.split('/').pop();
@@ -46,7 +46,6 @@ const SignupScreen = () => {
       name: name,
     });
     }
-    //console.log("2 " + profilePicture);
   };
 
   const handleRegister = async () => {
@@ -60,8 +59,6 @@ const SignupScreen = () => {
     formData.append('email', email);
     formData.append('password', password);
     formData.append('confirmPassword', confirmPassword);
-
-    //console.log("3 " + profilePicture);
 
     if (profilePicture) {
       formData.append('profilePicture', {

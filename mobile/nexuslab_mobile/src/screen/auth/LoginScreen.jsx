@@ -31,7 +31,6 @@ const LoginScreen = ({ navigation }) => {
 
         await AsyncStorage.setItem('token', token);
         setIsLoggedIn(true);
-        console.log("login :" + isLoggedIn);
 
         navigation.replace('TabNavigator');
     } catch (err) {

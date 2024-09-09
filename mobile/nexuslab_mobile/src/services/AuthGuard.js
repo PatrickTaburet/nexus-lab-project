@@ -4,64 +4,41 @@ import { useNavigation } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { CommonActions } from '@react-navigation/native';
 import { jwtDecode } from 'jwt-decode';
+import { useAuth } from '../navigation/AuthContext';
+
 
 const AuthGuard = ({ children }) => {
+  const { setIsLoggedIn, handleLogout } = useAuth();
   const navigation = useNavigation();
-  const [isChecking, setIsChecking] = useState(true);
+
+  const validateToken = async () => {
+    try {
+      const token = await AsyncStorage.getItem('token');
+      if (!token) {
+        throw new Error('No token found');
+      }
+
+      const decodedToken = jwtDecode(token);
+      if (decodedToken.exp * 1000 < Date.now()) {
+        throw new Error('Token expired');
+      }
+      
+      setIsLoggedIn(true);
+    } catch (error) {
+      console.error('Token validation failed:', error.message || error);
+      handleLogout();
+      navigation.dispatch(
+        CommonActions.reset({
+          index: 0,
+          routes: [{ name: 'Login' }],
+        })
+      );
+    }
+  };
 
   useEffect(() => {
-    const checkAuth = async () => {
-      try {
-        const token = await AsyncStorage.getItem('token');
-        console.log("token : " + token)
-        if (!token) {
-          navigation.dispatch(
-            CommonActions.reset({
-              index: 0,
-              routes: [{ name: 'Welcome' }],
-            })
-          );
-          return;
-        }
-
-        // const decodedToken = jwtDecode(token);
-        // const currentTime = Date.now() / 1000;
-        
-        // if (decodedToken.exp < currentTime) {
-        //   await AsyncStorage.removeItem('token');
-        //   navigation.dispatch(
-        //     CommonActions.reset({
-        //       index: 0,
-        //       routes: [{ name: 'Welcome' }],
-        //     })
-        //   );
-        //   return;
-        // }
-      } catch (error) {
-        console.error('Error checking authentication:', error);
-        navigation.dispatch(
-          CommonActions.reset({
-            index: 0,
-            routes: [
-              { name: 'Welcome' },
-            ],
-          })
-        );
-      } finally {
-        setIsChecking(false);
-      }
-    };
-
-    checkAuth();
-  }, [navigation]);
-
-  if (isChecking) {
-    return (
-      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-        <ActivityIndicator size="large" />
-      </View>
-    );
-  }
+    validateToken();
+  }, []);
 
   return children;
 };
