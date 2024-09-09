@@ -4,5 +4,7 @@ index:
 auth:
     path: /api/login_check
     methods: ['POST']
+api_refresh_token:
+    path: /api/token/refresh
 # proteger route generative/.. pour l'acces user uniquement (personnes log)
 # /profile uniquement pour les role user

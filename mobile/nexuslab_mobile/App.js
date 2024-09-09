@@ -12,22 +12,22 @@ SplashScreen.preventAutoHideAsync();
 export default function App() {
   const [fontsLoaded] = useCustomFonts();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  // const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(true);
 
-  // useEffect(() => {
-  //   const checkUserToken = async () => {
-  //     try {
-  //       const token = await AsyncStorage.getItem('token');
-  //       // console.log('Stored token:', token);
-  //       setIsLoggedIn(!!token); // Convertit le token en booléen (true si présent, false si absent)
-  //     } catch (error) {
-  //       console.error('Error checking user token:', error);
-  //     } finally {
-  //       setLoading(false);
-  //     }
-  //   };
-  //   checkUserToken();
-  // }, []);
+  useEffect(() => {
+    const checkUserToken = async () => {
+      try {
+        const token = await AsyncStorage.getItem('token');
+        // console.log('Stored token:', token);
+        setIsLoggedIn(!!token); // Convertit le token en booléen (true si présent, false si absent)
+      } catch (error) {
+        console.error('Error checking user token:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    checkUserToken();
+  }, []);
   
   useEffect(() => {
     StatusBar.setBarStyle('light-content');
@@ -36,12 +36,12 @@ export default function App() {
   }, []);
 
   useEffect(() => {
-    if (fontsLoaded) {
+    if (fontsLoaded && !loading) {
       SplashScreen.hideAsync();
     }
-  }, [fontsLoaded]);
+  }, [fontsLoaded, loading]);
 
- if (!fontsLoaded) {
+  if (!fontsLoaded || loading) {
     return null; 
   }
   

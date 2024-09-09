@@ -19,19 +19,22 @@ security:
         api:
             pattern: ^/api
             stateless: true
+            entry_point: jwt
             provider: app_user_provider
             jwt: ~
             json_login:
-                check_path: auth
+                check_path: auth # in routes.yaml
                 username_path: email
                 password_path: password
                 success_handler: lexik_jwt_authentication.handler.authentication_success
                 failure_handler: lexik_jwt_authentication.handler.authentication_failure
+            refresh_jwt:
+                check_path: api_refresh_token
 
         # Main firewall for symfony apllication
         main:
             lazy: true
-            provider: app_user_provider
+            provider: app_user_provider # in routes.yaml
             stateless: false
             form_login:
                 check_path: app_login

@@ -17,7 +17,7 @@ const AuthNavigator = ({ isLoggedIn, setIsLoggedIn })  => {
         <>
           <Stack.Screen name="TabNavigator">
             {(props) => (
-              <AuthGuard setIsLoggedIn={setIsLoggedIn}>
+              <AuthGuard>
                 <MainNavigator {...props} setIsLoggedIn={setIsLoggedIn} />
               </AuthGuard>
               )}
