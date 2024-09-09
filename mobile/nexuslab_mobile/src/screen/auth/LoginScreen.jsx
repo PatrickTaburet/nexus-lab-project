@@ -7,13 +7,16 @@ import { useNavigation } from '@react-navigation/native';
 import MyButton from '../../components/MyButton';
 import { Checkbox } from 'react-native-paper';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import api from '../../services/api';
+import useApi from '../../hooks/useApi';
+import { useAuth } from '../../navigation/AuthContext';
 
-const LoginScreen = ({ navigation, setIsLoggedIn  }) => {
+const LoginScreen = ({ navigation }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [checked, setChecked] = useState(false);
+  const api = useApi();
+  const { isLoggedIn, setIsLoggedIn } = useAuth();
 
   const handleLogin = async () => {
     try {
@@ -28,6 +31,8 @@ const LoginScreen = ({ navigation, setIsLoggedIn  }) => {
 
         await AsyncStorage.setItem('token', token);
         setIsLoggedIn(true);
+        console.log("login :" + isLoggedIn);
+
         navigation.replace('TabNavigator');
     } catch (err) {
       console.log('Error:', err.response?.data);

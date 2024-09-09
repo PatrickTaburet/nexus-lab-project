@@ -3,16 +3,20 @@ import React, { useState, useEffect } from 'react'
 import { CommonActions, useIsFocused } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Ionicons } from '@expo/vector-icons';
-import api from '../services/api';
+// import api from '../services/api';
 import {jwtDecode} from 'jwt-decode';
 import config from '../config/config'; 
 import { colors } from '../utils/colors'
 import MyButton from '../components/MyButton';
 import globalStyles from '../utils/styles';
 import FontAwesome5 from '@expo/vector-icons/FontAwesome5';
+import useApi from '../hooks/useApi';
+import { useAuth } from '../navigation/AuthContext';
 
-const ProfileScreen = ({ navigation, setIsLoggedIn })  => {
+const ProfileScreen = ({ navigation })  => {
 
+  const api = useApi();
+  const {isLoggedIn, handleLogout } = useAuth();
   const [userData, setUserData] = useState(null);
   const [loading, setLoading] = useState(true);
   const isFocused = useIsFocused();
@@ -38,6 +42,16 @@ const ProfileScreen = ({ navigation, setIsLoggedIn })  => {
     }
   };
 
+  const onLogoutPress = async () => {
+    await handleLogout();
+    navigation.dispatch(
+      CommonActions.reset({
+        index: 0,
+        routes: [{ name: 'Welcome' }],
+      })
+    );
+  };
+
   const startRotationAnimation = () => {
     Animated.loop(
       Animated.timing(rotation, {
@@ -56,23 +70,6 @@ const ProfileScreen = ({ navigation, setIsLoggedIn })  => {
     }
     startRotationAnimation();
   }, [isFocused]);
-
-  const handleLogout = async () => {
-    try {
-      await AsyncStorage.removeItem('token');
-      setIsLoggedIn(false);
-      navigation.dispatch(
-        CommonActions.reset({
-          index: 0,
-          routes: [
-            { name: 'Welcome' },
-          ],
-        })
-      );
-    } catch (err) {
-      console.log('Erreur lors de la déconnexion:', err);
-    }
-  };
 
   if (loading) {
     return (
@@ -171,7 +168,7 @@ const ProfileScreen = ({ navigation, setIsLoggedIn })  => {
             Admin Dashboard
           </MyButton>
         ) : null}
-        <TouchableOpacity onPress={handleLogout}>
+        <TouchableOpacity onPress={onLogoutPress}>
           <Text style={[styles.logoutText, globalStyles.text3]}>Logout</Text>
         </TouchableOpacity>
       </View>

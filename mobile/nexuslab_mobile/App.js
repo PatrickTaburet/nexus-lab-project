@@ -1,38 +1,50 @@
-import { StyleSheet, Text, View } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { StyleSheet, StatusBar } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import * as SplashScreen from 'expo-splash-screen';
 import { useCustomFonts } from './src/utils/fonts'; 
-import {useEffect, useState} from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import AuthNavigator from './src/navigation/AuthNavigator';
-import { StatusBar } from 'react-native';
+import { AuthProvider, useAuth } from './src/navigation/AuthContext';
 
 SplashScreen.preventAutoHideAsync();
 
+const Main = () => {
+  const { isLoggedIn, setIsLoggedIn } = useAuth();
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const checkUserToken = async () => {
+      try {
+        const token = await AsyncStorage.getItem('token');
+        setIsLoggedIn(!!token); // Convertit le token en booléen (true si présent, false si absent)
+      } catch (error) {
+        console.error('Error checking user token:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    checkUserToken();
+  }, []);
+
+  if (loading) {
+    return null; 
+  }
+
+  return (
+    <NavigationContainer>
+      <AuthNavigator isLoggedIn={isLoggedIn}/>
+    </NavigationContainer>
+  );
+};
+
 export default function App() {
   const [fontsLoaded] = useCustomFonts();
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  // const [loading, setLoading] = useState(true);
 
-  // useEffect(() => {
-  //   const checkUserToken = async () => {
-  //     try {
-  //       const token = await AsyncStorage.getItem('token');
-  //       // console.log('Stored token:', token);
-  //       setIsLoggedIn(!!token); // Convertit le token en booléen (true si présent, false si absent)
-  //     } catch (error) {
-  //       console.error('Error checking user token:', error);
-  //     } finally {
-  //       setLoading(false);
-  //     }
-  //   };
-  //   checkUserToken();
-  // }, []);
-  
   useEffect(() => {
     StatusBar.setBarStyle('light-content');
-    StatusBar.setBackgroundColor('black'); // or Transparent
-    StatusBar.setTranslucent(true); 
+    StatusBar.setBackgroundColor('black'); // ou Transparent
+    StatusBar.setTranslucent(true);
   }, []);
 
   useEffect(() => {
@@ -41,16 +53,15 @@ export default function App() {
     }
   }, [fontsLoaded]);
 
- if (!fontsLoaded) {
-    return null; 
+  if (!fontsLoaded) {
+    return null;
   }
-  
-  return (
-    <NavigationContainer>
-      <AuthNavigator isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn}  />
-    </NavigationContainer>
-  );
-} 
 
-const styles = StyleSheet.create({
-});
+  return (
+    <AuthProvider>
+      <Main/>
+    </AuthProvider>
+  );
+}
+
+const styles = StyleSheet.create({});

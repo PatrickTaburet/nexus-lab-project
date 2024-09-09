@@ -24,19 +24,19 @@ const AuthGuard = ({ children, setIsLoggedIn }) => {
           return;
         }
 
-        const decodedToken = jwtDecode(token);
-        const currentTime = Date.now() / 1000;
+        // const decodedToken = jwtDecode(token);
+        // const currentTime = Date.now() / 1000;
         
-        if (decodedToken.exp < currentTime) {
-          await AsyncStorage.removeItem('token');
-          navigation.dispatch(
-            CommonActions.reset({
-              index: 0,
-              routes: [{ name: 'Welcome' }],
-            })
-          );
-          return;
-        }
+        // if (decodedToken.exp < currentTime) {
+        //   await AsyncStorage.removeItem('token');
+        //   navigation.dispatch(
+        //     CommonActions.reset({
+        //       index: 0,
+        //       routes: [{ name: 'Welcome' }],
+        //     })
+        //   );
+        //   return;
+        // }
         setIsLoggedIn(true);
       } catch (error) {
         console.error('Error checking authentication:', error);

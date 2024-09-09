@@ -6,7 +6,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import { useNavigation } from '@react-navigation/native';
 import MyButton from '../../components/MyButton';
 import { Checkbox } from 'react-native-paper';
-import api from '../../services/api';
+import useApi from '../../hooks/useApi';
 import * as ImagePicker from 'expo-image-picker';
 
 const SignupScreen = () => {
@@ -19,6 +19,7 @@ const SignupScreen = () => {
   const [checked, setChecked] = useState(false);
   const [profilePicture, setProfilePicture] = useState(null);
   const [error, setError] = useState('');
+  const api = useApi();
 
   const handleSelectImage = async () => {
     const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();

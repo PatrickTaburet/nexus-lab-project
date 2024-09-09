@@ -8,7 +8,7 @@ import MainNavigator from './MainNavigator';
 
 const Stack = createNativeStackNavigator();
 
-const AuthNavigator = ({ isLoggedIn, setIsLoggedIn })  => {
+const AuthNavigator = ({ isLoggedIn })  => {
   return (
     <Stack.Navigator 
       screenOptions={{ headerShown: false }}
@@ -17,18 +17,16 @@ const AuthNavigator = ({ isLoggedIn, setIsLoggedIn })  => {
         <>
           <Stack.Screen name="TabNavigator">
             {(props) => (
-              <AuthGuard setIsLoggedIn={setIsLoggedIn}>
-                <MainNavigator {...props} setIsLoggedIn={setIsLoggedIn} />
-              </AuthGuard>
+              // <AuthGuard setIsLoggedIn={setIsLoggedIn}>
+                <MainNavigator/>
+              // </AuthGuard>
               )}
           </Stack.Screen>
         </>
       ) : (
         <>
           <Stack.Screen name="Welcome" component={WelcomeScreen} />
-          <Stack.Screen name="Login">
-            {(props) => <LoginScreen {...props} setIsLoggedIn={setIsLoggedIn} />}
-          </Stack.Screen>
+          <Stack.Screen name="Login" component={LoginScreen} />
           <Stack.Screen name="Signup" component={SignupScreen} />
         </>
       )}
