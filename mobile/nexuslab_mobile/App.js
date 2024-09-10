@@ -23,7 +23,7 @@ const Main = () => {
           let decodedToken;
           try {
             decodedToken = jwtDecode(token);
-            console.log('token 2 goodd')
+            console.log('token 2 good')
 
           } catch (decodeError) {
             console.error('Error decoding token:', decodeError);
@@ -33,7 +33,7 @@ const Main = () => {
           }
           if (decodedToken.exp * 1000 >= Date.now()) {
             setIsLoggedIn(true);
-            console.log('token 3 goodd')
+            console.log('token 3 good')
           } else {
             await handleLogout();
             console.log('token 3 logout')

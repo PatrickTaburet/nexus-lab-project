@@ -100,14 +100,15 @@ const EditProfileScreen = ({ navigation })  => {
         name: profilePicture.name,
       });
     }
-
+    console.log(formData)
     try {
-      const  response = await api.patch(`/editUser/${userId}`, userData, {
+      const  response = await api.post(`/editUser/${userId}`, userData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
       });
       if (response) {
+        console.log("rep  " + response.data);
         alert('Update successful!');
         navigation.goBack();
       }

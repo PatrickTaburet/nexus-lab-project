@@ -30,67 +30,69 @@ class api_UserController extends AbstractController
         $this->validator = $validator;
     }
 
-    #[Route('/api/editUser/{id}', name: 'api_user_update', methods: ['PATCH'])]
+    #[Route('/api/editUser/{id}', name: 'api_user_update', methods: ['POST'])]
     public function updateUser(Request $request, int $id): JsonResponse
     {
-        var_dump('dddddddd');
+        // var_dump($request->request->all());
         $user = $this->entityManager->getRepository(User::class)->find($id);
         if (!$user) {
             return new JsonResponse(['error' => 'User not found'], Response::HTTP_UNAUTHORIZED);
         }
-        if ($this->getUser() !== $user) {
-            throw new AccessDeniedException('You can only update your own profile.');
-        }
-        // $username = $request->request->get('username');
-        // $email = $request->request->get('email');
-        // $password = $request->request->get('password');
-        // $confirmPassword = $request->request->get('confirmPassword');
-        // $profilePicture = $request->files->get('profilePicture');
-        $data = json_decode($request->getContent(), true);
-        // $data = [
-        //     'username' => $username,
-        //     'email' => $email,
-        //     'password' => $password,
-        //     'confirmPassword' => $confirmPassword,
-        // ];
+        // if ($this->getUser() !== $user) {
+        //     throw new AccessDeniedException('You can only update your own profile.');
+        // }
+        $username = $request->request->get('username');
+        $email = $request->request->get('email');
+        $password = $request->request->get('password');
+        $confirmPassword = $request->request->get('confirmPassword');
+        $profilePicture = $request->files->get('profilePicture');
+        var_dump("username : " . $username);
+        var_dump("email : " . $email);
+        var_dump($password); 
+        var_dump($confirmPassword); 
+        $data = [
+            'username' => $username,
+            'email' => $email,
+            'password' => $password,
+            'confirmPassword' => $confirmPassword,
+        ];
+        // $constraints = new Assert\Collection([
+        //     'username' => [new Assert\NotBlank(), new Assert\Type('string')],
+        //     'email' => [new Assert\NotBlank(), new Assert\Email()],
+        //     'password' => [new Assert\Optional(new Assert\Length(['min' => 6]))],
+        //     'confirmPassword' => [new Assert\Optional(new Assert\EqualTo(['value' => $password ?? '']))],
+        // ]);
 
-        $constraints = new Assert\Collection([
-            'username' => [new Assert\NotBlank(), new Assert\Type('string')],
-            'email' => [new Assert\NotBlank(), new Assert\Email()],
-            'password' => [new Assert\Optional(new Assert\Length(['min' => 6]))],
-            'confirmPassword' => [new Assert\Optional(new Assert\EqualTo(['value' => $data['password'] ?? '']))],
-        ]);
+        // $violations = $this->validator->validate($data, $constraints);
 
-        $violations = $this->validator->validate($data, $constraints);
-
-        if (count($violations) > 0) {
-            $errors = [];
-            foreach ($violations as $violation) {
-                $errors[] = $violation->getPropertyPath() . ': ' . $violation->getMessage();
-            }
-            return new JsonResponse(['error' => $errors], Response::HTTP_BAD_REQUEST);
-        }
+        // if (count($violations) > 0) {
+        //     $errors = [];
+        //     foreach ($violations as $violation) {
+        //         $errors[] = $violation->getPropertyPath() . ': ' . $violation->getMessage();
+        //     }
+        //     return new JsonResponse(['error' => $errors], Response::HTTP_BAD_REQUEST);
+        // }
 
         // Vérification si le pseudo existe déjà
-        if (isset($data['username']) && $user->getPseudo() !== $data['username']) {
-            $existingUserPseudo = $this->entityManager->getRepository(User::class)->findOneBy(['pseudo' => $data['username']]);
+        if ($username && $user->getPseudo() !== $username) {
+            $existingUserPseudo = $this->entityManager->getRepository(User::class)->findOneBy(['pseudo' => $username]);
             if ($existingUserPseudo) {
                 return new JsonResponse(['error' => 'This username is already used.'], Response::HTTP_CONFLICT);
             }
-            $user->setPseudo($data['username']);
+            $user->setPseudo($username);
         }
 
         // Vérification si l'email existe déjà
-        if (isset($data['email'])  && $user->getEmail() !== $data['email']) {
-            $existingUserEmail = $this->entityManager->getRepository(User::class)->findOneBy(['email' => $data['email']]);
+        if ($email  && $user->getEmail() !== $email) {
+            $existingUserEmail = $this->entityManager->getRepository(User::class)->findOneBy(['email' => $email]);
             if ($existingUserEmail) {
                 return new JsonResponse(['error' => 'This email is already used.'], Response::HTTP_CONFLICT);
             }
-            $user->setEmail($data['email']);
+            $user->setEmail($email);
         }
-        if (isset($data['password'])) {
+        if (isset($password)) {
             $user->setPassword(
-                $this->passwordHasher->hashPassword($user, $data['password'])
+                $this->passwordHasher->hashPassword($user, $password)
             );
         }
         $profilePicture = $request->files->get('profilePicture');
@@ -100,7 +102,7 @@ class api_UserController extends AbstractController
             $user->setImageName($fileName);
         }
       
-        //$this->entityManager->persist($user);
+        $this->entityManager->persist($user);
         $this->entityManager->flush();
 
         return new JsonResponse(['success' => 'User update successfully'], Response::HTTP_CREATED);

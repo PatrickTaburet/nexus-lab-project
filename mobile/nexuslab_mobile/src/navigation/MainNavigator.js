@@ -51,7 +51,7 @@ const MainNavigator = () => {
           headerTitle: 'Edit Profile',
           headerBackTitle: 'Back',
           headerStyle: {
-            backgroundColor: 'rgba(0, 0, 0, 0.6)', 
+            backgroundColor: 'rgba(0, 0, 0, 0.7)', 
           },
           headerTitleStyle: { // Text
             color: colors.lightest,

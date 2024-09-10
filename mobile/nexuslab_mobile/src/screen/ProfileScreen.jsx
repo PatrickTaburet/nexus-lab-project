@@ -23,10 +23,12 @@ const ProfileScreen = ({ navigation })  => {
   const [rotation] = useState(new Animated.Value(0));
 
   const fetchUserData = async () => {
+   
     try {
       const token = await AsyncStorage.getItem('token');
       const decodedToken = jwtDecode(token);
       const userId = decodedToken.id;
+      console.log(userId);
       const response = await api.get(`/users/${userId}`, {
         headers: {
           'Content-Type': 'application/json',
@@ -88,6 +90,7 @@ const ProfileScreen = ({ navigation })  => {
   });
 
   const getContainerHeight = () => {
+ 
     if (!userData) return '83%'; 
 
     let height = '70%'; // Hauteur minimale par défaut
