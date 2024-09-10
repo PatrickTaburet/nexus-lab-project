@@ -15,6 +15,8 @@ const Main = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    //  AsyncStorage.removeItem('token');
+
     const checkUserToken = async () => {
       try {
         const token = await AsyncStorage.getItem('token');

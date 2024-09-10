@@ -33,7 +33,7 @@ class api_UserController extends AbstractController
     #[Route('/api/editUser/{id}', name: 'api_user_update', methods: ['POST'])]
     public function updateUser(Request $request, int $id): JsonResponse
     {
-        // var_dump($request->request->all());
+        // var_dump("dump" . $id);
         $user = $this->entityManager->getRepository(User::class)->find($id);
         if (!$user) {
             return new JsonResponse(['error' => 'User not found'], Response::HTTP_UNAUTHORIZED);
@@ -46,32 +46,36 @@ class api_UserController extends AbstractController
         $password = $request->request->get('password');
         $confirmPassword = $request->request->get('confirmPassword');
         $profilePicture = $request->files->get('profilePicture');
-        var_dump("username : " . $username);
-        var_dump("email : " . $email);
-        var_dump($password); 
-        var_dump($confirmPassword); 
+        // var_dump("username : " . $username);
+        // var_dump("email : " . $email);
+        // var_dump($password); 
+        // var_dump($confirmPassword); 
         $data = [
             'username' => $username,
             'email' => $email,
             'password' => $password,
             'confirmPassword' => $confirmPassword,
         ];
-        // $constraints = new Assert\Collection([
-        //     'username' => [new Assert\NotBlank(), new Assert\Type('string')],
-        //     'email' => [new Assert\NotBlank(), new Assert\Email()],
-        //     'password' => [new Assert\Optional(new Assert\Length(['min' => 6]))],
-        //     'confirmPassword' => [new Assert\Optional(new Assert\EqualTo(['value' => $password ?? '']))],
-        // ]);
+        $constraints = new Assert\Collection([
+            'username' => [new Assert\NotBlank(), new Assert\Type('string')],
+            'email' => [new Assert\NotBlank(), new Assert\Email()],
+            'password' => [],
+            'confirmPassword' => [],
+        ]);
 
-        // $violations = $this->validator->validate($data, $constraints);
+        if (!empty($password)) {
+            $constraints->fields['password'] = new Assert\Length(['min' => 6]);
+            $constraints->fields['confirmPassword'] = new Assert\EqualTo(['value' => $password]);
+        }
+        $violations = $this->validator->validate($data, $constraints);
 
-        // if (count($violations) > 0) {
-        //     $errors = [];
-        //     foreach ($violations as $violation) {
-        //         $errors[] = $violation->getPropertyPath() . ': ' . $violation->getMessage();
-        //     }
-        //     return new JsonResponse(['error' => $errors], Response::HTTP_BAD_REQUEST);
-        // }
+        if (count($violations) > 0) {
+            $errors = [];
+            foreach ($violations as $violation) {
+                $errors[] = $violation->getPropertyPath() . ': ' . $violation->getMessage();
+            }
+            return new JsonResponse(['error' => $errors], Response::HTTP_BAD_REQUEST);
+        }
 
         // Vérification si le pseudo existe déjà
         if ($username && $user->getPseudo() !== $username) {

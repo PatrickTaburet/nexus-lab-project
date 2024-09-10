@@ -68,7 +68,7 @@ const EditProfileScreen = ({ navigation })  => {
         },
       });
       setUserData(response.data);
-      console.log(response.data);
+      //console.log(response.data);
       setUsername(response.data.pseudo);
       setEmail(response.data.email);
     } catch (error) {
@@ -102,17 +102,21 @@ const EditProfileScreen = ({ navigation })  => {
     }
     console.log(formData)
     try {
-      const  response = await api.post(`/editUser/${userId}`, userData, {
+      const  response = await api.post(`/editUser/${userId}`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
       });
+      console.log("2")
+      console.log(response.data);
       if (response) {
-        console.log("rep  " + response.data);
+    
         alert('Update successful!');
         navigation.goBack();
       }
     } catch (error) {
+      console.log("catch")
+
       if (error.response) {
         const errorMessage = error.response.data.error || 'An error occurred during profile update.';
         setError(errorMessage);

@@ -1,4 +1,3 @@
-// src/hooks/useApi.js
 import { useAuth } from '../navigation/AuthContext';
 import { useNavigation } from '@react-navigation/native';
 import axios from 'axios';
@@ -10,7 +9,6 @@ const useApi = () => {
 
   const { setIsLoggedIn } = useAuth();
   const navigation = useNavigation();
-  console.log("1")
   const api = axios.create({
     baseURL: `${config.apiUrl}/api`,
   });
