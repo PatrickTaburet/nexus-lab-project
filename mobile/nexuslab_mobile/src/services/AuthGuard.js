@@ -24,15 +24,14 @@ const AuthGuard = ({ children }) => {
       }
       
       setIsLoggedIn(true);
+      console.log("isLoggedIn true")
     } catch (error) {
       console.error('Token validation failed:', error.message || error);
       handleLogout();
-      navigation.dispatch(
-        CommonActions.reset({
+      navigation.reset({
           index: 0,
           routes: [{ name: 'Login' }],
-        })
-      );
+        });
     }
   };
 

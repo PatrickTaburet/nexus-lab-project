@@ -8,7 +8,7 @@ const HomeScreen = ({ navigation })  => {
 
   return (
       <View style={styles.container}>
-        <Text style={styles.text}>Bienvenue sur HomeScreen!</Text>
+        <Text style={styles.text}>Bienvenue sur home screen home ! </Text>
 
       </View>
   )

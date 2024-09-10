@@ -10,7 +10,7 @@ const useApi = () => {
 
   const { setIsLoggedIn } = useAuth();
   const navigation = useNavigation();
-
+  console.log("1")
   const api = axios.create({
     baseURL: `${config.apiUrl}/api`,
   });

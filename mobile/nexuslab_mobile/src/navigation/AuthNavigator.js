@@ -3,7 +3,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import WelcomeScreen from '../screen/auth/WelcomeScreen';
 import LoginScreen from '../screen/auth/LoginScreen';
 import SignupScreen from '../screen/auth/SignupScreen';
-import AuthGuard from '../services/AuthGuard';
+// import AuthGuard from '../services/AuthGuard';
 import MainNavigator from './MainNavigator';
 
 const Stack = createNativeStackNavigator();
@@ -15,15 +15,15 @@ const AuthNavigator = ({ isLoggedIn })  => {
     >
       {isLoggedIn ? (
         <>
-         {/* <Stack.Screen name="TabNavigator" component={MainNavigator} /> */}
+         <Stack.Screen name="TabNavigator" component={MainNavigator} />
           
-          <Stack.Screen name="TabNavigator">
+          {/* <Stack.Screen name="TabNavigator">
             {(props) => (
-              <AuthGuard >
-                <MainNavigator/>
-              </AuthGuard>
+              // <AuthGuard >
+                <MainNavigator  {...props} />
+              // </AuthGuard>
               )}
-          </Stack.Screen>
+          </Stack.Screen> */}
         </>
       ) : (
         <>

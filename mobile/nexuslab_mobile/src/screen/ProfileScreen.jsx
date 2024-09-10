@@ -114,7 +114,7 @@ const ProfileScreen = ({ navigation })  => {
       </TouchableOpacity>
     </View>
     <SafeAreaView style={[styles.globalContainer, { height: getContainerHeight() }]}>
-      <TouchableOpacity onPress={() => navigation.goBack()} style={styles.editButton}>
+      <TouchableOpacity onPress={() => navigation.navigate('EditProfile')} style={styles.editButton}>
         <FontAwesome5 name="user-edit" size={24} color="white" />
       </TouchableOpacity>
       <View style={styles.container}>

@@ -4,6 +4,8 @@ import { TouchableOpacity } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import TabNavigator from './TabNavigator';
 import ProfileScreen from '../screen/ProfileScreen';
+import EditProfileScreen from '../screen/EditProfileScreen';
+import { colors } from '../utils/colors'
 
 const Stack = createNativeStackNavigator();
 
@@ -17,7 +19,7 @@ const MainNavigator = () => {
           headerRight: () => (
             <TouchableOpacity
               onPress={() => navigation.navigate('Profile')}
-              style={{ marginRight: 5 }}
+              style={{ marginRight: -5, marginTop: 5 }}
             >
               <Ionicons name="person-circle-outline" size={42} color="black" />
             </TouchableOpacity>
@@ -38,6 +40,24 @@ const MainNavigator = () => {
         options={{
           presentation: 'modal',
           headerShown: false,
+        }}
+      />
+      <Stack.Screen
+        name="EditProfile"
+        component={EditProfileScreen} 
+        options={{
+          headerTransparent: true,
+          presentation: 'modal',
+          headerTitle: 'Edit Profile',
+          headerBackTitle: 'Back',
+          headerStyle: {
+            backgroundColor: 'rgba(0, 0, 0, 0.6)', 
+          },
+          headerTitleStyle: { // Text
+            color: colors.lightest,
+            fontSize: 18, 
+          },
+          headerTintColor: colors.lightest, // Icon
         }}
       />
     </Stack.Navigator>
