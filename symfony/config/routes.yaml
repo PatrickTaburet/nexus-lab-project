@@ -1,8 +1,12 @@
 index:
    path: /
    controller: App\Controller\MainController::index
-auth:
+api_login_check:
     path: /api/login_check
+    methods: ['POST']
+api_refresh_token:
+    path: /api/token_refresh
+    controller: App\Controller\api_TokenController::refreshToken
     methods: ['POST']
 
 # proteger route generative/.. pour l'acces user uniquement (personnes log)

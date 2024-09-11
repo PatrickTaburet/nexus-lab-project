@@ -1,49 +1,53 @@
 <?php
 
-namespace App\Controller;
+namespace App\Controller\Api;
 
 use App\Entity\User;
-use Lexik\Bundle\JWTAuthenticationBundle\Services\JWTTokenManagerInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+use App\Entity\RefreshToken;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+use Lexik\Bundle\JWTAuthenticationBundle\Services\JWTTokenManagerInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
 
-class TokenController extends AbstractController
+class api_TokenController extends AbstractController
 {
-    private $entityManager;
     private $jwtManager;
+    private $manager;
 
-    public function __construct(EntityManagerInterface $entityManager, JWTTokenManagerInterface $jwtManager)
+    public function __construct(JWTTokenManagerInterface $jwtManager, EntityManagerInterface $manager)
     {
-        $this->entityManager = $entityManager;
         $this->jwtManager = $jwtManager;
+        $this->manager = $manager;
     }
 
-    #[Route('/api/refresh_token', name: 'api_refresh_token', methods: ['POST'])]
     public function refreshToken(Request $request): JsonResponse
     {
-        $data = json_decode($request->getContent(), true);
-        $userId = $data['userId'] ?? null;
-
-        if (!$userId) {
-            return new JsonResponse(['error' => 'User ID is required'], JsonResponse::HTTP_BAD_REQUEST);
+        $refreshToken = $request->get('refresh_token');
+        $isValid = $this->isValidRefreshToken($refreshToken);
+        if (!$isValid){
+            throw new AccessDeniedException('Invalid Token');
         }
-
-        $user = $this->entityManager->getRepository(User::class)->find($userId);
-
-        if (!$user) {
-            return new JsonResponse(['error' => 'User not found'], JsonResponse::HTTP_NOT_FOUND);
+        $user = $this->getUserFromRefreshToken($refreshToken);
+        if (!$user instanceof User){
+            throw new AccessDeniedException('Invalid User');
         }
+        $accessToken = $this->jwtManager->create($user);
+        return new JsonResponse(['token' => $accessToken]);
+    }
 
-        if ($this->getUser() !== $user) {
-            throw new AccessDeniedException('You cannot refresh the token for another user.');
-        }
+    private function isValidRefreshToken($refreshToken): bool
+    {
+        $refreshTokenEntity = $this->manager->getRepository(RefreshToken::class)->findOneBy(['refresh_token' => $refreshToken]);
+        return $refreshTokenEntity && $refreshTokenEntity->isValid();
+    }
 
-        $newToken = $this->jwtManager->create($user);
-
-        return new JsonResponse(['token' => $newToken]);
+    private function getUserFromRefreshToken($refreshToken): ?User
+    {
+        $refreshTokenUserEmail = $this->manager->getRepository(RefreshToken::class)->findOneBy(['refresh_token' => $refreshToken]);
+        $refreshTokenEntity = $this->manager->getRepository(User::class)->findOneByEmail([$refreshTokenUserEmail->getUsername()]);
+        return $refreshTokenEntity ? $refreshTokenEntity : null;
     }
 }

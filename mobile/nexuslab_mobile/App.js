@@ -14,6 +14,26 @@ const Main = () => {
   const { isLoggedIn, setIsLoggedIn, handleLogout } = useAuth();
   const [loading, setLoading] = useState(true);
 
+  const refreshToken = async () => {
+    try {
+      const refreshToken = await AsyncStorage.getItem('refreshToken');
+      if (!refreshToken) {
+        throw new Error('No refresh token found');
+      }
+
+      const response = await api.post('/token_refresh', { refresh_token: refreshToken });
+      const { token, refresh_token } = response.data;
+
+      await AsyncStorage.setItem('token', token);
+      await AsyncStorage.setItem('refreshToken', refresh_token);
+
+      return token;
+    } catch (error) {
+      console.error('Error refreshing token:', error);
+      throw error;
+    }
+  };
+
   useEffect(() => {
     //  AsyncStorage.removeItem('token');
 

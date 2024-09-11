@@ -3,7 +3,6 @@
 namespace App\EventListener;
 
 use App\Entity\User;
-use Symfony\Component\Security\Core\User\UserInterface;
 use Lexik\Bundle\JWTAuthenticationBundle\Event\JWTCreatedEvent;
 
 class JWTCreatedListener
