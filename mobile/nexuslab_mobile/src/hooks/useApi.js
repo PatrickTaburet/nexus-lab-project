@@ -25,15 +25,18 @@ const useApi = () => {
     (response) => response,
     async (error) => {
       if (error.response && error.response.status === 401) {
-        console.log("Unauthorized access - possibly due to invalid token or session");
-        await AsyncStorage.removeItem('token');
-        setIsLoggedIn(false);
-        navigation.dispatch(
-          CommonActions.reset({
-            index: 0,
-            routes: [{ name: 'Welcome' }],
-          })
-        );
+        const isLoginRoute = error.config.url.includes('/login_check');
+        if (!isLoginRoute) {
+          console.log("Unauthorized access - possibly due to invalid token or session");
+          await AsyncStorage.removeItem('token');
+          setIsLoggedIn(false);
+          navigation.dispatch(
+            CommonActions.reset({
+              index: 0,
+              routes: [{ name: 'Welcome' }],
+            })
+          );
+        }
       }
       return Promise.reject(error);
     }

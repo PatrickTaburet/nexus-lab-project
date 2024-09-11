@@ -28,7 +28,7 @@ const ProfileScreen = ({ navigation })  => {
       const token = await AsyncStorage.getItem('token');
       const decodedToken = jwtDecode(token);
       const userId = decodedToken.id;
-      console.log(userId);
+      //console.log(userId);
       const response = await api.get(`/users/${userId}`, {
         headers: {
           'Content-Type': 'application/json',
@@ -235,7 +235,7 @@ const styles = StyleSheet.create({
   logoutText:{
     fontSize: 23,
     color: colors.primary,
-    marginTop: 5,
+    marginTop: 0,
     marginBottom: 15
   },
   profileImage: {

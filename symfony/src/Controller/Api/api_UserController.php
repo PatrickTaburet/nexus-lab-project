@@ -59,14 +59,16 @@ class api_UserController extends AbstractController
         $constraints = new Assert\Collection([
             'username' => [new Assert\NotBlank(), new Assert\Type('string')],
             'email' => [new Assert\NotBlank(), new Assert\Email()],
-            'password' => [],
-            'confirmPassword' => [],
+            'password' => new Assert\AtLeastOneOf([
+                new Assert\Blank(),
+                new Assert\Length(['min' => 6])
+            ]),
+            'confirmPassword' => new Assert\AtLeastOneOf([
+                new Assert\Blank(),
+                new Assert\EqualTo(['value' => $password])
+            ]),
         ]);
-
-        if (!empty($password)) {
-            $constraints->fields['password'] = new Assert\Length(['min' => 6]);
-            $constraints->fields['confirmPassword'] = new Assert\EqualTo(['value' => $password]);
-        }
+ 
         $violations = $this->validator->validate($data, $constraints);
 
         if (count($violations) > 0) {

@@ -32,7 +32,6 @@ class api_RegistrationController extends AbstractController
     #[Route('/api/users', name: 'api_user_register', methods: ['POST'])]
     public function register(Request $request): JsonResponse
     {
-        // var_dump($request->request->all());
         $username = $request->request->get('username');
         $email = $request->request->get('email');
         $password = $request->request->get('password');

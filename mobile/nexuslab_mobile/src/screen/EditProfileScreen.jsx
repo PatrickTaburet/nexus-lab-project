@@ -1,4 +1,4 @@
-import { TextInput, ImageBackground, View, Text, Button, StyleSheet, TouchableOpacity, SafeAreaView, Image, Animated, Easing } from 'react-native';
+import { ScrollView, TextInput, ImageBackground, View, Text, Button, StyleSheet, TouchableOpacity, SafeAreaView, Image, Animated, Easing } from 'react-native';
 import React, { useState, useEffect } from 'react'
 import { CommonActions, useIsFocused } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -108,9 +108,9 @@ const EditProfileScreen = ({ navigation })  => {
         },
       });
       console.log("2")
+      console.log('Profile updated successfully:')
       console.log(response.data);
       if (response) {
-    
         alert('Update successful!');
         navigation.goBack();
       }
@@ -163,13 +163,14 @@ const EditProfileScreen = ({ navigation })  => {
 
   return (
     <SafeAreaView style={styles.safeArea}> 
-    <ImageBackground
-    source={require('../assets/design/backgroundProfile.jpg')}
-    style={styles.backgroundImage}
-    resizeMode="cover"
-  >
-    <SafeAreaView style={styles.globalContainer}>
-      <View style={styles.container}>
+      <ImageBackground
+        source={require('../assets/design/backgroundProfile.jpg')}
+        resizeMode="cover"
+      >
+        <ScrollView contentContainerStyle={{ justifyContent: 'center', alignItems: 'center', width:'100%'}}>
+
+        <SafeAreaView style={styles.globalContainer}>
+          <View style={styles.container}>
             <Image
               source={{ uri: avatarUrl }}
               style={styles.profileImage}
@@ -237,21 +238,23 @@ const EditProfileScreen = ({ navigation })  => {
               />
             </View>
 
-        <View style={styles.globalButtonBox}>
-            <MyButton
-              HandlePress={HandleUpdateProfile}
-              myStyle={styles.submitButton}
-            >
-              Update
-            </MyButton>
-            {error ? <Text style={globalStyles.warning} >{error}</Text> : null}
+            <View style={styles.globalButtonBox}>
+                <MyButton
+                  HandlePress={HandleUpdateProfile}
+                  myStyle={styles.submitButton}
+                >
+                  Update
+                </MyButton>
+                {error ? <Text style={globalStyles.warning} >{error}</Text> : null}
 
-        </View>
-       
-      </View>
-    </SafeAreaView>
-    </ImageBackground>
-    </SafeAreaView>
+            </View>
+          </View>
+        </SafeAreaView>
+        </ScrollView>
+
+      </ImageBackground>
+    
+  </SafeAreaView>
 
   );
 }
@@ -259,11 +262,6 @@ const EditProfileScreen = ({ navigation })  => {
 export default EditProfileScreen
 
 const styles = StyleSheet.create({
-  backgroundImage: {
-    flex: 1,   
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
   safeArea:{
     flex: 1,
     backgroundColor: 'black', 
@@ -275,7 +273,7 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     borderColor: colors.cyan,
     borderWidth: 2,
-    marginTop: 30
+    marginTop: 30,
   },
   container: {
     flex: 1,
@@ -283,7 +281,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     paddingBottom: 0,
-    marginBottom: 150
+    marginBottom: 190
   },
   text: {
     fontSize: 15,
@@ -296,14 +294,18 @@ const styles = StyleSheet.create({
     height: 128,
     borderRadius: 70,
     zIndex:2,
-    position: "relative",
-    top : 161,
+    position: "absolute",
+    top : 0,
+    marginTop: 41
 
   },
-  circleImg:{
+  circleImg: {
     width: 170,
     height: 170,
     position: "relative",
+    marginTop: 20,
+    marginBottom: 10
+    
   },
   secondButton:{
     width: 150,
@@ -338,5 +340,4 @@ const styles = StyleSheet.create({
   inputIcon:{
     margin:7
   },
-
 })
