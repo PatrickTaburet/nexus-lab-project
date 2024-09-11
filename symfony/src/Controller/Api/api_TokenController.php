@@ -11,6 +11,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Lexik\Bundle\JWTAuthenticationBundle\Services\JWTTokenManagerInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Routing\Annotation\Route;
 
 class api_TokenController extends AbstractController
 {
@@ -23,9 +24,14 @@ class api_TokenController extends AbstractController
         $this->manager = $manager;
     }
 
+    #[Route('/api/refresh_token', name: 'api_refresh_token', methods: ['POST'])]
     public function refreshToken(Request $request): JsonResponse
     {
+        // var_dump("blabla");
+
         $refreshToken = $request->get('refresh_token');
+        // var_dump($refreshToken);
+
         $isValid = $this->isValidRefreshToken($refreshToken);
         if (!$isValid){
             throw new AccessDeniedException('Invalid Token');
@@ -46,8 +52,10 @@ class api_TokenController extends AbstractController
 
     private function getUserFromRefreshToken($refreshToken): ?User
     {
-        $refreshTokenUserEmail = $this->manager->getRepository(RefreshToken::class)->findOneBy(['refresh_token' => $refreshToken]);
-        $refreshTokenEntity = $this->manager->getRepository(User::class)->findOneByEmail([$refreshTokenUserEmail->getUsername()]);
-        return $refreshTokenEntity ? $refreshTokenEntity : null;
+        $refreshTokenEntity = $this->manager->getRepository(RefreshToken::class)->findOneBy(['refresh_token' => $refreshToken]);
+        if ($refreshTokenEntity) {
+            return $this->manager->getRepository(User::class)->findOneByEmail($refreshTokenEntity->getUsername());
+        }
+        return null;
     }
 }

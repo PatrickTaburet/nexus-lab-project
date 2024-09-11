@@ -32,7 +32,7 @@ class RefreshTokenListener
         if ($existingRefreshToken && $existingRefreshToken->isValid()) {
             $refreshToken = $existingRefreshToken->getRefreshToken();
         } else {
-            $refreshToken = $this->generateRefreshToken($user);
+            $refreshToken = $this->generateRefreshToken();
             $this->saveRefreshToken($refreshToken, $user->getEmail());
         }
         $data['refresh_token'] = $refreshToken;
@@ -42,7 +42,7 @@ class RefreshTokenListener
         $event->setData($data);
     }
 
-    private function generateRefreshToken(UserInterface $user)
+    private function generateRefreshToken()
     {
         return bin2hex(random_bytes(32));
     }

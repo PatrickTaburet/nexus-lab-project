@@ -4,10 +4,10 @@ index:
 api_login_check:
     path: /api/login_check
     methods: ['POST']
-api_refresh_token:
-    path: /api/token_refresh
-    controller: App\Controller\api_TokenController::refreshToken
-    methods: ['POST']
+# api_refresh_token:
+#     path: /api/refresh_token
+#     controller: App\Controller\Api\api_TokenController::refreshToken
+#     methods: ['POST']
 
 # proteger route generative/.. pour l'acces user uniquement (personnes log)
 # /profile uniquement pour les role user

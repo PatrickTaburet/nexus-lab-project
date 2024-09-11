@@ -35,7 +35,7 @@ const LoginScreen = ({ navigation }) => {
         navigation.replace('TabNavigator');
     } catch (err) {
       console.log('Error:', err.response?.data);
-        setError('Invalid email or password');
+      setError('Invalid email or password');
     }
 };
   return (
