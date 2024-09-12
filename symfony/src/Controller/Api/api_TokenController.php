@@ -42,35 +42,8 @@ class api_TokenController extends AbstractController
         } else {
             throw new AccessDeniedException('Invalid Token');
         }
-   
-
-        // $isValid = $this->isValidRefreshToken($refreshToken);
-
-        // ob_start();
-
-        // var_dump($isValid);
-
-        // $isValid = $this->isValidRefreshToken($refreshToken);
-        // if (!$isValid){
-        //     throw new AccessDeniedException('Invalid Token');
-        // }
-        // $user = $this->getUserFromRefreshToken($refreshToken);
-        // if (!$user instanceof User){
-        //     throw new AccessDeniedException('Invalid User');
-        // }
-        // $accessToken = $this->jwtManager->create($user);
-        // return new JsonResponse(['token' => $accessToken]);
-
-        // $result = ob_get_clean();
-        // return new JsonResponse(['token' => $result]);
 
     }
-
-    // private function isValidRefreshToken($refreshToken): bool
-    // {
-    //     $refreshTokenEntity = $this->manager->getRepository(RefreshToken::class)->findOneBy(['refresh_token' => $refreshToken]);
-    //     return $refreshTokenEntity && $refreshTokenEntity->isValid();
-    // }
 
     private function getUserFromEmail($email): ?User
     {

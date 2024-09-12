@@ -28,13 +28,15 @@ const ProfileScreen = ({ navigation })  => {
       const token = await AsyncStorage.getItem('token');
       const decodedToken = jwtDecode(token);
       const userId = decodedToken.id;
-      //console.log(userId);
+      console.log(userId);
       const response = await api.get(`/users/${userId}`, {
         headers: {
           'Content-Type': 'application/json',
         },
       });
+      console.log('----------')
       setUserData(response.data);
+      console.log('++++++++++++');
       console.log(response.data);
       
     } catch (error) {

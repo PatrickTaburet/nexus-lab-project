@@ -4,11 +4,12 @@ import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import config from '../config/config';
 // import {CommonActions} from '@react-navigation/native';
+import useAuthService from '../services/useAuthService';
 
-const useApi = () => {
+const useApi = (refreshAccessToken) => {
+  // const { checkTokenValidity } = useAuthService(); // Utilisation du service d'authentification
+  // const { isLoggedIn, setIsLoggedIn, handleLogout } = useAuth();
 
-  const { setIsLoggedIn } = useAuth();
-  // const navigation = useNavigation();
   const api = axios.create({
     baseURL: `${config.apiUrl}/api`,
   });
@@ -24,21 +25,21 @@ const useApi = () => {
   api.interceptors.response.use(
     (response) => response,
     async (error) => {
-      if (error.response && error.response.status === 401) {
-        // const isLoginRoute = error.config.url.includes('/login_check');
-        // const isRefreshTokenRoute = error.config.url.includes('/refresh_token');
+      const originalRequest = error.config;
+
+      if (error.response && error.response.status === 401  && !originalRequest._retry) {
+        originalRequest._retry = true;
         console.log(error.config);
-        // if (!isLoginRoute || !isRefreshTokenRoute) {
-        //   console.log("Unauthorized access - possibly due to invalid token or session");
-        //   await AsyncStorage.removeItem('token');
-        //   setIsLoggedIn(false);
-        //   // navigation.dispatch(
-        //   //   CommonActions.reset({
-        //   //     index: 0,
-        //   //     routes: [{ name: 'Welcome' }],
-        //   //   })
-        //   // );
-        /// }
+        console.log('before refresh token in api');
+        const newToken = await refreshAccessToken();
+        console.log(newToken);
+        if (newToken) {
+          originalRequest.headers.Authorization = `Bearer ${newToken}`;
+          console.log('before new api after refresh');
+          return api(originalRequest); 
+        } else {
+          await handleLogout();
+        }
       }
       return Promise.reject(error);
     }
@@ -55,7 +56,7 @@ const useApi = () => {
       return response.data;
     } catch (error) {
       console.error('Signup error:', error);
-      throw error; // Relancer l'erreur pour la gérer dans le composant appelant
+      throw error; // Relancer l'erreur pour la gérer dans le composant appelant.
     }
   };
 
