@@ -14,13 +14,18 @@ security:
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
-
+        # Refresh Token firewall, use JWT for mobiles app
+        refresh_token:
+            pattern: ^/api/refresh_token
+            stateless: true
+            security: false
         # API Firewall, use JWT for mobiles app
         api:
             pattern: ^/api
             stateless: true
             provider: app_user_provider
             jwt: ~
+            # exclude: ^/api/refresh_token
             json_login:
                 check_path: api_login_check
                 username_path: email
@@ -28,6 +33,7 @@ security:
                 success_handler: lexik_jwt_authentication.handler.authentication_success
                 failure_handler: lexik_jwt_authentication.handler.authentication_failure
 
+   
         # Main firewall for symfony apllication
         main:
             lazy: true
@@ -53,17 +59,14 @@ security:
 
             # https://symfony.com/doc/current/security/impersonating_user.html
             # switch_user: true
-        # refresh_token:
-        #     pattern: ^/api/refresh_token
-        #     stateless: true
-        #     anonymous: true
+ 
     # Easy way to control access for large sections of your site
     # Note: Only the *first* access control that matches will be used
     access_control:
+        - { path: ^/api/refresh_token, roles: PUBLIC_ACCESS }
         - { path: ^/admin, roles: ROLE_ADMIN }
         - { path: ^/profile, roles: ROLE_USER }
         - { path: ^/artist, roles: ROLE_ARTIST }
-        # - { path: ^/api/refresh_token, roles: PUBLIC_ACCESS }
         # - { path: ^/api/, roles: ROLE_ADMIN }
         # - { path: ^/api, roles: PUBLIC_ACCESS }
 

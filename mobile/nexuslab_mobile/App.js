@@ -16,20 +16,24 @@ const Main = () => {
   const [loading, setLoading] = useState(true);
   const {api} = useApi();
 
-  const refreshAccessToken = async (refreshToken) => {
+  const refreshAccessToken = async (username) => {
     try {
-      const response = await api.post('/refresh_token', { refresh_token: refreshToken }, {
+      console.log("--------------");
+      console.log( username);
+
+      const response = await api.post('/refresh_token', { username: username }, {
         headers: {
             'Content-Type': 'application/json',
         },
       });
-      const { token, refresh_token } = response.data;
+      const { token } = response.data;
+      console.log('Req pass');
       console.log('Nouveau token:', token);
       console.log('refresh response : ' + response.data);
       if (token) {
         return token;
       } else {
-        console.error('Échec du rafraîchissement du token:', response.data.error);
+        console.error('Échec du rafraîchissement du tokenn:', response.data.error);
         return null;
       }
     } catch (error) {
@@ -39,7 +43,7 @@ const Main = () => {
   };
 
   useEffect(() => {
-    //  AsyncStorage.removeItem('token');
+    //AsyncStorage.removeItem('token');
 
     const checkUserToken = async () => {
       try {
@@ -49,11 +53,13 @@ const Main = () => {
         console.log('token 1 ' + token)
         if (token) {
           let decodedToken;
+          let username;
           try {
             decodedToken = jwtDecode(token);
-            console.log('token 2 good')
+            username = decodedToken.username;
+            console.log('token 2 good ' + username )
           } catch (decodeError) {
-            console.error('Error decoding tokennn:', decodeError);
+            console.error('Error decoding token:', decodeError);
             await handleLogout();
             setLoading(false);
             return;
@@ -63,26 +69,27 @@ const Main = () => {
             setIsLoggedIn(true);
             console.log('token 3 good')
           } else if (refreshToken){
-            console.log('token 3 refresh')
-            const newToken = await refreshAccessToken(refreshToken);
+            console.log('token 3 refreshh')
+            const newToken = await refreshAccessToken(username);
             if (newToken) {
               await AsyncStorage.setItem('token', newToken);
-              console.log('newtoken---')
-
+              console.log('newtoken---' + newToken)
               setIsLoggedIn(true);
             } else {
+              console.log("expired token and try to refresh")
               await handleLogout();
             }
           } else {
+            console.log("expired token and no refreshh")
             await handleLogout();
           }
         } else {
-          setIsLoggedIn(false);
+          await handleLogout();
           console.log('token 4 false')
         } 
       } catch (error) {
-        console.error('Error checking user token:', error);
-        setIsLoggedIn(false);
+        console.error('Error checking user tokenn:', error);
+        await handleLogout();
       } finally {
         setLoading(false);
       }
@@ -110,7 +117,7 @@ export default function App() {
 
   useEffect(() => {
     StatusBar.setBarStyle('light-content');
-    StatusBar.setBackgroundColor('black'); // ou Transparent
+    StatusBar.setBackgroundColor('black'); // ou Transparent 
     StatusBar.setTranslucent(true);
   }, []);
 

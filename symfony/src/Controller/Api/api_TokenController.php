@@ -27,35 +27,53 @@ class api_TokenController extends AbstractController
     #[Route('/api/refresh_token', name: 'api_refresh_token', methods: ['POST'])]
     public function refreshToken(Request $request): JsonResponse
     {
-        // var_dump("blabla");
-
-        $refreshToken = $request->get('refresh_token');
-        // var_dump($refreshToken);
-
-        $isValid = $this->isValidRefreshToken($refreshToken);
-        if (!$isValid){
+        $data = json_decode($request->getContent(), true);
+        $username = $data['username'] ?? null;
+        $existingRefreshToken = $this->manager->getRepository(RefreshToken::class)->findOneBy([
+            'username' => $username,
+        ]);
+        if ($existingRefreshToken && $existingRefreshToken->isValid()) {
+            $user = $this->getUserFromEmail($username);
+            if (!$user instanceof User){
+                throw new AccessDeniedException('Invalid User');
+            }
+            $accessToken = $this->jwtManager->create($user);
+            return new JsonResponse(['token' => $accessToken]);
+        } else {
             throw new AccessDeniedException('Invalid Token');
         }
-        $user = $this->getUserFromRefreshToken($refreshToken);
-        if (!$user instanceof User){
-            throw new AccessDeniedException('Invalid User');
-        }
-        $accessToken = $this->jwtManager->create($user);
-        return new JsonResponse(['token' => $accessToken]);
+   
+
+        // $isValid = $this->isValidRefreshToken($refreshToken);
+
+        // ob_start();
+
+        // var_dump($isValid);
+
+        // $isValid = $this->isValidRefreshToken($refreshToken);
+        // if (!$isValid){
+        //     throw new AccessDeniedException('Invalid Token');
+        // }
+        // $user = $this->getUserFromRefreshToken($refreshToken);
+        // if (!$user instanceof User){
+        //     throw new AccessDeniedException('Invalid User');
+        // }
+        // $accessToken = $this->jwtManager->create($user);
+        // return new JsonResponse(['token' => $accessToken]);
+
+        // $result = ob_get_clean();
+        // return new JsonResponse(['token' => $result]);
+
     }
 
-    private function isValidRefreshToken($refreshToken): bool
-    {
-        $refreshTokenEntity = $this->manager->getRepository(RefreshToken::class)->findOneBy(['refresh_token' => $refreshToken]);
-        return $refreshTokenEntity && $refreshTokenEntity->isValid();
-    }
+    // private function isValidRefreshToken($refreshToken): bool
+    // {
+    //     $refreshTokenEntity = $this->manager->getRepository(RefreshToken::class)->findOneBy(['refresh_token' => $refreshToken]);
+    //     return $refreshTokenEntity && $refreshTokenEntity->isValid();
+    // }
 
-    private function getUserFromRefreshToken($refreshToken): ?User
+    private function getUserFromEmail($email): ?User
     {
-        $refreshTokenEntity = $this->manager->getRepository(RefreshToken::class)->findOneBy(['refresh_token' => $refreshToken]);
-        if ($refreshTokenEntity) {
-            return $this->manager->getRepository(User::class)->findOneByEmail($refreshTokenEntity->getUsername());
-        }
-        return null;
+        return $this->manager->getRepository(User::class)->findOneByEmail($email);
     }
 }
