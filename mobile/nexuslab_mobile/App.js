@@ -8,20 +8,21 @@ import AuthNavigator from './src/navigation/AuthNavigator';
 import { AuthProvider, useAuth } from './src/navigation/AuthContext';
 import {jwtDecode} from 'jwt-decode';
 import useApi from './src/hooks/useApi';
-import useAuthService from './src/services/useAuthService';
+// import useAuthService from './src/services/AuthService';
+import { checkTokenValidity } from './src/services/AuthService';
 
 SplashScreen.preventAutoHideAsync();
 
 const Main = () => {
   const { isLoggedIn, setIsLoggedIn, handleLogout } = useAuth();
   const [loading, setLoading] = useState(true);
-  const { checkTokenValidity } = useAuthService();
-  const {api} = useApi(checkTokenValidity);
+  // const { checkTokenValidity } = useAuthService();
+  // const {api} = useApi(checkTokenValidity);
 
 
   useEffect(() => {
     const initializeAuth = async () => {
-      await checkTokenValidity();
+      await checkTokenValidity(handleLogout, setIsLoggedIn);
       setLoading(false);
     };
 
@@ -48,7 +49,7 @@ export default function App() {
 
   useEffect(() => {
     StatusBar.setBarStyle('light-content');
-    StatusBar.setBackgroundColor('black'); // ou Transparent
+    StatusBar.setBackgroundColor('black'); // ou Transparent 
     StatusBar.setTranslucent(true);
   }, []);
 

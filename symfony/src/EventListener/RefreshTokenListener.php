@@ -32,6 +32,7 @@ class RefreshTokenListener
         if ($existingRefreshToken && $existingRefreshToken->isValid()) {
             $refreshToken = $existingRefreshToken->getRefreshToken();
         } else {
+            // supprimer l'ancien refresh token
             $refreshToken = $this->generateRefreshToken();
             $this->saveRefreshToken($refreshToken, $user->getEmail());
         }

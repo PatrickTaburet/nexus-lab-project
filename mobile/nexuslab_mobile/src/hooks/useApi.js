@@ -4,11 +4,13 @@ import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import config from '../config/config';
 // import {CommonActions} from '@react-navigation/native';
-import useAuthService from '../services/useAuthService';
+import useAuthService from '../services/AuthService';
+import { checkTokenValidity } from '../services/AuthService';
 
-const useApi = (refreshAccessToken) => {
+
+const useApi = () => {
   // const { checkTokenValidity } = useAuthService(); // Utilisation du service d'authentification
-  // const { isLoggedIn, setIsLoggedIn, handleLogout } = useAuth();
+  const { setIsLoggedIn, handleLogout } = useAuth();
 
   const api = axios.create({
     baseURL: `${config.apiUrl}/api`,
@@ -31,7 +33,7 @@ const useApi = (refreshAccessToken) => {
         originalRequest._retry = true;
         console.log(error.config);
         console.log('before refresh token in api');
-        const newToken = await refreshAccessToken();
+        const newToken = await checkTokenValidity(handleLogout, setIsLoggedIn);
         console.log(newToken);
         if (newToken) {
           originalRequest.headers.Authorization = `Bearer ${newToken}`;

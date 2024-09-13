@@ -27,9 +27,12 @@ const LoginScreen = ({ navigation }) => {
           },
       });
         console.log('API Response:', response.data);
-        const { token } = response.data;
+        const { token, refresh_token, refresh_token_expiration } = response.data;
 
         await AsyncStorage.setItem('token', token);
+        // await AsyncStorage.setItem('refresh_token', refresh_token);
+        // await AsyncStorage.setItem('refresh_token_expiration', refresh_token_expiration);
+
         setIsLoggedIn(true);
 
         navigation.replace('TabNavigator');

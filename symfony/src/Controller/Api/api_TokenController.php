@@ -29,9 +29,16 @@ class api_TokenController extends AbstractController
     {
         $data = json_decode($request->getContent(), true);
         $username = $data['username'] ?? null;
+        if (!$username) {
+            return new JsonResponse(['error' => 'Username is missing'], 400);
+        }
+
         $existingRefreshToken = $this->manager->getRepository(RefreshToken::class)->findOneBy([
             'username' => $username,
         ]);
+        if (!$existingRefreshToken) {
+            return new JsonResponse(['error' => 'Refresh token not found'], 403);
+        }
         if ($existingRefreshToken && $existingRefreshToken->isValid()) {
             $user = $this->getUserFromEmail($username);
             if (!$user instanceof User){
@@ -42,7 +49,6 @@ class api_TokenController extends AbstractController
         } else {
             throw new AccessDeniedException('Invalid Token');
         }
-
     }
 
     private function getUserFromEmail($email): ?User

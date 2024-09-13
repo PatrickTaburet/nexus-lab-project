@@ -1,37 +1,33 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {jwtDecode} from 'jwt-decode';
-import useApi from '../hooks/useApi';  // Importez votre hook API
-import { useAuth } from '../navigation/AuthContext';
+// import useApi from '../hooks/use';  // Importez votre hook API
+// import { useAuth } from '../navigation/AuthContext';
+import { refreshTokenApi } from '../api/authApi';
 
-const useAuthService = () => {
-  const { api } = useApi();
-  const {setIsLoggedIn, handleLogout  } = useAuth();
 
-  const refreshAccessToken = async (username) => {
-    try {
-      console.log('before req refresh');
-        const response = await api.post('/refresh_token', { username: username }, {
-            headers: {
-                'Content-Type': 'application/json',
-            },
-        });
-        const { token } = response.data;
-        console.log('Nouveau token:', token);
-        if (token) {
-            await AsyncStorage.setItem('token', token);
-            return token;
-        }
-        return null;
-    } catch (error) {
-      console.error('Error refreshing token:', error);
-      return null;
+export const refreshAccessToken = async (username) => {
+  try {
+    console.log('before req refresh');
+    const response = await refreshTokenApi(username);
+    console.log('Nouveau token:');
+    console.log(response.data);
+    const { token } = response.data;
+
+    if (token) {
+      return token;
     }
-  };
+    return null;
+  } catch (error) {
+    console.error('Error refreshing token:', error);
+    return null;
+  }
+};
 
-  const checkTokenValidity = async () => {
+  export const checkTokenValidity = async (handleLogout, setIsLoggedIn) => {
     try {
       const token = await AsyncStorage.getItem('token');
       console.log('Ancien token:', token);
+
       if (token) {
         let decodedToken;
         let username;
@@ -56,17 +52,13 @@ const useAuthService = () => {
             await handleLogout();
           }
         }
+      } else  {
+        console.error('Token is null or undefined');
+        await handleLogout();
+        return;
       }
     } catch (error) {
       console.error('Error checking token validity:', error);
       await handleLogout();
     }
   };
-
-
-  return {
-    checkTokenValidity,
-  };
-};
-
-export default useAuthService;
