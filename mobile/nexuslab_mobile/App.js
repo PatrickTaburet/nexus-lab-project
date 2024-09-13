@@ -3,12 +3,8 @@ import { StyleSheet, StatusBar,View, ActivityIndicator } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import * as SplashScreen from 'expo-splash-screen';
 import { useCustomFonts } from './src/utils/fonts'; 
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import AuthNavigator from './src/navigation/AuthNavigator';
 import { AuthProvider, useAuth } from './src/navigation/AuthContext';
-import {jwtDecode} from 'jwt-decode';
-import useApi from './src/hooks/useApi';
-// import useAuthService from './src/services/AuthService';
 import { checkTokenValidity } from './src/services/AuthService';
 
 SplashScreen.preventAutoHideAsync();
@@ -16,12 +12,10 @@ SplashScreen.preventAutoHideAsync();
 const Main = () => {
   const { isLoggedIn, setIsLoggedIn, handleLogout } = useAuth();
   const [loading, setLoading] = useState(true);
-  // const { checkTokenValidity } = useAuthService();
-  // const {api} = useApi(checkTokenValidity);
-
 
   useEffect(() => {
     const initializeAuth = async () => {
+      console.log("start app");
       await checkTokenValidity(handleLogout, setIsLoggedIn);
       setLoading(false);
     };

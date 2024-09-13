@@ -34,8 +34,8 @@ const LoginScreen = ({ navigation }) => {
         // await AsyncStorage.setItem('refresh_token_expiration', refresh_token_expiration);
 
         setIsLoggedIn(true);
-
         navigation.replace('TabNavigator');
+        
     } catch (err) {
       console.log('Error:', err.response?.data);
       setError('Invalid email or password');

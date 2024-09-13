@@ -25,7 +25,6 @@ security:
             stateless: true
             provider: app_user_provider
             jwt: ~
-            # exclude: ^/api/refresh_token
             json_login:
                 check_path: api_login_check
                 username_path: email
