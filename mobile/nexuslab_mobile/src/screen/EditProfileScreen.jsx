@@ -12,12 +12,13 @@ import FontAwesome5 from '@expo/vector-icons/FontAwesome5';
 import useApi from '../hooks/useApi';
 import { useAuth } from '../navigation/AuthContext';
 import * as ImagePicker from 'expo-image-picker';
+import { checkTokenValidity } from '../services/AuthService';
 
 
 const EditProfileScreen = ({ navigation })  => {
 
   const {api} = useApi();
-  const {isLoggedIn, handleLogout } = useAuth();
+  const {setIsLoggedIn, handleLogout } = useAuth();
   const [userData, setUserData] = useState(null);
   const [loading, setLoading] = useState(true);
   const isFocused = useIsFocused();
@@ -83,6 +84,7 @@ const EditProfileScreen = ({ navigation })  => {
     const token = await AsyncStorage.getItem('token');
     const decodedToken = jwtDecode(token);
     const userId = decodedToken.id;
+    const tokenUsername = decodedToken.username;
 
     if (password !== confirmPassword) {
       setError("Passwords do not match");
@@ -100,6 +102,8 @@ const EditProfileScreen = ({ navigation })  => {
         name: profilePicture.name,
       });
     }
+
+    console.log("-----------")
     console.log(formData)
     try {
       const  response = await api.post(`/editUser/${userId}`, formData, {
@@ -107,7 +111,17 @@ const EditProfileScreen = ({ navigation })  => {
           'Content-Type': 'multipart/form-data',
         },
       });
-      console.log("2")
+      console.log("++++++++++")
+      console.log(response)
+      console.log("data")
+      console.log(response.data)
+
+      if (response && email !== tokenUsername){
+        console.log('Email differents, avant changement token');
+
+        await checkTokenValidity(handleLogout, setIsLoggedIn, email);
+        console.log('token changé');
+      }
       console.log('Profile updated successfully:')
       console.log(response.data);
       if (response) {
@@ -115,7 +129,8 @@ const EditProfileScreen = ({ navigation })  => {
         navigation.goBack();
       }
     } catch (error) {
-      console.log("catch")
+      console.log("catch");
+      console.log(error);
 
       if (error.response) {
         const errorMessage = error.response.data.error || 'An error occurred during profile update.';

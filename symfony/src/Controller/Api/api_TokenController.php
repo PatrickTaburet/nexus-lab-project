@@ -28,22 +28,24 @@ class api_TokenController extends AbstractController
     public function refreshToken(Request $request): JsonResponse
     {
         $data = json_decode($request->getContent(), true);
-        $username = $data['username'] ?? null;
-        if (!$username) {
+        $userId = $data['userId'] ?? null;
+        if (!$userId) {
             return new JsonResponse(['error' => 'Username is missing'], 400);
         }
 
+        $user = $this->manager->getRepository(User::class)->findOneBy([
+            'id' => $userId,
+        ]);
+        if (!$user instanceof User){
+            throw new AccessDeniedException('Invalid User');
+        }
         $existingRefreshToken = $this->manager->getRepository(RefreshToken::class)->findOneBy([
-            'username' => $username,
+            'username' => $user->getEmail(),
         ]);
         if (!$existingRefreshToken) {
             return new JsonResponse(['error' => 'Refresh token not found'], 403);
         }
         if ($existingRefreshToken && $existingRefreshToken->isValid()) {
-            $user = $this->getUserFromEmail($username);
-            if (!$user instanceof User){
-                throw new AccessDeniedException('Invalid User');
-            }
             $accessToken = $this->jwtManager->create($user);
             return new JsonResponse(['token' => $accessToken]);
         } else {

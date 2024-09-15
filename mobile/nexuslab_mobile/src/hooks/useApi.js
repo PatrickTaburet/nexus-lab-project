@@ -24,9 +24,12 @@ const useApi = () => {
     (response) => response,
     async (error) => {
       const originalRequest = error.config;
-
+      console.log("api");
+      //console.log(response);
       if (error.response && error.response.status === 401  && !originalRequest._retry) {
         originalRequest._retry = true;
+        console.log("api 2");
+        console.log(error);
         console.log(error.config);
         const newToken = await checkTokenValidity(handleLogout, setIsLoggedIn);
         if (newToken) {
@@ -41,24 +44,8 @@ const useApi = () => {
     }
   );
 
-  const signup = async (userData) => {
-    try {
-      const response = await api.post('/users', userData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-      });
-
-      return response.data;
-    } catch (error) {
-      console.error('Signup error:', error);
-      throw error; // Relancer l'erreur pour la gérer dans le composant appelant.
-    }
-  };
-
   return {
     api,
-    signup,
   };
 };
 

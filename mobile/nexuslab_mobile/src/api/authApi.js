@@ -6,10 +6,9 @@ const api = axios.create({
     baseURL: `${config.apiUrl}/api`,
   });
 
-export const refreshTokenApi = async (username) => {
+export const refreshTokenApi = async (userId) => {
     try {
-
-      return response = await api.post('/refresh_token', { username: username }, {
+      return response = await api.post('/refresh_token', { userId: userId }, {
         headers: {
           'Content-Type': 'application/json',
         },
@@ -17,5 +16,19 @@ export const refreshTokenApi = async (username) => {
     } catch (error) { 
       console.error('Refresh token request error:', error);
       throw error; 
+    }
+  };
+
+  export const signup = async (userData) => {
+    try {
+      return response = await api.post('/users', userData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+
+    } catch (error) {
+      console.error('Signup error:', error);
+      throw error;
     }
   };

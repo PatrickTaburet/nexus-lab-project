@@ -57,5 +57,14 @@ class RefreshToken
         $this->refresh_token = $refresh_token;
         return $this;
     }
-
+    public function getUsername(): ?string
+    {
+        return $this->username;
+    }
+    
+    public function setUsername(?string $username): static
+    {
+        $this->username = $username;
+        return $this;
+    }
 }

@@ -6,17 +6,17 @@ import { useCustomFonts } from './src/utils/fonts';
 import AuthNavigator from './src/navigation/AuthNavigator';
 import { AuthProvider, useAuth } from './src/navigation/AuthContext';
 import { checkTokenValidity } from './src/services/AuthService';
-
+ 
 SplashScreen.preventAutoHideAsync();
 
-const Main = () => {
+const Main = () => { 
   const { isLoggedIn, setIsLoggedIn, handleLogout } = useAuth();
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const initializeAuth = async () => {
       console.log("start app");
-      await checkTokenValidity(handleLogout, setIsLoggedIn);
+      await checkTokenValidity(handleLogout, setIsLoggedIn); 
       setLoading(false);
     };
 
@@ -26,7 +26,7 @@ const Main = () => {
   if (loading) {
     return (
       <View style={styles.loadingContainer}>
-        <ActivityIndicator size="large" color="#0000ff" />
+        <ActivityIndicator size="large" color="#0000ff" /> 
       </View>
     ); 
   }

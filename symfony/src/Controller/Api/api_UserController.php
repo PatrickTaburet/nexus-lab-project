@@ -3,6 +3,7 @@
 namespace App\Controller\Api;
 
 use App\Entity\User;
+use App\Entity\RefreshToken;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -11,8 +12,8 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 class api_UserController extends AbstractController
 {
@@ -33,7 +34,6 @@ class api_UserController extends AbstractController
     #[Route('/api/editUser/{id}', name: 'api_user_update', methods: ['POST'])]
     public function updateUser(Request $request, int $id): JsonResponse
     {
-        // var_dump("dump" . $id);
         $user = $this->entityManager->getRepository(User::class)->find($id);
         if (!$user) {
             return new JsonResponse(['error' => 'User not found'], Response::HTTP_UNAUTHORIZED);
@@ -46,10 +46,7 @@ class api_UserController extends AbstractController
         $password = $request->request->get('password');
         $confirmPassword = $request->request->get('confirmPassword');
         $profilePicture = $request->files->get('profilePicture');
-        // var_dump("username : " . $username);
-        // var_dump("email : " . $email);
-        // var_dump($password); 
-        // var_dump($confirmPassword); 
+
         $data = [
             'username' => $username,
             'email' => $email,
@@ -89,11 +86,18 @@ class api_UserController extends AbstractController
         }
 
         // Vérification si l'email existe déjà
-        if ($email  && $user->getEmail() !== $email) {
+        if ($email && $user->getEmail() !== $email) {
+
             $existingUserEmail = $this->entityManager->getRepository(User::class)->findOneBy(['email' => $email]);
             if ($existingUserEmail) {
                 return new JsonResponse(['error' => 'This email is already used.'], Response::HTTP_CONFLICT);
             }
+            // replace the username refresh token with the new email
+            $existingRefreshToken = $this->entityManager->getRepository(RefreshToken::class)->findOneBy([
+                'username' => $user->getEmail(),
+            ]);
+            $existingRefreshToken->setUsername($email);
+
             $user->setEmail($email);
         }
         if (isset($password)) {

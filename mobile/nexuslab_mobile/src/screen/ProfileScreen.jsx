@@ -28,12 +28,21 @@ const ProfileScreen = ({ navigation })  => {
       const token = await AsyncStorage.getItem('token');
       const decodedToken = jwtDecode(token);
       const userId = decodedToken.id;
+      console.log('retour sur profilescreen - avant requete');
+      console.log(userId);
+
+      console.log('555555555555555');
+
       const response = await api.get(`/users/${userId}`, {
         headers: {
           'Content-Type': 'application/json',
         },
       });
-      setUserData(response.data);
+      console.log('retour sur profilescreen- après');
+      //console.log(response);
+      console.log(response.data);
+      
+      setUserData(response.data); 
     } catch (error) {
       console.error('Erreur lors de la récupération des informations utilisateur:', error);
     } finally {

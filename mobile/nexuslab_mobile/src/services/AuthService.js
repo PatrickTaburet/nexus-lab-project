@@ -1,13 +1,13 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {jwtDecode} from 'jwt-decode';
 // import useApi from '../hooks/use';  // Importez votre hook API
-// import { useAuth } from '../navigation/AuthContext';
+// import { useAuth } from '../navigation/AuthContext'; 
 import { refreshTokenApi } from '../api/authApi';
 
 
-export const refreshAccessToken = async (username) => {
+const refreshAccessToken = async (userId) => {
   try {
-    const response = await refreshTokenApi(username);
+    const response = await refreshTokenApi(userId);
     const { token } = response.data;
     return token ? token : null;
   } catch (error) {
@@ -16,27 +16,30 @@ export const refreshAccessToken = async (username) => {
   }
 };
 
-export const checkTokenValidity = async (handleLogout, setIsLoggedIn) => {
+export const checkTokenValidity = async (handleLogout, setIsLoggedIn, email = null) => {
   try {
     const token = await AsyncStorage.getItem('token');
 
     if (token) {
       let decodedToken;
-      let username;
+      let userId;
+      let tokenEmail; 
       try {
         decodedToken = jwtDecode(token);
-        username = decodedToken.username;
+        userId = decodedToken.id;
+        tokenEmail = decodedToken.username;
       } catch (decodeError) {
         console.error('Error decoding token:', decodeError);
         await handleLogout();
         return;
       }
-
-      if (decodedToken.exp * 1000 >= Date.now()) {
-          setIsLoggedIn(true);
-          console.log('Token actuel valide'); 
+      
+      if (decodedToken.exp * 1000 >= Date.now() && tokenEmail == email) {
+        setIsLoggedIn(true);
+        console.log('Token actuel valide');
+        return token;
       } else  {
-        const newToken = await refreshAccessToken(username);
+        const newToken = await refreshAccessToken(userId);
         if (newToken) {
           await AsyncStorage.setItem('token', newToken);
           console.log("Refresh ok : new token added in localstorage");
