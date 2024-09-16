@@ -34,13 +34,14 @@ class api_MainController extends AbstractController
     public function api_gallery(Request $request, Scene1Repository $repo, SceneD1Repository $repo2, Scene2Repository $repo3, SceneD2Repository $repo4): JsonResponse
     {
         try {
+            $user = $this->getUser();
             $page = $request->query->getInt('page', 1);
             $limit = $request->query->getInt('limit', 20);
             $repositories = [
-                ['repo' => $repo, 'prefix' => 'scene1_'],
-                ['repo' => $repo2, 'prefix' => 'sceneD1_'],
-                ['repo' => $repo3, 'prefix' => 'scene2_'],
-                ['repo' => $repo4, 'prefix' => 'sceneD2_'],
+                ['repo' => $repo, 'prefix' => 'Scene1_'],
+                ['repo' => $repo2, 'prefix' => 'SceneD1_'],
+                ['repo' => $repo3, 'prefix' => 'Scene2_'],
+                ['repo' => $repo4, 'prefix' => 'SceneD2_'],
             ];
             $allScenes = [];
             foreach ($repositories as $repository) {
@@ -59,6 +60,7 @@ class api_MainController extends AbstractController
                         ] : null,
                         'imageName' => $scene->getImageName(),
                         'likes' => count($scene->getLikes()),
+                        'isLiked' => $scene->isLikedByUser($user)
                     ];
                 }
             }

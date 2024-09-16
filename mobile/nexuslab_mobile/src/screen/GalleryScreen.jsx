@@ -4,14 +4,14 @@ import React, { useState, useEffect, useCallback  } from 'react'
 import useApi from '../hooks/useApi';
 import { CommonActions, useIsFocused } from '@react-navigation/native';
 import config from '../config/config'; 
-import { Ionicons } from '@expo/vector-icons';
-import { colors } from '../utils/colors'
-
+import { colors } from '../utils/colors';
+import Likes from '../components/LikesManager';
 
 const ITEM_HEIGHT = 300; 
 
 const SceneCard = ({ item }) => {
   const idPrefix = item.id.split('_')[0]; 
+  const sceneId = item.id.split('_')[1]; 
   const imagePath = `${config.apiUrl}/images/${idPrefix}Img/${item.imageName}`;
   return (
     <View style={styles.card}> 
@@ -24,11 +24,12 @@ const SceneCard = ({ item }) => {
         <Text style={styles.comment}>{item.comment}</Text>
         <Text style={styles.username}>{item.user ? item.user.username : 'Unknown'}</Text>
         <Text style={styles.date}>{item.updatedAt}</Text>
-        <Text style={styles.likes}>{item.likes}</Text>
-        <Ionicons 
-          name={"heart-outline"}
-          size={27}
-          style={styles.inputIcon}
+        <Likes
+          userId= {item.user.id}
+          sceneId= {sceneId}
+          likesNum= {item.likes}
+          entity= {idPrefix}
+          isLikedByUser= {item.isLiked}
         />
       </View> 
     </View> 
@@ -54,8 +55,7 @@ const GalleryScreen = ({ navigation })  => {
           'Content-Type': 'application/json',
         },
       });
-      console.log('reponse requete gallery');
-      console.log('API response:', response.data); 
+      //console.log('API response:', response.data); 
 
 
       const newScenes = response.data;
