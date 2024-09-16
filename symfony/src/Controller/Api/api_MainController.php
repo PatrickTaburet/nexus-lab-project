@@ -58,6 +58,7 @@ class api_MainController extends AbstractController
                             'avatar' => $scene->getUser()->getImageName(),
                         ] : null,
                         'imageName' => $scene->getImageName(),
+                        'likes' => count($scene->getLikes()),
                     ];
                 }
             }

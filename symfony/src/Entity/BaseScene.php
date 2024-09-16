@@ -43,7 +43,7 @@ abstract class BaseScene
     #[ORM\Column(type: "string", length: 255, nullable: true)]
     private $imageName;
 
-//-------------------------------------------------------------------------------------------
+//------------------------------------------------------------------------------------------
 
 
     public function __construct()

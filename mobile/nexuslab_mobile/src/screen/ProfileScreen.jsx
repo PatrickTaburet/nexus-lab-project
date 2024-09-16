@@ -116,7 +116,7 @@ const ProfileScreen = ({ navigation })  => {
     source={require('../assets/design/backgroundProfile.jpg')}
     style={styles.backgroundImage}
     resizeMode="cover"
-  >
+    >
     <View style={styles.header}>
       <TouchableOpacity onPress={() => navigation.goBack()} style={styles.closeButton}>
         <Ionicons name="close" size={38} color="white" />
