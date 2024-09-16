@@ -20,7 +20,8 @@ class api_UserController extends AbstractController
     private $entityManager;
     private $passwordHasher;
     private $validator;
-
+    private const MAX_FILE_SIZE = 10 * 1024 * 1024; // 5 Mo
+    
     public function __construct(
         EntityManagerInterface $entityManager,
         UserPasswordHasherInterface $passwordHasher,
@@ -45,13 +46,14 @@ class api_UserController extends AbstractController
         $email = $request->request->get('email');
         $password = $request->request->get('password');
         $confirmPassword = $request->request->get('confirmPassword');
-        $profilePicture = $request->files->get('profilePicture');
+        $avatar = $request->files->get('profilePicture');
 
         $data = [
             'username' => $username,
             'email' => $email,
             'password' => $password,
             'confirmPassword' => $confirmPassword,
+            'profilePicture' => $avatar,
         ];
         $constraints = new Assert\Collection([
             'username' => [new Assert\NotBlank(), new Assert\Type('string')],
@@ -64,6 +66,16 @@ class api_UserController extends AbstractController
                 new Assert\Blank(),
                 new Assert\EqualTo(['value' => $password])
             ]),
+            'profilePicture' => [
+                new Assert\File([
+                    'maxSize' => self::MAX_FILE_SIZE,
+                    'mimeTypes' => [
+                        'image/jpeg',
+                        'image/png',
+                        'image/gif'
+                    ],
+                ])
+            ],
         ]);
  
         $violations = $this->validator->validate($data, $constraints);
@@ -105,11 +117,18 @@ class api_UserController extends AbstractController
                 $this->passwordHasher->hashPassword($user, $password)
             );
         }
-        $profilePicture = $request->files->get('profilePicture');
-        if ($profilePicture) {
-            $fileName = uniqid() . '.' . $profilePicture->guessExtension();
-            $profilePicture->move($this->getParameter('avatar_directory'), $fileName);
+        if ($avatar) {
+            $oldAvatar = $user->getImageName();
+            $fileName = uniqid() . '.' . $avatar->guessExtension();
+            $avatar->move($this->getParameter('avatar_directory'), $fileName);
             $user->setImageName($fileName);
+            if ($oldAvatar) {
+            // Delete the old avatar file
+                $oldAvatarPath = $this->getParameter('avatar_directory') . '/' . $oldAvatar;
+                if (file_exists($oldAvatarPath)) {
+                    unlink($oldAvatarPath);
+                }
+            }
         }
       
         $this->entityManager->persist($user);

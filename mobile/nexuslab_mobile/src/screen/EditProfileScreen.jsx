@@ -13,6 +13,7 @@ import useApi from '../hooks/useApi';
 import { useAuth } from '../navigation/AuthContext';
 import * as ImagePicker from 'expo-image-picker';
 import { checkTokenValidity } from '../services/AuthService';
+import * as FileSystem from 'expo-file-system';
 
 
 const EditProfileScreen = ({ navigation })  => {
@@ -47,6 +48,11 @@ const EditProfileScreen = ({ navigation })  => {
 
     if (!result.canceled) {
     const uri = result.assets[0].uri;
+    const fileInfo = await FileSystem.getInfoAsync(uri);
+    if (fileInfo.size > 10 * 1024 * 1024) {
+      alert('The image is too large. Please select an image smaller than 10 MB.');
+      return;
+    }
     const name = uri.split('/').pop();
     const type = 'image/' + name.split('.').pop();
 
@@ -122,6 +128,7 @@ const EditProfileScreen = ({ navigation })  => {
         await checkTokenValidity(handleLogout, setIsLoggedIn, email);
         console.log('token changé');
       }
+      console.log(response)
       console.log('Profile updated successfully:')
       console.log(response.data);
       if (response) {
@@ -136,7 +143,7 @@ const EditProfileScreen = ({ navigation })  => {
         const errorMessage = error.response.data.error || 'An error occurred during profile update.';
         setError(errorMessage);
       } else {
-        setError('An error occurred during profile update.');
+        setError('An error occurred during profile update..');
       }
     }
   };
