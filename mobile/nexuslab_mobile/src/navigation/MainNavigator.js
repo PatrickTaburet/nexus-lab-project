@@ -19,9 +19,9 @@ const MainNavigator = () => {
           headerRight: () => (
             <TouchableOpacity
               onPress={() => navigation.navigate('Profile')}
-              style={{ marginRight: -5, marginTop: 5 }}
+              style={{ marginRight: -7, marginTop: -1 }}
             >
-              <Ionicons name="person-circle-outline" size={42} color="black" />
+              <Ionicons name="person-circle-outline" size={42} color="white" />
             </TouchableOpacity>
           ),
           headerTransparent: true, // Rend le header transparent

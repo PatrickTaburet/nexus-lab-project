@@ -6,6 +6,8 @@ import { CommonActions, useIsFocused } from '@react-navigation/native';
 import config from '../config/config'; 
 import { colors } from '../utils/colors';
 import Likes from '../components/LikesManager';
+import RNPickerSelect from 'react-native-picker-select';
+
 
 const ITEM_HEIGHT = 300; 
 
@@ -16,7 +18,7 @@ const SceneCard = ({ item }) => {
   return (
     <View style={styles.card}> 
       <Image 
-        source={{ uri: imagePath }} 
+        source={{ uri: imagePath }}
         style={styles.image}
       />
       <View style={styles.cardContent}>
@@ -43,6 +45,8 @@ const GalleryScreen = ({ navigation })  => {
   const isFocused = useIsFocused();
   const [loading, setLoading] = useState(true);
   const [hasMore, setHasMore] = useState(true);
+  const [selectedOption, setSelectedOption] = useState(null);
+
 
   const fetchScenes = useCallback(async () => {
     if (!hasMore) return;
@@ -96,12 +100,22 @@ const GalleryScreen = ({ navigation })  => {
 
   return (
     <View  style={styles.globalContainer}>
-      <Text style={styles.headerText}>Gallery</Text>
+ 
       <ImageBackground
         source={require('../assets/design/hexagonal-background.jpg')}
-        style={styles.backgroundImage}
+        style={styles.backgroundImage} 
         resizeMode="cover"
       >
+      <RNPickerSelect
+        onValueChange={(value) => setSelectedOption(value)}
+        items={[
+          { label: 'Date', value: 'Date' },
+          { label: 'Likes', value: 'Likes' },
+        ]}
+        style={pickerSelectStyles}
+        value={selectedOption}
+        placeholder={{ label: 'Sort by ...', value: null }}
+      />
       <FlatList
         data={scenes}
         renderItem={({ item }) => <SceneCard item={item} />}
@@ -128,22 +142,13 @@ export default GalleryScreen
 
 const styles = StyleSheet.create({
   globalContainer:{
-    paddingTop: 85,
+    marginTop: 0,
     display:'flex',
     alignItems: 'center',
 
   },
   backgroundImage: {
 
-  },
-  headerText:{
-    fontSize: 20,
-    fontWeight: 'bold',
-    textAlign:'centers',
-    paddingBottom: 0,
-    position:'absolute',
-    top: 40,
-    zIndex:2
   },
   card: {
     marginBottom: 20,
@@ -200,3 +205,33 @@ const styles = StyleSheet.create({
   },
 
 })
+const pickerSelectStyles = StyleSheet.create({
+  inputIOS: {
+    fontSize: 16,
+    paddingHorizontal: 10,
+    paddingVertical: 8,
+    borderWidth: 0.5,
+    borderColor: 'gray',
+    borderRadius: 8,
+    color: 'black',
+    paddingRight: 30,
+    marginBottom: 15,
+    backgroundColor: 'white',
+  },
+  inputAndroid: {
+    width: '40%',
+    borderColor: 'gray',
+    color: 'black',
+    marginLeft: 15,
+    marginTop:70,
+    backgroundColor: 'white',
+    zIndex: 2,
+  
+  },
+  viewContainer: {
+    display:'flex',
+    justifyContent:'center',
+    alignItems:'center'
+  },
+
+});
