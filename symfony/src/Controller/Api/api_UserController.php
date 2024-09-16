@@ -20,7 +20,7 @@ class api_UserController extends AbstractController
     private $entityManager;
     private $passwordHasher;
     private $validator;
-    private const MAX_FILE_SIZE = 10 * 1024 * 1024; // 5 Mo
+    private const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10 Mo
     
     public function __construct(
         EntityManagerInterface $entityManager,
@@ -33,7 +33,7 @@ class api_UserController extends AbstractController
     }
 
     #[Route('/api/editUser/{id}', name: 'api_user_update', methods: ['POST'])]
-    public function updateUser(Request $request, int $id): JsonResponse
+    public function api_updateUser(Request $request, int $id): JsonResponse
     {
         $user = $this->entityManager->getRepository(User::class)->find($id);
         if (!$user) {

@@ -21,7 +21,7 @@ export const refreshTokenApi = async (userId) => {
 
   export const signup = async (userData) => {
     try {
-      return response = await api.post('/users', userData, {
+      return response = await api.post('/add_user', userData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },

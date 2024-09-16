@@ -25,7 +25,7 @@ class api_TokenController extends AbstractController
     }
 
     #[Route('/api/refresh_token', name: 'api_refresh_token', methods: ['POST'])]
-    public function refreshToken(Request $request): JsonResponse
+    public function api_refreshToken(Request $request): JsonResponse
     {
         $data = json_decode($request->getContent(), true);
         $userId = $data['userId'] ?? null;
@@ -51,10 +51,5 @@ class api_TokenController extends AbstractController
         } else {
             throw new AccessDeniedException('Invalid Token');
         }
-    }
-
-    private function getUserFromEmail($email): ?User
-    {
-        return $this->manager->getRepository(User::class)->findOneByEmail($email);
     }
 }

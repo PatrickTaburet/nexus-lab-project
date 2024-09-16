@@ -29,8 +29,8 @@ class api_RegistrationController extends AbstractController
         $this->validator = $validator;
     }
 
-    #[Route('/api/users', name: 'api_user_register', methods: ['POST'])]
-    public function register(Request $request): JsonResponse
+    #[Route('/api/add_user', name: 'api_user_register', methods: ['POST'])]
+    public function api_register(Request $request): JsonResponse
     {
         $username = $request->request->get('username');
         $email = $request->request->get('email');
