@@ -1,13 +1,12 @@
 import { ImageBackground, View, Text, Button, StyleSheet, SafeAreaView, Image, ActivityIndicator, FlatList} from 'react-native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import React, { useState, useEffect, useCallback  } from 'react'
+import React, { useState, useEffect, useCallback, useRef } from 'react'
 import useApi from '../hooks/useApi';
-import { CommonActions, useIsFocused } from '@react-navigation/native';
+import {  useIsFocused } from '@react-navigation/native';
 import config from '../config/config'; 
 import { colors } from '../utils/colors';
 import Likes from '../components/LikesManager';
-import RNPickerSelect from 'react-native-picker-select';
-
+import {Picker} from '@react-native-picker/picker';
+import CustomSelect from '../components/CustomSelect';
 
 const ITEM_HEIGHT = 300; 
 
@@ -18,7 +17,7 @@ const SceneCard = ({ item }) => {
   return (
     <View style={styles.card}> 
       <Image 
-        source={{ uri: imagePath }}
+        source={{ uri: imagePath }} 
         style={styles.image}
       />
       <View style={styles.cardContent}>
@@ -45,8 +44,7 @@ const GalleryScreen = ({ navigation })  => {
   const isFocused = useIsFocused();
   const [loading, setLoading] = useState(true);
   const [hasMore, setHasMore] = useState(true);
-  const [selectedOption, setSelectedOption] = useState(null);
-
+  const [selectedOption, setSelectedOption] = useState("");
 
   const fetchScenes = useCallback(async () => {
     if (!hasMore) return;
@@ -106,16 +104,29 @@ const GalleryScreen = ({ navigation })  => {
         style={styles.backgroundImage} 
         resizeMode="cover"
       >
-      <RNPickerSelect
-        onValueChange={(value) => setSelectedOption(value)}
-        items={[
-          { label: 'Date', value: 'Date' },
-          { label: 'Likes', value: 'Likes' },
-        ]}
-        style={pickerSelectStyles}
-        value={selectedOption}
-        placeholder={{ label: 'Sort by ...', value: null }}
-      />
+        <View style={styles.selectContainer}>
+          <CustomSelect
+            data={[
+              { value: "date", label: "Date" },
+              { value: "likes", label: "Like" },
+            ]}
+            onChange={(item) => {setSelectedOption(item.value)}}
+            placeholder="Sort by .."
+          />
+        </View>
+        
+        {/* <Picker
+          selectedValue={selectedOption}
+          onValueChange={(itemValue, itemIndex) =>
+            setSelectedOption(itemValue)
+          }
+          style={pickerStyles.picker} 
+          itemStyle={selectedOption === "" ? pickerStyles.placeholderStyle : pickerStyles.picker}
+        >
+          <Picker.Item label="Sort by ..." value="" enabled={false} />
+          <Picker.Item label="Date" value="date" />
+          <Picker.Item label="Likes" value="likes" />
+        </Picker> */}
       <FlatList
         data={scenes}
         renderItem={({ item }) => <SceneCard item={item} />}
@@ -142,13 +153,13 @@ export default GalleryScreen
 
 const styles = StyleSheet.create({
   globalContainer:{
-    marginTop: 0,
+    marginTop: 25,
     display:'flex',
     alignItems: 'center',
 
   },
   backgroundImage: {
-
+    paddingTop:60
   },
   card: {
     marginBottom: 20,
@@ -203,35 +214,56 @@ const styles = StyleSheet.create({
   inputIcon:{
     color:'white'
   },
-
+  selectContainer:{
+    position:'absolute',
+    alignItems: 'flex-start',
+    marginLeft: 0,
+    marginTop: 0,
+    zIndex:10
+  }
 })
-const pickerSelectStyles = StyleSheet.create({
-  inputIOS: {
-    fontSize: 16,
-    paddingHorizontal: 10,
-    paddingVertical: 8,
-    borderWidth: 0.5,
-    borderColor: 'gray',
-    borderRadius: 8,
-    color: 'black',
-    paddingRight: 30,
-    marginBottom: 15,
-    backgroundColor: 'white',
-  },
-  inputAndroid: {
-    width: '40%',
-    borderColor: 'gray',
-    color: 'black',
-    marginLeft: 15,
-    marginTop:70,
-    backgroundColor: 'white',
-    zIndex: 2,
+const pickerStyles = StyleSheet.create({
+  // inputIOS: {
+  //   fontSize: 16,
+  //   paddingHorizontal: 10,
+  //   paddingVertical: 8,
+  //   borderWidth: 0.5,
+  //   borderColor: 'gray',
+  //   borderRadius: 8,
+  //   color: 'black',
+  //   paddingRight: 30,
+  //   marginBottom: 15,
+  //   backgroundColor: 'white',
+  // },
+  // inputAndroid: {
+  //   width: '40%',
+  //   borderColor: 'gray',
+  //   color: 'black',
+  //   marginLeft: 15,
+  //   marginTop:70,
+  //   backgroundColor: 'white',
+  //   zIndex: 2,
   
+  // },
+  // viewContainer: {
+  //   display:'flex',
+  //   justifyContent:'center',
+  //   alignItems:'center'
+  // },
+  picker: {
+    width: 150,
+    height: 20,
+    backgroundColor: 'white',
+    marginTop: 70,
+    marginBottom: 15,
+    marginLeft: 15,
   },
-  viewContainer: {
-    display:'flex',
-    justifyContent:'center',
-    alignItems:'center'
+  pickerItem: {
+    color: 'black',
+    fontSize: 12,
   },
-
+  placeholderStyle:{
+    color:'grey'
+  }
 });
+
