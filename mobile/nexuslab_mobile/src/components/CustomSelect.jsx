@@ -13,7 +13,6 @@ export default function CustomSelect({ data, onChange, placeholder }) {
 
     const onSelect = useCallback((item) => {
         onChange(item);
-        console.log(top);
         setValue(item.label);
         setExpanded(false);
       }, [onChange]);
@@ -25,9 +24,7 @@ export default function CustomSelect({ data, onChange, placeholder }) {
                 const layout = event.nativeEvent.layout;
                 const topOffset = layout.y;
                 const heightOfComponent = layout.height;
-                // const finalValue = topOffset + heightOfComponent
-                const finalValue = topOffset + heightOfComponent + 23
-                console.log(finalValue)
+                const finalValue = topOffset + heightOfComponent 
                 setTop(finalValue)
             }}
         >  
@@ -35,7 +32,7 @@ export default function CustomSelect({ data, onChange, placeholder }) {
                 style={styles.button} 
                 activeOpacity={0.8}
                 onPress={toogleExpanded}
-                hitSlop={{ top: 20, bottom: 20, left: 20, right: 20 }} 
+                hitSlop={{ top: 20, bottom: 30, left: 20, right: 20 }} 
             >
                 <Text style={styles.text}>{value || placeholder}</Text>
                 <Ionicons 
@@ -92,7 +89,7 @@ const styles = StyleSheet.create({
         flex: 1,
     },
     optionItem:{
-        height: 40,
+        height: 35,
         justifyContent: 'center',
     },
     separator:{
@@ -102,12 +99,12 @@ const styles = StyleSheet.create({
         position:"absolute",
         // top:53,
         backgroundColor: 'white',
-        width: 130,
+        width: 110,
         padding: 10,
         borderRadius: 6,
         maxHeight: 250,
-        zIndex: 5,
-        left: 20
+        zIndex: 15,
+        left: 20,
     },
     text:{
         fontSize: 15,
@@ -118,12 +115,13 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         backgroundColor: '#fff',
         flexDirection: 'row',
-        width: 130,
+        width: 110,
         alignItems: 'center',
         paddingHorizontal: 15,
-        marginVertical: 10,
+        marginTop:35,
+        marginHorizontal: 0,
         borderRadius: 8,
-        margin: 'auto'
+        // margin: 'auto'
     },
     arrowIcon:{
 

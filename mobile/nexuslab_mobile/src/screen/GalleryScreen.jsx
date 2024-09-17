@@ -110,23 +110,14 @@ const GalleryScreen = ({ navigation })  => {
               { value: "date", label: "Date" },
               { value: "likes", label: "Like" },
             ]}
-            onChange={(item) => {setSelectedOption(item.value)}}
+            onChange={(item) => {
+              setSelectedOption(item.value);
+              console.log(1);
+            }}
             placeholder="Sort by .."
           />
         </View>
-        
-        {/* <Picker
-          selectedValue={selectedOption}
-          onValueChange={(itemValue, itemIndex) =>
-            setSelectedOption(itemValue)
-          }
-          style={pickerStyles.picker} 
-          itemStyle={selectedOption === "" ? pickerStyles.placeholderStyle : pickerStyles.picker}
-        >
-          <Picker.Item label="Sort by ..." value="" enabled={false} />
-          <Picker.Item label="Date" value="date" />
-          <Picker.Item label="Likes" value="likes" />
-        </Picker> */}
+
       <FlatList
         data={scenes}
         renderItem={({ item }) => <SceneCard item={item} />}
@@ -159,7 +150,7 @@ const styles = StyleSheet.create({
 
   },
   backgroundImage: {
-    paddingTop:60
+    paddingTop:57
   },
   card: {
     marginBottom: 20,
@@ -217,53 +208,11 @@ const styles = StyleSheet.create({
   selectContainer:{
     position:'absolute',
     alignItems: 'flex-start',
-    marginLeft: 0,
+    marginLeft: 20,
     marginTop: 0,
+    top:0,
     zIndex:10
   }
 })
-const pickerStyles = StyleSheet.create({
-  // inputIOS: {
-  //   fontSize: 16,
-  //   paddingHorizontal: 10,
-  //   paddingVertical: 8,
-  //   borderWidth: 0.5,
-  //   borderColor: 'gray',
-  //   borderRadius: 8,
-  //   color: 'black',
-  //   paddingRight: 30,
-  //   marginBottom: 15,
-  //   backgroundColor: 'white',
-  // },
-  // inputAndroid: {
-  //   width: '40%',
-  //   borderColor: 'gray',
-  //   color: 'black',
-  //   marginLeft: 15,
-  //   marginTop:70,
-  //   backgroundColor: 'white',
-  //   zIndex: 2,
-  
-  // },
-  // viewContainer: {
-  //   display:'flex',
-  //   justifyContent:'center',
-  //   alignItems:'center'
-  // },
-  picker: {
-    width: 150,
-    height: 20,
-    backgroundColor: 'white',
-    marginTop: 70,
-    marginBottom: 15,
-    marginLeft: 15,
-  },
-  pickerItem: {
-    color: 'black',
-    fontSize: 12,
-  },
-  placeholderStyle:{
-    color:'grey'
-  }
-});
+
 
