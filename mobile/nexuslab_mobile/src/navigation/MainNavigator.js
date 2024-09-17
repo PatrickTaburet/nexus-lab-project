@@ -10,6 +10,7 @@ import { colors } from '../utils/colors'
 const Stack = createNativeStackNavigator();
 
 const MainNavigator = () => {
+  
   return (
     <Stack.Navigator>
       <Stack.Screen

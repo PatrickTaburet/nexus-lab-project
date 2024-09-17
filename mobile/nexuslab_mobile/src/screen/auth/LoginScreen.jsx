@@ -9,6 +9,7 @@ import { Checkbox } from 'react-native-paper';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import useApi from '../../hooks/useApi';
 import { useAuth } from '../../navigation/AuthContext';
+import {jwtDecode} from 'jwt-decode';
 
 const LoginScreen = ({ navigation }) => {
   const {api} = useApi();
@@ -22,14 +23,17 @@ const LoginScreen = ({ navigation }) => {
     try {
       console.log(email,password);
       const response = await api.post('/login_check', { email, password }, {
-          headers: {
-              'Content-Type': 'application/json',
-          },
+        headers: {
+            'Content-Type': 'application/json',
+        },
       });
+  
         console.log('API Response:', response.data);
-        const { token, refresh_token, refresh_token_expiration } = response.data;
-
+        const { token } = response.data;
+        decodedToken = jwtDecode(token);
+        userId = decodedToken.id;
         await AsyncStorage.setItem('token', token);
+        await AsyncStorage.setItem('userId', userId.toString());
         // await AsyncStorage.setItem('refresh_token', refresh_token);
         // await AsyncStorage.setItem('refresh_token_expiration', refresh_token_expiration);
 

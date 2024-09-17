@@ -112,7 +112,7 @@ class api_UserController extends AbstractController
 
             $user->setEmail($email);
         }
-        if (isset($password)) {
+        if ($password) {
             $user->setPassword(
                 $this->passwordHasher->hashPassword($user, $password)
             );
