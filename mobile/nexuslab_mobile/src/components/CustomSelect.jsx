@@ -32,7 +32,7 @@ export default function CustomSelect({ data, onChange, placeholder }) {
                 style={styles.button} 
                 activeOpacity={0.8}
                 onPress={toogleExpanded}
-                hitSlop={{ top: 20, bottom: 30, left: 20, right: 20 }} 
+                // hitSlop={{ top: 20, bottom: 30, left: 20, right: 20 }} 
             >
                 <Text style={styles.text}>{value || placeholder}</Text>
                 <Ionicons 
@@ -118,10 +118,10 @@ const styles = StyleSheet.create({
         width: 110,
         alignItems: 'center',
         paddingHorizontal: 15,
-        marginTop: 35,
+        marginTop: 10,
         marginHorizontal: 0,
         borderRadius: 8,
-        // margin: 'auto'
+        zIndex: 10
     },
     arrowIcon:{
 

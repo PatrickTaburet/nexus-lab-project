@@ -1,6 +1,6 @@
 import React from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { TouchableOpacity } from 'react-native';
+import { TouchableOpacity, View } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import TabNavigator from './TabNavigator';
 import ProfileScreen from '../screen/ProfileScreen';
@@ -17,14 +17,6 @@ const MainNavigator = () => {
         name="MainTabs"
         component={TabNavigator}
         options={({ navigation }) => ({
-          headerRight: () => (
-            <TouchableOpacity
-              onPress={() => navigation.navigate('Profile')}
-              style={{ marginRight: -7, marginTop: -1 }}
-            >
-              <Ionicons name="person-circle-outline" size={42} color="white" />
-            </TouchableOpacity>
-          ),
           headerTransparent: true, // Rend le header transparent
           headerTitle: '', // Supprime le titre du header
           headerStyle: {
@@ -33,6 +25,16 @@ const MainNavigator = () => {
             shadowOpacity: 0, // Supprime l'ombre sur iOS
           },
           headerShown: true, // Cacher le header pour le TabNavigator
+          header: (props) => (
+            <View style={{ pointerEvents: 'box-none' }}>
+                  <TouchableOpacity
+              onPress={() => navigation.navigate('Profile')}
+              style={{ marginRight: -7, marginTop: -1, zIndex: 100, position:'absolute', right:15, top: 35 }}
+            >
+              <Ionicons name="person-circle-outline" size={42} color="white" />
+            </TouchableOpacity>
+            </View>
+          ),
         })}
       />
       <Stack.Screen
