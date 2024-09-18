@@ -13,7 +13,7 @@
     });
 
     api.interceptors.request.use(async config => {
-      console.log(config)
+      // console.log(config)
       if (config.url === '/login_check') {
         return config;
       }

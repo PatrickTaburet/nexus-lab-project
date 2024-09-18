@@ -1,4 +1,4 @@
-import { ImageBackground, View, Text, Button, StyleSheet, SafeAreaView, Image, ActivityIndicator, FlatList} from 'react-native';
+import { TouchableWithoutFeedback , ImageBackground, View, Text, Button, StyleSheet,TouchableOpacity, Modal, SafeAreaView, Image, ActivityIndicator, FlatList} from 'react-native';
 import React, { useState, useEffect, useCallback, useRef } from 'react'
 import useApi from '../hooks/useApi';
 import {  useIsFocused } from '@react-navigation/native';
@@ -6,31 +6,55 @@ import config from '../config/config';
 import { colors } from '../utils/colors';
 import Likes from '../components/LikesManager';
 import CustomSelect from '../components/CustomSelect';
+import globalStyles from '../utils/styles';
 
 const ITEM_HEIGHT = 300; 
 
-const SceneCard = React.memo(({ item }) => {
+const SceneCard = React.memo(({ item, onImagePress }) => {
   const idPrefix = item.id.split('_')[0]; 
   const sceneId = item.id.split('_')[1]; 
   const imagePath = `${config.apiUrl}/images/${idPrefix}Img/${item.imageName}`;
+  const avatarPath = `${config.apiUrl}/images/avatar/${item.user.avatar}`; 
+
   return (
     <View style={styles.card}> 
+    <TouchableWithoutFeedback  
+      onPress={() => onImagePress(imagePath)}
+    >
       <Image 
         source={{ uri: imagePath }}
         style={styles.image}
       />
+    </TouchableWithoutFeedback >
       <View style={styles.cardContent}>
         <Text style={styles.title}>{item.title}</Text>
         <Text style={styles.comment}>{item.comment}</Text>
-        <Text style={styles.username}>{item.user ? item.user.username : 'Unknown'}</Text>
-        <Text style={styles.date}>{item.updatedAt}</Text> 
-        <Likes
-          userId= {item.user.id}
-          sceneId= {sceneId}
-          likesNum= {item.likes}
-          entity= {idPrefix}
-          isLikedByUser= {item.isLiked}
-        />
+        <View style={styles.separator}></View>
+        <View style={styles.userContainer}>
+          <Image 
+            source={{ uri: avatarPath }}
+            style={styles.avatarImage}
+          />
+          <View>
+            <Text style={styles.username}>Created by  <Text style={{color: colors.primary_dark, fontSize: 17}}>{item.user.username}</Text></Text>
+            <Text style={styles.date}>{item.updatedAt}</Text> 
+          </View>
+        </View>
+        <View style={styles.bottomCard}>
+          <Text 
+            style={[styles.label, idPrefix.includes('D') ? styles.labelData : styles.labelGenerative]}
+          >
+            {idPrefix.includes('D') ? "Data Art" : "Generative Art"}
+          </Text>
+          <Likes
+            userId= {item.user.id}
+            sceneId= {sceneId}
+            likesNum= {item.likes}
+            entity= {idPrefix}
+            isLikedByUser= {item.isLiked}
+          />
+        </View>
+  
       </View> 
     </View> 
   )
@@ -44,6 +68,7 @@ const GalleryScreen = ({ navigation })  => {
   const [loading, setLoading] = useState(true);
   const [hasMore, setHasMore] = useState(true);
   const [selectedOption, setSelectedOption] = useState();
+  const [fullScreenImage, setFullScreenImage] = useState(null);
 
   const fetchScenes = useCallback(async (reset = false) => {
     if (!hasMore && loading) return;
@@ -101,6 +126,10 @@ const GalleryScreen = ({ navigation })  => {
     );
   };
 
+  const handleImagePress = (imagePath) => {
+    setFullScreenImage(imagePath);
+  };
+
   return (
     <SafeAreaView  style={styles.globalContainer}>
       <ImageBackground
@@ -108,23 +137,29 @@ const GalleryScreen = ({ navigation })  => {
         style={styles.backgroundImage} 
         resizeMode="cover"
       >
-        <View style={styles.selectContainer}>
-          <CustomSelect
-            data={[
-              { value: "date", label: "Date" },
-              { value: "likes", label: "Like" },
-            ]}
-            onChange={(item) => {
-              setSelectedOption(item.value); 
-            }}
-            placeholder="Sort by .."
-          />
+        <View style={styles.header}>
+          <View style={styles.selectContainer}>
+            <CustomSelect
+              data={[
+                { value: "date", label: "Date" },
+                { value: "likes", label: "Like" },
+              ]}
+              onChange={(item) => {
+                setSelectedOption(item.value); 
+              }}
+              placeholder="Sort by .."
+            />
+          </View>
+          <Text style={[styles.headerTitle, globalStyles.mainTitle]}>
+              Gallery
+          </Text>
         </View>
+
 
       <FlatList
         style={{ flex: 1, marginTop: 57 }}
         data={scenes}
-        renderItem={({ item }) => <SceneCard item={item} />}
+        renderItem={({ item }) => <SceneCard item={item} onImagePress={handleImagePress}/>}
         keyExtractor={item => item.id}
         // onEndReached={() => fetchScenes()}
         onEndReached={() => {
@@ -144,6 +179,19 @@ const GalleryScreen = ({ navigation })  => {
         })}
       />
       </ImageBackground>
+      <Modal visible={!!fullScreenImage} transparent={true} onRequestClose={() => setFullScreenImage(null)}>
+        <TouchableOpacity 
+          style={styles.fullScreenContainer} 
+          onPress={() => setFullScreenImage(null)}
+          activeOpacity={1}
+        >
+          <Image 
+            source={{ uri: fullScreenImage }} 
+            style={styles.fullScreenImage} 
+            resizeMode="contain"
+          />
+        </TouchableOpacity>
+      </Modal>
     </SafeAreaView>
 
   );
@@ -184,26 +232,26 @@ const styles = StyleSheet.create({
   },
   cardContent: {
     padding: 10,
+    gap: 13
   },
   title: {
     fontSize: 18,
     fontWeight: 'bold',
-    color: 'white',
-
+    color: colors.lightest,
+    paddingHorizontal: 10
   },
   comment: {
-    fontSize: 14,
+    fontSize: 15,
     marginTop: 5,
-    color: 'white',
-
+    color: colors.lightest,
+    paddingHorizontal: 10
   },
   username: {
-    fontSize: 12,
+    fontSize: 15,
     color: 'white',
-    marginTop: 5,
   },
   date: {
-    fontSize: 12,
+    fontSize: 15,
     color: 'white',
   },
   loader: {
@@ -221,6 +269,67 @@ const styles = StyleSheet.create({
     marginLeft: 20,
     marginTop: 0,
     top:0,
+  },
+  header:{
+
+  },
+  headerTitle:{
+    position:'absolute',
+    top:13,
+    right: '28%',
+  },
+  fullScreenContainer: {
+    flex: 1,
+    backgroundColor: 'rgba(0,0,0,0.9)',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  fullScreenImage: {
+    width: '100%',
+    height: '100%',
+  },
+  avatarImage:{
+    width: 50,
+    height: 50,
+    borderRadius: 70,
+    borderWidth: 1.5,
+    borderColor: 'white'
+  },
+  userContainer:{
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 15,
+
+  },
+  labelGenerative:{
+    backgroundColor: colors.primary_dark,
+    width: 120,
+  },
+  labelData:{
+    backgroundColor: colors.secondary,
+    width: 100,
+  },
+  label:{
+    fontSize: 16,
+    color: 'white',
+    textAlign:'center',
+    paddingVertical: 5,
+    borderRadius: 6
+  },
+  bottomCard:{
+    flexDirection: 'row', 
+    justifyContent:'space-between', 
+    marginRight: 13,
+    marginLeft: 5,
+    marginVertical: 5
+  },
+  separator:{
+    width: '90%',
+    height: 2,
+    backgroundColor: colors.line_dark,
+    alignSelf: 'center',
+    marginVertical: 5,
+
   }
 })
 

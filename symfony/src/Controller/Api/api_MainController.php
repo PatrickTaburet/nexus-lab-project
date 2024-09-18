@@ -46,7 +46,6 @@ class api_MainController extends AbstractController
             ];
             $allScenes = [];
             foreach ($repositories as $repository) {
-                // $scenes = $repository['repo']->findBy([], ['updatedAt' => 'DESC'], $limit, ($page - 1) * $limit);
                 $scenes = $repository['repo']->findAll();
                 foreach ($scenes as $scene) {
                     $allScenes[] = [

@@ -60,11 +60,11 @@ const styles = StyleSheet.create({
     },
     inputIcon:{
         color:'white',
-        fontSize: 18
     },
     container:{
       flexDirection:'row',
-      alignItems: 'center'
+      alignItems: 'center',
+      gap: 7
     }
 
 });

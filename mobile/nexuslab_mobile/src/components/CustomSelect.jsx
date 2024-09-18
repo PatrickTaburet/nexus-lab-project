@@ -64,7 +64,7 @@ export default function CustomSelect({ data, onChange, placeholder }) {
                                             onPress={() => onSelect(item)}
 
                                         >
-                                            <Text>{item.label}</Text>
+                                            <Text style={styles.optionItemTxt}>{item.label}</Text>
                                         </TouchableOpacity>
                                     )}
                                     ItemSeparatorComponent = {() => (
@@ -91,6 +91,9 @@ const styles = StyleSheet.create({
     optionItem:{
         height: 35,
         justifyContent: 'center',
+    }, 
+    optionItemTxt:{
+        fontSize: 16,
     },
     separator:{
         height: 4
@@ -107,7 +110,8 @@ const styles = StyleSheet.create({
         left: 20,
     },
     text:{
-        fontSize: 15,
+        fontSize: 16,
+        fontWeight: '600',
         opacity: 0.8,
     },
     button:{

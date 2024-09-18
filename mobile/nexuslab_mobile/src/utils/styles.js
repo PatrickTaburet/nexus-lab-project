@@ -1,16 +1,20 @@
 import { StyleSheet } from 'react-native';
+import {colors} from './colors';
 
 const globalStyles = StyleSheet.create({
   text1: {
     fontFamily:'Orbitron_800ExtraBold',
-    fontSize: 24,
   },
   text2: {
     fontFamily:'Outfit_400Regular',
   },
   text3: {
     fontFamily:'Oxanium_400Regular',
-
+  },
+  mainTitle: {
+    fontFamily:'Oxanium_400Regular',
+    fontSize: 25,
+    color: colors.primary,
   },
   warning: {
     color: 'red',
