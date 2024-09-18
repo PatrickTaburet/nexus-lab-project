@@ -103,7 +103,7 @@ const styles = StyleSheet.create({
         padding: 10,
         borderRadius: 6,
         maxHeight: 250,
-        zIndex: 15,
+        zIndex: 15, 
         left: 20,
     },
     text:{
@@ -118,7 +118,7 @@ const styles = StyleSheet.create({
         width: 110,
         alignItems: 'center',
         paddingHorizontal: 15,
-        marginTop:35,
+        marginTop: 35,
         marginHorizontal: 0,
         borderRadius: 8,
         // margin: 'auto'

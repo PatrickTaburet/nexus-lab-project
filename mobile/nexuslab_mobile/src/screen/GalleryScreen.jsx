@@ -10,14 +10,14 @@ import CustomSelect from '../components/CustomSelect';
 
 const ITEM_HEIGHT = 300; 
 
-const SceneCard = ({ item }) => {
+const SceneCard = React.memo(({ item }) => {
   const idPrefix = item.id.split('_')[0]; 
   const sceneId = item.id.split('_')[1]; 
   const imagePath = `${config.apiUrl}/images/${idPrefix}Img/${item.imageName}`;
   return (
     <View style={styles.card}> 
       <Image 
-        source={{ uri: imagePath }} 
+        source={{ uri: imagePath }}
         style={styles.image}
       />
       <View style={styles.cardContent}>
@@ -35,7 +35,7 @@ const SceneCard = ({ item }) => {
       </View> 
     </View> 
   )
-};
+});
 
 const GalleryScreen = ({ navigation })  => {
   const {api} = useApi();
@@ -46,30 +46,29 @@ const GalleryScreen = ({ navigation })  => {
   const [hasMore, setHasMore] = useState(true);
   const [selectedOption, setSelectedOption] = useState("");
 
-  const fetchScenes = useCallback(async () => {
-    if (!hasMore) return;
+  const fetchScenes = useCallback(async (reset = false) => {
+    if (!hasMore && !reset) return;
 
     setLoading(true);
     try {
-      console.log('111111111');
-      const response = await api.get(`/gallery?page=${page}&limit=10`, {
+      console.log('0000000');
+      const currentPage = reset ? 1 : page;
+      const response = await api.get(`/gallery?page=${page}&limit=10&sort=${selectedOption}`, {
         headers: {
           'Content-Type': 'application/json',
         },
       });
-      //console.log('API response:', response.data); 
-
-
+      console.log('API response:', response.data); 
       const newScenes = response.data;
       if (newScenes.length > 0) {
         setScenes(prevScenes => {
-          const prevScenesMap = new Map(prevScenes.map(scene => [scene.id, scene]));
+          const prevScenesMap = new Map(reset ? [] : prevScenes.map(scene => [scene.id, scene]));
           newScenes.forEach(scene => {
             prevScenesMap.set(scene.id, scene);
           });
           return Array.from(prevScenesMap.values());
         });
-        setPage(prevPage => prevPage + 1);
+        setPage(prevPage => reset ? 2 : prevPage + 1);
       } else {
         setHasMore(false);
       }    
@@ -79,13 +78,23 @@ const GalleryScreen = ({ navigation })  => {
     } finally {
       setLoading(false); 
     }
-  }, [api, page, loading, hasMore]);
+  }, [api, page, selectedOption, hasMore]);
 
   useEffect(() => {
-    if (isFocused) {
-      fetchScenes();
+    if (isFocused && !selectedOption) {
+      console.log("first")
+      fetchScenes(true);
     }
-  }, [isFocused]);
+  }, [isFocused, selectedOption]);
+
+  useEffect(() => {
+    console.log("second")
+    setScenes([]); // Réinitialiser les scènes
+    setPage(1);    // Réinitialiser la page
+    setHasMore(true); // Réinitialiser la condition pour charger plus
+    fetchScenes(true); // Recharger les scènes avec la nouvelle option de tri
+    console.log("second end")
+  }, [selectedOption]); // Se déclenche lorsque `selectedOption` change 
 
   const renderFooter = () => {
     if (!loading) return null;
@@ -97,8 +106,7 @@ const GalleryScreen = ({ navigation })  => {
   };
 
   return (
-    <View  style={styles.globalContainer}>
- 
+    <SafeAreaView  style={styles.globalContainer}>
       <ImageBackground
         source={require('../assets/design/hexagonal-background.jpg')}
         style={styles.backgroundImage} 
@@ -112,22 +120,23 @@ const GalleryScreen = ({ navigation })  => {
             ]}
             onChange={(item) => {
               setSelectedOption(item.value);
-              console.log(1);
+              console.log(item.value);
             }}
             placeholder="Sort by .."
           />
         </View>
 
       <FlatList
+        style={{ flex: 1, marginTop: 57 }}
         data={scenes}
         renderItem={({ item }) => <SceneCard item={item} />}
         keyExtractor={item => item.id}
-        onEndReached={fetchScenes}
+        onEndReached={() => fetchScenes()}
         onEndReachedThreshold={0.5} 
         ListFooterComponent={renderFooter}
-        initialNumToRender={5} 
-        maxToRenderPerBatch={5}
-        windowSize={10}
+        initialNumToRender={10} 
+        maxToRenderPerBatch={10}
+        windowSize={10} 
         getItemLayout={(data, index) => ({
           length: ITEM_HEIGHT,
           offset: ITEM_HEIGHT * index,
@@ -135,7 +144,7 @@ const GalleryScreen = ({ navigation })  => {
         })}
       />
       </ImageBackground>
-    </View>
+    </SafeAreaView>
 
   );
 }
@@ -147,10 +156,15 @@ const styles = StyleSheet.create({
     marginTop: 25,
     display:'flex',
     alignItems: 'center',
+    flex: 1, 
+    width: '100%',
+    height: '100%',
 
   },
   backgroundImage: {
-    paddingTop:57
+    flex: 1,
+    width: '100%',
+    height: '100%',
   },
   card: {
     marginBottom: 20,
@@ -192,14 +206,10 @@ const styles = StyleSheet.create({
     fontSize: 12,
     color: 'white',
   },
-  likes: {
-    fontSize: 15,
-    color: 'black',
-    color: 'white', 
-
-  },
   loader: {
-    marginVertical: 20,
+    width:'100%',
+    marginVertical: 70,
+    flex: 1,
     alignItems: 'center',
   },
   inputIcon:{

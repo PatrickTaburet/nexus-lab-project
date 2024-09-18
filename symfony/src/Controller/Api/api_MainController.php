@@ -35,8 +35,9 @@ class api_MainController extends AbstractController
     {
         try {
             $user = $this->getUser();
+            $sortOption = $request->query->get('selectedOption', 'date');
             $page = $request->query->getInt('page', 1);
-            $limit = $request->query->getInt('limit', 20);
+            $limit = $request->query->getInt('limit', 10);
             $repositories = [
                 ['repo' => $repo, 'prefix' => 'Scene1_'],
                 ['repo' => $repo2, 'prefix' => 'SceneD1_'],
@@ -45,8 +46,8 @@ class api_MainController extends AbstractController
             ];
             $allScenes = [];
             foreach ($repositories as $repository) {
-                $scenes = $repository['repo']->findBy([], ['updatedAt' => 'DESC'], $limit, ($page - 1) * $limit);
-
+                // $scenes = $repository['repo']->findBy([], ['updatedAt' => 'DESC'], $limit, ($page - 1) * $limit);
+                $scenes = $repository['repo']->findAll();
                 foreach ($scenes as $scene) {
                     $allScenes[] = [
                         'id' => $repository['prefix'] . $scene->getId(),
@@ -64,7 +65,23 @@ class api_MainController extends AbstractController
                     ];
                 }
             }
-            return new JsonResponse($allScenes, Response::HTTP_OK);
+            if ($sortOption === 'likes') {
+                // usort($allScenes, function ($a, $b) {
+                //     return $b['likes'] <=> $a['likes']; 
+                // });
+                usort($allScenes, function ($a, $b) {
+                    $likesA = is_numeric($a['likes']) ? (int)$a['likes'] : 0;
+                    $likesB = is_numeric($b['likes']) ? (int)$b['likes'] : 0;
+                    return $likesB <=> $likesA;
+                });
+            } else {
+                usort($allScenes, function ($a, $b) {
+                    return strtotime($b['updatedAt']) <=> strtotime($a['updatedAt']);
+                });
+            }
+            $paginatedScenes = array_slice($allScenes, ($page - 1) * $limit, $limit);
+
+            return new JsonResponse($paginatedScenes, Response::HTTP_OK);
         } catch (\Exception $e) {
             return new JsonResponse(['error' => 'An error occurred while fetching the gallery.'], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
