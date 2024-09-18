@@ -35,7 +35,7 @@ class api_MainController extends AbstractController
     {
         try {
             $user = $this->getUser();
-            $sortOption = $request->query->get('selectedOption', 'date');
+            $sortOption = $request->query->get('sort', 'date');
             $page = $request->query->getInt('page', 1);
             $limit = $request->query->getInt('limit', 10);
             $repositories = [
@@ -66,13 +66,8 @@ class api_MainController extends AbstractController
                 }
             }
             if ($sortOption === 'likes') {
-                // usort($allScenes, function ($a, $b) {
-                //     return $b['likes'] <=> $a['likes']; 
-                // });
                 usort($allScenes, function ($a, $b) {
-                    $likesA = is_numeric($a['likes']) ? (int)$a['likes'] : 0;
-                    $likesB = is_numeric($b['likes']) ? (int)$b['likes'] : 0;
-                    return $likesB <=> $likesA;
+                    return $b['likes'] <=> $a['likes']; 
                 });
             } else {
                 usort($allScenes, function ($a, $b) {

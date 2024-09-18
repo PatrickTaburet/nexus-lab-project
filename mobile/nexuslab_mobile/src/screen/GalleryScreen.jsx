@@ -5,7 +5,6 @@ import {  useIsFocused } from '@react-navigation/native';
 import config from '../config/config'; 
 import { colors } from '../utils/colors';
 import Likes from '../components/LikesManager';
-import {Picker} from '@react-native-picker/picker';
 import CustomSelect from '../components/CustomSelect';
 
 const ITEM_HEIGHT = 300; 
@@ -24,7 +23,7 @@ const SceneCard = React.memo(({ item }) => {
         <Text style={styles.title}>{item.title}</Text>
         <Text style={styles.comment}>{item.comment}</Text>
         <Text style={styles.username}>{item.user ? item.user.username : 'Unknown'}</Text>
-        <Text style={styles.date}>{item.updatedAt}</Text>
+        <Text style={styles.date}>{item.updatedAt}</Text> 
         <Likes
           userId= {item.user.id}
           sceneId= {sceneId}
@@ -44,21 +43,19 @@ const GalleryScreen = ({ navigation })  => {
   const isFocused = useIsFocused();
   const [loading, setLoading] = useState(true);
   const [hasMore, setHasMore] = useState(true);
-  const [selectedOption, setSelectedOption] = useState("");
+  const [selectedOption, setSelectedOption] = useState();
 
   const fetchScenes = useCallback(async (reset = false) => {
-    if (!hasMore && !reset) return;
+    if (!hasMore && loading) return;
 
     setLoading(true);
     try {
-      console.log('0000000');
       const currentPage = reset ? 1 : page;
-      const response = await api.get(`/gallery?page=${page}&limit=10&sort=${selectedOption}`, {
+      const response = await api.get(`/gallery?page=${currentPage}&limit=10&sort=${selectedOption}`, {
         headers: {
           'Content-Type': 'application/json',
         },
       });
-      console.log('API response:', response.data); 
       const newScenes = response.data;
       if (newScenes.length > 0) {
         setScenes(prevScenes => {
@@ -78,22 +75,21 @@ const GalleryScreen = ({ navigation })  => {
     } finally {
       setLoading(false); 
     }
-  }, [api, page, selectedOption, hasMore]);
+  }, [api, page, selectedOption, hasMore, loading]);
 
   useEffect(() => {
-    if (isFocused && !selectedOption) {
-      console.log("first")
+    if (isFocused) {
       fetchScenes(true);
     }
-  }, [isFocused, selectedOption]);
+  }, [isFocused]);
 
   useEffect(() => {
-    console.log("second")
-    setScenes([]); // Réinitialiser les scènes
-    setPage(1);    // Réinitialiser la page
-    setHasMore(true); // Réinitialiser la condition pour charger plus
-    fetchScenes(true); // Recharger les scènes avec la nouvelle option de tri
-    console.log("second end")
+    if (selectedOption) {
+      setScenes([]); // Réinitialiser les scènes
+      setPage(1);    // Réinitialiser la page
+      setHasMore(true); // Réinitialiser la condition pour charger plus
+      fetchScenes(true); // Recharger les scènes avec la nouvelle option de tri
+    }
   }, [selectedOption]); // Se déclenche lorsque `selectedOption` change 
 
   const renderFooter = () => {
@@ -119,8 +115,7 @@ const GalleryScreen = ({ navigation })  => {
               { value: "likes", label: "Like" },
             ]}
             onChange={(item) => {
-              setSelectedOption(item.value);
-              console.log(item.value);
+              setSelectedOption(item.value); 
             }}
             placeholder="Sort by .."
           />
@@ -131,7 +126,12 @@ const GalleryScreen = ({ navigation })  => {
         data={scenes}
         renderItem={({ item }) => <SceneCard item={item} />}
         keyExtractor={item => item.id}
-        onEndReached={() => fetchScenes()}
+        // onEndReached={() => fetchScenes()}
+        onEndReached={() => {
+          if (!loading && hasMore) {
+            fetchScenes();
+          }
+        }}
         onEndReachedThreshold={0.5} 
         ListFooterComponent={renderFooter}
         initialNumToRender={10} 
