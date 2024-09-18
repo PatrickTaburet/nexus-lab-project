@@ -1,7 +1,5 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {jwtDecode} from 'jwt-decode';
-// import useApi from '../hooks/use';  // Importez votre hook API
-// import { useAuth } from '../navigation/AuthContext'; 
 import { refreshTokenApi } from '../api/authApi';
 
 
@@ -11,7 +9,7 @@ export const checkTokenValidity = async (handleLogout, setIsLoggedIn, email = nu
     const token = await AsyncStorage.getItem('token');
     const userId = await AsyncStorage.getItem('userId');
     console.log('////check token validity/////')
-    console.log(token)
+    // console.log(token)
     if (token) {
       let decodedToken;
       let tokenEmail; 

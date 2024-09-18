@@ -28,17 +28,14 @@
       (response) => response,
       async (error) => {
         const originalRequest = error.config;
-        console.log("api");
         if (originalRequest.url === '/login_check') {
-          console.log('kkk')
           return Promise.reject(error);
         }
         //console.log(response);
         if (error.response && error.response.status === 401  && !originalRequest._retry) {
           originalRequest._retry = true;
-          console.log("api 2");
-          console.log(error);
-          console.log(error.config);
+          // console.log(error);
+          // console.log(error.config);
           const newToken = await checkTokenValidity(handleLogout, setIsLoggedIn);
           if (newToken) {
             console.log("token épuisé pour la requete : refresh et renvoi de la requete");

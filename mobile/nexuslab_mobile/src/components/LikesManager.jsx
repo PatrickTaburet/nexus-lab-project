@@ -12,13 +12,11 @@ export default function LikesManager({ userId, sceneId, likesNum, entity, isLike
   const handleLike = async () => {
   
     setIsLiked(!isLiked);
-    console.log(likes);
     const response = await api.post(`/like/artwork/${sceneId}/${entity}`, {
       headers: {
         'Content-Type': 'application/json',
       },
     });
-    console.log("2222222"); 
     // console.log(response.data);
     const data = await response.data;
       // Update the like count

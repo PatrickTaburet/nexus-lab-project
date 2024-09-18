@@ -1,50 +1,76 @@
-import { View, Text, Button, StyleSheet } from 'react-native';
-import React from 'react'
-import { CommonActions } from '@react-navigation/native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import CustomSelect from '../components/CustomSelect';
+import React, { useEffect, useRef } from 'react';
+import { View, Text, Button, StyleSheet, SafeAreaView, Animated, useWindowDimensions, ImageBackground, Easing  } from 'react-native';
+import MyButton from '../components/MyButton';
 
-const CreateScreen = ({ navigation })  => {
 
+
+const CreateScreen = ({ navigation }) => {
+  const { width } = useWindowDimensions();
+  console.log(width);
+  const translateX = useRef(new Animated.Value(-width * 0.7)).current; // Départ hors écran à gauche (60% de la largeur)
+
+  useEffect(() => {
+    // Démarrage de l'animation lors du montage du composant
+    Animated.timing(translateX, {
+      toValue: -200, // Arrivée à 0 (position initiale normale)
+      duration: 1000, // Durée de l'animation en millisecondes (ici 1 seconde)
+      easing: Easing.bezier(0.25, 0.1, 0.25, 1),
+      useNativeDriver: true, // Optimisation des performances
+    }).start();
+  }, []);
 
   return (
-      // <View style={styles.container}>
-      //   <Text style={styles.text}>Bienvenue sur CreateScreen!</Text>
-      // </View>
-              <View style={styles.selectContainer}>
-                <CustomSelect
-                  data={[
-                    { value: "date", label: "Date" },
-                    { value: "likes", label: "Like" },
-                  ]}
-                  onChange={(item) => {
-                    console.log(item.value); 
-                  }}
-                  placeholder="Sort by .."
-                />
-              </View>
-  )
-}
+    <SafeAreaView style={styles.globalContainer}>
+      <Animated.View style={[styles.backgroundView,{  transform: [{ translateX }] }]}>
+        <ImageBackground
+          source={require('../assets/design/hexagonal-background.jpg')}
+          style={styles.backgroundImage}
+          resizeMode="cover"
+        />
+      </Animated.View>
+      <View style={styles.container}>
+        <MyButton
+          // HandlePress={}
+          myStyle={styles.customButton}
+        >
+          Generative Art
+        </MyButton>
 
-export default CreateScreen
+      </View>
+    </SafeAreaView>
+  );
+};
+
+export default CreateScreen;
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
+  globalContainer: {
+    marginTop: 25,
+    display: 'flex',
     alignItems: 'center',
+    flex: 1,
+    width: '100%',
+    height: '100%',
   },
-  text: {
-    fontSize: 20,
-    marginBottom: 20,
+  backgroundImage: {
+    flex: 1,
+    width: '120%',
+    height: '100%',
   },
-  selectContainer:{
+  container:{
+    flex: 1,
+    width: '100%',
+    height: '100%',
     position:'absolute',
-    alignItems: 'flex-start',
-    marginLeft: 20,
-    marginTop: 0,
-    top:0,
-    zIndex: 1000
- }
-
-})
+    justifyContent:'center',
+    alignItems:'center',
+  },
+  backgroundView:{
+    
+  },
+  customButton:{
+    paddingVertical: 50,
+    paddingHorizontal: 100
+    
+  },
+});

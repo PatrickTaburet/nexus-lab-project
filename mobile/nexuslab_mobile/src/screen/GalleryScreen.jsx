@@ -24,6 +24,7 @@ const SceneCard = React.memo(({ item, onImagePress }) => {
       <Image 
         source={{ uri: imagePath }}
         style={styles.image}
+        
       />
     </TouchableWithoutFeedback >
       <View style={styles.cardContent}>
@@ -280,13 +281,16 @@ const styles = StyleSheet.create({
   },
   fullScreenContainer: {
     flex: 1,
-    backgroundColor: 'rgba(0,0,0,0.9)',
+    backgroundColor: 'rgba(0,0,0,0.8)',
     justifyContent: 'center',
     alignItems: 'center',
   },
   fullScreenImage: {
     width: '100%',
     height: '100%',
+    borderWidth: 1.5,
+    borderColor: colors.cyan
+    
   },
   avatarImage:{
     width: 50,
