@@ -278,6 +278,7 @@ const styles = StyleSheet.create({
     position:'absolute',
     top:13,
     right: '28%',
+    fontSize: 25,
   },
   fullScreenContainer: {
     flex: 1,

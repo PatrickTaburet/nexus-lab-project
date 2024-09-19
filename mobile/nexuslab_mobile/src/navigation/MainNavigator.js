@@ -5,6 +5,8 @@ import { Ionicons } from '@expo/vector-icons';
 import TabNavigator from './TabNavigator';
 import ProfileScreen from '../screen/ProfileScreen';
 import EditProfileScreen from '../screen/EditProfileScreen';
+import GenerateSceneScreen from '../screen/GenerateSceneScreen';
+import DataSceneScreen from '../screen/DataSceneScreen';
 import { colors } from '../utils/colors'
 
 const Stack = createNativeStackNavigator();
@@ -61,6 +63,42 @@ const MainNavigator = () => {
             fontSize: 18, 
           },
           headerTintColor: colors.lightest, // Icon
+        }}
+      />
+      <Stack.Screen
+        name="GenerateScene"
+        component={GenerateSceneScreen} 
+        options={{
+          headerTransparent: true,
+          presentation: 'modal',
+          headerTitle: 'Edit Profile',
+          headerBackTitle: 'Back',
+          headerStyle: {
+            backgroundColor: 'rgba(0, 0, 0, 0.7)', 
+          },
+          headerTitleStyle: { 
+            color: colors.lightest,
+            fontSize: 18, 
+          },
+          headerTintColor: colors.lightest, 
+        }}
+      />
+      <Stack.Screen
+        name="DataScene"
+        component={DataSceneScreen} 
+        options={{
+          headerTransparent: true,
+          presentation: 'modal',
+          headerTitle: 'Edit Profile',
+          headerBackTitle: 'Back',
+          headerStyle: {
+            backgroundColor: 'rgba(0, 0, 0, 0.7)', 
+          },
+          headerTitleStyle: { 
+            color: colors.lightest,
+            fontSize: 18, 
+          },
+          headerTintColor: colors.lightest, 
         }}
       />
     </Stack.Navigator>

@@ -13,7 +13,6 @@ const globalStyles = StyleSheet.create({
   },
   mainTitle: {
     fontFamily:'Oxanium_400Regular',
-    fontSize: 25,
     color: colors.primary,
   },
   warning: {

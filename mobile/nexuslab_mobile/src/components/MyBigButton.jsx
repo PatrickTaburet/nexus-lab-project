@@ -4,10 +4,10 @@ import globalStyles from '../utils/styles';
 import { colors } from '../utils/colors'
 import { LinearGradient } from 'expo-linear-gradient';
 
-const MyButton = ({children, myStyle, HandlePress, isSecondary, buttonStyle }) => {
+const MyBigButton = ({children, myStyle, HandlePress, buttonStyle, textStyle }) => {
 
-  const textStyle = {
-    ...myStyle,
+  const CustomTextStyle = {
+    ...textStyle,
     marginTop: undefined,
     marginBottom: undefined,
     marginLeft: undefined,
@@ -19,48 +19,53 @@ const MyButton = ({children, myStyle, HandlePress, isSecondary, buttonStyle }) =
 
   const buttonCombinedStyle = [
     styles.customButton,
-    isSecondary ? styles.secondaryBackground : styles.primaryBackground,
     buttonStyle,
   ];
   return (
     <View>
-      <LinearGradient
-        colors={['#AF40FF', '#5B42F3', '#00DDEB']}
-        start={{ x: 0, y: 0.3 }}
-        end={{ x: 1, y: 0.7 }}
-        style={[styles.gradient, myStyle]}
+      <TouchableOpacity 
+        style={buttonCombinedStyle}
+        onPress={HandlePress}
       >
-        <TouchableOpacity 
-          style={buttonCombinedStyle}
-          onPress={HandlePress}
+        <LinearGradient
+          colors={['#AF40FF', '#5B42F3', '#00DDEB']}
+          start={{ x: 0, y: 0.3 }}
+          end={{ x: 1, y: 0.7 }}
+          style={[styles.gradient, myStyle]}
         >
-          <Text style={[styles.text, textStyle]} >{children}</Text>
-        </TouchableOpacity>
-      </LinearGradient>
+          <Text style={[styles.text, CustomTextStyle]} >{children}</Text>
+        </LinearGradient>
+      </TouchableOpacity>
+
     </View>
 
   )
 }
 
-export default MyButton
+export default MyBigButton
 
 const styles = StyleSheet.create({
   text: {
     color: "white",
     fontFamily: 'Outfit_400Regular',
-    fontSize: 16,
-    textAlign: 'center'
+    fontSize: 18,
+    textAlign: 'center',
+    zIndex:10
   },
   gradient: {
     flex: 1,
     borderRadius: 10,
-    margin: 10,
-    minHeight: 40,
-    maxHeight: 50,
+    borderWidth: 1,
+    borderColor: colors.cyan,
+    // minHeight: 40,
+    // maxHeight: 50,
+    justifyContent: 'center', 
+    alignItems: 'center',
+    zIndex: 1,
+    
   },
   customButton:{
     alignItems: 'center',
-    backgroundColor: 'rgb(5, 6, 45)',
     borderColor: 'transparent',
     borderRadius: 8,
     shadowColor: 'rgba(151, 65, 252, 0.2)',
@@ -72,10 +77,10 @@ const styles = StyleSheet.create({
     fontSize: 17,
     justifyContent: 'center',
     lineHeight: 1,
-    maxWidth: 150,
-    minWidth: 110,
-    minHeight: 40,
-    maxHeight: 50,
+    // maxWidth: 150,
+    // minWidth: 110,
+    // minHeight: 40,
+    // maxHeight: 50,
     padding: 10,
     paddingHorizontal: 14,
     margin: 3,
@@ -83,11 +88,5 @@ const styles = StyleSheet.create({
     cursor: 'pointer',
     color: '#FFFFFF',
   },
-  secondaryBackground:{
-    backgroundColor: 'rgba(255, 226, 255, 0.7)',
 
-  },
-  primaryBackground:{
-
-  }
 })
