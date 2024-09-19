@@ -1,4 +1,4 @@
-import { ImageBackground, View, Text, Button, StyleSheet, TouchableOpacity, SafeAreaView, Image, Animated, Easing } from 'react-native';
+import { ImageBackground, View, Text, Button, StyleSheet, ActivityIndicator, TouchableOpacity, SafeAreaView, Image, Animated, Easing } from 'react-native';
 import React, { useState, useEffect } from 'react'
 import { CommonActions, useIsFocused } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -81,8 +81,8 @@ const ProfileScreen = ({ navigation })  => {
 
   if (loading) {
     return (
-      <SafeAreaView style={styles.safeArea}>
-        <Text style={styles.text}>Chargement...</Text>
+      <SafeAreaView style={styles.loadingSafeArea}>
+        <ActivityIndicator size="large" />
       </SafeAreaView>
     );
   }
@@ -113,9 +113,9 @@ const ProfileScreen = ({ navigation })  => {
   return (
     <SafeAreaView style={styles.safeArea}> 
     <ImageBackground
-    source={require('../assets/design/backgroundProfile.jpg')}
-    style={styles.backgroundImage}
-    resizeMode="cover"
+      source={require('../assets/design/backgroundProfile.jpg')}
+      style={styles.backgroundImage}
+      resizeMode="cover"
     >
     <View style={styles.header}>
       <TouchableOpacity onPress={() => navigation.goBack()} style={styles.closeButton}>
@@ -200,6 +200,18 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: 'black', 
   },
+  loadingSafeArea:{
+    flex: 1,
+    backgroundColor: 'black', 
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  loader: {
+    width:'100%',
+    marginVertical: 70,
+    flex: 1,
+    alignItems: 'center',
+  },
   globalContainer : {
     backgroundColor: 'rgba(0, 0, 0, 0.6)',
     width: '80%',
@@ -207,7 +219,7 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     borderColor: colors.cyan,
     borderWidth: 2,
-    marginTop: 30
+    marginTop: 0
   },
   header: {
     width:'100%',
@@ -216,8 +228,8 @@ const styles = StyleSheet.create({
   },
   closeButton: {
     position: 'absolute',
-    right: 12,
-    top: -10,
+    right: 8,
+    top: -40,
   },
   editButton:{
     width: 'auto',

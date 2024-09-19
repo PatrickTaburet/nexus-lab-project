@@ -6,6 +6,7 @@ import { useCustomFonts } from './src/utils/fonts';
 import AuthNavigator from './src/navigation/AuthNavigator';
 import { AuthProvider, useAuth } from './src/navigation/AuthContext';
 import { checkTokenValidity } from './src/services/AuthService';
+import { SafeAreaView } from 'react-native-safe-area-context';
  
 SplashScreen.preventAutoHideAsync();
 
@@ -32,9 +33,12 @@ const Main = () => {
   }
 
   return (
-    <NavigationContainer>
-      <AuthNavigator isLoggedIn={isLoggedIn}/>
-    </NavigationContainer>
+    <SafeAreaView style={{flex:1}}>
+      <NavigationContainer>
+        <AuthNavigator isLoggedIn={isLoggedIn}/>
+      </NavigationContainer>
+    </SafeAreaView>
+
   );
 };
 

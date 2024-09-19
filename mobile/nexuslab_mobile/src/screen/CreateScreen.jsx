@@ -79,7 +79,7 @@ export default CreateScreen;
 
 const styles = StyleSheet.create({
   globalContainer: {
-    marginTop: 25,
+    marginTop: 0,
     display: 'flex',
     alignItems: 'center',
     flex: 1,

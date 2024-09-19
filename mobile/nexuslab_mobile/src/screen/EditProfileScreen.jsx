@@ -1,4 +1,4 @@
-import { ScrollView, TextInput, ImageBackground, View, Text, Button, StyleSheet, TouchableOpacity, SafeAreaView, Image, Animated, Easing } from 'react-native';
+import { ScrollView, TextInput, ImageBackground, View, Text, Button, StyleSheet, ActivityIndicator, TouchableOpacity, SafeAreaView, Image, Animated, Easing } from 'react-native';
 import React, { useState, useEffect } from 'react'
 import { CommonActions, useIsFocused } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -169,8 +169,8 @@ const EditProfileScreen = ({ navigation })  => {
 
   if (loading) {
     return (
-      <SafeAreaView style={styles.safeArea}>
-        <Text style={styles.text}>Chargement...</Text>
+      <SafeAreaView style={styles.loadingSafeArea}>
+        <ActivityIndicator size="large" />
       </SafeAreaView>
     );
   }
@@ -286,7 +286,12 @@ export default EditProfileScreen
 const styles = StyleSheet.create({
   safeArea:{
     flex: 1,
+  },
+  loadingSafeArea:{
+    flex: 1,
     backgroundColor: 'black', 
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   globalContainer : {
     backgroundColor: 'rgba(0, 0, 0, 0.6)',

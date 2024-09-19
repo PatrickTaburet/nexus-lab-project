@@ -5,8 +5,6 @@ import { Ionicons } from '@expo/vector-icons';
 import TabNavigator from './TabNavigator';
 import ProfileScreen from '../screen/ProfileScreen';
 import EditProfileScreen from '../screen/EditProfileScreen';
-import GenerateSceneScreen from '../screen/GenerateSceneScreen';
-import DataSceneScreen from '../screen/DataSceneScreen';
 import { colors } from '../utils/colors'
 
 const Stack = createNativeStackNavigator();
@@ -28,13 +26,13 @@ const MainNavigator = () => {
           },
           headerShown: true, // Cacher le header pour le TabNavigator
           header: (props) => (
-            <View style={{ pointerEvents: 'box-none' }}>
-                  <TouchableOpacity
-              onPress={() => navigation.navigate('Profile')}
-              style={{ marginRight: -7, marginTop: -1, zIndex: 100, position:'absolute', right:15, top: 35 }}
-            >
-              <Ionicons name="person-circle-outline" size={42} color="white" />
-            </TouchableOpacity>
+            <View style={{ pointerEvents: 'box-none', zIndex: 1000 }}>
+              <TouchableOpacity
+                onPress={() => navigation.navigate('Profile')}
+                style={{ marginRight: -7, marginTop: -1, zIndex: 1000, position:'absolute', right:15, top:7 }}
+              >
+                <Ionicons name="person-circle-outline" size={42} color="white" />
+              </TouchableOpacity>
             </View>
           ),
         })}
@@ -65,42 +63,7 @@ const MainNavigator = () => {
           headerTintColor: colors.lightest, // Icon
         }}
       />
-      <Stack.Screen
-        name="GenerateScene"
-        component={GenerateSceneScreen} 
-        options={{
-          headerTransparent: true,
-          presentation: 'modal',
-          headerTitle: 'Edit Profile',
-          headerBackTitle: 'Back',
-          headerStyle: {
-            backgroundColor: 'rgba(0, 0, 0, 0.7)', 
-          },
-          headerTitleStyle: { 
-            color: colors.lightest,
-            fontSize: 18, 
-          },
-          headerTintColor: colors.lightest, 
-        }}
-      />
-      <Stack.Screen
-        name="DataScene"
-        component={DataSceneScreen} 
-        options={{
-          headerTransparent: true,
-          presentation: 'modal',
-          headerTitle: 'Edit Profile',
-          headerBackTitle: 'Back',
-          headerStyle: {
-            backgroundColor: 'rgba(0, 0, 0, 0.7)', 
-          },
-          headerTitleStyle: { 
-            color: colors.lightest,
-            fontSize: 18, 
-          },
-          headerTintColor: colors.lightest, 
-        }}
-      />
+
     </Stack.Navigator>
   );
 };

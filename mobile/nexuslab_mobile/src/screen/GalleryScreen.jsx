@@ -7,10 +7,11 @@ import { colors } from '../utils/colors';
 import Likes from '../components/LikesManager';
 import CustomSelect from '../components/CustomSelect';
 import globalStyles from '../utils/styles';
+import { Ionicons } from '@expo/vector-icons';
 
 const ITEM_HEIGHT = 300; 
 
-const SceneCard = React.memo(({ item, onImagePress }) => {
+const SceneCard = React.memo(({ item, onImagePress, onLabelPress }) => {
   const idPrefix = item.id.split('_')[0]; 
   const sceneId = item.id.split('_')[1]; 
   const imagePath = `${config.apiUrl}/images/${idPrefix}Img/${item.imageName}`;
@@ -42,11 +43,16 @@ const SceneCard = React.memo(({ item, onImagePress }) => {
           </View>
         </View>
         <View style={styles.bottomCard}>
-          <Text 
-            style={[styles.label, idPrefix.includes('D') ? styles.labelData : styles.labelGenerative]}
+          <TouchableOpacity
+            onPress={() => onLabelPress(idPrefix)}
           >
-            {idPrefix.includes('D') ? "Data Art" : "Generative Art"}
-          </Text>
+              <Text 
+                style={[styles.label, idPrefix.includes('D') ? styles.labelData : styles.labelGenerative]}
+              >
+                {idPrefix.includes('D') ? "Data Art" : "Generative Art"}
+              </Text>
+          </TouchableOpacity>
+      
           <Likes
             userId= {item.user.id}
             sceneId= {sceneId}
@@ -102,7 +108,16 @@ const GalleryScreen = ({ navigation })  => {
       setLoading(false); 
     }
   }, [api, page, selectedOption, hasMore, loading]);
-
+  
+  const resetPages = () => {
+    console.log("reset page fonction");
+    
+    setScenes([]); // Réinitialiser les scènes
+    setPage(1);    // Réinitialiser la page
+    setHasMore(true); // Réinitialiser la condition pour charger plus
+    fetchScenes(true); // Recharger les scènes avec la nouvelle option de tri
+  };
+  
   useEffect(() => {
     if (isFocused) {
       fetchScenes(true);
@@ -110,11 +125,9 @@ const GalleryScreen = ({ navigation })  => {
   }, [isFocused]);
 
   useEffect(() => {
-    if (selectedOption) {
-      setScenes([]); // Réinitialiser les scènes
-      setPage(1);    // Réinitialiser la page
-      setHasMore(true); // Réinitialiser la condition pour charger plus
-      fetchScenes(true); // Recharger les scènes avec la nouvelle option de tri
+    if (selectedOption) { 
+      console.log("reset page USE EFFECT");
+      resetPages(); 
     }
   }, [selectedOption]); // Se déclenche lorsque `selectedOption` change 
 
@@ -130,7 +143,10 @@ const GalleryScreen = ({ navigation })  => {
   const handleImagePress = (imagePath) => {
     setFullScreenImage(imagePath);
   };
-
+  const handleNavigate = (target) => {
+    console.log(target);
+    navigation.navigate(target)
+  };
   return (
     <SafeAreaView  style={styles.globalContainer}>
       <ImageBackground
@@ -160,7 +176,7 @@ const GalleryScreen = ({ navigation })  => {
       <FlatList
         style={{ flex: 1, marginTop: 57 }}
         data={scenes}
-        renderItem={({ item }) => <SceneCard item={item} onImagePress={handleImagePress}/>}
+        renderItem={({ item }) => <SceneCard item={item} onImagePress={handleImagePress} onLabelPress={handleNavigate}/>}
         keyExtractor={item => item.id}
         // onEndReached={() => fetchScenes()}
         onEndReached={() => {
@@ -193,6 +209,9 @@ const GalleryScreen = ({ navigation })  => {
           />
         </TouchableOpacity>
       </Modal>
+      <TouchableOpacity onPress={resetPages} style={styles.arrowIconTouch}>
+        <Ionicons name="arrow-up-circle" size={47} color={colors.cyan} style={styles.arrowIcon}/>
+      </TouchableOpacity>
     </SafeAreaView>
 
   );
@@ -202,7 +221,7 @@ export default GalleryScreen
 
 const styles = StyleSheet.create({
   globalContainer:{
-    marginTop: 25,
+    marginTop: 0,
     display:'flex',
     alignItems: 'center',
     flex: 1, 
@@ -334,7 +353,14 @@ const styles = StyleSheet.create({
     backgroundColor: colors.line_dark,
     alignSelf: 'center',
     marginVertical: 5,
-
+  },
+  arrowIcon:{
+    position:'absolute',
+    bottom: 10,
+    right: 10
+  },
+  arrowIconTouch:{
+    width: '100%'
   }
 })
 
