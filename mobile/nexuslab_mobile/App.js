@@ -7,7 +7,7 @@ import AuthNavigator from './src/navigation/AuthNavigator';
 import { AuthProvider, useAuth } from './src/navigation/AuthContext';
 import { checkTokenValidity } from './src/services/AuthService';
 import { SafeAreaView } from 'react-native-safe-area-context';
- 
+
 SplashScreen.preventAutoHideAsync();
 
 const Main = () => { 
@@ -38,7 +38,6 @@ const Main = () => {
         <AuthNavigator isLoggedIn={isLoggedIn}/>
       </NavigationContainer>
     </SafeAreaView>
-
   );
 };
 

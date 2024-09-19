@@ -24,7 +24,7 @@ export default function CustomSelect({ data, onChange, placeholder }) {
                 const layout = event.nativeEvent.layout;
                 const topOffset = layout.y;
                 const heightOfComponent = layout.height;
-                const finalValue = topOffset + heightOfComponent 
+                const finalValue = topOffset + heightOfComponent + 5
                 setTop(finalValue)
             }}
         >  

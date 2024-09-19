@@ -43,16 +43,13 @@ const SceneCard = React.memo(({ item, onImagePress, onLabelPress }) => {
           </View>
         </View>
         <View style={styles.bottomCard}>
-          <TouchableOpacity
-            onPress={() => onLabelPress(idPrefix)}
-          >
-              <Text 
-                style={[styles.label, idPrefix.includes('D') ? styles.labelData : styles.labelGenerative]}
-              >
-                {idPrefix.includes('D') ? "Data Art" : "Generative Art"}
-              </Text>
+          <TouchableOpacity onPress={() => onLabelPress(idPrefix)}>
+            <Text 
+              style={[styles.label, idPrefix.includes('D') ? styles.labelData : styles.labelGenerative]}
+            >
+              {idPrefix.includes('D') ? "Data Art" : "Generative Art"}
+            </Text>
           </TouchableOpacity>
-      
           <Likes
             userId= {item.user.id}
             sceneId= {sceneId}
@@ -61,7 +58,6 @@ const SceneCard = React.memo(({ item, onImagePress, onLabelPress }) => {
             isLikedByUser= {item.isLiked}
           />
         </View>
-  
       </View> 
     </View> 
   )
@@ -145,7 +141,9 @@ const GalleryScreen = ({ navigation })  => {
   };
   const handleNavigate = (target) => {
     console.log(target);
-    navigation.navigate(target)
+    navigation.navigate('Create', {
+      screen: target,  // cible l'écran spécifique du CreateStack
+    });
   };
   return (
     <SafeAreaView  style={styles.globalContainer}>
