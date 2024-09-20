@@ -176,7 +176,6 @@ const GalleryScreen = ({ navigation })  => {
         data={scenes}
         renderItem={({ item }) => <SceneCard item={item} onImagePress={handleImagePress} onLabelPress={handleNavigate}/>}
         keyExtractor={item => item.id}
-        // onEndReached={() => fetchScenes()}
         onEndReached={() => {
           if (!loading && hasMore) {
             fetchScenes();
@@ -186,7 +185,7 @@ const GalleryScreen = ({ navigation })  => {
         ListFooterComponent={renderFooter}
         initialNumToRender={10} 
         maxToRenderPerBatch={10}
-        windowSize={10} 
+        windowSize={10}
         getItemLayout={(data, index) => ({
           length: ITEM_HEIGHT,
           offset: ITEM_HEIGHT * index,

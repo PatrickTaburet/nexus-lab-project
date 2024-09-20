@@ -7,9 +7,7 @@ import globalStyles from '../utils/styles';
 
 const CreateScreen = ({ navigation }) => {
   const { width } = useWindowDimensions();
-  console.log(width);
   const translateX = useRef(new Animated.Value(-width * 0.7)).current; // Départ hors écran à gauche (60% de la largeur)
-
 
   const animateForward = useCallback(() => {
     translateX.setValue(-width * 0.7); // Reset to initial position
