@@ -13,9 +13,17 @@ import SceneD1Screen from '../screen/scenes/data/SceneD1Screen';
 import SceneD2Screen from '../screen/scenes/data/SceneD2Screen';
 import DataSceneScreen from '../screen/DataSceneScreen';
 import { colors } from '../utils/colors'
+import { getFocusedRouteNameFromRoute } from '@react-navigation/native';
+
 
 const Tab = createBottomTabNavigator();
 const CreateStack = createNativeStackNavigator();
+
+const getTabBarStyle = (route) => {
+  const routeName = getFocusedRouteNameFromRoute(route) ?? '';
+  const hideOnScreens = ['Scene1', 'Scene2', 'SceneD1', 'SceneD2'];
+  return hideOnScreens.includes(routeName) ? { display: 'none' } : undefined;
+};
 
 const CreateStackScreen = () => (
   <CreateStack.Navigator>
@@ -125,17 +133,17 @@ const TabNavigator = ( ) => {
         />
 
         <Tab.Screen 
-            name="Create"
-            component={CreateStackScreen}
-            options={{
-                headerShown: false,
-                tabBarLabel: 'Create',
-                tabBarIcon: ({ color, size }) => (
-                  <Ionicons name="add-circle" color={color} size={size} />
-                )
-            }}
+          name="Create"
+          component={CreateStackScreen}
+          options={({ route }) => ({
+            headerShown: false,
+            tabBarLabel: 'Create',
+            tabBarIcon: ({ color, size }) => (
+              <Ionicons name="add-circle" color={color} size={size} />
+            ),
+            tabBarStyle: getTabBarStyle(route)
+          })}
         />
-
         <Tab.Screen 
             name="Gallery"
             component={GalleryScreen}

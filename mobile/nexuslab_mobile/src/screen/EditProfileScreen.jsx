@@ -190,14 +190,12 @@ const EditProfileScreen = ({ navigation })  => {
         resizeMode="cover"
       >
         <ScrollView contentContainerStyle={{ justifyContent: 'center', alignItems: 'center', width:'100%'}}>
-
         <SafeAreaView style={styles.globalContainer}>
           <View style={styles.container}>
             <Image
               source={{ uri: avatarUrl }}
               style={styles.profileImage}
-            />
-                      
+            />              
             <Animated.Image
               source={{ uri: decorUrl }}
               style={[
@@ -259,7 +257,6 @@ const EditProfileScreen = ({ navigation })  => {
                 onChangeText={text => setConfirmPassword(text)}
               />
             </View>
-
             <View style={styles.globalButtonBox}>
                 <MyButton
                   HandlePress={HandleUpdateProfile}
@@ -273,9 +270,7 @@ const EditProfileScreen = ({ navigation })  => {
           </View>
         </SafeAreaView>
         </ScrollView>
-
       </ImageBackground>
-    
   </SafeAreaView>
 
   );
