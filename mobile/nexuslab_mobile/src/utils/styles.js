@@ -19,8 +19,11 @@ const globalStyles = StyleSheet.create({
     color: 'red',
     fontSize: 16,
     fontFamily:'Outfit_400Regular',
+  },
+  descriptionButton:{
+    position: 'absolute',
+    marginTop: 50
   }
-
 
 });
 
