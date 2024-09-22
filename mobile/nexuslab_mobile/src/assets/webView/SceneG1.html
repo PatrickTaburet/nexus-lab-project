@@ -43,41 +43,43 @@
         width: 100%;
       }
       .customButton{
-          align-items: center;
-          background-image: linear-gradient(144deg,#AF40FF, #5B42F3 50%,#00DDEB);
-          border: 0;
-          border-radius: 8px;
-          box-shadow: rgba(151, 65, 252, 0.2) 0 15px 30px -5px;
-          box-sizing: border-box;
-          display: flex;
-          font-family: Phantomsans, sans-serif;
-          font-size: 17px;
-          justify-content: center;
-          line-height: 1em;
-          min-width: 80px;
-          height: 30px;
-          padding: 3px;
-          text-decoration: none;
-          user-select: none;
-          -webkit-user-select: none;
-          touch-action: manipulation;
-          white-space: nowrap;
-          cursor: pointer;
-          color: #FFFFFF;
-          padding: 10px 14px;
-          margin: 12px;
-          /* box-shadow: inset 0 0 10px #05C7F2; */
+        align-items: center;
+        background-image: linear-gradient(144deg,#AF40FF, #5B42F3 50%,#00DDEB);
+        border: 0;
+        border-radius: 8px;
+        box-shadow: rgba(151, 65, 252, 0.2) 0 15px 30px -5px;
+        box-sizing: border-box;
+        display: flex;
+        font-family: Phantomsans, sans-serif;
+        font-size: 17px;
+        justify-content: center;
+        line-height: 1em;
+        min-width: 80px;
+        height: 30px;
+        padding: 3px;
+        text-decoration: none;
+        user-select: none;
+        -webkit-user-select: none;
+        touch-action: manipulation;
+        white-space: nowrap;
+        cursor: pointer;
+        color: #FFFFFF;
+        padding: 10px 14px;
+        margin: 12px;
+        /* box-shadow: inset 0 0 10px #05C7F2; */
       }
       .middleContainer{
         display: flex;
-        width: 100%;
         flex-direction: row;
-        justify-content:flex-end;
+        align-items: center;
       }
-      .saveButton{
+      #descriptionButton{
+        color: cyan;
+        font-weight: 600;
+      }
+      #saveButton{
         margin: 0;
-        margin-right: 30px;
-
+        margin-left: 170px;
       }
 
       .controls {
@@ -89,6 +91,12 @@
         margin: 0px;
         padding-top: 5px;
         font-size: 14px;       
+      }
+      button {
+        background: none;
+        border: none;
+        outline: none;
+        box-shadow: none;
       }
 /* ------- SciFi box card -------*/
   
@@ -133,14 +141,94 @@
               text-shadow: 0 0 7px #05C7F2;
           }
         }
+/* ------- Modale -------*/
 
+      .modal {
+        display: none;
+        position: absolute;
+        z-index: 1;
+        left: 0;
+        top: 0;
+        margin-top: 30px;
+        overflow: auto;
+        z-index: 1000;
+      }
+      .modalContainer {
+        background-color: #3A175F;
+        margin: 15% auto;
+        padding: 25px;
+        border: 1px solid #888;
+        width: 80%;
+        color: white;
+        box-shadow: inset 0 0 10px #05C7F2;
+        clip-path: polygon(40px 0, 100% 0%, 100% calc(100% - 40px), calc(100% - 40px) 100%, 0 100%, 0 40px);
+      }
+   
+      .close {
+        color: #aaa;
+        float: right;
+        font-size: 28px;
+        font-weight: bold;
+      }
+
+      .modaleBackground{
+        background-color: rgba(128, 128, 128, 0.525);
+        width: 100%;
+        height: 100%;
+        position: fixed;
+        top: 0;
+        left: 0;
+        z-index: 4;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        display: none;
+      }
+      .titleModale{
+        text-align: center;
+        margin-bottom: 15px;
+        font-weight: 600;
+        color: cyan;
+      }
+      #sendDataButton{
+        margin: auto;
+        margin-top: 20px;
+      }
     </style>
   </head>
   <body>
+
+    
+    <!-- Modale 1 : Description -->
+
+    <div id="descriptionModal" class="modal hidden">
+      <div class="modalContainer">
+        <span class="close">&times;</span>
+        <p class="titleModale">Description</p>
+        <p>
+          This scene is a generator of randomly moving lines, called walkers. <br> By clicking with your mouse (or finger), you can make these walkers appear wherever you desire. They will then move in a more or less random manner according to the parameters you choose. <br>
+          You can influence the style, number, and movement of these walkers! Experiment with different settings and admire the results !
+        </p>
+      </div>
+    </div>
+
+    <!-- Modale 2 : Save Artwork -->
+
+    <div class="modaleBackground hidden"></div>
+      <div class="modal hidden" id="saveModale">
+        <div class="modalContainer">  
+          <span class="close">&times;</span>
+          <p class="titleModale">Save ArtWork</p>
+          <p style="text-align: center;">Do you want to save this artwork and share it in the Gallery?</p> 
+          <button id="sendDataButton" class="customButton generateButton">Save</button>
+        </div>
+      </div>
+
     <div class="container">
       <div id="sketch"></div>
       <div class="middleContainer">
-        <button class="customButton saveButton" id="saveButton">Save</button>
+        <button id="descriptionButton">Description</button>
+        <button class="customButton" id="saveButton">Save</button>
       </div>
       <div class="card-border">
         <div class="card">
@@ -155,7 +243,7 @@
             </div>
             <div>
               <p>Number of lines</p>
-              <input type="range" id="lineSlider" min="1" max="200" value="100" step="1">
+              <input type="range" id="lineSlider" min="1" max="200" value="20" step="1">
             </div>
             <div>
               <p>Weight</p>
@@ -445,37 +533,42 @@
         
       // }
 
-      // // --------- Modale : save artwork ---------
+      // --------- Modale ---------
 
-      // let buttonModale = document.querySelector(".buttonModale");
-      // let modale = document.querySelector(".superModale");
-      // let closeButton = document.querySelector(".closeButton");
-      // let body =  document.querySelector(".superBody");
-      // let modaleBackground = document.querySelector(".modaleBackground");
+      function initModal(modalSelector, buttonSelector, closeSelector, backgroundSelector) {
+        const modal = document.querySelector(modalSelector);
+        const openButton = document.querySelector(buttonSelector);
+        const closeButton = document.querySelector(closeSelector);
+        const modaleBackground = document.querySelector(backgroundSelector);
 
+        function openModal() {
+          document.body.style.overflow = "hidden"; // Disable scrolling
+          noLoop();
+          modal.style.display = "block";
+          modaleBackground.style.display = "block";
+        }
 
-      // function openModal(){
-      //   noLoop();
-      //   document.body.style.overflow = "hidden"; // Desable scrolling
-      //   modale.classList.remove("hidden");
-      //   modale.classList.add("translate");
-      //   modaleBackground.classList.remove("hidden");
-      // }
-      // function closeModal(){
-      //   document.body.style.overflow = "auto"; // Enable scrolling
-      //   modale.classList.add("hidden");
-      //   modale.classList.remove("translate");
-      //   modaleBackground.classList.add("hidden");
-      // }
-      // if (buttonModale){
-      //   buttonModale.addEventListener("click",openModal);
-      //   closeButton.addEventListener("click",closeModal);
-      //   modaleBackground.addEventListener("click", function(event) {
-      //     if (event.target === modaleBackground) {
-      //       closeModal();
-      //     }
-      //   });
-      // }
+        function closeModal() {
+          loop();
+          document.body.style.overflow = "auto"; // Enable scrolling
+          modal.style.display = "none";
+          modaleBackground.style.display = "none";
+        }
+
+        if (openButton) {
+            openButton.addEventListener("click", openModal);
+        }
+        
+        if (closeButton) {
+            closeButton.addEventListener("click", closeModal);
+        }
+
+        modaleBackground.addEventListener("click", closeModal);
+      }
+
+      // Initialize modals
+      initModal("#descriptionModal", "#descriptionButton", ".close", ".modaleBackground");
+      initModal("#saveModale", "#saveButton", ".close", ".modaleBackground");
 
     </script>
   </body>
