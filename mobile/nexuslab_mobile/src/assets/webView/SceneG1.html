@@ -149,13 +149,14 @@
         z-index: 1;
         left: 0;
         top: 0;
-        margin-top: 30px;
+        /* margin-top: 30px; */
+        margin: 15% 5%;
         overflow: auto;
         z-index: 1000;
       }
       .modalContainer {
         background-color: #3A175F;
-        margin: 15% auto;
+
         padding: 25px;
         border: 1px solid #888;
         width: 80%;
@@ -165,10 +166,13 @@
       }
    
       .close {
+        position: absolute;
         color: #aaa;
         float: right;
         font-size: 28px;
         font-weight: bold;
+        right: 30px;
+        top: 10px;
       }
 
       .modaleBackground{
@@ -214,7 +218,7 @@
 
     <!-- Modale 2 : Save Artwork -->
 
-    <div class="modaleBackground hidden"></div>
+    <div class="modaleBackground"></div>
       <div class="modal hidden" id="saveModale">
         <div class="modalContainer">  
           <span class="close">&times;</span>
@@ -312,6 +316,7 @@
       let noiseFalloffSlider;
       let checkboxStop;
       let resetButton;
+      let modaleOpen = false;
 
       // Setup 
 
@@ -343,7 +348,6 @@
         noiseOctaveSlider = select('#noiseOctaveSlider');
         noiseFalloffSlider = select('#noiseFalloffSlider');
 
-
         // colorSlider.input(() => sendToReactNative({ colorSlider: colorSlider.value() }));
         // lineSlider.input(() => sendToReactNative({ lineSlider: lineSlider.value() }));
 
@@ -362,8 +366,8 @@
       // Draw
 
       function draw(){
-        // if (modale.classList.contains("hidden")) { //  Stop the animation/interactions when modale is open
-          walkers.forEach(walker => {
+        if(!modaleOpen){
+          walkers.forEach(walker => { 
             if (!walker.isOut()) {
               walker.velocity();
               walker.move();
@@ -372,15 +376,8 @@
             
           });
           return;
-        // }
+        }
       }
-
-      // function windowResized() {
-      //   const squareSize = min(windowWidth-30, windowHeight-30);
-      //   const canvas = createCanvas(squareSize, squareSize);
-      //   canvas.parent('sketch');
-      //   background(0,0,0);
-      // }
 
       function reset () { 
         const squareSize = min(windowWidth-30, windowHeight-30);
@@ -389,7 +386,6 @@
         clear();
         background(0,0,0);
       }
-
 
       class Walker {
         constructor(x, y) {
@@ -442,97 +438,67 @@
 
       // // --------- Send to backend ---------
 
-      // document.querySelector("#sendDataButton")?.addEventListener('click', function () {
-      //   sendData()
-      // });
+      document.querySelector("#sendDataButton")?.addEventListener('click', function () {
+        sendData()
+      });
 
-      // function sendData(){
-      //   let color = colorSlider.value();
-      //   let weight = weightSlider.value();
-      //   let numLine = lineSlider.value();
-      //   let saturation = saturationSlider.value();
-      //   let opacity = opacitySlider.value();
-      //   let velocity = velocitySlider.value();
-      //   let noiseOctave = noiseOctaveSlider.value();
-      //   let noiseFalloff = noiseFalloffSlider.value();
+      function sendData(){
+        let color = colorSlider.value();
+        let weight = weightSlider.value();
+        let numLine = lineSlider.value();
+        let saturation = saturationSlider.value();
+        let opacity = opacitySlider.value();
+        let velocity = velocitySlider.value();
+        let noiseOctave = noiseOctaveSlider.value();
+        let noiseFalloff = noiseFalloffSlider.value();
         
-      //   // Capture image of the canva
+        // Capture image of the canva
 
-      //   // Capture l'image du canva dans un format base64
-      //   const myCanvas = document.getElementById("myCanvas");
-      //   const imageBase64 = myCanvas.toDataURL();
-      //   // const imageBase64 = canvas.elt.toDataURL();
+        // Capture l'image du canva dans un format base64
+        const myCanvas = document.getElementById("myCanvas");
+        const imageBase64 = myCanvas.toDataURL();
+        // const imageBase64 = canvas.elt.toDataURL();
 
-      //   // Créez une nouvelle image à partir de l'URL base64
-      //   const image = new Image();
-      //   image.src = imageBase64;
+        // Créez une nouvelle image à partir de l'URL base64
+        const image = new Image();
+        image.src = imageBase64;
 
-      //   // Lorsque l'image est chargée, envoyez-la au serveur
-      //   image.onload = function() {
-      //     const formData = new FormData(); // or new URLSearchParams()
-      //     formData.append('color', color);
-      //     formData.append('weight', weight);
-      //     formData.append('numLine', numLine);
-      //     formData.append('saturation', saturation);
-      //     formData.append('opacity', opacity);
-      //     formData.append('velocity', velocity);
-      //     formData.append('noiseOctave', noiseOctave);
-      //     formData.append('noiseFalloff', noiseFalloff);
-      //     formData.append('userId', userId);
-      //     formData.append('file', image.src);
+        // Lorsque l'image est chargée, envoyez-la au serveur 
+        image.onload = function() {
+          const formData = new FormData(); // or new URLSearchParams()
+          formData.append('color', color);
+          formData.append('weight', weight);
+          formData.append('numLine', numLine);
+          formData.append('saturation', saturation);
+          formData.append('opacity', opacity);
+          formData.append('velocity', velocity);
+          formData.append('noiseOctave', noiseOctave);
+          formData.append('noiseFalloff', noiseFalloff);
+          formData.append('userId', userId);
+          formData.append('file', image.src);
           
-      //     // saveCanvas();
-      //     fetch('/generative/sendDataG1', {
-      //         method: 'POST',
-      //         body: formData
-      //     })
-      //     .then(response => {
-      //         if (!response.ok) {
-      //             throw new Error('Network response was not ok');
-      //         }
-      //         return response.json();
-      //     })
-      //     .then(data => {
-      //         console.log('Data sent successfully:', data);
-      //     // Redirection vers la page 'sceneG1'
-      //       window.location.href = data.redirectUrl;
-      //     })
-      //     .catch(error => {
-      //         console.error('There was a problem sending the data:', error);
-      //     });
-      //   };
-      // }
+          // saveCanvas();
+          fetch('/generative/sendDataG1', {
+              method: 'POST',
+              body: formData
+          })
+          .then(response => {
+              if (!response.ok) {
+                  throw new Error('Network response was not ok');
+              }
+              return response.json();
+          })
+          .then(data => {
+              console.log('Data sent successfully:', data);
+          // Redirection vers la page 'sceneG1'
+            window.location.href = data.redirectUrl;
+          })
+          .catch(error => {
+              console.error('There was a problem sending the data:', error);
+          });
+        };
+      }
         
-      // // --------- Sliders animation ---------
-        
-      // const allRanges = document.querySelectorAll(".range-wrap");
-      // allRanges.forEach((wrap) => {
-      //   const range = wrap.querySelector(".range");
-      //   const bubble = wrap.querySelector(".bubble");
-
-      //   range.addEventListener("input", () => {
-      //     setBubble(range, bubble);
-      //   });
-
-      //   // setting bubble on DOM load
-      //   setBubble(range, bubble);
-      // });
-
-      // function setBubble(range, bubble) {
-      //   const val = range.value;
-
-      //   const min = range.min || 0;
-      //   const max =  range.max || 100;
-        
-      //   const offset = Number(((val - min) * 100) / (max - min));
-
-      //   bubble.textContent = val;
-
-      //   // yes, 14px is a magic number
-      //   bubble.style.left = `calc(${offset}% - 14px)`;
-        
-      // }
-
       // --------- Modale ---------
 
       function initModal(modalSelector, buttonSelector, closeSelector, backgroundSelector) {
@@ -546,6 +512,7 @@
           noLoop();
           modal.style.display = "block";
           modaleBackground.style.display = "block";
+          modaleOpen = true;
         }
 
         function closeModal() {
@@ -553,6 +520,8 @@
           document.body.style.overflow = "auto"; // Enable scrolling
           modal.style.display = "none";
           modaleBackground.style.display = "none";
+          modaleOpen = false;
+
         }
 
         if (openButton) {

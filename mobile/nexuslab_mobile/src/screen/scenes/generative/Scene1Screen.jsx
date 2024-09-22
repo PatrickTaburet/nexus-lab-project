@@ -30,7 +30,7 @@ const Scene1Screen = ({ navigation }) => {
       >
         <Ionicons 
           name={"arrow-back"}
-          size={40}
+          size={23}
           color={'white'}
         />
       </TouchableOpacity>
@@ -57,13 +57,13 @@ const styles = StyleSheet.create({
   text:{
     color:'white',
     textAlign: 'center',
-    fontSize: 16,
+    fontSize: 18,
     margin: 20,
   },
   backButton: {
     position: 'absolute',
-    top: 10,
-    left: 10,
+    top: 20,
+    left: 15,
     zIndex: 1000,
   },
 });
