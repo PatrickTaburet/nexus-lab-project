@@ -1,0 +1,191 @@
+body {
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #3A175F;
+  }
+  canvas {
+    display: block;
+  }
+  p{
+    margin: 0;
+  }
+  #myCanvas{
+    border: 3px solid black;
+    clip-path: polygon(40px 0, 100% 0%, 100% calc(100% - 40px), calc(100% - 40px) 100%, 0 100%, 0 40px);
+    margin-bottom: 10px;
+    margin-top: 40px;
+  }
+  .container{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    /* height: 100%; */
+    margin-top: 10px;
+  }
+  .bottomControls{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-around;        
+    width: 100%;
+  }
+  .customButton{
+    align-items: center;
+    background-image: linear-gradient(144deg,#AF40FF, #5B42F3 50%,#00DDEB);
+    border: 0;
+    border-radius: 8px;
+    box-shadow: rgba(151, 65, 252, 0.2) 0 15px 30px -5px;
+    box-sizing: border-box;
+    display: flex;
+    font-family: Phantomsans, sans-serif;
+    font-size: 17px;
+    justify-content: center;
+    line-height: 1em;
+    min-width: 80px;
+    height: 30px;
+    padding: 3px;
+    text-decoration: none;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+    white-space: nowrap;
+    cursor: pointer;
+    color: #FFFFFF;
+    padding: 10px 14px;
+    margin: 12px;
+    /* box-shadow: inset 0 0 10px #05C7F2; */
+  }
+  .middleContainer{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+  }
+  #descriptionButton{
+    color: cyan;
+    font-weight: 600;
+  }
+  #saveButton{
+    margin: 0;
+    margin-left: 170px;
+  }
+
+  .controls {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    width: 100%;
+    color: white; 
+    margin: 0px;
+    padding-top: 5px;
+    font-size: 14px;       
+  }
+  button {
+    background: none;
+    border: none;
+    outline: none;
+    box-shadow: none;
+  }
+/* ------- SciFi box card -------*/
+
+  .card {
+    background: rgba(0,0,0,.5);
+    width: 100%;
+    margin: 10px;
+    height: 100%;
+    box-shadow: inset 0 0 10px #05C7F2;
+    clip-path: polygon(40px 0, 100% 0%, 100% calc(100% - 40px), calc(100% - 40px) 100%, 0 100%, 0 40px);
+    padding: 10px;
+    .card-title {
+      font-weight: 700;
+      text-align: center;
+      font-size: 16px;
+      padding: 5px 0 0 0;
+      animation: text-glow 1.1s ease-in-out infinite alternate;
+    }
+
+    .separator {
+      height: 1px;
+      width: 100%;
+      background-color: #05C7F2;
+      margin: 10px 0;
+      box-shadow: 0 0 10px #05C7F2;
+    }
+
+  }
+    
+  .card-border {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    filter: drop-shadow(0px 0px 3px #05C7F2);
+  }
+  @keyframes text-glow {
+      from {
+          text-shadow: 0 0 1px #05C7F2;
+      }
+      to {
+          text-shadow: 0 0 7px #05C7F2;
+      }
+    }
+/* ------- Modale -------*/
+
+  .modal {
+    display: none;
+    position: absolute;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    /* margin-top: 30px; */
+    margin: 15% 5%;
+    overflow: auto;
+    z-index: 1000;
+  }
+  .modalContainer {
+    background-color: #3A175F;
+    padding: 25px;
+    border: 1px solid #888;
+    width: 80%;
+    color: white;
+    box-shadow: inset 0 0 10px #05C7F2;
+    clip-path: polygon(40px 0, 100% 0%, 100% calc(100% - 40px), calc(100% - 40px) 100%, 0 100%, 0 40px);
+  }
+
+  .close {
+    position: absolute;
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    right: 30px;
+    top: 10px;
+  }
+
+  .modaleBackground{
+    background-color: rgba(128, 128, 128, 0.525);
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 4;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    display: none;
+  }
+  .titleModale{
+    text-align: center;
+    margin-bottom: 15px;
+    font-weight: 600;
+    color: cyan;
+  }
+  #sendDataButton{
+    margin: auto;
+    margin-top: 20px;
+  }

@@ -55,7 +55,6 @@ const SaveArtworkModal = ({ visible, onClose, onSubmit }) => {
 
 const Scene1Screen = ({ navigation }) => {
   const [htmlContent, setHtmlContent] = useState(null);
-  // const [webViewData, setWebViewData] = useState({});
   const [modalVisible, setModalVisible] = useState(false);
   const [currentSceneId, setCurrentSceneId] = useState(null);
   const webViewRef = useRef(null);
@@ -73,7 +72,6 @@ const Scene1Screen = ({ navigation }) => {
 
   const handleWebViewMessage = (event) => {
     const data = JSON.parse(event.nativeEvent.data);
-    // setWebViewData(data);
     // console.log('Données reçues de la WebView:', data);
     sendDataToBackend(data);
   };

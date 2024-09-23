@@ -98,7 +98,7 @@
         outline: none;
         box-shadow: none;
       }
-/* ------- SciFi box card -------*/
+    /* ------- SciFi box card -------*/
   
       .card {
         background: rgba(0,0,0,.5);
@@ -141,7 +141,7 @@
               text-shadow: 0 0 7px #05C7F2;
           }
         }
-/* ------- Modale -------*/
+  /* ------- Modale -------*/
 
       .modal {
         display: none;
@@ -150,7 +150,7 @@
         left: 0;
         top: 0;
         /* margin-top: 30px; */
-        margin: 15% 5%;
+        margin: 20% 5%;
         overflow: auto;
         z-index: 1000;
       }
@@ -167,7 +167,7 @@
       .close {
         position: absolute;
         color: #aaa;
-        float: right;
+        /* float: right; */
         font-size: 28px;
         font-weight: bold;
         right: 30px;
@@ -198,15 +198,14 @@
         margin-top: 20px;
       }
     </style>
+
   </head>
   <body>
-
-    
     <!-- Modale 1 : Description -->
 
     <div id="descriptionModal" class="modal hidden">
       <div class="modalContainer">
-        <span class="close">&times;</span>
+        <span class="close" >&times;</span>
         <p class="titleModale">Description</p>
         <p>
           This scene is a generator of randomly moving lines, called walkers. <br> By clicking with your mouse (or finger), you can make these walkers appear wherever you desire. They will then move in a more or less random manner according to the parameters you choose. <br>
@@ -443,76 +442,13 @@
         }
         
       }
-
-      // // --------- Send to backend ---------
-
-      // document.querySelector("#sendDataButton")?.addEventListener('click', function () {
-      //  sendData()
-      // });
-
-      function sendData(){
-        alert('cacaaaaa');
-        let color = colorSlider.value();
-        let weight = weightSlider.value();
-        let numLine = lineSlider.value();
-        let saturation = saturationSlider.value();
-        let opacity = opacitySlider.value();
-        let velocity = velocitySlider.value();
-        let noiseOctave = noiseOctaveSlider.value();
-        let noiseFalloff = noiseFalloffSlider.value();
-        
-        // Capture image of the canva
-
-        // Capture l'image du canva dans un format base64
-        const myCanvas = document.getElementById("myCanvas");
-        const imageBase64 = myCanvas.toDataURL();
-        // const imageBase64 = canvas.elt.toDataURL();
-
-        // Créez une nouvelle image à partir de l'URL base64
-        const image = new Image();
-        image.src = imageBase64;
-
-        // Lorsque l'image est chargée, envoyez-la au serveur 
-        image.onload = function() {
-          const formData = new FormData(); // or new URLSearchParams()
-          formData.append('color', color);
-          formData.append('weight', weight);
-          formData.append('numLine', numLine);
-          formData.append('saturation', saturation);
-          formData.append('opacity', opacity);
-          formData.append('velocity', velocity);
-          formData.append('noiseOctave', noiseOctave);
-          formData.append('noiseFalloff', noiseFalloff);
-          formData.append('file', image.src);
-          
-          // saveCanvas();
-          fetch('api/generative/sendDataG1', {
-              method: 'POST',
-              body: JSON.stringify(formData)
-          })
-          .then(response => {
-              if (!response.ok) {
-                  throw new Error('Network response was not ok');
-              }
-              return response.json();
-          })
-          .then(data => {
-              console.log('Data sent successfully:', data);
-          // Redirection vers la page 'sceneG1'
-            window.location.href = data.redirectUrl;
-          })
-          .catch(error => {
-              console.error('There was a problem sending the data:', error);
-          });
-        };
-      }
-        
+      
       // --------- Modale ---------
 
       function initModal(modalSelector, buttonSelector, innerCloseSelector, backgroundSelector) {
         const modal = document.querySelector(modalSelector);
         const openButton = document.querySelector(buttonSelector);
-        const closeButton = document.querySelector(".close");
+        const closeButton = modal.querySelector(".close");
         const modaleBackground = document.querySelector(backgroundSelector);
         const innerCloseButton = document.querySelector(innerCloseSelector);
 
@@ -544,7 +480,6 @@
           innerCloseButton.addEventListener("click", () => {
             closeModal();
             sendDataToReactNative();
-            // sendData();
           });
         }
 

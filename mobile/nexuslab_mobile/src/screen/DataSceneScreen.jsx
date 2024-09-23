@@ -57,7 +57,7 @@ const DataSceneScreen = ({ navigation }) => {
         >
           <Text style={[styles.title, globalStyles.mainTitle]}>Choose a scene</Text>
           <MyBigButton
-            HandlePress={() => {handleNavigate('Scene1')}}
+            HandlePress={() => {handleNavigate('SceneD1')}}
             myStyle={styles.customButton}
             buttonStyle={styles.buttonStyle}
             textStyle={styles.textStyle}
@@ -65,7 +65,7 @@ const DataSceneScreen = ({ navigation }) => {
             CO2 Emissions Explorer
           </MyBigButton>
           <MyBigButton
-            HandlePress={() => {handleNavigate('Scene2')}}
+            HandlePress={() => {handleNavigate('SceneD2')}}
             myStyle={styles.customButton}
             buttonStyle={styles.buttonStyle}
             textStyle={styles.textStyle}
