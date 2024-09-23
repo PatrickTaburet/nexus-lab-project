@@ -156,7 +156,6 @@
       }
       .modalContainer {
         background-color: #3A175F;
-
         padding: 25px;
         border: 1px solid #888;
         width: 80%;
@@ -348,9 +347,6 @@
         noiseOctaveSlider = select('#noiseOctaveSlider');
         noiseFalloffSlider = select('#noiseFalloffSlider');
 
-        // colorSlider.input(() => sendToReactNative({ colorSlider: colorSlider.value() }));
-        // lineSlider.input(() => sendToReactNative({ lineSlider: lineSlider.value() }));
-
         // Create un first walker serie in the center when app is open
 
         // for (let i = 0; i < 30; i++) {
@@ -359,10 +355,23 @@
         // }
       }
 
-      // function sendToReactNative(data) {
-      //   window.ReactNativeWebView.postMessage(JSON.stringify(data));
-      // }
+      function sendDataToReactNative() {
+        const myCanvas = document.getElementById("myCanvas");
+        const imageBase64 = myCanvas.toDataURL('image/png');
 
+        const data = {
+          color: colorSlider.value(),
+          numLine: lineSlider.value(),
+          weight: weightSlider.value(),
+          saturation: saturationSlider.value(),
+          opacity: opacitySlider.value(),
+          velocity: velocitySlider.value(),
+          noiseOctave: noiseOctaveSlider.value(),
+          noiseFalloff: noiseFalloffSlider.value(),
+          file: imageBase64
+        };
+          window.ReactNativeWebView.postMessage(JSON.stringify(data));
+      }
       // Draw
 
       function draw(){
@@ -373,7 +382,6 @@
               walker.move();
               walker.draw();
             }
-            
           });
           return;
         }
@@ -438,11 +446,12 @@
 
       // // --------- Send to backend ---------
 
-      document.querySelector("#sendDataButton")?.addEventListener('click', function () {
-        sendData()
-      });
+      // document.querySelector("#sendDataButton")?.addEventListener('click', function () {
+      //  sendData()
+      // });
 
       function sendData(){
+        alert('cacaaaaa');
         let color = colorSlider.value();
         let weight = weightSlider.value();
         let numLine = lineSlider.value();
@@ -474,13 +483,12 @@
           formData.append('velocity', velocity);
           formData.append('noiseOctave', noiseOctave);
           formData.append('noiseFalloff', noiseFalloff);
-          formData.append('userId', userId);
           formData.append('file', image.src);
           
           // saveCanvas();
-          fetch('/generative/sendDataG1', {
+          fetch('api/generative/sendDataG1', {
               method: 'POST',
-              body: formData
+              body: JSON.stringify(formData)
           })
           .then(response => {
               if (!response.ok) {
@@ -501,11 +509,12 @@
         
       // --------- Modale ---------
 
-      function initModal(modalSelector, buttonSelector, closeSelector, backgroundSelector) {
+      function initModal(modalSelector, buttonSelector, innerCloseSelector, backgroundSelector) {
         const modal = document.querySelector(modalSelector);
         const openButton = document.querySelector(buttonSelector);
-        const closeButton = document.querySelector(closeSelector);
+        const closeButton = document.querySelector(".close");
         const modaleBackground = document.querySelector(backgroundSelector);
+        const innerCloseButton = document.querySelector(innerCloseSelector);
 
         function openModal() {
           document.body.style.overflow = "hidden"; // Disable scrolling
@@ -525,19 +534,26 @@
         }
 
         if (openButton) {
-            openButton.addEventListener("click", openModal);
+          openButton.addEventListener("click", openModal);
         }
         
         if (closeButton) {
-            closeButton.addEventListener("click", closeModal);
+          closeButton.addEventListener("click", closeModal);
+        }
+        if (innerCloseButton) {
+          innerCloseButton.addEventListener("click", () => {
+            closeModal();
+            sendDataToReactNative();
+            // sendData();
+          });
         }
 
         modaleBackground.addEventListener("click", closeModal);
       }
 
       // Initialize modals
-      initModal("#descriptionModal", "#descriptionButton", ".close", ".modaleBackground");
-      initModal("#saveModale", "#saveButton", ".close", ".modaleBackground");
+      initModal("#descriptionModal", "#descriptionButton", null, ".modaleBackground");
+      initModal("#saveModale", "#saveButton", "#sendDataButton", ".modaleBackground");
 
     </script>
   </body>

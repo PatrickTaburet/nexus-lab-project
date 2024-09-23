@@ -186,8 +186,15 @@ class UserController extends AbstractController
         Request $request
     ): Response
     {
-
         $currentUser = $this->getUser();
+
+        // TENTER CECI POUR EVITER D'INJECTER TOUT LES REPO COMME DEPENDANCES
+        // $entityClass = "App\\Entity\\" . $entity;
+        // if (!class_exists($entityClass)) {
+        //     throw new \Exception('Invalid entity type');
+        // }
+        // $repo = $this->entityManager->getRepository($entityClass);
+        // $artwork = $repo->find($id);
 
         switch ($entity) {
             case 'Scene1':
