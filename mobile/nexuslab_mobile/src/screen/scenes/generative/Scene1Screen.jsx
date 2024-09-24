@@ -59,13 +59,15 @@ const Scene1Screen = ({ navigation }) => {
   const [currentSceneId, setCurrentSceneId] = useState(null);
   const webViewRef = useRef(null);
   const {api} = useApi();
-  const [loading, setLoading] = useState();
+  const [initialLoading, setInitialLoading] = useState(true);  // Chargement initial
+  const [sendingDataLoading, setSendingDataLoading] = useState(false);  // Chargement lors de l'envoi des données
 
   useEffect(() => {
     async function loadHtmlFile() {
       const htmlAsset = Asset.fromModule(require('../../../assets/webView/SceneG1.html'));
       await htmlAsset.downloadAsync();
       setHtmlContent(htmlAsset.uri);
+      setInitialLoading(false);   
     }
     loadHtmlFile();
   }, []);
@@ -78,7 +80,7 @@ const Scene1Screen = ({ navigation }) => {
 
   const sendDataToBackend = async (data) => {
     try {
-      setLoading(true);
+      setSendingDataLoading(true);
       const token = await AsyncStorage.getItem('token');
       const decodedToken = jwtDecode(token);
       const userId = decodedToken.id;
@@ -100,9 +102,10 @@ const Scene1Screen = ({ navigation }) => {
    
       setCurrentSceneId(result.sceneId);
       setModalVisible(true);
-      setLoading(false);
+      setSendingDataLoading(false);
     } catch (error) {
       console.error("Erreur lors de l'envoi des données:", error);
+      setSendingDataLoading(false); 
     }
   };
 
@@ -139,16 +142,19 @@ const Scene1Screen = ({ navigation }) => {
       console.error("Erreur lors de la suppression de la scène:", error);
     }
   };
+  
+    const InitialLoadingOverlay = () => (
+      <View style={[styles.loadingOverlay, { backgroundColor: colors.purple_dark }]}>
+        <ActivityIndicator size="large" color={colors.purple_light} />
+      </View>
+    );
 
-  const LoadingOverlay = () => (
-    <View style={styles.loadingOverlay}>
-      <ActivityIndicator size="large" color={colors.purple_light} />
-    </View>
+    const SendingDataLoadingOverlay = () => (
+      <View style={[styles.loadingOverlay, { backgroundColor: 'rgba(0, 0, 0, 0.5)' }]}>
+        <ActivityIndicator size="large" color={colors.purple_light} />
+      </View>
   );
 
-  if (!htmlContent) {
-    return null; // ou un composant de chargement
-  }
 
   return (
     <SafeAreaView style={styles.container}>
@@ -163,15 +169,21 @@ const Scene1Screen = ({ navigation }) => {
         />
       </TouchableOpacity>
       <Text style={[styles.text, globalStyles.mainTitle]}>Random Line Walkers</Text>
-      <WebView 
-        ref={webViewRef}
-        originWhitelist={['*']}
-        source={{ uri: htmlContent }}
-        javaScriptEnabled={true}
-        domStorageEnabled={true}
-        style={styles.webview}
-        onMessage={handleWebViewMessage}
-      />
+
+
+      {htmlContent && (
+        <WebView 
+          ref={webViewRef}
+          originWhitelist={['*']}
+          source={{ uri: htmlContent }}
+          javaScriptEnabled={true}
+          domStorageEnabled={true}
+          style={styles.webview}
+          onMessage={handleWebViewMessage}
+          onLoadStart={() => setInitialLoading(true)}
+          onLoadEnd={() => setInitialLoading(false)}
+        />
+      )}
       <SaveArtworkModal 
         visible={modalVisible}
         onClose={() => {
@@ -180,7 +192,9 @@ const Scene1Screen = ({ navigation }) => {
         }}
         onSubmit={handleSaveArtwork}
       />
-      {loading && <LoadingOverlay />}
+      {initialLoading && <InitialLoadingOverlay />}
+
+      {sendingDataLoading && <SendingDataLoadingOverlay />}
     </SafeAreaView> 
   );
 };
@@ -251,7 +265,6 @@ const styles = StyleSheet.create({
     bottom: 0,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: 'rgba(0, 0, 0, 0.5)', // fond semi-transparent
   },
   buttonContainer:{
     display:'flex',

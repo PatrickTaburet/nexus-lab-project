@@ -220,7 +220,7 @@ const SceneD2Screen = ({ navigation }) => {
           color={'white'}
         />
       </TouchableOpacity>
-      <Text style={[styles.text, globalStyles.mainTitle]}>Random Line Walkers</Text>
+      <Text style={[styles.text, globalStyles.mainTitle]}>Demographic Artistery</Text>
 
           <WebView 
             ref={webViewRef}

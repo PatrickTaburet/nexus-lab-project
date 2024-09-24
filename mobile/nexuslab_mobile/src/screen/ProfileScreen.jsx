@@ -40,7 +40,7 @@ const ProfileScreen = ({ navigation })  => {
       });
       console.log('retour sur profilescreen- après');
       //console.log(response);
-      console.log(response.data);
+      //console.log(response.data);
       
       setUserData(response.data); 
     } catch (error) {
@@ -152,10 +152,10 @@ const ProfileScreen = ({ navigation })  => {
         <View style={styles.globalButtonBox}>
           <View style={styles.userButtonBox}>
             <MyButton
-              // HandlePress={}
+              HandlePress={() => {navigation.navigate("MyArtworks")}}
               myStyle={styles.submitButton}
             >
-              My Artwork
+              My Artworks
             </MyButton>
           </View>
           {userData && userData.roles[1] ? (

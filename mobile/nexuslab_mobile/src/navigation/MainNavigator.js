@@ -5,6 +5,7 @@ import { Ionicons } from '@expo/vector-icons';
 import TabNavigator from './TabNavigator';
 import ProfileScreen from '../screen/ProfileScreen';
 import EditProfileScreen from '../screen/EditProfileScreen';
+import MyArtworksScreen from '../screen/MyArtworksScreen';
 import { colors } from '../utils/colors'
 
 const Stack = createNativeStackNavigator();
@@ -52,6 +53,24 @@ const MainNavigator = () => {
           headerTransparent: true,
           presentation: 'modal',
           headerTitle: 'Edit Profile',
+          headerBackTitle: 'Back',
+          headerStyle: {
+            backgroundColor: 'rgba(0, 0, 0, 0.7)', 
+          },
+          headerTitleStyle: { // Text
+            color: colors.lightest,
+            fontSize: 18, 
+          },
+          headerTintColor: colors.lightest, // Icon
+        }}
+      />
+      <Stack.Screen
+        name="MyArtworks"
+        component={MyArtworksScreen} 
+        options={{
+          headerTransparent: true,
+          presentation: 'modal',
+          headerTitle: 'My Artworks',
           headerBackTitle: 'Back',
           headerStyle: {
             backgroundColor: 'rgba(0, 0, 0, 0.7)', 

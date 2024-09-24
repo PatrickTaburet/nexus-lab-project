@@ -33,7 +33,7 @@
         justify-content: center;
         align-items: center;
         /* height: 100%; */
-        margin-top: 10px;
+        margin-top: 150px;
       }
       .bottomControls{
         display: flex;
@@ -206,17 +206,9 @@
         justify-content: center;
         margin-right: 15px;
       }
-      @keyframes border-glow { 
-        from {
-            box-shadow: 0 0 2px #05C7F2;
-        }
-        to {
-            box-shadow: 0 0 9px #05C7F2; 
-        }
-      }
+ 
       .colorPannel{
         border: 1px solid #05C7F2;
-        animation: border-glow 1.3s ease-in-out infinite alternate;
         border-radius: 10px;
         padding:12px;
         margin:10px;
@@ -227,7 +219,18 @@
         align-items: center;
         flex-direction: column;
       }
-   
+      .bottomContainer{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      
+      }
+      .checkboxContainer{
+        margin: 10px; 
+        display: flex;
+        align-items: center;
+        gap: 5px;
+      }
     </style>
 
   </head>
@@ -317,17 +320,19 @@
                     <p style="color: rgb(0, 138, 5);" class="indiaColor">INDIA</p>
                 </div>
               </div>
-              <div class="    ">
-                <div class="checkboxContainer">
-                    <p>GLITCH</p>
-                    <input type="checkbox" id="glitchCheckbox" class="checkbox">
+              <div class="bottomContainer">
+                <div >
+                  <div class="checkboxContainer">
+                      <p>GLITCH</p>
+                      <input type="checkbox" id="glitchCheckbox" class="checkbox">
+                  </div>
+                  <div class="checkboxContainer">
+                      <p>NOISE</p>
+                      <input type="checkbox" id="noiseCheckbox" class="checkbox">
+                  </div>
                 </div>
-                <div class="checkboxContainer">
-                    <p>NOISE</p>
-                    <input type="checkbox" id="noiseCheckbox" class="checkbox">
-                </div>
+                <button class="customButton" id="resetButton">Reset</button>
               </div>
-              <button class="customButton" id="resetButton">Reset</button>
             </div>
           </div>
         </div>
