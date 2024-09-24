@@ -354,23 +354,6 @@
         // }
       }
 
-      function sendDataToReactNative() {
-        const myCanvas = document.getElementById("myCanvas");
-        const imageBase64 = myCanvas.toDataURL('image/png');
-
-        const data = {
-          color: colorSlider.value(),
-          numLine: lineSlider.value(),
-          weight: weightSlider.value(),
-          saturation: saturationSlider.value(),
-          opacity: opacitySlider.value(),
-          velocity: velocitySlider.value(),
-          noiseOctave: noiseOctaveSlider.value(),
-          noiseFalloff: noiseFalloffSlider.value(),
-          file: imageBase64
-        };
-          window.ReactNativeWebView.postMessage(JSON.stringify(data));
-      }
       // Draw
 
       function draw(){
@@ -441,6 +424,24 @@
 
         }
         
+      }
+      
+      function sendDataToReactNative() {
+        const myCanvas = document.getElementById("myCanvas");
+        const imageBase64 = myCanvas.toDataURL('image/png');
+
+        const data = {
+          color: colorSlider.value(),
+          numLine: lineSlider.value(),
+          weight: weightSlider.value(),
+          saturation: saturationSlider.value(),
+          opacity: opacitySlider.value(),
+          velocity: velocitySlider.value(),
+          noiseOctave: noiseOctaveSlider.value(),
+          noiseFalloff: noiseFalloffSlider.value(),
+          file: imageBase64
+        };
+          window.ReactNativeWebView.postMessage(JSON.stringify(data));
       }
       
       // --------- Modale ---------

@@ -36,7 +36,11 @@ const SaveArtworkModal = ({ visible, onClose, onSubmit }) => {
           />
           <View style={styles.buttonContainer}>
             <MyButton
-              HandlePress={() => onSubmit(title, comment)}
+              HandlePress={() => {
+                onSubmit(title, comment);
+                setTitle('');
+                setComment('');
+              }}
               buttonStyle={styles.submitButton}
             >
               Submit
@@ -122,6 +126,8 @@ const SceneD2Screen = ({ navigation }) => {
 
   const handleWebViewMessage = (event) => {
     const data = JSON.parse(event.nativeEvent.data);
+    console.log('Message reçu:');
+    // console.log(data);
     // console.log('Données reçues de la WebView:', data);
     sendDataToBackend(data);
   };
@@ -136,18 +142,20 @@ const SceneD2Screen = ({ navigation }) => {
         ...data, 
         userId: userId
       };
-      const response = await api.post(`/generative/sendDataG1`, fullData, {
+      console.log("avant requete");
+      
+      const response = await api.post(`/dataScene/sendDataD2`, fullData, {
         headers: {
           'Content-Type': 'application/json',
         },
       });
-      
       if (response.status !== 200) {
         throw new Error("Erreur lors de l'envoi des données à l'API");
       }
 
       const result = await response.data;
-   
+      console.log("result")
+      console.log(result)
       setCurrentSceneId(result.sceneId);
       setModalVisible(true);
       setLoading(false);
@@ -158,7 +166,7 @@ const SceneD2Screen = ({ navigation }) => {
 
   const handleSaveArtwork = async (title, comment) => {
     try {
-      const response = await api.post(`/saveScene/Scene1/${currentSceneId}`, {
+      const response = await api.post(`/saveScene/SceneD2/${currentSceneId}`, {
         title : title,
         comment : comment
       }, {
@@ -179,7 +187,7 @@ const SceneD2Screen = ({ navigation }) => {
 
   const deleteArtwork = async($currentSceneId) => {
     try {
-      const response = await api.post(`/artworks/delete/${currentSceneId}/Scene1`);
+      const response = await api.post(`/artworks/delete/${currentSceneId}/SceneD2`);
       // console.log(response.data);
       if (response.status !== 200) {
         throw new Error("Erreur lors de la suppression de la scène");
@@ -214,7 +222,6 @@ const SceneD2Screen = ({ navigation }) => {
       </TouchableOpacity>
       <Text style={[styles.text, globalStyles.mainTitle]}>Random Line Walkers</Text>
 
-
           <WebView 
             ref={webViewRef}
             originWhitelist={['*']}
@@ -222,38 +229,10 @@ const SceneD2Screen = ({ navigation }) => {
             javaScriptEnabled={true}
             domStorageEnabled={true}
             style={styles.webview} 
-            onMessage={(event) => {
-              console.log("Log from WebView:", event.nativeEvent.data);
-            }}
-            // onLoadEnd={() => {
-            //   console.log('ONLOAD WebView chargée. Prêt à injecter les données.');
-            //   if (populationData && Object.keys(populationData).length > 0) {
-            //     const populationDataString = JSON.stringify(populationData);
-            //     webViewRef.current.postMessage("caca"); // Envoie directement les données
-            //   } else {
-            //     console.log("ONLOAD populationData est vide ou indéfini."); 
-            //   }
+            // onMessage={(event) => {
+            //   console.log("Log from WebView:", event.nativeEvent.data);
             // }}
-            // onLoadEnd={() => {
-            //   console.log('WebView chargée. Prêt à injecter les données.');
-            //   console.log('Vérification des données populationData avant injection:');
-            //   //console.log(populationData);
-            
-            //   setTimeout(() => {
-            //     if (webViewRef.current && populationData) {
-            //       webViewRef.current.injectJavaScript(`
-            //         (function() {
-            //           window.populationData = ${JSON.stringify(populationData)};
-            //           console.log('Données injectées dans WebView:', window.populationData);
-            //           window.ReactNativeWebView.postMessage('Données injectées dans WebView.');
-            //         })();
-            //       `);
-            //     } else {
-            //       console.log("populationData est null ou indéfini."); 
-            //     }
-            //   }, 1000); // Délai avant l'injection
-            // }}
-            // onMessage={handleWebViewMessage}
+             onMessage={handleWebViewMessage}
           />
 
       <SaveArtworkModal 

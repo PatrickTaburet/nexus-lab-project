@@ -4,6 +4,7 @@ namespace App\Controller\Api;
 
 use App\Entity\User;
 use App\Entity\Scene1;
+use App\Entity\SceneD2;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -12,7 +13,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
-class api_GenerativeSceneController extends AbstractController
+class api_DataSceneController extends AbstractController
 {
     private $entityManager;
     
@@ -20,21 +21,25 @@ class api_GenerativeSceneController extends AbstractController
         $this->entityManager = $entityManager;
     }
    
-    #[Route("api/generative/sendDataG1", name: "api_send_data_G1", methods: ["POST"])]
-    public function api_sendDataToSceneG1(Request $request): JsonResponse
+    #[Route("api/dataScene/sendDataD2", name: "api_send_data_D2", methods: ["POST"])]
+    public function api_sendDataToSceneD2(Request $request): JsonResponse
     {   
         $data = json_decode($request->getContent(), true);
         if (!$data) {
             throw new \Exception('Invalid JSON data');
         }
-        $color = $data['color'] ?? null;
-        $saturation = $data['saturation'] ?? null;
+        $divFactor = $data['divFactor'] ?? null;
+        $copy = $data['copy'] ?? null;
+        $deformation = $data['deformation'] ?? null;
+        $sizeFactor = $data['sizeFactor'] ?? null;
+        $angle = $data['angle'] ?? null;
         $opacity = $data['opacity'] ?? null;
-        $weight = $data['weight'] ?? null;
-        $numLine = $data['numLine'] ?? null;
-        $velocity = $data['velocity'] ?? null;
-        $noiseOctave = $data['noiseOctave'] ?? null;
-        $noiseFalloff = $data['noiseFalloff'] ?? null;
+        $filters = $data['filters'] ?? null;
+        $division = $data['division'] ?? null;
+        $colorRange = $data['colorRange'] ?? null;
+        $glitch = $data['glitch'] ?? null;
+        $noise = $data['noise'] ?? null;
+        $colorsValue = $data['colorsValue'] ?? null;
         $userId = $data['userId'] ?? null;
         $imgFile = $data['file'] ?? null;
         if (!$userId) {
@@ -65,27 +70,34 @@ class api_GenerativeSceneController extends AbstractController
         // Créer un nouvel objet UploadedFile
         $imageFile = new UploadedFile($tempFilePath,  $imageName, 'image/png', null, true);
         
-        if ($color !== null &&
-            $weight !== null &&
-            $numLine !== null &&
-            $saturation !== null &&
+        if ($divFactor !== null &&
+            $copy !== null &&
+            $deformation !== null &&
+            $sizeFactor !== null &&
+            $angle !== null &&
             $opacity !== null &&
-            $velocity !== null &&
-            $noiseOctave !== null &&
-            $noiseFalloff !== null &&
-            $userId  !== null
+            $filters !== null &&
+            $division !== null &&
+            $colorRange !== null &&
+            $glitch !== null &&
+            $noise !== null &&
+            $userId  !== null &&
+            $colorsValue !== null
             ) {
-            $data = new Scene1;
-            $data ->setColor($color);
-            $data ->setWeight($weight);
-            $data ->setNumLine($numLine);
-            $data ->setSaturation($saturation);
+            $data = new SceneD2;
+            $data ->setDivFactor($divFactor);
+            $data ->setCopy($copy);
+            $data ->setDeformation($deformation);
+            $data ->setSizeFactor($sizeFactor);
+            $data ->setAngle($angle);
             $data ->setOpacity($opacity);
-            $data ->setVelocity($velocity);
-            $data ->setNoiseOctave($noiseOctave);
-            $data ->setNoiseFalloff($noiseFalloff);
+            $data ->setFilters($filters);
+            $data ->setDivision($division);
+            $data ->setColorRange($colorRange);
+            $data ->setGlitch($glitch);
+            $data ->setNoise($noise);
+            $data ->setColorsValue($colorsValue);
             $data ->setUser($user);
-        // Link image to the upload file
             $data->setImageFile($imageFile);
 
             $this->entityManager->persist($data);
@@ -100,8 +112,6 @@ class api_GenerativeSceneController extends AbstractController
                 'message' => 'Data successfully saved!',
                 'sceneId' => $id
             ]);
-
-        // redirection managed in javascript
         } 
         return new JsonResponse('Error: Missing data!', Response::HTTP_BAD_REQUEST);
     }

@@ -197,6 +197,37 @@
         margin: auto;
         margin-top: 20px;
       }
+      .colorText{
+        font-size: 16px;
+        font-weight: 700 ;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        margin-right: 15px;
+      }
+      @keyframes border-glow { 
+        from {
+            box-shadow: 0 0 2px #05C7F2;
+        }
+        to {
+            box-shadow: 0 0 9px #05C7F2; 
+        }
+      }
+      .colorPannel{
+        border: 1px solid #05C7F2;
+        animation: border-glow 1.3s ease-in-out infinite alternate;
+        border-radius: 10px;
+        padding:12px;
+        margin:10px;
+        background-color: rgba(255, 255, 255, 0.055);
+        color: white;
+        display: flex ;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+      }
+   
     </style>
 
   </head>
@@ -296,7 +327,7 @@
                     <input type="checkbox" id="noiseCheckbox" class="checkbox">
                 </div>
               </div>
-              <button class="customButton" id="reloadButton">Reload</button>
+              <button class="customButton" id="resetButton">Reset</button>
             </div>
           </div>
         </div>
@@ -305,7 +336,8 @@
    
     <script>
 
-  
+      // Get data from react native before starting setup function.
+      // Check every 100ms during 10s
       function loadData() {
         return new Promise((resolve, reject) => {
           const interval = setInterval(() => {
@@ -314,16 +346,14 @@
               logMessage('Données reçues avec succès');
               resolve(window.populationData);
             } 
-          }, 100); // Vérifier toutes les 100ms
+          }, 100); 
 
           setTimeout(() => {
             clearInterval(interval);
             reject('Timeout: Données non reçues après 10 secondes');
           }, 10000);
         });
-      }
-
-    
+      }    
 
       let USrowData;
       let CHIrowData;
@@ -355,7 +385,7 @@
       let totalArea;
       let noiseCheckbox;
       let glitchCheckbox;
-      let reloadButton;
+      let resetButton;
       let dataReady = false;
 
       function setupSliders() {
@@ -372,13 +402,13 @@
 
       function setupButtons(){
           
-        reloadButton = document.querySelector('#reloadButton');
+        resetButton = select('#resetButton');
         colorsButton = select(".colorsButton");
         noiseCheckbox = select("#noiseCheckbox");
         glitchCheckbox = select("#glitchCheckbox");
 
-        reloadButton.addEventListener('click', function() {
-          window.location.reload();
+        resetButton.mousePressed(() => {
+          resetParameters();
         });
         colorsButton.mousePressed(changeColors);
         glitchMode = glitchCheckbox.checked();
@@ -480,6 +510,29 @@
         });
         } 
       }
+
+      function resetParameters() {
+        divFactorSlider.value(1);
+        numCopySlider.value(3);
+        deformationSlider.value(0);
+        sizeFactorSlider.value(1);
+        angleDivSlider.value(20);
+        colorRangeSlider.value(1);
+        opacitySlider.value(0.23);
+        filterSlider.value(0);
+        divSlider.value(6);
+        glitchMode = false;
+        glitchCheckbox.checked(0);
+        noiseMode = false;
+        noiseCheckbox.checked(0);
+        blendMode(BLEND);
+
+        initializeOrigins();
+        initializeDirections();
+
+        redraw();
+      }
+
       function toggleNoiseMode() {
           noiseMode = !noiseMode;
         }
@@ -691,79 +744,33 @@
           return { offsetX, offsetY };
         }
       }
+      
+      function sendDataToReactNative() {
+        const myCanvas = document.getElementById("myCanvas");
+        const imageBase64 = myCanvas.toDataURL('image/png');
 
-      // Send to backend :
-
-      // document.querySelector("#sendDataButton")?.addEventListener('click', function () {
-      //     sendData()
-      //   });
-        
-      // function sendData(){
-      //     let divFactor = divFactorSlider.value();
-      //     let copy = numCopySlider.value();
-      //     let deformation = deformationSlider.value();
-      //     let sizeFactor = sizeFactorSlider.value();
-      //     let angle = angleDivSlider.value();
-      //     let opacity = opacitySlider.value();
-      //     let filters = filterSlider.value();
-      //     let division = divSlider.value();
-      //     let colorRange = colorRangeSlider.value();
-      //     let glitch = glitchCheckbox.checked() ? 1 : 0;
-      //     let noise = noiseCheckbox.checked() ? 1 : 0;
-      //     let colorsValue = JSON.stringify(colors);
-        
-      //     // Capture l'image du canva dans un format base64
-      //     const myCanvas = document.getElementById("myCanvas");
-      //     const imageBase64 = myCanvas.toDataURL();
-      //     // const imageBase64 = canvas.elt.toDataURL();
-
-      //     // Créez une nouvelle image à partir de l'URL base64
-      //     const image = new Image();
-      //     image.src = imageBase64;
-
-      //     // Lorsque l'image est chargée, envoyez-la au serveur
-      //     image.onload = function() {
-      //         const formData = new FormData(); // or new URLSearchParams()
-      //         formData.append('divFactor', divFactor);
-      //         formData.append('copy', copy);
-      //         formData.append('deformation', deformation);
-      //         formData.append('sizeFactor', sizeFactor);
-      //         formData.append('angle', angle);
-      //         formData.append('opacity', opacity);
-      //         formData.append('filters', filters);
-      //         formData.append('division', division);
-      //         formData.append('colorRange', colorRange);
-      //         formData.append('glitch', glitch);
-      //         formData.append('noise', noise);
-      //         formData.append('colorsValue', colorsValue);
-          
-      //         formData.append('userId', userId);
-      //         formData.append('file', image.src);
-          
-      //         fetch('/dataScene/sendDataD2', {
-      //             method: 'POST',
-      //             body: formData,
-      //         })
-      //         .then(response => {
-      //             if (!response.ok) {
-      //                 throw new Error('Network response was not ok');
-      //             }
-      //             return response.json();
-      //         })
-      //         .then(data => {
-      //             console.log('Data sent successfully:', data);
-      //         // Redirection vers la page 'sceneD2'
-      //             window.location.href = data.redirectUrl;    
-      //         })
-      //         .catch(error => {
-      //             console.error('There was a problem sending the data:', error);
-      //         });
-      //     };
-      // }
+        const data = {
+          divFactor: divFactorSlider.value(),
+          copy: numCopySlider.value(),
+          deformation: deformationSlider.value(),
+          sizeFactor: sizeFactorSlider.value(),
+          angle: angleDivSlider.value(),
+          opacity: opacitySlider.value(),
+          colorRange: colorRangeSlider.value(),
+          filters: filterSlider.value(),
+          division: divSlider.value(),
+          glitch : glitchCheckbox.checked() ? 1 : 0,
+          noise : noiseCheckbox.checked() ? 1 : 0,
+          colorsValue : JSON.stringify(colors),
+          file: imageBase64
+        };
+          window.ReactNativeWebView.postMessage(JSON.stringify(data));
+      }
 
       function logMessage(message) {
-        window.ReactNativeWebView.postMessage(message);
+        // window.ReactNativeWebView.postMessage(message);
       }
+
       // --------- Modale ---------
 
       function initModal(modalSelector, buttonSelector, innerCloseSelector, backgroundSelector) {
