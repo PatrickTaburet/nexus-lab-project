@@ -247,14 +247,14 @@
             </div>
             <div>
               <p>Copy</p>
-              <input type="range" id="numCopySlider" min="1" max="15" value="3" step="1">
+              <input type="range" id="numCopySlider" min="1" max="15" value="3" step="1"> 
             </div>
             <div>
               <p>Deformation</p>
               <input type="range" id="deformationSlider" min="0" max="50" value="0" step="1">
             </div>
             <div>
-              <p>Size factor</p>
+              <p>Size factor</p> 
               <input type="range" id="sizeFactorSlider" min="0.2" max="5" value="1" step="0.1">
             </div>
             <div>
@@ -277,7 +277,7 @@
               <div class="colorPannel">
                 <p>Color range</p>
                 <div>
-                    <input class="colorRangeSlider range" type="range" min="-180" max="180" step="1" value="0">
+                    <input id="colorRangeSlider" class="range" type="range" min="-180" max="180" step="1" value="0">
                 </div>
                 <button style="font-size: 20px; font-weight: 700;" class="colorsButton customButton">COLOR</button>
                 <div class="colorText" >
@@ -305,6 +305,25 @@
    
     <script>
 
+  
+      function loadData() {
+        return new Promise((resolve, reject) => {
+          const interval = setInterval(() => {
+            if (window.populationData) {
+              clearInterval(interval);
+              logMessage('Données reçues avec succès');
+              resolve(window.populationData);
+            } 
+          }, 100); // Vérifier toutes les 100ms
+
+          setTimeout(() => {
+            clearInterval(interval);
+            reject('Timeout: Données non reçues après 10 secondes');
+          }, 10000);
+        });
+      }
+
+    
 
       let USrowData;
       let CHIrowData;
@@ -319,7 +338,7 @@
       let numCopySlider;
       let deformationSlider;
       let sizeFactorSlider;
-      let angleDivSlider;
+      let angleDivSlider; 
       let opacitySlider;
       let colorsButton;
       let colorRangeSlider;
@@ -337,44 +356,13 @@
       let noiseCheckbox;
       let glitchCheckbox;
       let reloadButton;
-
-      // function loadData() {
-      //   // Utiliser fetch pour charger les fichiers JSON
-      //   fetch("http://localhost/projet-cda/symfony/public/data/dataS2/Us_pop.txt")
-      //     .then(response => response.json())
-      //     .then(data => {
-      //       USrowData = data;
-      //       logMessage("US Data loaded:", USrowData);
-      //     })
-      //     .catch(err => console.error("Erreur lors du chargement des données US:", err));
-
-      //   fetch("http://localhost/projet-cda/symfony/public/data/dataS2/India_pop.txt")
-      //     .then(response => response.json())
-      //     .then(data => {
-      //       CHIrowData = data;
-      //       logMessage("India Data loaded:", CHIrowData);
-      //     })
-      //     .catch(err => console.error("Erreur lors du chargement des données India:", err));
-
-      //   fetch("http://localhost/projet-cda/symfony/public/data/dataS2/China_pop.txt")
-      //     .then(response => response.json())
-      //     .then(data => {
-      //       INrowData = data;
-      //       logMessage("China Data loaded:", INrowData);
-      //     })
-      //     .catch(err => console.error("Erreur lors du chargement des données China:", err));
-      //   }
-      // function preload() {
-      //   USrowData = loadJSON("http://localhost/projet-cda/symfony/public/data/dataS2/Us_pop.txt");
-      //   CHIrowData = loadJSON("http://localhost/projet-cda/symfony/public/data/dataS2/India_pop.txt");
-      //   INrowData = loadJSON("http://localhost/projet-cda/symfony/public/data/dataS2/China_pop.txt");
-      // }
+      let dataReady = false;
 
       function setupSliders() {
         divFactorSlider = select("#divFactorSlider");
         numCopySlider = select("#numCopySlider");
         deformationSlider = select("#deformationSlider");
-        sizeFactorSlider = select(".sizeFactorSlider");
+        sizeFactorSlider = select("#sizeFactorSlider");
         angleDivSlider = select("#angleDivSlider");
         opacitySlider = select("#opacitySlider");
         colorRangeSlider = select("#colorRangeSlider");
@@ -396,7 +384,7 @@
         glitchMode = glitchCheckbox.checked();
         noiseMode = noiseCheckbox.checked();
         noiseCheckbox.changed(toggleNoiseMode);
-        glitchCheckbox.changed(toggleGlitchMode);
+        glitchCheckbox.changed(toggleGlitchMode); 
 
       }
 
@@ -423,74 +411,63 @@
         }
       }
 
-      function setup() {
-        logMessage("US Data loaded:");
-        fetch("http://localhost/projet-cda/symfony/public/data/dataS2/Us_pop.txt")
-          .then(response => response.json())
-          .then(data => {
-            USrowData = data;
-            logMessage("US Data loaded:");
-            logMessage(data);
-          })
-          .catch(err => logMessage( err));
+      async function setup() {
+        try {
+          rawData = await loadData();
+          USrowData = rawData.US;
+          CHIrowData =  rawData.China;
+          INrowData =  rawData.India
 
-        fetch("http://localhost/projet-cda/symfony/public/data/dataS2/India_pop.txt")
-          .then(response => response.json())
-          .then(data => {
-            CHIrowData = data;
-            logMessage("India Data loaded:", CHIrowData);
-          })
-          .catch(err => console.error("Erreur lors du chargement des données India:", err));
+          const squareSize = min(windowWidth-30, windowHeight-30);
+          const canvas = createCanvas(squareSize, squareSize);
+          canvas.parent('sketch');
+          canvas.id('myCanvas');
+          colorMode(HSB);
+          background(0, 0, 0);
+          noStroke();
+          frameRate(30);
 
-        fetch("http://localhost/projet-cda/symfony/public/data/dataS2/China_pop.txt")
-          .then(response => response.json())
-          .then(data => {
-            INrowData = data;
-            logMessage("China Data loaded:", INrowData);
-          })
-          .catch(err => console.error("Erreur lors du chargement des données China:", err));
-        
-        const squareSize = min(windowWidth-30, windowHeight-30);
-        const canvas = createCanvas(squareSize, squareSize);
-        canvas.parent('sketch');
-        canvas.id('myCanvas');
-        colorMode(HSB);
-        background(0, 0, 0);
-        noStroke();
-        frameRate(30);
-        // loadData();
-        logMessage('fderg');
-        blendModes = [BLEND, DIFFERENCE, REPLACE, HARD_LIGHT, ADD];
-        setupSliders()
-        setupButtons()
-        setupColors();
+          blendModes = [BLEND, DIFFERENCE, REPLACE, HARD_LIGHT, ADD];
+          setupSliders()
+          setupButtons()
+          setupColors();
 
-        totalArea = width * height;
-        let dataManager = new DataManager(USrowData, CHIrowData, INrowData);
-        dataManager.calculateAreas();
+          totalArea = width * height;
+          let dataManager = new DataManager(USrowData, CHIrowData, INrowData);
+          dataManager.calculateAreas();
 
-        let usa = new Country('usa', dataManager);
-        let china = new Country('china', dataManager);
-        let india = new Country('india', dataManager);
-        countries = [usa, china, india];
+          let usa = new Country('usa', dataManager);
+          let china = new Country('china', dataManager);
+          let india = new Country('india', dataManager);
+          countries = [usa, china, india];
 
-
-        initializeOrigins();
-        initializeDirections();
+          initializeOrigins();
+          initializeDirections();
+          dataReady = true;
+        } catch (error) {
+          logMessage('Erreur lors du chargement des données:');
+          logMessage(error);
+        }
       }
 
       function draw() {
+        if (!dataReady) {
+          logMessage("data non ready")
+          return;
+        }
         background(0, 0, 0);
 
         // GLitch mode settings
         if(!glitchMode){
             blendMode(BLEND); 
         }
+
         opacityValue = glitchMode ? 1 : opacitySlider.value();
         blendModeValue = glitchMode ? 1 : filterSlider.value();
-        
+   
         blendMode(blendModes[blendModeValue % blendModes.length]);
-        //console.log(blendModes[filterSlider.value()]);
+        // logMessage(blendModes[filterSlider.value()]);
+
         // Drawing
         let divFactor = divFactorSlider.value();
         for (let i = 0; i < divFactor; i++) {
@@ -498,7 +475,7 @@
             let originIndex = index * divFactor + i;
             let directionIndex = index * divFactor + i;
             if (originIndex < origins.length && directionIndex < directions.length) {
-                country.drawData(origins[originIndex], directions[directionIndex]);
+              country.drawData(origins[originIndex], directions[directionIndex]);
             }
         });
         } 
@@ -526,12 +503,12 @@
       }
 
       function changeColors() {
-
         //Hue value
+        logMessage(colorRangeSlider.value())
         colors.usa = random(360) + colorRangeSlider.value();
         colors.china = random(360)+ colorRangeSlider.value();
         colors.india = random(360)+ colorRangeSlider.value();
-
+     
         chinaColor.style("color", HSBtoHex(colors).china);
         usaColor.style("color", HSBtoHex(colors).usa);
         indiaColor.style("color", HSBtoHex(colors).india);
@@ -658,12 +635,12 @@
         }
 
         drawData(origin, direction) {
-      
           let params = this.calculateParams();
           fill(colors[this.name], 100, 100, opacityValue);
           let x = params.index * direction.x + origin.x;
           let y = params.index *direction.y + origin.y;
           let size = params.size/divFactorSlider.value();
+
           if (x - size / 2 < 0) {
             x = size / 2;
           } else if (x + size / 2 > width) {
@@ -674,7 +651,7 @@
           } else if (y + size / 2 > height) {
             y = height - size / 2;
           }
-          
+
           // Kaleidoscopic effect with geometric deformation
           let numCopies = numCopySlider.value(); 
           let angleStep = TWO_PI / numCopies;  // Angle between each copy
@@ -684,9 +661,9 @@
           for (let i = 0; i < numCopies; i++) { 
             push();
             rotate(i * angleStep);  // Rotate each copy
+           
 
             let sizeFactor = sizeFactorSlider.value(); 
-
               // Deform the ellipse into a more complex shape
             beginShape();
             for (let angle = 0; angle < TWO_PI; angle += PI / angleDivSlider.value()) {

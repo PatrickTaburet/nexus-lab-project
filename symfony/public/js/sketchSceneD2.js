@@ -33,8 +33,8 @@ let reloadButton;
 
 function preload() {
     USrowData = loadJSON("/data/dataS2/Us_pop.txt");
-    CHIrowData = loadJSON("/data/dataS2/India_pop.txt");
-    INrowData = loadJSON("/data/dataS2/China_pop.txt");
+    INrowData = loadJSON("/data/dataS2/India_pop.txt");
+    CHIrowData = loadJSON("/data/dataS2/China_pop.txt");
 }
 
 function setupSliders() {

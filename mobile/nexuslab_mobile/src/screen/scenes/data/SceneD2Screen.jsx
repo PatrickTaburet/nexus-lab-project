@@ -9,6 +9,8 @@ import useApi from '../../../hooks/useApi';
 import AsyncStorage from '@react-native-async-storage/async-storage'; 
 import {jwtDecode} from 'jwt-decode';
 import MyButton from '../../../components/MyButton';
+import * as FileSystem from 'expo-file-system';
+import config from '../../../config/config'; 
 
 const SaveArtworkModal = ({ visible, onClose, onSubmit }) => {
   const [title, setTitle] = useState('');
@@ -70,23 +72,53 @@ const SceneD2Screen = ({ navigation }) => {
     loadHtmlFile();
   }, []);
 
-  useEffect(() => {
-    const fetchData = `
-      (async () => {
-        try {
-          const response = await fetch('https://example.com/data.json'); // Remplacez par votre URL
-          const data = await response.json();
-          window.ReactNativeWebView.postMessage(JSON.stringify(data));
-        } catch (error) {
-          console.error('Error fetching data:', error);
-        }
-      })();
-    `;
-
-    if (webViewRef.current) {
-      webViewRef.current.injectJavaScript(fetchData);
+  const downloadFile = async (url, filename) => {
+    const fileUri = `${FileSystem.documentDirectory}${filename}`;
+    const downloadResumable = FileSystem.createDownloadResumable(
+      url,
+      fileUri,
+      {},
+      false
+    );
+    try {
+      const { uri } = await downloadResumable.downloadAsync();
+      return uri;
+    } catch (e) {
+      console.error(e);
     }
-  }, [htmlContent]);
+  };
+
+  useEffect(() => {
+    const loadPopulationData = async () => {
+      try {
+        const files = ['China_pop.txt', 'India_pop.txt', 'US_pop.txt'];
+        const data = {};
+  
+        for (const file of files) {
+          const fileUri = await downloadFile(`${config.apiUrl}/data/dataS2/${file}`, file);
+          const content = await FileSystem.readAsStringAsync(fileUri);
+          const countryName = file.split('_')[0];
+          data[countryName] = JSON.parse(content);
+        }
+        //console.log('Données chargées:', data);
+        // setPopulationData(data); 
+        const populationDataString = JSON.stringify(data);
+        //console.log(populationDataString);
+         
+        if (webViewRef.current) {
+          const jsCode = `
+            window.populationData = ${populationDataString};
+            window.dispatchEvent(new Event('populationDataReceived'));
+          `;
+          webViewRef.current.injectJavaScript(jsCode);
+        }
+      } catch (error) {
+        console.error('Erreur lors du chargement des données:', error);
+      } 
+    };
+  
+    loadPopulationData();
+  }, []);
 
   const handleWebViewMessage = (event) => {
     const data = JSON.parse(event.nativeEvent.data);
@@ -165,7 +197,7 @@ const SceneD2Screen = ({ navigation }) => {
   );
 
   if (!htmlContent) {
-    return null; // ou un composant de chargement
+    return <LoadingOverlay />; // ou un composant de chargement
   }
 
   return (
@@ -181,22 +213,49 @@ const SceneD2Screen = ({ navigation }) => {
         />
       </TouchableOpacity>
       <Text style={[styles.text, globalStyles.mainTitle]}>Random Line Walkers</Text>
-      <WebView 
-        ref={webViewRef}
-        originWhitelist={['*']}
-        source={{ uri: htmlContent }}
-        javaScriptEnabled={true}
-        domStorageEnabled={true}
-        style={styles.webview}
-        onMessage={(event) => {
-          console.log("Log from WebView:", event.nativeEvent.data);
-        }}
-        onLoadEnd={() => {
-          // Inject fetch code when the page has finished loading
-          webViewRef.current.injectJavaScript(fetchData);
-        }}
-        // onMessage={handleWebViewMessage}
-      />
+
+
+          <WebView 
+            ref={webViewRef}
+            originWhitelist={['*']}
+            source={{ uri: htmlContent }}
+            javaScriptEnabled={true}
+            domStorageEnabled={true}
+            style={styles.webview} 
+            onMessage={(event) => {
+              console.log("Log from WebView:", event.nativeEvent.data);
+            }}
+            // onLoadEnd={() => {
+            //   console.log('ONLOAD WebView chargée. Prêt à injecter les données.');
+            //   if (populationData && Object.keys(populationData).length > 0) {
+            //     const populationDataString = JSON.stringify(populationData);
+            //     webViewRef.current.postMessage("caca"); // Envoie directement les données
+            //   } else {
+            //     console.log("ONLOAD populationData est vide ou indéfini."); 
+            //   }
+            // }}
+            // onLoadEnd={() => {
+            //   console.log('WebView chargée. Prêt à injecter les données.');
+            //   console.log('Vérification des données populationData avant injection:');
+            //   //console.log(populationData);
+            
+            //   setTimeout(() => {
+            //     if (webViewRef.current && populationData) {
+            //       webViewRef.current.injectJavaScript(`
+            //         (function() {
+            //           window.populationData = ${JSON.stringify(populationData)};
+            //           console.log('Données injectées dans WebView:', window.populationData);
+            //           window.ReactNativeWebView.postMessage('Données injectées dans WebView.');
+            //         })();
+            //       `);
+            //     } else {
+            //       console.log("populationData est null ou indéfini."); 
+            //     }
+            //   }, 1000); // Délai avant l'injection
+            // }}
+            // onMessage={handleWebViewMessage}
+          />
+
       <SaveArtworkModal 
         visible={modalVisible}
         onClose={() => {
