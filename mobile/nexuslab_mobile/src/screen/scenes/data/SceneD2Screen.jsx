@@ -65,13 +65,15 @@ const SceneD2Screen = ({ navigation }) => {
   const [currentSceneId, setCurrentSceneId] = useState(null);
   const webViewRef = useRef(null);
   const {api} = useApi();
-  const [loading, setLoading] = useState();
+  const [initialLoading, setInitialLoading] = useState(true); 
+  const [sendingDataLoading, setSendingDataLoading] = useState(false); 
 
   useEffect(() => {
     async function loadHtmlFile() {
       const htmlAsset = Asset.fromModule(require('../../../assets/webView/SceneD2.html'));
       await htmlAsset.downloadAsync();
       setHtmlContent(htmlAsset.uri);
+      setInitialLoading(false);   
     }
     loadHtmlFile();
   }, []);
@@ -134,7 +136,7 @@ const SceneD2Screen = ({ navigation }) => {
 
   const sendDataToBackend = async (data) => {
     try {
-      setLoading(true);
+      setSendingDataLoading(true);
       const token = await AsyncStorage.getItem('token');
       const decodedToken = jwtDecode(token);
       const userId = decodedToken.id;
@@ -158,9 +160,10 @@ const SceneD2Screen = ({ navigation }) => {
       console.log(result)
       setCurrentSceneId(result.sceneId);
       setModalVisible(true);
-      setLoading(false);
+      setSendingDataLoading(false);
     } catch (error) {
       console.error("Erreur lors de l'envoi des données:", error);
+      setSendingDataLoading(false); 
     }
   };
 
@@ -198,15 +201,17 @@ const SceneD2Screen = ({ navigation }) => {
     }
   };
 
-  const LoadingOverlay = () => (
-    <View style={styles.loadingOverlay}>
+  const InitialLoadingOverlay = () => (
+    <View style={[styles.loadingOverlay, { backgroundColor: colors.purple_dark }]}>
       <ActivityIndicator size="large" color={colors.purple_light} />
     </View>
   );
 
-  if (!htmlContent) {
-    return <LoadingOverlay />; // ou un composant de chargement
-  }
+  const SendingDataLoadingOverlay = () => (
+    <View style={[styles.loadingOverlay, { backgroundColor: 'rgba(0, 0, 0, 0.5)' }]}>
+      <ActivityIndicator size="large" color={colors.purple_light} />
+    </View>
+  );
 
   return (
     <SafeAreaView style={styles.container}>
@@ -222,19 +227,22 @@ const SceneD2Screen = ({ navigation }) => {
       </TouchableOpacity>
       <Text style={[styles.text, globalStyles.mainTitle]}>Demographic Artistery</Text>
 
-          <WebView 
-            ref={webViewRef}
-            originWhitelist={['*']}
-            source={{ uri: htmlContent }}
-            javaScriptEnabled={true}
-            domStorageEnabled={true}
-            style={styles.webview} 
-            // onMessage={(event) => {
-            //   console.log("Log from WebView:", event.nativeEvent.data);
-            // }}
-             onMessage={handleWebViewMessage}
-          />
-
+      {htmlContent && (
+        <WebView 
+          ref={webViewRef}
+          originWhitelist={['*']}
+          source={{ uri: htmlContent }}
+          javaScriptEnabled={true}
+          domStorageEnabled={true}
+          style={styles.webview} 
+          // onMessage={(event) => {
+          //   console.log("Log from WebView:", event.nativeEvent.data);
+          // }}
+          onMessage={handleWebViewMessage}
+          onLoadStart={() => setInitialLoading(true)}
+          onLoadEnd={() => setInitialLoading(false)}
+        />
+      )}
       <SaveArtworkModal 
         visible={modalVisible}
         onClose={() => {
@@ -243,7 +251,8 @@ const SceneD2Screen = ({ navigation }) => {
         }}
         onSubmit={handleSaveArtwork}
       />
-      {loading && <LoadingOverlay />}
+      {initialLoading && <InitialLoadingOverlay />}
+      {sendingDataLoading && <SendingDataLoadingOverlay />}
     </SafeAreaView> 
   );
 };
@@ -314,7 +323,6 @@ const styles = StyleSheet.create({
     bottom: 0,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: 'rgba(0, 0, 0, 0.5)', // fond semi-transparent
   },
   buttonContainer:{
     display:'flex',

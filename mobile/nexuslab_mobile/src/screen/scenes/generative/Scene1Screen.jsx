@@ -59,8 +59,8 @@ const Scene1Screen = ({ navigation }) => {
   const [currentSceneId, setCurrentSceneId] = useState(null);
   const webViewRef = useRef(null);
   const {api} = useApi();
-  const [initialLoading, setInitialLoading] = useState(true);  // Chargement initial
-  const [sendingDataLoading, setSendingDataLoading] = useState(false);  // Chargement lors de l'envoi des données
+  const [initialLoading, setInitialLoading] = useState(true); 
+  const [sendingDataLoading, setSendingDataLoading] = useState(false); 
 
   useEffect(() => {
     async function loadHtmlFile() {
@@ -170,7 +170,6 @@ const Scene1Screen = ({ navigation }) => {
       </TouchableOpacity>
       <Text style={[styles.text, globalStyles.mainTitle]}>Random Line Walkers</Text>
 
-
       {htmlContent && (
         <WebView 
           ref={webViewRef}
@@ -193,7 +192,6 @@ const Scene1Screen = ({ navigation }) => {
         onSubmit={handleSaveArtwork}
       />
       {initialLoading && <InitialLoadingOverlay />}
-
       {sendingDataLoading && <SendingDataLoadingOverlay />}
     </SafeAreaView> 
   );
