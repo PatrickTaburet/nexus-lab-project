@@ -181,10 +181,15 @@ class api_UserController extends AbstractController
             usort($allScenes, function ($a, $b) {
                 return strtotime($b['updatedAt']) <=> strtotime($a['updatedAt']);
             });
+            $totalScenes = count($allScenes);
+            $totalPages = ceil($totalScenes / $limit);
+
             $paginatedScenes = array_slice($allScenes, ($page - 1) * $limit, $limit);
 
-            return new JsonResponse($paginatedScenes, Response::HTTP_OK);
-        } catch (\Exception $e) {
+            return new JsonResponse([
+                'scenes' => $paginatedScenes,
+                'totalPages' => $totalPages,
+            ], Response::HTTP_OK);        } catch (\Exception $e) {
             return new JsonResponse(['error' => 'An error occurred while fetching the gallery.'], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }

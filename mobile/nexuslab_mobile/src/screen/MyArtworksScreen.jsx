@@ -137,27 +137,30 @@ const MyArtworksScreen = ({ navigation })  => {
   const {api} = useApi();
   const [scenes, setScenes] = useState([]);
   const [page, setPage] = useState(1);
+  const [maxPage, setMaxPage] = useState();
   const isFocused = useIsFocused();
   const [loading, setLoading] = useState(false);
   const [hasMore, setHasMore] = useState(true);
   const [fullScreenImage, setFullScreenImage] = useState(null);
   const [isGenerativeArt, setIsGenerativeArt] = useState(true);
   const scrollViewRef = useRef(null);
+  const prevIsGenerativeArtRef = useRef(isGenerativeArt);
 
-  const fetchScenes = useCallback(async () => {
+  const fetchScenes = useCallback(async (reset = false) => {
     if (loading) return;
     setLoading(true);
 
     try {
-      const response = await api.get(`/myArtworks?page=${page}&limit=10&sort=${isGenerativeArt}`, {
+      const response = await api.get(`/myArtworks?page=${ reset ? 1 : page}&limit=10&sort=${isGenerativeArt}`, {
         headers: {
           'Content-Type': 'application/json',
         }, 
       });
       console.log('REPONSE FETCHSCENE');
-      console.log(response); 
+      //console.log(response.config); 
       
-      const newScenes = response.data;
+      const newScenes = response.data.scenes;
+      setMaxPage(response.data.totalPages);
       if (newScenes.length > 0) {
         setScenes(newScenes); 
         setHasMore(newScenes.length === 10); // Si moins de 10, pas d'autres pages
@@ -174,23 +177,29 @@ const MyArtworksScreen = ({ navigation })  => {
     }
   }, [api, page, isGenerativeArt, loading]);
   
-  const resetPages = useCallback(() => {
+  const resetPages = () => {
     console.log("reset page fonction");
     setScenes([]); // On vide les scènes
     setPage(1);    // Retour à la première page
     setHasMore(true); // On autorise de nouveau la pagination
-  }, []);
+  };
 
   useEffect(() => {
     if (isFocused) {
+      if (prevIsGenerativeArtRef.current !== isGenerativeArt) {
+        // isGenerativeArt a changé
+        console.log("isGenerativeArt a changé");
+        fetchScenes(true);
+      }
       fetchScenes();
     }
-  }, [isFocused, page]);
+    // Mettre à jour la référence après l'exécution de l'effet
+    prevIsGenerativeArtRef.current = isGenerativeArt;
+  }, [isFocused, page, isGenerativeArt]);
 
   useEffect(() => {
-      console.log("reset page USE EFFECT");
-      resetPages(); 
-  }, [isGenerativeArt, resetPages]); // Se déclenche lorsque `isGenerativeArt` change 
+    resetPages();
+  }, [isGenerativeArt]);
 
   const handleImagePress = (imagePath) => {
     setFullScreenImage(imagePath);
@@ -218,7 +227,7 @@ const MyArtworksScreen = ({ navigation })  => {
           color={ page === 1 ? "grey" : colors.cyan}
         />
       </TouchableOpacity>
-      <Text style={styles.paginationText}>{page}</Text>
+      <Text style={styles.paginationText}>{page} / {maxPage}</Text>
       {/* Bouton Suivant */}
       <TouchableOpacity 
         onPress={() => setPage(prevPage => prevPage + 1)}
@@ -245,7 +254,9 @@ const MyArtworksScreen = ({ navigation })  => {
          <View style={styles.header}>
             <View style={styles.buttonContainer}>
               <MyButton
-                HandlePress={() => setIsGenerativeArt(true)}
+                HandlePress={() => {
+                  setIsGenerativeArt(true);
+                }}
                 myStyle={isGenerativeArt ? styles.submitButtonOn : styles.submitButtonOff}
                 buttonStyle = { styles.submitButton}
                 isSecondary={isGenerativeArt ? true : false}
@@ -253,7 +264,9 @@ const MyArtworksScreen = ({ navigation })  => {
                 Generative Art
               </MyButton>
               <MyButton
-                HandlePress={() => setIsGenerativeArt(false)}
+                      HandlePress={() => {
+                        setIsGenerativeArt(false);
+                      }}
                 myStyle={isGenerativeArt ? styles.submitButtonOff : styles.submitButtonOn}
                 isSecondary={isGenerativeArt ? false : true}
               >       
@@ -271,7 +284,10 @@ const MyArtworksScreen = ({ navigation })  => {
                 onImagePress={handleImagePress}
                 onLabelPress={handleNavigate}
                 api={api}
-                onDeleteSuccess={resetPages}
+                onDeleteSuccess={() => {
+                  resetPages();
+                  fetchScenes(true);
+                }}
               />
             ))}
           </View>
@@ -373,9 +389,9 @@ const styles = StyleSheet.create({
     position:'absolute',
     display: 'flex',
     flexDirection: 'row',
-    alignItems: 'center',
     marginLeft: 20,
     marginTop: 60,
+    gap: 15,
     top:0,
     zIndex: 10000,
     height: 70,
@@ -501,14 +517,14 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     width: '100%',
-    marginVertical: 20,
+    marginVertical: 10,
     paddingHorizontal: 30,
     position:'absolute',
     bottom: 0,
   },
   paginationButton: {
     borderRadius:50,
-    backgroundColor: 'transparent',
+    backgroundColor: 'black',
   },
   paginationText: {
     textAlign:'center',
@@ -520,7 +536,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 30,
     paddingTop: 7,
     borderRadius: 70,
-    borderWidth: 3,
+    borderWidth: 4,
     borderColor: 'black'
   },
   disabledButton: {
