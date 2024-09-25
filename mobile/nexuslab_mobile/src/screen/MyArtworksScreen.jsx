@@ -12,14 +12,66 @@ import MyButton from '../components/MyButton';
 
 const ITEM_HEIGHT = 300; 
 
-const SceneCard = React.memo(({ item, onImagePress, onLabelPress }) => {
+const DeleteArtworkModal = ({ visible, onClose, onSubmit, artworkName }) => {
+
+  return (
+    <Modal visible={visible} transparent animationType="slide">
+      <View style={styles.modalContainer}>
+        <View style={styles.modalContent}>
+          <Text style={[styles.modalHeader, globalStyles.mainTitle]}>Delete the Artwork : <Text style={{color: colors.lightest}}>{artworkName}</Text> ?</Text>
+          <View style={styles.modalBtnContainer}>
+            <MyButton
+               HandlePress={onSubmit}
+              buttonStyle={styles.submitButton}
+            >
+              Confirm
+            </MyButton>
+            <MyButton
+              HandlePress={onClose}
+              myStyle={styles.closeButton}
+              isSecondary={true}
+            >
+              Back
+            </MyButton>
+          </View>
+        </View>
+      </View>
+    </Modal>
+  );
+};
+
+const SceneCard = React.memo(({ item, onImagePress, onLabelPress, api, onDeleteSuccess }) => {
   const idPrefix = item.id.split('_')[0]; 
   const sceneId = item.id.split('_')[1]; 
   const imagePath = `${config.apiUrl}/images/${idPrefix}Img/${item.imageName}`;
-  const avatarPath = `${config.apiUrl}/images/avatar/${item.user.avatar}`; 
+  const [modalVisible, setModalVisible] = useState(false);
 
+
+  const deleteArtwork = async() => {
+    try {
+      const response = await api.post(`/artworks/delete/${sceneId}/${idPrefix}`);
+      // console.log(response.data);
+      if (response.status !== 200) {
+        throw new Error("Erreur lors de la suppression de la scène");
+      }
+      console.log(`Artwork removed`);
+      setModalVisible(false);
+      onDeleteSuccess(); 
+    } catch (error) {
+      console.error("Erreur lors de la suppression de la scène:", error);
+    }
+  };
+  
   return (
     <View style={styles.card}> 
+      <DeleteArtworkModal 
+        visible={modalVisible}
+        onClose={() => {
+          setModalVisible(false);
+        }}
+        onSubmit={deleteArtwork}
+        artworkName={item.title}
+      />
     <TouchableWithoutFeedback  
       onPress={() => onImagePress(imagePath)}
     >
@@ -30,34 +82,53 @@ const SceneCard = React.memo(({ item, onImagePress, onLabelPress }) => {
       />
     </TouchableWithoutFeedback >
       <View style={styles.cardContent}>
-        <Text style={styles.title}>{item.title}</Text>
-        <Text style={styles.comment}>{item.comment}</Text>
+        <Text style={styles.title}>Title : {item.title}</Text>
+        <Text style={styles.comment}>Comment : {item.comment}</Text>
         <View style={styles.separator}></View>
         <View style={styles.userContainer}>
-          <Image 
-            source={{ uri: avatarPath }}
-            style={styles.avatarImage}
-          />
-          <View>
-            <Text style={styles.username}>Created by  <Text style={{color: colors.primary_dark, fontSize: 17}}>{item.user.username}</Text></Text>
-            <Text style={styles.date}>{item.updatedAt}</Text> 
-          </View>
+            <Text style={styles.date}>Date : {item.updatedAt}</Text> 
         </View>
         <View style={styles.bottomCard}>
-          <TouchableOpacity onPress={() => onLabelPress(idPrefix)}>
+          <TouchableOpacity onPress={() => onLabelPress(idPrefix)} style={styles.labelContainer}>
             <Text 
               style={[styles.label, idPrefix.includes('D') ? styles.labelData : styles.labelGenerative]}
             >
               {idPrefix.includes('D') ? "Data Art" : "Generative Art"}
             </Text>
+            <Text style={styles.date}>
+              {(() => {
+                switch (idPrefix) {
+                  case "Scene1":
+                    return "Random Line Walker";
+                  case "Scene2":
+                    return "Noise Orbit";
+                  case "SceneD1":
+                    return "CO2 Emission Explorer";
+                  case "SceneD2":
+                    return "Demographic Artistry";
+                  default:
+                    return "Unknown scene"; // or some default value
+                }
+              })()}
+            </Text >
           </TouchableOpacity>
-          <Likes
-            userId= {item.user.id}
-            sceneId= {sceneId}
-            likesNum= {item.likes}
-            entity= {idPrefix}
-            isLikedByUser= {item.isLiked}
-          />
+          <Text style={styles.date}>
+          {item.likes} like{item.like > 0 ? "s" : ""}
+          </Text>
+        </View>
+        <View style={styles.buttonBottom}>
+          <MyButton
+           // HandlePress={() => setIsGenerativeArt(false)}
+          >       
+            Update
+          </MyButton>
+          <MyButton
+            HandlePress={() => {setModalVisible(true)}}
+            isSecondary={true}
+            myStyle={styles.cardButton}
+          >       
+            Delete
+          </MyButton>
         </View>
       </View> 
     </View> 
@@ -71,20 +142,23 @@ const MyArtworksScreen = ({ navigation })  => {
   const isFocused = useIsFocused();
   const [loading, setLoading] = useState(true);
   const [hasMore, setHasMore] = useState(true);
-  const [selectedOption, setSelectedOption] = useState();
   const [fullScreenImage, setFullScreenImage] = useState(null);
+  const [isGenerativeArt, setIsGenerativeArt] = useState(true);
 
   const fetchScenes = useCallback(async (reset = false) => {
     if (!hasMore && loading) return;
-
+ 
     setLoading(true);
     try {
       const currentPage = reset ? 1 : page;
-      const response = await api.get(`/gallery?page=${currentPage}&limit=10&sort=${selectedOption}`, {
+      const response = await api.get(`/myArtworks?page=${currentPage}&limit=10&sort=${isGenerativeArt}`, {
         headers: {
           'Content-Type': 'application/json',
         },
       });
+      console.log('REPONSE FETCHSCENE');
+      console.log(response);
+      
       const newScenes = response.data;
       if (newScenes.length > 0) {
         setScenes(prevScenes => {
@@ -104,7 +178,7 @@ const MyArtworksScreen = ({ navigation })  => {
     } finally {
       setLoading(false); 
     }
-  }, [api, page, selectedOption, hasMore, loading]);
+  }, [api, page, isGenerativeArt, hasMore, loading]);
   
   const resetPages = () => {
     console.log("reset page fonction");
@@ -122,11 +196,9 @@ const MyArtworksScreen = ({ navigation })  => {
   }, [isFocused]);
 
   useEffect(() => {
-    if (selectedOption) { 
       console.log("reset page USE EFFECT");
       resetPages(); 
-    }
-  }, [selectedOption]); // Se déclenche lorsque `selectedOption` change 
+  }, [isGenerativeArt]); // Se déclenche lorsque `isGenerativeArt` change 
 
   const renderFooter = () => {
     if (!loading) return null;
@@ -156,26 +228,36 @@ const MyArtworksScreen = ({ navigation })  => {
         <View style={styles.header}>
           <View style={styles.buttonContainer}>
             <MyButton
-              // HandlePress={() => onSubmit(title, comment)}
-              buttonStyle={styles.submitButton}
+              HandlePress={() => setIsGenerativeArt(true)}
+              myStyle={isGenerativeArt ? styles.submitButtonOn : styles.submitButtonOff}
+              buttonStyle = { styles.submitButton}
+              isSecondary={isGenerativeArt ? true : false}
             >       
               Generative Art
             </MyButton>
             <MyButton
-              // HandlePress={() => onSubmit(title, comment)}
-              buttonStyle={styles.submitButton}
+              HandlePress={() => setIsGenerativeArt(false)}
+              myStyle={isGenerativeArt ? styles.submitButtonOff : styles.submitButtonOn}
+              isSecondary={isGenerativeArt ? false : true}
             >       
               Data Art
             </MyButton>
           </View>
-     
         </View>
 
 
       <FlatList
-        style={{ flex: 1, paddingTop: 67 }}
+        style={{ flex: 1, paddingTop: 94 }}
         data={scenes}
-        renderItem={({ item }) => <SceneCard item={item} onImagePress={handleImagePress} onLabelPress={handleNavigate}/>}
+        renderItem={({ item }) => 
+          <SceneCard 
+            item={item} 
+            onImagePress={handleImagePress} 
+            onLabelPress={handleNavigate} 
+            api={api}
+            onDeleteSuccess={resetPages}
+          />
+        }
         keyExtractor={item => item.id}
         onEndReached={() => {
           if (!loading && hasMore) {
@@ -362,7 +444,68 @@ const styles = StyleSheet.create({
   },
   arrowIconTouch:{
     width: '100%'
+  },
+  submitButtonOn:{
+    color: 'black'
+  },
+  submitButtonOff:{
+    color: 'white'
+  },
+  labelContainer:{
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  buttonBottom:{
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'center',
+    height: 70
+  },
+  cardButton:{
+    color: 'black'
+  },
+  // Modal 
+
+  // Modale
+
+  modalContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+  },
+  modalContent: {
+    backgroundColor: colors.purple_dark,
+    padding: 25,
+    borderRadius: 10,
+    width: '80%',
+    height: '23%',
+    borderWidth: 2,
+    borderColor: colors.cyan,
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
+  submitButton: {
+  },
+  closeButton: {
+    color: colors.purple_dark,
+    margin: 0
+  },
+  modalHeader:{
+    textAlign: "center",
+    marginBottom: 15,
+    fontSize: 19,
+    height: 40,
+    marginTop: 10,
+  },
+  modalBtnContainer:{
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    height: 70,
   }
+
 })
 
 

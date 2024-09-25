@@ -44,7 +44,7 @@ const SaveArtworkModal = ({ visible, onClose, onSubmit }) => {
               myStyle={styles.closeButton}
               isSecondary={true}
             >
-              Fermer
+              Back
             </MyButton>
           </View>
         </View>
@@ -130,7 +130,7 @@ const Scene1Screen = ({ navigation }) => {
     }
   };
 
-  const deleteArtwork = async($currentSceneId) => {
+  const deleteArtwork = async() => {
     try {
       const response = await api.post(`/artworks/delete/${currentSceneId}/Scene1`);
       // console.log(response.data);
@@ -187,7 +187,7 @@ const Scene1Screen = ({ navigation }) => {
         visible={modalVisible}
         onClose={() => {
           setModalVisible(false);
-          deleteArtwork(currentSceneId);
+          deleteArtwork();
         }}
         onSubmit={handleSaveArtwork}
       />

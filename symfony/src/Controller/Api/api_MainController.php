@@ -14,20 +14,15 @@ use App\Repository\{
     SceneD1Repository,
     SceneD2Repository,
 };
-use Symfony\Component\Serializer\SerializerInterface;
 
 class api_MainController extends AbstractController
 {
     private $entityManager;
-    private $serializer;
 
-    
     public function __construct(
         EntityManagerInterface $entityManager,
-        SerializerInterface $serializer
     ) {
         $this->entityManager = $entityManager;
-        $this->serializer = $serializer;
     }
 
     #[Route('/api/gallery/', name: 'api_gallery', methods: ['GET'])]

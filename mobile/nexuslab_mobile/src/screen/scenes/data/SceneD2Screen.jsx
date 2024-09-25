@@ -50,7 +50,7 @@ const SaveArtworkModal = ({ visible, onClose, onSubmit }) => {
               myStyle={styles.closeButton}
               isSecondary={true}
             >
-              Fermer
+              Back
             </MyButton>
           </View>
         </View>
