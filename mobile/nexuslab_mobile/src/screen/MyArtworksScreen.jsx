@@ -1,11 +1,9 @@
-import { TouchableWithoutFeedback , ImageBackground, View, Text, Button, StyleSheet,TouchableOpacity, Modal, SafeAreaView, Image, ActivityIndicator, FlatList} from 'react-native';
+import { TouchableWithoutFeedback , ImageBackground, View, Text, ScrollView, StyleSheet,TouchableOpacity, Modal, SafeAreaView, Image, ActivityIndicator, FlatList} from 'react-native';
 import React, { useState, useEffect, useCallback, useRef } from 'react'
 import useApi from '../hooks/useApi';
 import {  useIsFocused } from '@react-navigation/native';
 import config from '../config/config'; 
 import { colors } from '../utils/colors';
-import Likes from '../components/LikesManager';
-import CustomSelect from '../components/CustomSelect';
 import globalStyles from '../utils/styles';
 import { Ionicons } from '@expo/vector-icons';
 import MyButton from '../components/MyButton';
@@ -86,7 +84,7 @@ const SceneCard = React.memo(({ item, onImagePress, onLabelPress, api, onDeleteS
         <Text style={styles.comment}>Comment : {item.comment}</Text>
         <View style={styles.separator}></View>
         <View style={styles.userContainer}>
-            <Text style={styles.date}>Date : {item.updatedAt}</Text> 
+            <Text style={styles.text}>Date : {item.updatedAt}</Text> 
         </View>
         <View style={styles.bottomCard}>
           <TouchableOpacity onPress={() => onLabelPress(idPrefix)} style={styles.labelContainer}>
@@ -95,7 +93,7 @@ const SceneCard = React.memo(({ item, onImagePress, onLabelPress, api, onDeleteS
             >
               {idPrefix.includes('D') ? "Data Art" : "Generative Art"}
             </Text>
-            <Text style={styles.date}>
+            <Text style={styles.text}>
               {(() => {
                 switch (idPrefix) {
                   case "Scene1":
@@ -112,7 +110,7 @@ const SceneCard = React.memo(({ item, onImagePress, onLabelPress, api, onDeleteS
               })()}
             </Text >
           </TouchableOpacity>
-          <Text style={styles.date}>
+          <Text style={styles.text}>
           {item.likes} like{item.like > 0 ? "s" : ""}
           </Text>
         </View>
@@ -133,91 +131,110 @@ const SceneCard = React.memo(({ item, onImagePress, onLabelPress, api, onDeleteS
       </View> 
     </View> 
   )
-});
+}); 
 
 const MyArtworksScreen = ({ navigation })  => {
   const {api} = useApi();
   const [scenes, setScenes] = useState([]);
   const [page, setPage] = useState(1);
   const isFocused = useIsFocused();
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [hasMore, setHasMore] = useState(true);
   const [fullScreenImage, setFullScreenImage] = useState(null);
   const [isGenerativeArt, setIsGenerativeArt] = useState(true);
+  const scrollViewRef = useRef(null);
 
-  const fetchScenes = useCallback(async (reset = false) => {
-    if (!hasMore && loading) return;
- 
+  const fetchScenes = useCallback(async () => {
+    if (loading) return;
     setLoading(true);
+
     try {
-      const currentPage = reset ? 1 : page;
-      const response = await api.get(`/myArtworks?page=${currentPage}&limit=10&sort=${isGenerativeArt}`, {
+      const response = await api.get(`/myArtworks?page=${page}&limit=10&sort=${isGenerativeArt}`, {
         headers: {
           'Content-Type': 'application/json',
-        },
+        }, 
       });
       console.log('REPONSE FETCHSCENE');
-      console.log(response);
+      console.log(response); 
       
       const newScenes = response.data;
       if (newScenes.length > 0) {
-        setScenes(prevScenes => {
-          const prevScenesMap = new Map(reset ? [] : prevScenes.map(scene => [scene.id, scene]));
-          newScenes.forEach(scene => {
-            prevScenesMap.set(scene.id, scene);
-          });
-          return Array.from(prevScenesMap.values());
-        });
-        setPage(prevPage => reset ? 2 : prevPage + 1);
+        setScenes(newScenes); 
+        setHasMore(newScenes.length === 10); // Si moins de 10, pas d'autres pages
       } else {
         setHasMore(false);
       }    
-
+      if (scrollViewRef.current) {
+        scrollViewRef.current.scrollTo({ y: 0, animated: true });
+      }
     } catch (error) {
       console.error('Error fetching scenes:', error);
     } finally {
       setLoading(false); 
     }
-  }, [api, page, isGenerativeArt, hasMore, loading]);
+  }, [api, page, isGenerativeArt, loading]);
   
-  const resetPages = () => {
+  const resetPages = useCallback(() => {
     console.log("reset page fonction");
-    
-    setScenes([]); // Réinitialiser les scènes
-    setPage(1);    // Réinitialiser la page
-    setHasMore(true); // Réinitialiser la condition pour charger plus
-    fetchScenes(true); // Recharger les scènes avec la nouvelle option de tri
-  };
-  
+    setScenes([]); // On vide les scènes
+    setPage(1);    // Retour à la première page
+    setHasMore(true); // On autorise de nouveau la pagination
+  }, []);
+
   useEffect(() => {
     if (isFocused) {
-      fetchScenes(true);
+      fetchScenes();
     }
-  }, [isFocused]);
+  }, [isFocused, page]);
 
   useEffect(() => {
       console.log("reset page USE EFFECT");
       resetPages(); 
-  }, [isGenerativeArt]); // Se déclenche lorsque `isGenerativeArt` change 
-
-  const renderFooter = () => {
-    if (!loading) return null;
-    return (
-      <View style={styles.loader}>
-        <ActivityIndicator size="large" />
-      </View>
-    );
-  };
+  }, [isGenerativeArt, resetPages]); // Se déclenche lorsque `isGenerativeArt` change 
 
   const handleImagePress = (imagePath) => {
     setFullScreenImage(imagePath);
   };
+  
   const handleNavigate = (target) => {
     console.log(target);
     navigation.navigate('Create', {
       screen: target,  // cible l'écran spécifique du CreateStack
     });
   };
+
+  const renderPagination = () => (
+    <View style={styles.paginationContainer}>
+      {/* Bouton Précédent */}
+      <TouchableOpacity 
+        onPress={() => setPage(prevPage => Math.max(prevPage - 1, 1))} 
+        disabled={page === 1}
+        style={styles.paginationButton}
+      >
+       <Ionicons 
+          name={"arrow-back-circle"}
+          size={47}
+          style={styles.inputIcon}
+          color={ page === 1 ? "grey" : colors.cyan}
+        />
+      </TouchableOpacity>
+      <Text style={styles.paginationText}>{page}</Text>
+      {/* Bouton Suivant */}
+      <TouchableOpacity 
+        onPress={() => setPage(prevPage => prevPage + 1)}
+        disabled={!hasMore || loading}
+        style={styles.paginationButton}
+      >
+        <Ionicons 
+          name={"arrow-forward-circle"}
+          size={47}
+          style={styles.inputIcon}
+          color={(!hasMore || loading) ? "grey" : colors.cyan}
+        />
+      </TouchableOpacity>
+    </View>
+  );
+
   return (
     <SafeAreaView  style={styles.globalContainer}>
       <ImageBackground
@@ -225,57 +242,54 @@ const MyArtworksScreen = ({ navigation })  => {
         style={styles.backgroundImage} 
         resizeMode="cover"
       >
-        <View style={styles.header}>
-          <View style={styles.buttonContainer}>
-            <MyButton
-              HandlePress={() => setIsGenerativeArt(true)}
-              myStyle={isGenerativeArt ? styles.submitButtonOn : styles.submitButtonOff}
-              buttonStyle = { styles.submitButton}
-              isSecondary={isGenerativeArt ? true : false}
-            >       
-              Generative Art
-            </MyButton>
-            <MyButton
-              HandlePress={() => setIsGenerativeArt(false)}
-              myStyle={isGenerativeArt ? styles.submitButtonOff : styles.submitButtonOn}
-              isSecondary={isGenerativeArt ? false : true}
-            >       
-              Data Art
-            </MyButton>
+         <View style={styles.header}>
+            <View style={styles.buttonContainer}>
+              <MyButton
+                HandlePress={() => setIsGenerativeArt(true)}
+                myStyle={isGenerativeArt ? styles.submitButtonOn : styles.submitButtonOff}
+                buttonStyle = { styles.submitButton}
+                isSecondary={isGenerativeArt ? true : false}
+              >       
+                Generative Art
+              </MyButton>
+              <MyButton
+                HandlePress={() => setIsGenerativeArt(false)}
+                myStyle={isGenerativeArt ? styles.submitButtonOff : styles.submitButtonOn}
+                isSecondary={isGenerativeArt ? false : true}
+              >       
+                Data Art
+              </MyButton>
+            </View>
           </View>
-        </View>
+        <ScrollView style={styles.scrollView} ref={scrollViewRef}>
+         
+          <View style={styles.sceneContainer}>
+            {scenes.map(item => (
+              <SceneCard
+                key={item.id}
+                item={item}
+                onImagePress={handleImagePress}
+                onLabelPress={handleNavigate}
+                api={api}
+                onDeleteSuccess={resetPages}
+              />
+            ))}
+          </View>
+        </ScrollView>
 
+        {/* Pagination */}
+        {renderPagination()}
 
-      <FlatList
-        style={{ flex: 1, paddingTop: 94 }}
-        data={scenes}
-        renderItem={({ item }) => 
-          <SceneCard 
-            item={item} 
-            onImagePress={handleImagePress} 
-            onLabelPress={handleNavigate} 
-            api={api}
-            onDeleteSuccess={resetPages}
-          />
-        }
-        keyExtractor={item => item.id}
-        onEndReached={() => {
-          if (!loading && hasMore) {
-            fetchScenes();
-          }
-        }}
-        onEndReachedThreshold={0.5} 
-        ListFooterComponent={renderFooter}
-        initialNumToRender={10} 
-        maxToRenderPerBatch={10}
-        windowSize={10}
-        getItemLayout={(data, index) => ({
-          length: ITEM_HEIGHT,
-          offset: ITEM_HEIGHT * index,
-          index,
-        })}
-      />
+        {/* Loader */}
+        {loading && (
+          <View style={styles.loader}>
+            <ActivityIndicator size="large" />
+          </View>
+        )}
       </ImageBackground>
+
+      {/* Modal for fullscreen image */}
+
       <Modal visible={!!fullScreenImage} transparent={true} onRequestClose={() => setFullScreenImage(null)}>
         <TouchableOpacity 
           style={styles.fullScreenContainer} 
@@ -289,9 +303,6 @@ const MyArtworksScreen = ({ navigation })  => {
           />
         </TouchableOpacity>
       </Modal>
-      <TouchableOpacity onPress={resetPages} style={styles.arrowIconTouch}>
-        <Ionicons name="arrow-up-circle" size={47} color={colors.cyan} style={styles.arrowIcon}/>
-      </TouchableOpacity>
     </SafeAreaView>
 
   );
@@ -306,12 +317,15 @@ const styles = StyleSheet.create({
     flex: 1, 
     width: '100%',
     height: '100%',
-
   },
   backgroundImage: {
     flex: 1,
     width: '100%',
     height: '100%',
+  },
+  sceneContainer:{
+    flex: 1,
+    marginBottom: 130
   },
   card: {
     marginBottom: 20,
@@ -323,7 +337,6 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
     marginHorizontal: 20,
     backgroundColor: 'hsla(216, 50%, 16%, 0.8)', 
-
   },
   image: {
     width: '100%',
@@ -345,11 +358,8 @@ const styles = StyleSheet.create({
     color: colors.lightest,
     paddingHorizontal: 10
   },
-  username: {
-    fontSize: 15,
-    color: 'white',
-  },
-  date: {
+
+  text: {
     fontSize: 15,
     color: 'white',
   },
@@ -358,9 +368,6 @@ const styles = StyleSheet.create({
     marginVertical: 70,
     flex: 1,
     alignItems: 'center',
-  },
-  inputIcon:{
-    color:'white'
   },
   buttonContainer:{
     position:'absolute',
@@ -376,12 +383,6 @@ const styles = StyleSheet.create({
   header:{
 
   },
-  headerTitle:{
-    position:'absolute',
-    top:13,
-    right: '28%',
-    fontSize: 25,
-  },
   fullScreenContainer: {
     flex: 1,
     backgroundColor: 'rgba(0,0,0,0.8)',
@@ -395,18 +396,10 @@ const styles = StyleSheet.create({
     borderColor: colors.cyan
     
   },
-  avatarImage:{
-    width: 50,
-    height: 50,
-    borderRadius: 70,
-    borderWidth: 1.5,
-    borderColor: 'white'
-  },
   userContainer:{
     flexDirection: 'row',
     alignItems: 'center',
     gap: 15,
-
   },
   labelGenerative:{
     backgroundColor: colors.primary_dark,
@@ -437,14 +430,6 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     marginVertical: 5,
   },
-  arrowIcon:{
-    position:'absolute',
-    bottom: 10,
-    right: 10
-  },
-  arrowIconTouch:{
-    width: '100%'
-  },
   submitButtonOn:{
     color: 'black'
   },
@@ -465,9 +450,8 @@ const styles = StyleSheet.create({
   cardButton:{
     color: 'black'
   },
-  // Modal 
 
-  // Modale
+  // Modal 
 
   modalContainer: {
     flex: 1,
@@ -504,8 +488,47 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     height: 70,
-  }
+  },
+  scrollView:{
+    flex:1,
+    paddingTop:95,
+    paddingBottom: 20
+  },
 
+  // Pagination
+
+  paginationContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    width: '100%',
+    marginVertical: 20,
+    paddingHorizontal: 30,
+    position:'absolute',
+    bottom: 0,
+  },
+  paginationButton: {
+    borderRadius:50,
+    backgroundColor: 'transparent',
+  },
+  paginationText: {
+    textAlign:'center',
+    color: colors.secondary_bg,
+    fontWeight: 'bold',
+    fontSize: 22,
+    fontWeight: '800',
+    backgroundColor: colors.cyan,
+    paddingHorizontal: 30,
+    paddingTop: 7,
+    borderRadius: 70,
+    borderWidth: 3,
+    borderColor: 'black'
+  },
+  disabledButton: {
+    backgroundColor: 'grey', // Une couleur plus claire ou grisée
+  },
+  inputIcon:{
+
+  }
 })
 
 

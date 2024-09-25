@@ -149,10 +149,10 @@ class api_UserController extends AbstractController
         try {
             $user = $this->getUser();
             $userId= $user->getId();
-            $sortOption = $request->query->get('sort', true);
+            $sortOption = $request->query->get('sort', "true");
             $page = $request->query->getInt('page', 1);
             $limit = $request->query->getInt('limit', 10);
-            if ($sortOption){
+            if ($sortOption === "true"){
                 $repositories = [
                     ['repo' => $repo, 'prefix' => 'Scene1_'],
                     ['repo' => $repo3, 'prefix' => 'Scene2_'],
