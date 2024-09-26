@@ -6,6 +6,7 @@ import TabNavigator from './TabNavigator';
 import ProfileScreen from '../screen/ProfileScreen';
 import EditProfileScreen from '../screen/EditProfileScreen';
 import MyArtworksScreen from '../screen/MyArtworksScreen';
+import EditArtworkScreen from '../screen/EditArtworkScreen';
 import { colors } from '../utils/colors'
 
 const Stack = createNativeStackNavigator();
@@ -71,6 +72,24 @@ const MainNavigator = () => {
           headerTransparent: true,
           presentation: 'modal',
           headerTitle: 'My Artworks',
+          headerBackTitle: 'Back',
+          headerStyle: {
+            backgroundColor: 'rgba(0, 0, 0, 0.7)', 
+          },
+          headerTitleStyle: { // Text
+            color: colors.lightest,
+            fontSize: 18, 
+          },
+          headerTintColor: colors.lightest, // Icon
+        }}
+      />
+      <Stack.Screen
+        name="EditArtwork"
+        component={EditArtworkScreen} 
+        options={{
+          headerTransparent: true,
+          presentation: 'modal',
+          headerTitle: 'Edit Artwork',
           headerBackTitle: 'Back',
           headerStyle: {
             backgroundColor: 'rgba(0, 0, 0, 0.7)', 

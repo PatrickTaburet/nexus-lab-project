@@ -3,6 +3,7 @@
 namespace App\Controller\Api;
 
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -77,6 +78,32 @@ class api_BaseSceneController extends AbstractController
             return new JsonResponse([
                 'message' => 'Artwork removed'
             ]);
+        } catch (\Exception $e) {
+            return new JsonResponse([
+                'error' => $e->getMessage()
+            ], 400);
+        }
+    }
+    #[Route("api/artworks/{id}/{entity}", name: "api_deleteArtwork", methods: ["POST", "GET"])]
+    public function api_GetArtwork($id, $entity): JsonResponse
+    {
+        try {
+            $entityClass = "App\\Entity\\" . $entity;
+            if (!class_exists($entityClass)) {
+                return new JsonResponse(['error' => 'Invalid entity type'], Response::HTTP_BAD_REQUEST);
+            }
+    
+            $repo = $this->entityManager->getRepository($entityClass);
+            $artwork = $repo->find($id);
+            $title = $artwork->getTitle();
+            $comment = $artwork->getComment();
+            $imageName = $artwork->getImageName();
+
+            return new JsonResponse([
+                'title' => $title,
+                'comment' => $comment,
+                'imageName' => $imageName,
+            ], Response::HTTP_OK);      
         } catch (\Exception $e) {
             return new JsonResponse([
                 'error' => $e->getMessage()

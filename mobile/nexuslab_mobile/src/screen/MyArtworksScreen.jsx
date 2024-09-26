@@ -38,7 +38,7 @@ const DeleteArtworkModal = ({ visible, onClose, onSubmit, artworkName }) => {
   );
 };
 
-const SceneCard = React.memo(({ item, onImagePress, onLabelPress, api, onDeleteSuccess }) => {
+const SceneCard = React.memo(({ item, onImagePress, onLabelPress, api, onDeleteSuccess, navigation }) => {
   const idPrefix = item.id.split('_')[0]; 
   const sceneId = item.id.split('_')[1]; 
   const imagePath = `${config.apiUrl}/images/${idPrefix}Img/${item.imageName}`;
@@ -121,9 +121,9 @@ const SceneCard = React.memo(({ item, onImagePress, onLabelPress, api, onDeleteS
             Delete
           </MyButton>
           <MyButton
-           // HandlePress={() => setIsGenerativeArt(false)}
+            HandlePress={() => navigation.navigate('EditArtwork', { idPrefix, sceneId })}
           >       
-            Update
+            Edit
           </MyButton>
         </View>
       </View> 
@@ -286,6 +286,7 @@ const MyArtworksScreen = ({ navigation })  => {
                   resetPages();
                   fetchScenes(true);
                 }}
+                navigation={navigation}
               />
             ))}
           </View>

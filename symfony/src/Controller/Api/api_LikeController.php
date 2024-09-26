@@ -22,24 +22,19 @@ use App\Entity\User;
 class api_LikeController extends AbstractController
 {
     #[Route("api/like/artwork/{id}/{entity}", name: "api_artwork_like")]
-    public function like(EntityManagerInterface $entityManager, Scene1Repository $repoG1, Scene2Repository $repoG2, SceneD1Repository $repoD1, SceneD2Repository $repoD2, $id, $entity): JsonResponse
+    public function like(EntityManagerInterface $entityManager, $id, $entity): JsonResponse
     {
         try
         {
             $user = $this->getUser();
-
-            if($entity === 'Scene1'){
-                $artwork = $repoG1-> find($id);
-            } 
-            elseif ($entity === 'SceneD1'){
-                $artwork = $repoD1->find($id);  
-            }elseif ($entity === 'SceneD2'){
-                $artwork = $repoD2->find($id);  
-            }elseif ($entity === 'Scene2'){
-                $artwork = $repoG2->find($id);  
-            } else { 
-                throw new NotFoundHttpException('Entity not found');
+            $entityClass = "App\\Entity\\" . $entity;
+            if (!class_exists($entityClass)) {
+                return new JsonResponse(['error' => 'Invalid entity type'], Response::HTTP_BAD_REQUEST);
             }
+    
+            $repo = $entityManager->getRepository($entityClass);
+            $artwork = $repo->find($id);
+    
             if ($artwork->isLikedByUser($user)){
                 $artwork->removeLike($user);
                 $entityManager->flush();

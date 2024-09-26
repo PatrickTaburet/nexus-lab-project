@@ -189,8 +189,65 @@ class api_UserController extends AbstractController
             return new JsonResponse([
                 'scenes' => $paginatedScenes,
                 'totalPages' => $totalPages,
-            ], Response::HTTP_OK);        } catch (\Exception $e) {
+            ], Response::HTTP_OK);       
+        } catch (\Exception $e) {
             return new JsonResponse(['error' => 'An error occurred while fetching the gallery.'], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    #[Route("api/myArtworks/update/{id}/{entity}", name: "api_editArtwork", methods: ["GET", "POST"])]
+    public function Update(Request $request, $id, $entity): Response
+    {
+        $data = json_decode($request->getContent(), true);
+        $constraints = new Assert\Collection([
+            'title' => [
+                new Assert\Optional([
+                    new Assert\Type('string'),
+                    new Assert\Length(['max' => 36])
+                ])
+            ],
+            'comment' => [
+                new Assert\Optional([
+                    new Assert\Type('string'),
+                    new Assert\Length(['max' => 255])
+                ])
+            ]
+        ]);
+        $violations = $this->validator->validate($data, $constraints);
+        if (count($violations) > 0) {
+            $errors = [];
+            foreach ($violations as $violation) {
+                $errors[] = $violation->getPropertyPath() . ': ' . $violation->getMessage();
+            }
+            return new JsonResponse(['errors' => $errors], Response::HTTP_BAD_REQUEST);
+        }
+        $currentUser = $this->getUser();
+        if (!$currentUser) {
+            return new JsonResponse(['error' => 'User not authenticated'], Response::HTTP_UNAUTHORIZED);
+        }       
+
+        $entityClass = "App\\Entity\\" . $entity;
+        if (!class_exists($entityClass)) {
+            return new JsonResponse(['error' => 'Invalid entity type'], Response::HTTP_BAD_REQUEST);
+        }
+
+        $repo = $this->entityManager->getRepository($entityClass);
+        $artwork = $repo->find($id);
+        if (!$artwork) {
+            return new JsonResponse(['error' => 'Artwork not found'], Response::HTTP_NOT_FOUND);
+        }    
+        if ($artwork->getUser() !== $currentUser) {
+            return new JsonResponse(['error' => 'You are not allowed to update this artwork'], Response::HTTP_FORBIDDEN);
+        }
+        isset($data['title']) && $artwork->setTitle($data['title']);
+        isset($data['comment']) && $artwork->setComment($data['comment']);
+        try {
+            $this->entityManager->persist($artwork);
+            $this->entityManager->flush();
+            return new JsonResponse(['success' => 'Artwork update successfully'], Response::HTTP_OK);
+
+        } catch (\Exception $e) {
+            return new JsonResponse(['error' => 'Failed to update artwork: ' . $e->getMessage()], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
 }

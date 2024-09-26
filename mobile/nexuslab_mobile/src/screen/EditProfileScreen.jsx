@@ -109,28 +109,19 @@ const EditProfileScreen = ({ navigation })  => {
       });
     }
 
-    console.log("-----------")
-    console.log(formData)
+    // console.log(formData)
     try {
       const  response = await api.post(`/editUser/${userId}`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
       });
-      console.log("++++++++++")
-      console.log(response)
-      console.log("data")
-      console.log(response.data)
+      // console.log(response.data)
 
       if (response && email !== tokenUsername){
-        console.log('Email differents, avant changement token');
-
         await checkTokenValidity(handleLogout, setIsLoggedIn, email);
-        console.log('token changé');
       }
-      console.log(response)
       console.log('Profile updated successfully:')
-      console.log(response.data);
       if (response) {
         alert('Update successful!');
         navigation.goBack();
