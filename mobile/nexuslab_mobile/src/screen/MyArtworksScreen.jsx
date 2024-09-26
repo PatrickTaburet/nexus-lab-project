@@ -83,9 +83,7 @@ const SceneCard = React.memo(({ item, onImagePress, onLabelPress, api, onDeleteS
         <Text style={styles.title}>Title : {item.title}</Text>
         <Text style={styles.comment}>Comment : {item.comment}</Text>
         <View style={styles.separator}></View>
-        <View style={styles.userContainer}>
-            <Text style={styles.text}>Date : {item.updatedAt}</Text> 
-        </View>
+        <Text style={styles.text}>Date : {item.updatedAt}</Text> 
         <View style={styles.bottomCard}>
           <TouchableOpacity onPress={() => onLabelPress(idPrefix)} style={styles.labelContainer}>
             <Text 
@@ -110,22 +108,22 @@ const SceneCard = React.memo(({ item, onImagePress, onLabelPress, api, onDeleteS
               })()}
             </Text >
           </TouchableOpacity>
-          <Text style={styles.text}>
+          <Text style={styles.likeTxt}>
           {item.likes} like{item.like > 0 ? "s" : ""}
           </Text>
         </View>
         <View style={styles.buttonBottom}>
-          <MyButton
-           // HandlePress={() => setIsGenerativeArt(false)}
-          >       
-            Update
-          </MyButton>
           <MyButton
             HandlePress={() => {setModalVisible(true)}}
             isSecondary={true}
             myStyle={styles.cardButton}
           >       
             Delete
+          </MyButton>
+          <MyButton
+           // HandlePress={() => setIsGenerativeArt(false)}
+          >       
+            Update
           </MyButton>
         </View>
       </View> 
@@ -217,7 +215,7 @@ const MyArtworksScreen = ({ navigation })  => {
       {/* Bouton Précédent */}
       <TouchableOpacity 
         onPress={() => setPage(prevPage => Math.max(prevPage - 1, 1))} 
-        disabled={page === 1}
+        disabled={page === 1 || loading}
         style={styles.paginationButton}
       >
        <Ionicons 
@@ -296,14 +294,14 @@ const MyArtworksScreen = ({ navigation })  => {
         {/* Pagination */}
         {renderPagination()}
 
+    
+      </ImageBackground>
         {/* Loader */}
         {loading && (
           <View style={styles.loader}>
             <ActivityIndicator size="large" />
           </View>
         )}
-      </ImageBackground>
-
       {/* Modal for fullscreen image */}
 
       <Modal visible={!!fullScreenImage} transparent={true} onRequestClose={() => setFullScreenImage(null)}>
@@ -363,12 +361,14 @@ const styles = StyleSheet.create({
     gap: 13
   },
   title: {
+    textAlign: 'center',
     fontSize: 18,
     fontWeight: 'bold',
     color: colors.lightest,
     paddingHorizontal: 10
   },
   comment: {
+    textAlign: 'center',
     fontSize: 15,
     marginTop: 5,
     color: colors.lightest,
@@ -378,12 +378,18 @@ const styles = StyleSheet.create({
   text: {
     fontSize: 15,
     color: 'white',
+    textAlign: 'center',
   },
   loader: {
+    position:'absolute',
+    top: 0,
+    left: 0,
     width:'100%',
-    marginVertical: 70,
+    height: '100%',
     flex: 1,
+    justifyContent: 'center',
     alignItems: 'center',
+    backgroundColor: 'rgba(0,0,0,0.5)'
   },
   buttonContainer:{
     position:'absolute',
@@ -412,11 +418,6 @@ const styles = StyleSheet.create({
     borderColor: colors.cyan
     
   },
-  userContainer:{
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 15,
-  },
   labelGenerative:{
     backgroundColor: colors.primary_dark,
     width: 120,
@@ -435,8 +436,8 @@ const styles = StyleSheet.create({
   bottomCard:{
     flexDirection: 'row', 
     justifyContent:'space-between', 
-    marginRight: 13,
-    marginLeft: 5,
+    marginRight: 0,
+    marginLeft: 15, 
     marginVertical: 5
   },
   separator:{
@@ -466,7 +467,12 @@ const styles = StyleSheet.create({
   cardButton:{
     color: 'black'
   },
-
+  likeTxt:{
+    color: 'white',
+    fontSize: 18,
+    marginTop: 17,
+    marginRight: 58
+  },
   // Modal 
 
   modalContainer: {
