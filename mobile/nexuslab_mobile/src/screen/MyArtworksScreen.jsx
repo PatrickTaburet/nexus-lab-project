@@ -116,11 +116,13 @@ const SceneCard = React.memo(({ item, onImagePress, onLabelPress, api, onDeleteS
           <MyButton
             HandlePress={() => {setModalVisible(true)}}
             isSecondary={true}
-            myStyle={styles.cardButton}
+            myStyle={styles.deleteButton}
+            buttonStyle={styles.cardButton}
           >       
             Delete
           </MyButton>
           <MyButton
+            buttonStyle={styles.cardButton}
             HandlePress={() => navigation.navigate('EditArtwork', { idPrefix, sceneId })}
           >       
             Edit
@@ -176,7 +178,6 @@ const MyArtworksScreen = ({ navigation })  => {
   }, [api, page, isGenerativeArt, loading]);
   
   const resetPages = () => {
-    console.log("reset page fonction");
     setScenes([]); // On vide les scènes
     setPage(1);    // Retour à la première page
     setHasMore(true); // On autorise de nouveau la pagination
@@ -479,7 +480,9 @@ const styles = StyleSheet.create({
     height: 70
   },
   cardButton:{
-    color: 'black'
+  },
+  deleteButton:{
+    color: 'black',
   },
   likeTxt:{
     color: 'white',

@@ -84,7 +84,7 @@ class api_BaseSceneController extends AbstractController
             ], 400);
         }
     }
-    #[Route("api/artworks/{id}/{entity}", name: "api_deleteArtwork", methods: ["POST", "GET"])]
+    #[Route("api/artworks/{id}/{entity}", name: "api_getArtwork", methods: ["POST", "GET"])]
     public function api_GetArtwork($id, $entity): JsonResponse
     {
         try {
