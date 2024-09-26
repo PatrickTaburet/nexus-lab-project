@@ -56,7 +56,7 @@ const MainNavigator = () => {
           headerTitle: 'Edit Profile',
           headerBackTitle: 'Back',
           headerStyle: {
-            backgroundColor: 'rgba(0, 0, 0, 0.7)', 
+            backgroundColor: 'rgba(0, 0, 0, 0.8)', 
           },
           headerTitleStyle: { // Text
             color: colors.lightest,
@@ -74,7 +74,7 @@ const MainNavigator = () => {
           headerTitle: 'My Artworks',
           headerBackTitle: 'Back',
           headerStyle: {
-            backgroundColor: 'rgba(0, 0, 0, 0.7)', 
+            backgroundColor: 'rgba(0, 0, 0, 0.8)', 
           },
           headerTitleStyle: { // Text
             color: colors.lightest,
@@ -92,11 +92,11 @@ const MainNavigator = () => {
           headerTitle: 'Edit Artwork',
           headerBackTitle: 'Back',
           headerStyle: {
-            backgroundColor: 'rgba(0, 0, 0, 0.7)', 
+            backgroundColor: 'rgba(0, 0, 0, 0.8)', 
           },
           headerTitleStyle: { // Text
             color: colors.lightest,
-            fontSize: 18, 
+            fontSize: 18,
           },
           headerTintColor: colors.lightest, // Icon
         }}

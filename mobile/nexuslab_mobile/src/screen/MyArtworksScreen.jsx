@@ -7,6 +7,7 @@ import { colors } from '../utils/colors';
 import globalStyles from '../utils/styles';
 import { Ionicons } from '@expo/vector-icons';
 import MyButton from '../components/MyButton';
+import MyBigButton from '../components/MyBigButton';
 
 const ITEM_HEIGHT = 300; 
 
@@ -20,7 +21,6 @@ const DeleteArtworkModal = ({ visible, onClose, onSubmit, artworkName }) => {
           <View style={styles.modalBtnContainer}>
             <MyButton
                HandlePress={onSubmit}
-              buttonStyle={styles.submitButton}
             >
               Confirm
             </MyButton>
@@ -249,29 +249,31 @@ const MyArtworksScreen = ({ navigation })  => {
         style={styles.backgroundImage} 
         resizeMode="cover"
       >
-         <View style={styles.header}>
-            <View style={styles.buttonContainer}>
-              <MyButton
-                HandlePress={() => {
-                  setIsGenerativeArt(true);
-                }}
-                myStyle={isGenerativeArt ? styles.submitButtonOn : styles.submitButtonOff}
-                buttonStyle = { styles.submitButton}
-                isSecondary={isGenerativeArt ? true : false}
-              >       
-                Generative Art
-              </MyButton>
-              <MyButton
-                      HandlePress={() => {
-                        setIsGenerativeArt(false);
-                      }}
-                myStyle={isGenerativeArt ? styles.submitButtonOff : styles.submitButtonOn}
-                isSecondary={isGenerativeArt ? false : true}
-              >       
-                Data Art
-              </MyButton>
-            </View>
-          </View>
+       
+        <View style={styles.buttonContainer}>
+          <MyBigButton
+            HandlePress={() => {
+              setIsGenerativeArt(true);
+            }}
+            textStyle={isGenerativeArt ? styles.submitButtonOn : styles.submitButtonOff}
+            myStyle = { styles.submitButton}
+            buttonStyle={styles.buttonStyle}
+            isSecondary={isGenerativeArt ? true : false}
+          >       
+            <Text>Generative{'\n'}Art</Text>
+          </MyBigButton>
+          <MyBigButton
+            HandlePress={() => {
+              setIsGenerativeArt(false);
+            }}
+            textStyle={isGenerativeArt ? styles.submitButtonOff : styles.submitButtonOn}
+            buttonStyle = { styles.buttonStyle}
+            myStyle={[styles.submitButton, {'width' : 90}]}
+            isSecondary={isGenerativeArt ? false : true}
+          >       
+            Data Art
+          </MyBigButton>
+        </View>
         <ScrollView style={styles.scrollView} ref={scrollViewRef}>
          
           <View style={styles.sceneContainer}>
@@ -392,20 +394,36 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: 'rgba(0,0,0,0.5)'
   },
+
+  //  Top Buttons
+
   buttonContainer:{
     position:'absolute',
-    display: 'flex',
     flexDirection: 'row',
-    marginLeft: 20,
-    marginTop: 60,
-    gap: 15,
-    top:0,
-    zIndex: 10000,
-    height: 70,
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: '100%',
+    gap: 55,
+    top: 50, 
+    zIndex:1000,
   },
-  header:{
+  submitButtonOn:{
+    fontSize: 13,
+    color: 'black',
+      fontWeight: '700'
+  },
+  submitButtonOff:{
+    color: 'white',
+    fontSize: 13,
+  },
+  submitButton: {
+    borderWidth: 5, 
+    borderRadius: 50,
+    borderColor: 'black'
+  },
 
-  },
+  ///////
+
   fullScreenContainer: {
     flex: 1,
     backgroundColor: 'rgba(0,0,0,0.8)',
@@ -448,12 +466,7 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     marginVertical: 5,
   },
-  submitButtonOn:{
-    color: 'black'
-  },
-  submitButtonOff:{
-    color: 'white'
-  },
+
   labelContainer:{
     display: 'flex',
     justifyContent: 'center',
@@ -493,8 +506,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center'
   },
-  submitButton: {
-  },
+
   closeButton: {
     color: colors.purple_dark,
     margin: 0

@@ -4,7 +4,7 @@ import globalStyles from '../utils/styles';
 import { colors } from '../utils/colors'
 import { LinearGradient } from 'expo-linear-gradient';
 
-const MyBigButton = ({children, myStyle, HandlePress, buttonStyle, textStyle }) => {
+const MyBigButton = ({children, myStyle, HandlePress, buttonStyle, textStyle, isSecondary=false }) => {
 
   const CustomTextStyle = {
     ...textStyle,
@@ -28,7 +28,7 @@ const MyBigButton = ({children, myStyle, HandlePress, buttonStyle, textStyle }) 
         onPress={HandlePress}
       >
         <LinearGradient
-          colors={['#AF40FF', '#5B42F3', '#00DDEB']}
+          colors={isSecondary ? ['#E5E5EA', '#AAAAAA', '#666666']  : ['#AF40FF', '#5B42F3', '#00DDEB']}
           start={{ x: 0, y: 0.3 }}
           end={{ x: 1, y: 0.7 }}
           style={[styles.gradient, myStyle]}
@@ -50,7 +50,7 @@ const styles = StyleSheet.create({
     fontFamily: 'Outfit_400Regular',
     fontSize: 18,
     textAlign: 'center',
-    zIndex:10
+    zIndex:10,
   },
   gradient: {
     flex: 1,
@@ -62,7 +62,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center', 
     alignItems: 'center',
     zIndex: 1,
-    
+    padding: 10,
   },
   customButton:{
     alignItems: 'center',
