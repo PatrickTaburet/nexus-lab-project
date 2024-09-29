@@ -147,16 +147,15 @@ const ProfileScreen = ({ navigation })  => {
         <View style={styles.globalButtonBox}>
           <View style={styles.userButtonBox}>
             <MyButton
-              HandlePress={() => {navigation.navigate("MyArtworks")}}
-              myStyle={styles.submitButton}
+              onPress={() => {navigation.navigate("MyArtworks")}}
+              textStyle = {{fontSize: 16}}
             >
               My Artworks
             </MyButton>
           </View>
           {userData && userData.roles[1] ? (
             <MyButton
-              // HandlePress={}
-              myStyle={styles.secondButton}
+              // onPress={}
               isSecondary={true}
             >
               Artist Dashboard
@@ -165,8 +164,7 @@ const ProfileScreen = ({ navigation })  => {
         </View>
         {userData &&userData.roles[2] ? (
           <MyButton
-            // HandlePress={}
-            myStyle={styles.secondButton}
+            // onPress={}
             isSecondary={true} 
           >
             Admin Dashboard

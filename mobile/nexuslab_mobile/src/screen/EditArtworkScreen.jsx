@@ -142,8 +142,8 @@ const EditArtworkScreen = ({ route, navigation })  => {
             </View>  
             <View style={styles.globalButtonBox}>
                 <MyButton
-                  HandlePress={HandleUpdateArtwork}
-                  myStyle={styles.submitButton}
+                  onPress={HandleUpdateArtwork}
+                  style={styles.submitButton}
                 >
                   Update
                 </MyButton>
@@ -206,7 +206,8 @@ const styles = StyleSheet.create({
     marginBottom: 20
   },
   submitButton:{
-    margin: 0,
+    height: 50,
+    width: 130, 
     marginBottom: 40
   },
   globalButtonBox:{

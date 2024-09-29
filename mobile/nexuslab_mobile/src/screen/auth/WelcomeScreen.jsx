@@ -28,12 +28,12 @@ const WelcomeScreen = () => {
     
         <View style={styles.buttonContainer}>
           <MyButton
-            HandlePress={HandleLogin}
+            onPress={HandleLogin}
           >
             Login
           </MyButton>
           <MyButton
-            HandlePress={HandleSignup}
+            onPress={HandleSignup}
           >
             Sign up
           </MyButton>
@@ -70,9 +70,9 @@ const styles = StyleSheet.create({
     },
     buttonContainer:{
       flexDirection: 'row',
-      bottom:100,
+      bottom:115,
       position: 'absolute',
-      height: 80
+      gap: 15
     },
     text:{
       color: "white"

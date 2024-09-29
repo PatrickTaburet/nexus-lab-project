@@ -1,5 +1,5 @@
 import { Image, View, Text, StyleSheet } from 'react-native';
-import React, { Component, useState, useRef, useEffect} from 'react';
+import React, { Component, useState, useRef, useEffect, useCallback} from 'react';
 import SliderItem from './SliderItem';
 import Animated, {useAnimatedRef, useAnimatedScrollHandler, useSharedValue} from 'react-native-reanimated';
 import Pagination from './Pagination';
@@ -17,23 +17,36 @@ const Slider = ({sliderContent}) => {
   })
 
   useEffect(() => {
-    setData(sliderContent);
+    // console.log('useffect');
+    
+    // console.log(sliderContent.length);
+    
+    setData(sliderContent); 
   }, [sliderContent]);
 
-  const onViewableItemsChanged = ({ viewableItems }) => {
+  const onViewableItemsChanged = useCallback(({ viewableItems }) => {
     if (viewableItems[0].index !== undefined && viewableItems[0].index !== null) {
       const currentIndex = viewableItems[0].index;
-
+      console.log('a');
+      console.log(paginationIndex);
+      
+      
       // Boucler après le dernier élément
-      if (currentIndex === sliderContent.length) {
+      if (currentIndex >= sliderContent.length) {
         // Retourner au premier élément
         ref.current.scrollToIndex({ index: 0, animated: false });
+        console.log('b');
+        console.log(paginationIndex);
         setPaginationIndex(0);
       } else {
-        setPaginationIndex(currentIndex % data.length);
+        console.log('c');
+        console.log(paginationIndex);
+        console.log(sliderContent);
+        
+        setPaginationIndex(currentIndex % sliderContent.length); 
       }
     }
-  };
+  }, [sliderContent.length]);
   const viewabilityConfig = {
     itemVisiblePercentThreshold :50
   }
@@ -61,7 +74,6 @@ const Slider = ({sliderContent}) => {
       />
       <Pagination 
         items={sliderContent} 
-        scrollX={scrollX} 
         paginationIndex={paginationIndex}
       />
     </View>
@@ -75,14 +87,14 @@ const styles = StyleSheet.create({
   container: {
     justifyContent: 'center',
     alignItems: 'center',
-    height: 350
+    // height: 350
   },
   text: {
     fontSize: 16,
     marginBottom: 20,
     color: 'white',
     textAlign: 'center',
-    width: 250,
+    // width: 250,
   },
 
 });

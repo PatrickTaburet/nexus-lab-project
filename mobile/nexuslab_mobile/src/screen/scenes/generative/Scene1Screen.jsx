@@ -34,14 +34,12 @@ const SaveArtworkModal = ({ visible, onClose, onSubmit }) => {
           />
           <View style={styles.buttonContainer}>
             <MyButton
-              HandlePress={() => onSubmit(title, comment)}
-              buttonStyle={styles.submitButton}
+              onPress={() => onSubmit(title, comment)}
             >
               Submit
             </MyButton>
             <MyButton
-              HandlePress={onClose}
-              myStyle={styles.closeButton}
+              onPress={onClose}
               isSecondary={true}
             >
               Back
@@ -242,12 +240,6 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     backgroundColor: colors.lightest
   },
-  submitButton: {
-  },
-  closeButton: {
-    color: colors.purple_dark,
-    margin: 0
-  },
   modalHeader:{
     textAlign: "center",
     marginBottom: 15,
@@ -268,6 +260,8 @@ const styles = StyleSheet.create({
     display:'flex',
     justifyContent: 'center',
     alignItems: 'center',
+    gap: 15,
+    marginTop: 5
   }
 });
 

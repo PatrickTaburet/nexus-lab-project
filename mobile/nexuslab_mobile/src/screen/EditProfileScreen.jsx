@@ -250,8 +250,8 @@ const EditProfileScreen = ({ navigation })  => {
             </View>
             <View style={styles.globalButtonBox}>
                 <MyButton
-                  HandlePress={HandleUpdateProfile}
-                  myStyle={styles.submitButton}
+                  onPress={HandleUpdateProfile}
+                  style={styles.submitButton}
                 >
                   Update
                 </MyButton>
@@ -294,7 +294,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     paddingBottom: 0,
-    marginBottom: 190
+    marginBottom: 150
   },
   text: {
     fontSize: 15,
@@ -326,7 +326,9 @@ const styles = StyleSheet.create({
     color: 'black'
   },
   submitButton:{
-    margin: 0,
+    height: 50,
+    width: 130,
+    marginTop: 25
   },
   userButtonBox:{
     display:"flex",
@@ -338,7 +340,6 @@ const styles = StyleSheet.create({
   globalButtonBox:{
     display:"flex",
     alignItems:'center',
-    marginVertical: 15
   },
   inputContainer:{
     marginVertical: 15,

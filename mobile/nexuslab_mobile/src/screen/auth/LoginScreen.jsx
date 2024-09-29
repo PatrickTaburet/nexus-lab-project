@@ -101,8 +101,8 @@ const LoginScreen = ({ navigation }) => {
           </TouchableOpacity>
         </View>
         <MyButton
-          HandlePress={handleLogin}
-          myStyle={styles.submitButton}
+          onPress={handleLogin}
+          style={styles.submitButton}
         >
           Login
         </MyButton>
@@ -144,6 +144,7 @@ const styles = StyleSheet.create({
       backgroundColor: '#222',
       width: '100%',
       paddingVertical: 30
+      
     },
     inputContainer:{
       marginVertical: 15,
@@ -159,8 +160,9 @@ const styles = StyleSheet.create({
       margin:7
     },
     submitButton:{
-      marginTop: 20,
-      fontSize: 20
+      width: 130,
+      height: 50,
+      marginTop: 20
     },
     bottom:{
       flexDirection: 'row',

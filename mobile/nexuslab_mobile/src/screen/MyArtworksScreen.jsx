@@ -20,13 +20,12 @@ const DeleteArtworkModal = ({ visible, onClose, onSubmit, artworkName }) => {
           <Text style={[styles.modalHeader, globalStyles.mainTitle]}>Delete the Artwork : <Text style={{color: colors.lightest}}>{artworkName}</Text> ?</Text>
           <View style={styles.modalBtnContainer}>
             <MyButton
-               HandlePress={onSubmit}
+               onPress={onSubmit}
             >
-              Confirm
+              Confirm 
             </MyButton>
             <MyButton
-              HandlePress={onClose}
-              myStyle={styles.closeButton}
+              onPress={onClose}
               isSecondary={true}
             >
               Back
@@ -48,7 +47,7 @@ const SceneCard = React.memo(({ item, onImagePress, onLabelPress, api, onDeleteS
   const deleteArtwork = async() => {
     try {
       const response = await api.post(`/artworks/delete/${sceneId}/${idPrefix}`);
-      // console.log(response.data);
+       console.log(response.data);
       if (response.status !== 200) {
         throw new Error("Erreur lors de la suppression de la scène");
       }
@@ -56,6 +55,7 @@ const SceneCard = React.memo(({ item, onImagePress, onLabelPress, api, onDeleteS
       setModalVisible(false);
       onDeleteSuccess(); 
     } catch (error) {
+      console.error(error.config);
       console.error("Erreur lors de la suppression de la scène:", error);
     }
   };
@@ -114,16 +114,15 @@ const SceneCard = React.memo(({ item, onImagePress, onLabelPress, api, onDeleteS
         </View>
         <View style={styles.buttonBottom}>
           <MyButton
-            HandlePress={() => {setModalVisible(true)}}
+            onPress={() => {setModalVisible(true)}}
             isSecondary={true}
-            myStyle={styles.deleteButton}
-            buttonStyle={styles.cardButton}
+            style={styles.cardButton}
           >       
             Delete
           </MyButton>
           <MyButton
-            buttonStyle={styles.cardButton}
-            HandlePress={() => navigation.navigate('EditArtwork', { idPrefix, sceneId })}
+            onPress={() => navigation.navigate('EditArtwork', { idPrefix, sceneId })}
+            style={styles.cardButton}
           >       
             Edit
           </MyButton>
@@ -477,9 +476,13 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'center',
-    height: 70
+    height: 70,
+    gap: 15,
+    marginTop: 7
   },
   cardButton:{
+    height: 50,
+    width: 120, 
   },
   deleteButton:{
     color: 'black',
@@ -502,18 +505,15 @@ const styles = StyleSheet.create({
     backgroundColor: colors.purple_dark,
     padding: 25,
     borderRadius: 10,
-    width: '80%',
+    width: '90%',
     height: '23%',
     borderWidth: 2,
     borderColor: colors.cyan,
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
+
   },
 
-  closeButton: {
-    color: colors.purple_dark,
-    margin: 0
-  },
   modalHeader:{
     textAlign: "center",
     marginBottom: 15,
@@ -525,7 +525,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-    height: 70,
+    gap: 20
   },
   scrollView:{
     flex:1,

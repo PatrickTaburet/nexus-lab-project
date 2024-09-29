@@ -4,6 +4,7 @@ import config from '../../config/config';
 import { LinearGradient } from 'expo-linear-gradient';
 import Likes from '../../components/LikesManager';
 import Animated from 'react-native-reanimated';
+import { colors } from '../../utils/colors'
 
 const {width} = Dimensions.get('screen');
 
@@ -50,9 +51,11 @@ const styles = StyleSheet.create({
       color: 'white',
   },
   image: {
-    width: 300,
-    height: 300,
-    borderRadius: 20
+    width: 290,
+    height: 290,
+    borderRadius: 20,
+    borderWidth: 2,
+    borderColor: colors.cyan
   },
   itemContainer:{
     justifyContent: 'center',
@@ -62,8 +65,8 @@ const styles = StyleSheet.create({
   },
   background:{
     position: 'absolute',
-    height: 300,
-    width: 300,
+    height: 290,
+    width: 290,
     padding: 20,
     borderRadius: 20,
     justifyContent: 'space-between'

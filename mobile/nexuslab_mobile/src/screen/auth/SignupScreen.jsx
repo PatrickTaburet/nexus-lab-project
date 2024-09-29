@@ -90,7 +90,7 @@ const SignupScreen = () => {
       >
       <Ionicons name={"arrow-back-circle"} color={colors.lightest} size={50} />
       </TouchableOpacity>
-      <ScrollView  contentContainerStyle={{ justifyContent: 'center', alignItems: 'center', paddingBottom: 100}}>
+      <ScrollView  contentContainerStyle={{ justifyContent: 'center', alignItems: 'center', paddingBottom: 50}}>
 
 
         {/* Form */}
@@ -171,8 +171,8 @@ const SignupScreen = () => {
             <Text style={styles.checkboxText} onPress={() => setChecked(!checked)}>Agree terms</Text>
           </View>
           <MyButton
-            HandlePress={handleRegister}
-            myStyle={styles.submitButton}
+            onPress={handleRegister}
+            style={styles.submitButton}
           >
             Register
           </MyButton>
@@ -214,7 +214,7 @@ const styles = StyleSheet.create({
       marginTop: 10,
     },
     formContainer : {
-      marginTop: 95,
+      marginTop: 55,
       justifyContent: "center",
       alignItems: "center",
       backgroundColor: '#222',
@@ -235,8 +235,9 @@ const styles = StyleSheet.create({
       margin:7
     },
     submitButton:{
-      marginTop: 40,
-      fontSize: 20
+      width: 130,
+      height: 50,
+      marginTop: 30
     },
     checkboxContainer:{
       flexDirection: 'row',
