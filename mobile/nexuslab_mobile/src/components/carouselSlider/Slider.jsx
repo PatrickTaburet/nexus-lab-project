@@ -1,14 +1,14 @@
-import { Image, View, Text, StyleSheet } from 'react-native';
-import React, { Component, useState, useRef, useEffect, useCallback} from 'react';
+import { View, StyleSheet, ActivityIndicator} from 'react-native';
+import React, { Component, useState, useRef, useEffect} from 'react';
 import SliderItem from './SliderItem';
 import Animated, {useAnimatedRef, useAnimatedScrollHandler, useSharedValue} from 'react-native-reanimated';
 import Pagination from './Pagination';
 
 const Slider = ({sliderContent}) => {
-  const [paginationIndex, setPaginationIndex] = useState(0);
   const scrollX = useSharedValue(0);
+  const [paginationIndex, setPaginationIndex] = useState(0);
   const [data, setData] = useState(sliderContent);
-  const ref = useAnimatedRef();
+  // const ref = useRef(null); 
 
   const onScrollHandler = useAnimatedScrollHandler({
     onScroll: (e) => {
@@ -17,36 +17,20 @@ const Slider = ({sliderContent}) => {
   })
 
   useEffect(() => {
-    // console.log('useffect');
+    console.log('useffect');
     
-    // console.log(sliderContent.length);
+    console.log(sliderContent.length);
     
     setData(sliderContent); 
   }, [sliderContent]);
 
-  const onViewableItemsChanged = useCallback(({ viewableItems }) => {
+  const onViewableItemsChanged = ({ viewableItems }) => {
     if (viewableItems[0].index !== undefined && viewableItems[0].index !== null) {
       const currentIndex = viewableItems[0].index;
-      console.log('a');
-      console.log(paginationIndex);
-      
-      
-      // Boucler après le dernier élément
-      if (currentIndex >= sliderContent.length) {
-        // Retourner au premier élément
-        ref.current.scrollToIndex({ index: 0, animated: false });
-        console.log('b');
-        console.log(paginationIndex);
-        setPaginationIndex(0);
-      } else {
-        console.log('c');
-        console.log(paginationIndex);
-        console.log(sliderContent);
-        
-        setPaginationIndex(currentIndex % sliderContent.length); 
-      }
+      setPaginationIndex(currentIndex % sliderContent.length); 
     }
-  }, [sliderContent.length]);
+  };
+
   const viewabilityConfig = {
     itemVisiblePercentThreshold :50
   }
@@ -56,8 +40,13 @@ const Slider = ({sliderContent}) => {
 
   return (
     <View style={styles.container}>
+        {(!sliderContent || sliderContent.length === 0) && (
+          <View style={styles.loader}>
+            <ActivityIndicator size="large" />
+          </View>
+        )}
       <Animated.FlatList
-        ref={ref}
+        // ref={ref}
         data={data}
         keyExtractor={(item, index) => `${item.id}_${index}`} 
         renderItem={({item, index}) => (
@@ -82,7 +71,6 @@ const Slider = ({sliderContent}) => {
 
 export default Slider
 
-
 const styles = StyleSheet.create({
   container: {
     justifyContent: 'center',
@@ -96,5 +84,10 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     // width: 250,
   },
-
+  loader:{
+    flex: 1,
+    backgroundColor: 'transparent', 
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
 });
