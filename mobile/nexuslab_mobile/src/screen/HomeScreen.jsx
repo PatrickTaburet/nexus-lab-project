@@ -92,9 +92,10 @@ const HomeScreen = ({ navigation })  => {
       setLoading(false); 
     }
   }, [api, loading]);
+
   useEffect(() => {
     if (isFocused) {
-      fetchScenes(true);
+      fetchScenes();
     }
   }, [isFocused]);
 
