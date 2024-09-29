@@ -59,9 +59,9 @@ CSS variables
     --var-soft-blue: hsl(215, 51%, 70%);
     --var-cyan: hsl(178, 100%, 50%);
 
-    --var-main-darkest: hsl(217, 54%, 11%);
+    --var-main-darkest: #0d192b;
     --var-card-dark: hsl(216, 50%, 16%);
-    --var-line-dark: hsl(215, 32%, 27%);
+    --var-line-dark: #2f415b;
     --var-lightest: white;
 
     /* Fonts */

@@ -1,7 +1,6 @@
 import { View, Text, Button, Image, StyleSheet, SafeAreaView } from 'react-native';
 import { colors } from '../utils/colors'
 import config from '../config/config'; 
-
 import React from 'react'
 
 const CommunityScreen = ({ navigation })  => {
@@ -15,7 +14,7 @@ const CommunityScreen = ({ navigation })  => {
           style={styles.profileImage}
           resizeMode="contain"
 
-        />
+      />
         <Text style={styles.text}>Community section incoming..</Text>
     </SafeAreaView> 
 
