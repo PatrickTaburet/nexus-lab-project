@@ -1,5 +1,5 @@
 import { View, StyleSheet, ActivityIndicator} from 'react-native';
-import React, { Component, useState, useRef, useEffect} from 'react';
+import React, { Component, useState, useRef, useEffect, useCallback} from 'react';
 import SliderItem from './SliderItem';
 import Animated, {useAnimatedRef, useAnimatedScrollHandler, useSharedValue} from 'react-native-reanimated';
 import Pagination from './Pagination';
@@ -8,7 +8,6 @@ const Slider = ({sliderContent}) => {
   const scrollX = useSharedValue(0);
   const [paginationIndex, setPaginationIndex] = useState(0);
   const [data, setData] = useState(sliderContent);
-  // const ref = useRef(null); 
 
   const onScrollHandler = useAnimatedScrollHandler({
     onScroll: (e) => {
@@ -18,25 +17,26 @@ const Slider = ({sliderContent}) => {
 
   useEffect(() => {
     console.log('useffect');
-    
     console.log(sliderContent.length);
     
     setData(sliderContent); 
   }, [sliderContent]);
 
-  const onViewableItemsChanged = ({ viewableItems }) => {
-    if (viewableItems[0].index !== undefined && viewableItems[0].index !== null) {
+  const onViewableItemsChanged = useCallback(({ viewableItems }) => {
+    if (viewableItems[0]?.index !== undefined && viewableItems[0]?.index !== null) {
       const currentIndex = viewableItems[0].index;
-      setPaginationIndex(currentIndex % sliderContent.length); 
+      setPaginationIndex(currentIndex);
+      console.log("pagination : " + currentIndex);
     }
-  };
+  }, []);
+
 
   const viewabilityConfig = {
     itemVisiblePercentThreshold :50
   }
-  const viewabilityConfigCallbackPairs = useRef([
-    {viewabilityConfig, onViewableItemsChanged}
-  ])
+  // const viewabilityConfigCallbackPairs = useRef([
+  //   {viewabilityConfig, onViewableItemsChanged}
+  // ])
 
   return (
     <View style={styles.container}>
@@ -46,7 +46,6 @@ const Slider = ({sliderContent}) => {
           </View>
         )}
       <Animated.FlatList
-        // ref={ref}
         data={data}
         keyExtractor={(item, index) => `${item.id}_${index}`} 
         renderItem={({item, index}) => (
@@ -56,14 +55,16 @@ const Slider = ({sliderContent}) => {
         showsHorizontalScrollIndicator={false}
         pagingEnabled
         onScroll={onScrollHandler}
-        viewabilityConfigCallbackPairs={viewabilityConfigCallbackPairs.current}
+        viewabilityConfig={viewabilityConfig}
+        onViewableItemsChanged={onViewableItemsChanged}
+        // viewabilityConfigCallbackPairs={viewabilityConfigCallbackPairs.current}
         onEndReached={() => setData([...data, ...sliderContent])}
         onEndReachedThreshold={0.5}
         scrollEventThrottle={16}
       />
       <Pagination 
         items={sliderContent} 
-        paginationIndex={paginationIndex}
+        paginationIndex={paginationIndex % sliderContent.length}
       />
     </View>
   )
