@@ -2,7 +2,6 @@ import { StyleSheet, Text, View, Image, Dimensions } from 'react-native'
 import React from 'react'
 import config from '../../config/config'; 
 import { LinearGradient } from 'expo-linear-gradient';
-import Likes from '../../components/LikesManager';
 import Animated from 'react-native-reanimated';
 import { colors } from '../../utils/colors'
 
@@ -21,13 +20,8 @@ const SliderItem = ({item, index, scrollX}) => {
       />
       <LinearGradient colors={['transparent', 'rgba(0,0,0,0.8)']} style={styles.background}>
         <View style={{alignItems: 'flex-end'}}>
-          <Likes
-            userId= {item.user.id}
-            sceneId= {sceneId}
-            likesNum= {item.likes}
-            entity= {idPrefix}
-            isLikedByUser= {item.isLiked}
-          />
+          <Text style={[styles.text, {}]}>Create by :  <Text style={styles.pseudo}>{item.user.username}</Text></Text>
+
         </View>
         <View  style={{gap: 10}}>
           <Text style={styles.title}>{item.title}</Text>
@@ -47,8 +41,11 @@ const styles = StyleSheet.create({
       color: 'white',
   },
   text: {
-      fontSize: 16,
+      fontSize: 14,
       color: 'white',
+  },
+  pseudo:{
+    color: colors.cyan,
   },
   image: {
     width: 290,
@@ -67,8 +64,9 @@ const styles = StyleSheet.create({
     position: 'absolute',
     height: 290,
     width: 290,
-    padding: 20,
+    padding: 15,
     borderRadius: 20,
     justifyContent: 'space-between'
-  }
+  },
+
 })

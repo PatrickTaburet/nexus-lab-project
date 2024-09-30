@@ -1,5 +1,5 @@
-import { Image, ScrollView, SafeAreaView, ImageBackground, View, Text, Button, StyleSheet } from 'react-native';
-import React, {useState, useCallback, useEffect} from 'react'
+import { Image, ScrollView, SafeAreaView, ImageBackground, View, Text, Button, StyleSheet, ActivityIndicator, Animated, Dimensions } from 'react-native';
+import React, {useState, useCallback, useEffect, useRef} from 'react'
 import { colors } from '../utils/colors'
 import config from '../config/config'; 
 import useApi from '../hooks/useApi';
@@ -7,19 +7,22 @@ import {  useIsFocused } from '@react-navigation/native';
 import Slider from '../components/carouselSlider/Slider'
 import MyButton from '../components/MyButton';
 
+const { height, width } = Dimensions.get('window');
+
 const HomeScreen = ({ navigation })  => {
   const logoUrl = `${config.apiUrl}/images/design/logo/NexusLab-full-purple.png`;
   const {api} = useApi();
   const [scenes, setScenes] = useState([]);
   const [loading, setLoading] = useState(false);
   const isFocused = useIsFocused();
+  const imagePath1 = `${config.apiUrl}/images/design/gallery.jpg`;
+  const imagePath2 = `${config.apiUrl}/images/design/share-your-code.jpg`;
+  const scrollY = useRef(new Animated.Value(0)).current;
 
 
   const fetchScenes = useCallback(async () => {
     if (loading) return;
-    setLoading(true);
-    console.log("before fetch");
-    
+    setLoading(true);    
     try {
       const response = await api.get('/home/carousel?limit=3', { 
         headers: {
@@ -44,15 +47,29 @@ const HomeScreen = ({ navigation })  => {
     }
   }, [isFocused]);
 
+  const backgroundTranslate = scrollY.interpolate({
+    inputRange: [0, height + 400], // Adapter les valeurs en fonction du besoin
+    outputRange: [0, -150], // Parallaxe vers le haut
+    extrapolate: 'clamp', // Empêcher de dépasser les limites
+  });
 
   return (
     <SafeAreaView style={styles.safeArea}> 
-      <ImageBackground
-        source={require('../assets/design/background-cyber-form.jpg')} 
-        style={styles.backgroundImage}
-        resizeMode="cover"
-      >
-        <ScrollView contentContainerStyle={{ }}>
+      <Animated.View style={[styles.backgroundWrapper, { transform: [{ translateY: backgroundTranslate }] }]}>
+        <ImageBackground
+          source={require('../assets/design/background-cyber-form.jpg')} 
+          style={styles.backgroundImage}
+          resizeMode="cover"
+        />
+      </Animated.View>
+        <ScrollView 
+          contentContainerStyle={{ }}
+          scrollEventThrottle={16}
+          onScroll={Animated.event(
+            [{ nativeEvent: { contentOffset: { y: scrollY } } }],
+            { useNativeDriver: false }
+          )}
+        >
             <View style={styles.topContainer}>
               <Image
                 source={{ uri: logoUrl }}
@@ -62,8 +79,14 @@ const HomeScreen = ({ navigation })  => {
               <Text style={[styles.text, {textAlign: 'center', width: 250}]}>Collaborative platform for generative art and creative coding ! </Text>
             </View>
             <View style={styles.sliderContainer}>
-              <Text style={[styles.text, {textAlign: 'center', color:colors.cyan}]}>Last artwork generated :</Text>
-              <Slider sliderContent={scenes}/>
+              <Text style={[styles.text, {textAlign: 'center', color:colors.cyan}]}>Last artworks generated :</Text>
+              {loading ? (
+                <View style={styles.loader}>
+                  <ActivityIndicator size="large" />
+                </View>
+              ) : (
+                <Slider sliderContent={scenes}/>
+              )}
             </View>
             <MyButton
               onPress={() => {navigation.navigate('Gallery')}}
@@ -72,8 +95,40 @@ const HomeScreen = ({ navigation })  => {
             >
               Watch in the gallery
             </MyButton>
+            <View style={styles.bottomContainer}>
+              <Text style={[styles.text, {textAlign: 'center', width: 250, color: colors.cyan, fontWeight: '700', marginBottom: 10}]}>Create yout own artworks</Text>
+              <Text style={[styles.text, {textAlign: 'center', width: 300, fontSize : 15, marginBottom: 30}]}>Have fun manipulating the image through the work of artist members !</Text>
+              <Image 
+                source={{ uri: imagePath1 }}
+                style={styles.image}
+              />
+              <MyButton
+                onPress={() => {navigation.navigate('Create', { screen: 'CreateMain' })}}
+                style={styles.createButton}
+                textStyle={styles.textButton}
+              >
+                Generate Art
+              </MyButton>
+              <MyButton
+                onPress={() => {navigation.navigate('GetRole')}}
+                style={styles.roleButton}
+                textStyle={styles.textButton}
+              >
+                Get Artist Role
+              </MyButton>
+              <Image 
+                source={{ uri: imagePath2 }}
+                style={styles.image}
+              />   
+              <MyButton
+                onPress={() => {navigation.navigate('AboutUs')}}
+                isSecondary={true}
+                style={styles.aboutUs}
+              >
+                About us
+            </MyButton>
+          </View>
         </ScrollView>
-      </ImageBackground>
     </SafeAreaView>
 
   )
@@ -91,16 +146,23 @@ const styles = StyleSheet.create({
   text: {
     fontSize: 16,
     marginBottom: 20,
-    color: 'white',
+    color: '#FFFDFD',
   },
   safeArea:{
     flex: 1,
     backgroundColor: 'black', 
   },
-  backgroundImage: {
-    flex: 1,   
-    justifyContent: 'center',
-    alignItems: 'center',
+  backgroundImage: {   
+    width: '100%',
+    height: '100%',
+  },
+  backgroundWrapper: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    height: height + 100, // Adapter la hauteur
+    zIndex: -1, // Assurer que l'image reste derrière
   },
   logoImage: {
     zIndex:2,
@@ -114,6 +176,52 @@ const styles = StyleSheet.create({
   },
   textButton:{
     fontSize: 14
-    
   },
+  createButton:{
+    position: 'absolute',
+    bottom: 570,
+    margin: 'auto',
+    width: 150,
+    height: 40 ,
+  },
+  roleButton:{
+    position: 'absolute',
+    width: 150,
+    height: 40 ,
+    bottom: 210,
+    margin: 'auto',
+    zIndex: 1000
+  },
+  bottomContainer:{
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginVertical: 50,
+  },
+  image: {
+    width: 290,
+    height: 290,
+    borderRadius: 20,
+    borderWidth: 2,
+    borderColor: colors.cyan,
+    marginVertical: 30
+  },
+  aboutUs:{
+    height: 50,
+    width: 130,   
+    color: colors.cyan, 
+    fontWeight: '700', 
+    fontSize: 18,
+    marginTop: 15
+
+  },
+  loader:{ 
+    flex: 1,
+    width: '100%',
+    height: 300,
+    backgroundColor: 'transparent', 
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+
 })

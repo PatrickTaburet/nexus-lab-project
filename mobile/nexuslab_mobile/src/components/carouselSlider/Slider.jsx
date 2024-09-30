@@ -34,10 +34,7 @@ const Slider = ({sliderContent}) => {
   const viewabilityConfig = {
     itemVisiblePercentThreshold :50
   }
-  // const viewabilityConfigCallbackPairs = useRef([
-  //   {viewabilityConfig, onViewableItemsChanged}
-  // ])
-
+  
   return (
     <View style={styles.container}>
         {(!sliderContent || sliderContent.length === 0) && (
@@ -57,7 +54,6 @@ const Slider = ({sliderContent}) => {
         onScroll={onScrollHandler}
         viewabilityConfig={viewabilityConfig}
         onViewableItemsChanged={onViewableItemsChanged}
-        // viewabilityConfigCallbackPairs={viewabilityConfigCallbackPairs.current}
         onEndReached={() => setData([...data, ...sliderContent])}
         onEndReachedThreshold={0.5}
         scrollEventThrottle={16}
