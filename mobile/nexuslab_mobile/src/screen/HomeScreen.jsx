@@ -48,8 +48,8 @@ const HomeScreen = ({ navigation })  => {
   }, [isFocused]);
 
   const backgroundTranslate = scrollY.interpolate({
-    inputRange: [0, height + 400], // Adapter les valeurs en fonction du besoin
-    outputRange: [0, -150], // Parallaxe vers le haut
+    inputRange: [0, height * 2], // Adapter les valeurs en fonction du besoin
+    outputRange: [0, -170], // Parallaxe vers le haut
     extrapolate: 'clamp', // Empêcher de dépasser les limites
   });
 

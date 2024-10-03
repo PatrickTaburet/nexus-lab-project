@@ -27,6 +27,9 @@ class api_LikeController extends AbstractController
         try
         {
             $user = $this->getUser();
+            if (!$user) {
+                return $this->json(['error' => 'User not authenticated'], Response::HTTP_UNAUTHORIZED);
+            }
             $entityClass = "App\\Entity\\" . $entity;
             if (!class_exists($entityClass)) {
                 return new JsonResponse(['error' => 'Invalid entity type'], Response::HTTP_BAD_REQUEST);

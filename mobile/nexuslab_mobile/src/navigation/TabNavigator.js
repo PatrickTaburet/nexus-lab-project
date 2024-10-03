@@ -22,7 +22,14 @@ const CreateStack = createNativeStackNavigator();
 const getTabBarStyle = (route) => {
   const routeName = getFocusedRouteNameFromRoute(route) ?? '';
   const hideOnScreens = ['Scene1', 'Scene2', 'SceneD1', 'SceneD2'];
-  return hideOnScreens.includes(routeName) ? { display: 'none' } : undefined;
+  const baseStyle = {
+    backgroundColor: colors.purple_dark,
+    borderTopWidth: 0,
+  };
+  
+  return hideOnScreens.includes(routeName) 
+    ? { ...baseStyle, display: 'none' } 
+    : baseStyle;
 };
 
 const CreateStackScreen = () => (
@@ -119,7 +126,16 @@ const CreateStackScreen = () => (
 
 const TabNavigator = ( ) => {
   return (
-    <Tab.Navigator>
+    <Tab.Navigator
+      screenOptions={{
+        tabBarStyle: {
+          backgroundColor: colors.purple_dark, // Utilisez la couleur de votre choix
+          borderTopWidth: 0, // Supprime la bordure supérieure si nécessaire
+        },
+        tabBarActiveTintColor: colors.lightest, // Couleur de l'icône et du texte actifs
+        tabBarInactiveTintColor: colors.primary, // Couleur de l'icône et du texte inactifs
+      }}
+    >
         <Tab.Screen 
             name="Home"
             component={HomeScreen}
