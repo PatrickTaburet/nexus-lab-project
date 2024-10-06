@@ -8,34 +8,9 @@ import globalStyles from '../utils/styles';
 import { Ionicons } from '@expo/vector-icons';
 import MyButton from '../components/MyButton';
 import MyBigButton from '../components/MyBigButton';
+import MyModale from '../components/MyModale';
 
 const ITEM_HEIGHT = 300; 
-
-const DeleteArtworkModal = ({ visible, onClose, onSubmit, artworkName }) => {
-
-  return (
-    <Modal visible={visible} transparent animationType="slide">
-      <View style={styles.modalContainer}>
-        <View style={styles.modalContent}>
-          <Text style={[styles.modalHeader, globalStyles.mainTitle]}>Delete the Artwork : <Text style={{color: colors.lightest}}>{artworkName}</Text> ?</Text>
-          <View style={styles.modalBtnContainer}>
-            <MyButton
-               onPress={onSubmit}
-            >
-              Confirm 
-            </MyButton>
-            <MyButton
-              onPress={onClose}
-              isSecondary={true}
-            >
-              Back
-            </MyButton>
-          </View>
-        </View>
-      </View>
-    </Modal>
-  );
-};
 
 const SceneCard = React.memo(({ item, onImagePress, onLabelPress, api, onDeleteSuccess, navigation }) => {
   const idPrefix = item.id.split('_')[0]; 
@@ -62,14 +37,14 @@ const SceneCard = React.memo(({ item, onImagePress, onLabelPress, api, onDeleteS
   
   return (
     <View style={styles.card}> 
-      <DeleteArtworkModal 
-        visible={modalVisible}
-        onClose={() => {
-          setModalVisible(false);
-        }}
-        onSubmit={deleteArtwork}
-        artworkName={item.title}
-      />
+    <MyModale
+      visible={modalVisible}
+      onClose={() => {
+        setModalVisible(false);
+      }}
+      onSubmit={deleteArtwork}
+      title={`Delete the Artwork : ${item.title} ?`}
+    />
     <TouchableWithoutFeedback  
       onPress={() => onImagePress(imagePath)}
     >
@@ -274,29 +249,35 @@ const MyArtworksScreen = ({ navigation })  => {
             Data Art
           </MyBigButton>
         </View>
-        <ScrollView style={styles.scrollView} ref={scrollViewRef}>
+         { scenes.length > 0  ? (
+                  <ScrollView style={styles.scrollView} ref={scrollViewRef}>
+
+            <View style={styles.sceneContainer}>
+              {scenes.map(item => (
+                <SceneCard
+                  key={item.id}
+                  item={item}
+                  onImagePress={handleImagePress}
+                  onLabelPress={handleNavigate}
+                  api={api}
+                  onDeleteSuccess={() => {
+                    resetPages();
+                    fetchScenes(true);
+                  }}
+                  navigation={navigation}
+                />
+              ))}
+            </View>
+             </ScrollView>
+         ) : (
          
-          <View style={styles.sceneContainer}>
-            {scenes.map(item => (
-              <SceneCard
-                key={item.id}
-                item={item}
-                onImagePress={handleImagePress}
-                onLabelPress={handleNavigate}
-                api={api}
-                onDeleteSuccess={() => {
-                  resetPages();
-                  fetchScenes(true);
-                }}
-                navigation={navigation}
-              />
-            ))}
+          <View>
+            <Text style={styles.textNoData}>Aucune donnée utilisateur disponible</Text>
           </View>
-        </ScrollView>
+         )}       
 
         {/* Pagination */}
         {renderPagination()}
-
     
       </ImageBackground>
         {/* Loader */}
@@ -382,6 +363,14 @@ const styles = StyleSheet.create({
     fontSize: 15,
     color: 'white',
     textAlign: 'center',
+
+  },
+  textNoData:{
+    fontSize: 15,
+    color: 'white',
+    textAlign: 'center',
+    top: 250
+
   },
   loader: {
     position:'absolute',
@@ -493,6 +482,12 @@ const styles = StyleSheet.create({
     marginTop: 17,
     marginRight: 58
   },
+  scrollView:{
+    flex:1,
+    paddingTop:95,
+    paddingBottom: 20
+  },
+
   // Modal 
 
   modalContainer: {
@@ -526,11 +521,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     gap: 20
-  },
-  scrollView:{
-    flex:1,
-    paddingTop:95,
-    paddingBottom: 20
   },
 
   // Pagination

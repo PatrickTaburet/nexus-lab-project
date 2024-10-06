@@ -25,16 +25,18 @@ const ProfileScreen = ({ navigation })  => {
   const fetchUserData = async () => {
    
     try {
+      console.log("11111");
+      
       const token = await AsyncStorage.getItem('token');
       const decodedToken = jwtDecode(token);
       const userId = decodedToken.id;
-
+      console.log(userId);
       const response = await api.get(`/users/${userId}`, {
         headers: {
           'Content-Type': 'application/json',
         },
       });
-      //console.log(response);
+      console.log(response);
       //console.log(response.data);
       
       setUserData(response.data); 
@@ -122,7 +124,7 @@ const ProfileScreen = ({ navigation })  => {
         <FontAwesome5 name="user-edit" size={24} color="white" />
       </TouchableOpacity>
       <View style={styles.container}>
-         {userData ? (
+         {userData && Object.keys(userData).length > 0  ? (
           <>
             <Image
               source={{ uri: avatarUrl }}

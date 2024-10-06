@@ -1,11 +1,12 @@
 import { Image, ScrollView, SafeAreaView, ImageBackground, View, Text, Button, StyleSheet, ActivityIndicator, Animated, Dimensions } from 'react-native';
 import React, {useState, useCallback, useEffect, useRef} from 'react'
-import { colors } from '../utils/colors'
-import config from '../config/config'; 
-import useApi from '../hooks/useApi';
+import { colors } from '../../utils/colors'
+import config from '../../config/config'; 
+import useApi from '../../hooks/useApi';
 import {  useIsFocused } from '@react-navigation/native';
-import Slider from '../components/carouselSlider/Slider'
-import MyButton from '../components/MyButton';
+import Slider from '../../components/carouselSlider/Slider'
+import MyButton from '../../components/MyButton';
+import ArtistRoleModale from '../../components/MyModale'
 
 const { height, width } = Dimensions.get('window');
 
@@ -18,6 +19,7 @@ const HomeScreen = ({ navigation })  => {
   const imagePath1 = `${config.apiUrl}/images/design/gallery.jpg`;
   const imagePath2 = `${config.apiUrl}/images/design/share-your-code.jpg`;
   const scrollY = useRef(new Animated.Value(0)).current;
+  const [modalVisible, setModalVisible] = useState(false);
 
 
   const fetchScenes = useCallback(async () => {
@@ -57,7 +59,7 @@ const HomeScreen = ({ navigation })  => {
     <SafeAreaView style={styles.safeArea}> 
       <Animated.View style={[styles.backgroundWrapper, { transform: [{ translateY: backgroundTranslate }] }]}>
         <ImageBackground
-          source={require('../assets/design/background-cyber-form.jpg')} 
+          source={require('../../assets/design/background-cyber-form.jpg')} 
           style={styles.backgroundImage}
           resizeMode="cover"
         />
@@ -110,7 +112,7 @@ const HomeScreen = ({ navigation })  => {
                 Generate Art
               </MyButton>
               <MyButton
-                onPress={() => {navigation.navigate('GetRole')}}
+                onPress={() => {setModalVisible(true)}}
                 style={styles.roleButton}
                 textStyle={styles.textButton}
               >
@@ -128,7 +130,16 @@ const HomeScreen = ({ navigation })  => {
                 About us
             </MyButton>
           </View>
+          <ArtistRoleModale 
+            title={"Get Artist Role"}
+            content={"Do you want to become an even more active member and share your generative scenes with the community? \n Simply head over to the web version of NexusLab and fill out a quick form. We'll get back to you as soon as possible! No need to create a new account ;)"}
+            visible={modalVisible}
+            onClose={() => {
+              setModalVisible(false);
+            }}
+          />
         </ScrollView>
+   
     </SafeAreaView>
 
   )
