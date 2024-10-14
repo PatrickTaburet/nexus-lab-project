@@ -487,42 +487,6 @@ const styles = StyleSheet.create({
     paddingTop:95,
     paddingBottom: 20
   },
-
-  // Modal 
-
-  modalContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
-  },
-  modalContent: {
-    backgroundColor: colors.purple_dark,
-    padding: 25,
-    borderRadius: 10,
-    width: '90%',
-    height: '23%',
-    borderWidth: 2,
-    borderColor: colors.cyan,
-    alignItems: 'center',
-    justifyContent: 'center',
-
-  },
-
-  modalHeader:{
-    textAlign: "center",
-    marginBottom: 15,
-    fontSize: 19,
-    height: 40,
-    marginTop: 10,
-  },
-  modalBtnContainer:{
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-    gap: 20
-  },
-
   // Pagination
 
   paginationContainer: {

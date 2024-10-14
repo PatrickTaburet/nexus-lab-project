@@ -53,14 +53,14 @@ CSS variables
     --var-primary-dark: #05AFF2;
     --var-secondary: #D63BD9;
     --var-secondary-dark: #7B6CD9;
-    --var-purple-dark: #3A175F;
+    --var-purple-dark: #3a175f;
     
 
-    --var-soft-blue: hsl(215, 51%, 70%);
+    --var-soft-blue: #8bacda;
     --var-cyan: #00fff7;
 
     --var-main-darkest: #0d192b;
-    --var-card-dark: hsl(216, 50%, 16%);
+    --var-card-dark: #14253d;
     --var-line-dark: #2f415b;
     --var-lightest: white;
 

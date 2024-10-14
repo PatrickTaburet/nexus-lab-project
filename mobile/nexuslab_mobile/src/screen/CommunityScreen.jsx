@@ -13,7 +13,6 @@ const CommunityScreen = ({ navigation })  => {
           source={{ uri: decorUrl }}
           style={styles.profileImage}
           resizeMode="contain"
-
       />
         <Text style={styles.text}>Community section incoming..</Text>
     </SafeAreaView> 
