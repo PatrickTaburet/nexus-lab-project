@@ -1,8 +1,8 @@
-  import { useAuth } from '../navigation/AuthContext';
+  import { useAuth } from '../../../navigation/AuthContext';
   import axios from 'axios';
   import AsyncStorage from '@react-native-async-storage/async-storage';
-  import config from '../config/config';
-  import { checkTokenValidity } from '../services/AuthService';
+  import config from '../../../config/config';
+  import { checkTokenValidity } from '../../AuthService';
 
 
   const useApi = () => {

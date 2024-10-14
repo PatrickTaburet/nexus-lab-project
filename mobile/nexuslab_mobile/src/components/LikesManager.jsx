@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet} from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import useApi from '../hooks/useApi';
+import useApi from '../services/api/hooks/useApi';
 
 
 export default function LikesManager({ userId, sceneId, likesNum, entity, isLikedByUser}) {

@@ -7,7 +7,7 @@ import config from '../config/config';
 import { colors } from '../utils/colors'
 import MyButton from '../components/MyButton';
 import globalStyles from '../utils/styles';
-import useApi from '../hooks/useApi';
+import useApi from '../services/api/hooks/useApi';
 import * as ImagePicker from 'expo-image-picker';
 import { checkTokenValidity } from '../services/AuthService';
 import * as FileSystem from 'expo-file-system';

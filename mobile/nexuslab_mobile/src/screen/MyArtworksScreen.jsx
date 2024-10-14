@@ -1,6 +1,6 @@
 import { TouchableWithoutFeedback , ImageBackground, View, Text, ScrollView, StyleSheet,TouchableOpacity, Modal, SafeAreaView, Image, ActivityIndicator, FlatList} from 'react-native';
 import React, { useState, useEffect, useCallback, useRef } from 'react'
-import useApi from '../hooks/useApi';
+import useApi from '../services/api/hooks/useApi';
 import {  useIsFocused } from '@react-navigation/native';
 import config from '../config/config'; 
 import { colors } from '../utils/colors';

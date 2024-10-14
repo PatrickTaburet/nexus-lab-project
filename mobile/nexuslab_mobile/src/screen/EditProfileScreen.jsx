@@ -9,7 +9,7 @@ import { colors } from '../utils/colors'
 import MyButton from '../components/MyButton';
 import globalStyles from '../utils/styles';
 import FontAwesome5 from '@expo/vector-icons/FontAwesome5';
-import useApi from '../hooks/useApi';
+import useApi from '../services/api/hooks/useApi';
 import { useAuth } from '../navigation/AuthContext';
 import * as ImagePicker from 'expo-image-picker';
 import { checkTokenValidity } from '../services/AuthService';

@@ -1,12 +1,12 @@
 import { Image, ScrollView, SafeAreaView, ImageBackground, View, Text, Button, StyleSheet, ActivityIndicator, Animated, Dimensions } from 'react-native';
 import React, {useState, useCallback, useEffect, useRef} from 'react'
-import { colors } from '../../utils/colors'
-import config from '../../config/config'; 
-import useApi from '../../hooks/useApi';
+import { colors } from '../utils/colors'
+import config from '../config/config'; 
+import useApi from '../services/api/hooks/useApi';
 import {  useIsFocused } from '@react-navigation/native';
-import Slider from '../../components/carouselSlider/Slider'
-import MyButton from '../../components/MyButton';
-import ArtistRoleModale from '../../components/MyModale'
+import Slider from '../components/carouselSlider/Slider'
+import MyButton from '../components/MyButton';
+import ArtistRoleModale from '../components/MyModale'
 
 const { height, width } = Dimensions.get('window');
 
@@ -59,7 +59,7 @@ const HomeScreen = ({ navigation })  => {
     <SafeAreaView style={styles.safeArea}> 
       <Animated.View style={[styles.backgroundWrapper, { transform: [{ translateY: backgroundTranslate }] }]}>
         <ImageBackground
-          source={require('../../assets/design/background-cyber-form.jpg')} 
+          source={require('../assets/design/background-cyber-form.jpg')} 
           style={styles.backgroundImage}
           resizeMode="cover"
         />

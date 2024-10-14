@@ -1,6 +1,6 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {jwtDecode} from 'jwt-decode';
-import { refreshTokenApi } from '../api/authApi';
+import { refreshTokenApi } from './api/authApi';
 
 
 

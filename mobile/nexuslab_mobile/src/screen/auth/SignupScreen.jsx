@@ -7,7 +7,7 @@ import { useNavigation } from '@react-navigation/native';
 import MyButton from '../../components/MyButton';
 import { Checkbox } from 'react-native-paper';
 import * as ImagePicker from 'expo-image-picker';
-import { signup } from '../../api/authApi';
+import { signup } from '../../services/api/authApi';
 
 const SignupScreen = () => {
 

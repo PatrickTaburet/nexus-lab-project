@@ -5,7 +5,7 @@ import { Asset } from 'expo-asset';
 import { colors } from '../../../utils/colors'
 import globalStyles from '../../../utils/styles';
 import { Ionicons } from '@expo/vector-icons'; 
-import useApi from '../../../hooks/useApi';
+import useApi from '../../../services/api/hooks/useApi';
 import AsyncStorage from '@react-native-async-storage/async-storage'; 
 import {jwtDecode} from 'jwt-decode';
 import MyButton from '../../../components/MyButton';

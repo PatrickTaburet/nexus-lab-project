@@ -7,7 +7,7 @@ import { useNavigation } from '@react-navigation/native';
 import MyButton from '../../components/MyButton';
 import { Checkbox } from 'react-native-paper';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import useApi from '../../hooks/useApi';
+import useApi from '../../services/api/hooks/useApi';
 import { useAuth } from '../../navigation/AuthContext';
 import {jwtDecode} from 'jwt-decode';
 
