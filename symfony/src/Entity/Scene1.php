@@ -34,7 +34,7 @@ class Scene1 extends BaseScene
 
     #[ORM\Column(type: "integer")]
     #[Groups("sceneDataRecup")]
-    private $num_line;
+    private $numLine;
 
     #[ORM\Column(type: "float")]
     #[Groups("sceneDataRecup")]
@@ -120,12 +120,12 @@ class Scene1 extends BaseScene
 
     public function getNumLine(): ?int
     {
-        return $this->num_line;
+        return $this->numLine;
     }
 
-    public function setNumLine(?int $num_line): self
+    public function setNumLine(?int $numLine): self
     {
-        $this->num_line = $num_line;
+        $this->numLine = $numLine;
 
         return $this;
     }

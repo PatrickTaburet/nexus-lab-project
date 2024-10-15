@@ -33,7 +33,7 @@ security:
                 failure_handler: lexik_jwt_authentication.handler.authentication_failure
 
    
-        # Main firewall for symfony apllication
+        # Main firewall for symfony application
         main:
             lazy: true
             provider: app_user_provider
@@ -41,13 +41,11 @@ security:
             form_login:
                 check_path: app_login
                 login_path: app_login
-                # default_target_path: home
                 use_referer: true
                 enable_csrf: true
             custom_authenticator: App\Security\LoginAuthenticator
             logout:
                 path: app_logout
-                # target: home
             remember_me:
                 secret:   '%kernel.secret%' # required
                 lifetime: 604800 # 1 week in seconds

@@ -33,7 +33,15 @@ Generative scenes
     align-items: center;
     width: 100%;
 }
-
+.authorBanner{
+  font-size: 18px;
+  font-weight: 600;
+  color: #0179a5;
+}
+.pseudo{
+  color: #00DDEB;
+  margin-left: 7px;
+}
 /* Sketch */
 
 #myCanvas{
@@ -864,7 +872,14 @@ Media queries
   width: 70vw;
   height: 13vw;
 }
-
+.authorBanner{
+  position: absolute;
+  font-size: 18px;
+  font-weight: 600;
+  color: #0179a5;
+  top: 30vw;
+  left: 27%;
+}
   /* Control panel */
 
   .parametersBox .card-content {
@@ -955,7 +970,14 @@ Media queries
     width: 70vw;
     height: 13vw;
   }
-
+  .authorBanner{
+    position: absolute;
+    font-size: 16px;
+    font-weight: 600;
+    color: #0179a5;
+    top: 143px;
+    left: 27%;
+  }
   /* ------- Label -------*/
 
   .hexaImg{

@@ -20,15 +20,21 @@ class GenerativeSceneController extends BaseSceneController
 
 // ----------- SCENE G1 : Random Line Walkers -----------
 
-    #[Route("sceneG1", name: "sceneG1")]
-    public function sceneG1(): Response
+    #[Route("sceneG1/{id?}", name: "sceneG1")]
+    public function sceneG1($id = null): Response
     {
+        if ($id !== null) {
+            $scene = $this->entityManager->getRepository(Scene1::class)->find($id);
+        } else {
+            $scene = null;
+        }
         return $this->render('generative_scene/sceneG1.html.twig', [
+            'scene' => $scene,
         ]);
     }   
 
     #[Route("/generative/sendDataG1", name: "send_data_G1", methods: ["POST"])]
-    public function sendData(Request $request): Response
+    public function sendDataToSceneG1(Request $request): Response
     {
         
         $color = $request->request->get('color');

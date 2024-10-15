@@ -18,8 +18,9 @@
 {# ---------------------- #}
 
 <div class="headerTitle">
-    <img class="titleImg" src={{ asset("/images/design/title2.png")}} alt="Title square">
+    <img class="titleImg" src={{asset("/images/design/title2.png")}} alt="Title square">
     <h1>RANDOM LINE WALKERS</h1>
+
 </div>
 
 <div class="mainContainer">
@@ -31,6 +32,9 @@
             <a href="{{ path('generativeHome')}}">Generative <br> Art</a>
             <img class="LabelImg" src={{asset("/images/design/Title-square2.png")}} alt="Generative Art">
         </div>
+        {% if scene %}
+            <p class="authorBanner">From the artwork of<span class="pseudo">{{scene.user.pseudo}}</span></p>
+        {% endif %}
         <div class="descriptionBox">
             <div class="card-border">
                 <div class="card ">
@@ -43,7 +47,7 @@
                         <div class="descriptionContent">
                             This scene is a generator of randomly moving lines, called walkers. <br> By clicking with your mouse (or finger), you can make these walkers appear wherever you desire. They will then move in a more or less random manner according to the parameters you choose. <br>
                             You can influence the style, number, and movement of these walkers! Experiment with different settings and admire the results !
-                         </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -66,18 +70,17 @@
                 </div>
                 <div class="separator"></div>
                 <div class="card-content">
-
+                
                     {# Parameters sliders #}
-
                     {% set sliders = [
-                        {'label': 'Color', 'id': 'colorSlider', 'min': 1, 'max': 360, 'value': 5, 'step': 10},
-                        {'label': 'Number of lines', 'id': 'lineSlider', 'min': 1, 'max': 200, 'value': 100, 'step': 1},
-                        {'label': 'Weight', 'id': 'weightSlider', 'min': 0.2, 'max': 10, 'value': 5, 'step': 0.1},
-                        {'label': 'Saturation', 'id': 'saturationSlider', 'min': 0, 'max': 100, 'value': 90, 'step': 5},
-                        {'label': 'Opacity', 'id': 'opacitySlider', 'min': 0.05, 'max': 1, 'value': 0.7, 'step': 0.05},
-                        {'label': 'Velocity', 'id': 'velocitySlider', 'min': 0, 'max': 15, 'value': 5, 'step': 0.1},
-                        {'label': 'Noise octaves', 'id': 'noiseOctaveSlider', 'min': 0, 'max': 10, 'value': 4, 'step': 1},
-                        {'label': 'Noise falloff', 'id': 'noiseFalloffSlider', 'min': 0, 'max': 1, 'value': 0.5, 'step': 0.05}
+                        {'label': 'Color', 'id': 'colorSlider', 'min': 1, 'max': 360, 'value': scene is null ? 5 : scene.color, 'step': 10},
+                        {'label': 'Number of lines', 'id': 'lineSlider', 'min': 1, 'max': 200, 'value':  scene is null ? 100 : scene.numLine, 'step': 1},
+                        {'label': 'Weight', 'id': 'weightSlider', 'min': 0.2, 'max': 10, 'value':  scene is null ? 5 : scene.weight, 'step': 0.1},
+                        {'label': 'Saturation', 'id': 'saturationSlider', 'min': 0, 'max': 100, 'value':  scene is null ? 90 : scene.saturation, 'step': 5},
+                        {'label': 'Opacity', 'id': 'opacitySlider', 'min': 0.05, 'max': 1, 'value':  scene is null ? 0.7 : scene.opacity, 'step': 0.05},
+                        {'label': 'Velocity', 'id': 'velocitySlider', 'min': 0, 'max': 15, 'value':  scene is null ? 5 : scene.velocity, 'step': 0.1},
+                        {'label': 'Noise octaves', 'id': 'noiseOctaveSlider', 'min': 0, 'max': 10, 'value':  scene is null ? 4 : scene.noiseOctave, 'step': 1},
+                        {'label': 'Noise falloff', 'id': 'noiseFalloffSlider', 'min': 0, 'max': 1, 'value':  scene is null ? 0.5 : scene.noiseFalloff, 'step': 0.05}
                     ] %}
 
                     {% for slider in sliders %}
@@ -104,16 +107,12 @@
             </div>
         </div>       
     </div>
-    
-    <div id="dataScene" style="display:none" ></div>
-
 </div>
 {% if app.user %}
     <script>
-        var userId = {{ app.user.id }};
+        let userId = {{ app.user.id }};
     </script>
 {% endif %}
  
-<script src="{{ asset('js/sketchSceneG1.js') }}"></script>
-
+<script defer src="{{ asset('js/sketchSceneG1.js') }}"></script>
 {% endblock %}

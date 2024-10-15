@@ -104,9 +104,6 @@
             </div>
         </div>       
     </div>
-
-    <div id="dataScene" data-scene="{{ scene|json_encode }}"></div>
-
 </div>
 {% if app.user %}
     <script>
@@ -114,6 +111,6 @@
     </script>
 {% endif %}
 
-<script defer src="{{ asset('js/sketchSceneG1.js') }}" ></script>
+<script defer src="{{ asset('js/sketchSceneG1.js') }}"></script>
 
 {% endblock %}

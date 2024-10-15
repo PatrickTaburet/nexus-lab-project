@@ -1,18 +1,6 @@
 
 // --------------------- Random line walkers --------------------------
 
-//Catch data from DB:
-
-let dataScene;
-function preload() {
-  const dataSceneDiv = document.getElementById('dataScene');
-  if (dataSceneDiv.dataset.scene) {
-    dataScene = JSON.parse(dataSceneDiv.dataset.scene);
-  }  else {
-    console.log("No scene data found");
-  }
-}
-
 // Variables
 
 let cell = 1;
@@ -40,7 +28,6 @@ function setup() {
   colorMode(HSB);
   background(0,0,0);
 
- 
   // User Interface :
 
   checkboxStop = select("#checkboxStop");
@@ -173,7 +160,6 @@ function sendData(){
     // Capture l'image du canva dans un format base64
     const myCanvas = document.getElementById("myCanvas");
     const imageBase64 = myCanvas.toDataURL();
-    // const imageBase64 = canvas.elt.toDataURL();
 
     // Créez une nouvelle image à partir de l'URL base64
     const image = new Image();
@@ -181,7 +167,7 @@ function sendData(){
 
     // Lorsque l'image est chargée, envoyez-la au serveur
     image.onload = function() {
-      const formData = new FormData(); // or new URLSearchParams()
+      const formData = new FormData(); 
       formData.append('color', color);
       formData.append('weight', weight);
       formData.append('numLine', numLine);
@@ -193,7 +179,6 @@ function sendData(){
       formData.append('userId', userId);
       formData.append('file', image.src);
       
-      // saveCanvas();
       fetch('/generative/sendDataG1', {
           method: 'POST',
           body: formData
