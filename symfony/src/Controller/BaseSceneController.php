@@ -64,10 +64,10 @@ abstract class BaseSceneController extends AbstractController
     private function getSceneProps(string $entity): ?SceneData
     {
         $data = [
-            'SceneD1' => new SceneData(SceneD1::class, SaveArtworkD1Type::class, 'sceneD1', 'newSceneD1', 'data_scene', $this->sceneD1Repo),
-            'SceneD2' => new SceneData(SceneD2::class, SaveArtworkD2Type::class, 'sceneD2', 'newSceneD2','data_scene', $this->sceneD2Repo),
-            'Scene1' => new SceneData(Scene1::class, SaveArtworkG1Type::class, 'sceneG1', 'newSceneG1','generative_scene', $this->scene1Repo),
-            'Scene2' => new SceneData(Scene2::class, SaveArtworkG2Type::class, 'sceneG2', 'newSceneG2', 'generative_scene', $this->scene2Repo)
+            'SceneD1' => new SceneData(SceneD1::class, SaveArtworkD1Type::class, 'sceneD1', 'data_scene', $this->sceneD1Repo),
+            'SceneD2' => new SceneData(SceneD2::class, SaveArtworkD2Type::class, 'sceneD2', 'data_scene', $this->sceneD2Repo),
+            'Scene1' => new SceneData(Scene1::class, SaveArtworkG1Type::class, 'sceneG1', 'generative_scene', $this->scene1Repo),
+            'Scene2' => new SceneData(Scene2::class, SaveArtworkG2Type::class, 'sceneG2', 'generative_scene', $this->scene2Repo)
         ];
         return $data[$entity] ?? null;
     }
@@ -83,7 +83,6 @@ abstract class BaseSceneController extends AbstractController
         $formType = $sceneData->getFormType();
 
         $redirectRoute = $sceneData->getRouteName();
-
         $scene = $repo->find($id);
         if (!$scene) {
             throw $this->createNotFoundException('Scene not found');
@@ -96,7 +95,7 @@ abstract class BaseSceneController extends AbstractController
             $this->entityManager->flush();
 
             $this->addFlash('success', 'Artwork save in the gallery'); 
-            return $this->redirectToRoute($redirectRoute);
+            return $this->redirectToRoute('getScene', ['entity' => $entity]);
         }
         return $this->render('main/saveArtwork.html.twig', [
             'form' => $form->createView(),
@@ -104,17 +103,19 @@ abstract class BaseSceneController extends AbstractController
         ]);
     }   
 
-    #[Route("/newScene/{entity}/{id}", name: "newScene", methods: ["GET"])]
-    public function getSceneData(string $entity, int $id): Response
+    #[Route("scene/{entity}/{id?}", name: "getScene")]
+    public function getScene(string $entity, $id = null): Response
     {
-       $sceneDataObj = $this->getSceneProps($entity);
+        $sceneDataObj = $this->getSceneProps($entity);
 
-        $scene = $sceneDataObj->getRepository()->find($id);
-        $json = $this->serializer->serialize($scene, 'json', ['groups' => 'sceneDataRecup']);
-        $sceneData = json_decode($json, true);
+        if ($id !== null) {
+            $scene = $sceneDataObj->getRepository()->find($id);
+        } else {
+            $scene = null;
+        }
+        return $this->render("{$sceneDataObj->getSceneType()}/{$sceneDataObj->getRouteName()}.html.twig", [
+            'scene' => $scene,
+        ]);  
+    }   
 
-        return $this->render("{$sceneDataObj->getSceneType()}/{$sceneDataObj->getNewRouteName()}.html.twig", [
-            'scene' => $sceneData,
-        ]);   
-    } 
 }

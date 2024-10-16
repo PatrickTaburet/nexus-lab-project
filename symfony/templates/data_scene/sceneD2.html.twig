@@ -32,6 +32,9 @@
             <a href="{{ path('generativeHome')}}">Data Art</a>
             <img class="LabelImg" src={{ asset("/images/design/square3.png")}} alt="Data Art">
         </div>
+        {% if scene %}
+            <p class="authorBanner">From the artwork of<span class="pseudo">{{scene.user.pseudo}}</span></p>
+        {% endif %}
         <div class="descriptionBox">
             <div class="card-border">
                 <div class="card ">
@@ -72,17 +75,19 @@
                     <div class="paramBottom paramBottomD2">
                         <div class="sliderBox sliderBoxD2">
 
+                            {# TODO : créer la colonne sizeFactor dans la table sceneD2 et envoyer sa valeur au moment du save #}
+
                             {# Parameters sliders #}
 
                             {% set sliders = [
-                                {'label': 'Division factor', 'class': 'divFactorSlider', 'min': 1, 'max': 7, 'step': 1, 'value': 1},
-                                {'label': 'Copy', 'class': 'numCopySlider', 'min': 1, 'max': 15, 'step': 1, 'value': 3},
-                                {'label': 'Deformation', 'class': 'deformationSlider', 'min': 0, 'max': 50, 'step': 1, 'value': 0},
-                                {'label': 'Size factor', 'class': 'sizeFactorSlider', 'min': 0.2, 'max': 5, 'step': 0.1, 'value': 1},
-                                {'label': 'Division angle', 'class': 'angleDivSlider', 'min': 2, 'max': 50, 'step': 1, 'value': 20},
-                                {'label': 'Opacity', 'class': 'opacitySlider', 'min': 0.01, 'max': 1, 'step': 0.005, 'value': 0.23},
-                                {'label': 'Filters', 'class': 'filterSlider', 'min': 0, 'max': 4, 'step': 1, 'value': 0},
-                                {'label': 'Division', 'class': 'divSlider', 'min': 1, 'max': 23, 'step': 1, 'value': 6}
+                                {'label': 'Division factor', 'class': 'divFactorSlider', 'min': 1, 'max': 7, 'step': 1, 'value': scene is null ? 1 : scene.divFactor},
+                                {'label': 'Copy', 'class': 'numCopySlider', 'min': 1, 'max': 15, 'step': 1, 'value': scene is null ? 3 : scene.copy},
+                                {'label': 'Deformation', 'class': 'deformationSlider', 'min': 0, 'max': 50, 'step': 1, 'value': scene is null ? 0 : scene.deformation},
+                                {'label': 'Size factor', 'class': 'sizeFactorSlider', 'min': 0.2, 'max': 5, 'step': 0.1, 'value': scene is null ? 1 : scene.sizeFactor}, 
+                                {'label': 'Division angle', 'class': 'angleDivSlider', 'min': 2, 'max': 50, 'step': 1, 'value': scene is null ? 20 : scene.angle},
+                                {'label': 'Opacity', 'class': 'opacitySlider', 'min': 0.01, 'max': 1, 'step': 0.005, 'value': scene is null ? 0.23 : scene.opacity},
+                                {'label': 'Filters', 'class': 'filterSlider', 'min': 0, 'max': 4, 'step': 1, 'value': scene is null ? 0 : scene.filters},
+                                {'label': 'Division', 'class': 'divSlider', 'min': 1, 'max': 23, 'step': 1, 'value': scene is null ? 6 : scene.division}
                             ] %}
                             
                             {% for slider in sliders %}
@@ -110,11 +115,11 @@
                         <div class="    ">
                             <div class="checkboxContainer">
                                 <p>GLITCH</p>
-                                <input type="checkbox" id="glitchCheckbox" class="checkbox">
+                                <input type="checkbox" id="glitchCheckbox" class="checkbox" {% if scene is not null and scene.glitch == 1 %}checked{% endif %}>
                             </div>
                             <div class="checkboxContainer">
                                 <p>NOISE</p>
-                                <input type="checkbox" id="noiseCheckbox" class="checkbox">
+                                <input type="checkbox" id="noiseCheckbox" class="checkbox" {% if scene is not null and scene.noise == 1 %}checked{% endif %}>
                             </div>
                         </div>
                  

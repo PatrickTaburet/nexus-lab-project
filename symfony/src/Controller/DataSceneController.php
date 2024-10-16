@@ -22,14 +22,6 @@ class DataSceneController extends BaseSceneController
     
     //  ---------- Scene D1 : Worldwide CO2 -------------
 
-    #[Route("sceneD1", name: "sceneD1")]
-    public function sceneD1(): Response
-    {
-        return $this->render('data_scene/sceneD1.html.twig', [
-            'controller_name' => 'DataSceneController',
-        ]);
-    }
-
     #[Route("/dataScene/sendDataD1", name: "send_data_D1", methods: ["POST"])]
     public function sendDataToSceneD1(
         Request $request,
@@ -107,13 +99,6 @@ class DataSceneController extends BaseSceneController
 
     //  ---------- Scene D2 : Exploding population -------------
 
-    #[Route("/sceneD2", name: "sceneD2")]
-    public function sceneD2(): Response
-    {
-        return $this->render('data_scene/sceneD2.html.twig', [
-            'controller_name' => 'DataSceneController',
-        ]);
-    }
 
     #[Route("/dataScene/sendDataD2", name: "send_data_D2", methods: ["POST"])]
     public function sendDataToSceneD2(Request $request): Response

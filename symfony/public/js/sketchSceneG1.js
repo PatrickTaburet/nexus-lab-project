@@ -65,13 +65,10 @@ function draw(){
         walker.move();
         walker.draw();
       }
-      
     });
     return;
   }
- 
 }
-
 
 function windowResized() {
   const squareSize = min(windowWidth-30, windowHeight-30);

@@ -16,14 +16,12 @@ class SceneData
         string $entityClass,
         string $formType,
         string $routeName,
-        string $newRouteName, 
         string $sceneType = 'default',
         object $repository = null)
     {
         $this->entityClass = $entityClass;
         $this->formType = $formType;
         $this->routeName = $routeName;
-        $this->newRouteName = $newRouteName;
         $this->sceneType = $sceneType;
         $this->repository = $repository;
     }
@@ -42,11 +40,6 @@ class SceneData
     {
         return $this->routeName;
     }
-    public function getNewRouteName(): string
-    {
-        return $this->newRouteName;
-    }
-
     public function getSceneType(): string
     {
         return $this->sceneType;

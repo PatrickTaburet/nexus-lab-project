@@ -31,6 +31,9 @@
             <a href="{{ path('generativeHome')}}">Generative <br> Art</a>
             <img class="LabelImg" src={{ asset("/images/design/Title-square2.png")}} alt="Generative Art">
         </div>
+        {% if scene %}
+            <p class="authorBanner">From the artwork of<span class="pseudo">{{scene.user.pseudo}}</span></p>
+        {% endif %}
         <div class="descriptionBox">
             <div class="card-border">
                 <div class="card ">
@@ -70,17 +73,17 @@
 
                 {# Parameters sliders #}
 
-                   {% set sliders = [
-                        {'label': 'Hue color', 'class': 'hueSlider', 'min': 0, 'max': 360, 'value': 180, 'step': 1},
-                        {'label': 'Color range', 'class': 'colorRangeSlider', 'min': 0, 'max': 1200, 'value': 600, 'step': 1},
-                        {'label': 'Brightness', 'class': 'brightnessSlider', 'min': 0, 'max': 100, 'value': 0, 'step': 1},
-                        {'label': 'Movement', 'class': 'moveSlider', 'min': 0, 'max': 1, 'value': 0.08, 'step': 0.005},
-                        {'label': 'Deformation A', 'class': 'deformSlider', 'min': 0, 'max': 10, 'value': 0.5, 'step': 0.005},
-                        {'label': 'Deformation B', 'class': 'deformSlider2', 'min': 0, 'max': 10, 'value': 0.5, 'step': 0.005},
-                        {'label': 'Shape', 'class': 'shapeSlider', 'min': 1, 'max': 10, 'value': 2, 'step': 0.5},
-                        {'label': 'Rings', 'class': 'ringsSlider', 'min': 0, 'max': 0.3, 'value': 0, 'step': 0.0005},
-                        {'label': 'Diameter', 'class': 'diameterSlider', 'min': 0.001, 'max': 2.5, 'value': 0.4, 'step': 0.005},
-                        {'label': 'Zoom', 'class': 'zoomSlider', 'min': 0, 'max': 5, 'value': 1, 'step': 0.005}
+                    {% set sliders = [
+                        {'label': 'Hue color', 'class': 'hueSlider', 'min': 0, 'max': 360, 'value': scene is null ? 180 : scene.hue, 'step': 1},
+                        {'label': 'Color range', 'class': 'colorRangeSlider', 'min': 0, 'max': 1200, 'value': scene is null ? 600 : scene.colorRange, 'step': 1},
+                        {'label': 'Brightness', 'class': 'brightnessSlider', 'min': 0, 'max': 100, 'value': scene is null ? 0 : scene.brightness, 'step': 1},
+                        {'label': 'Movement', 'class': 'moveSlider', 'min': 0, 'max': 1, 'value': scene is null ? 0.08 : scene.movement, 'step': 0.005},
+                        {'label': 'Deformation A', 'class': 'deformSlider', 'min': 0, 'max': 10, 'value': scene is null ? 0.5 : scene.deformA, 'step': 0.005},
+                        {'label': 'Deformation B', 'class': 'deformSlider2', 'min': 0, 'max': 10, 'value': scene is null ? 0.5 : scene.deformB, 'step': 0.005},
+                        {'label': 'Shape', 'class': 'shapeSlider', 'min': 1, 'max': 10, 'value': scene is null ? 2 : scene.shape, 'step': 0.5},
+                        {'label': 'Rings', 'class': 'ringsSlider', 'min': 0, 'max': 0.3, 'value': scene is null ? 0 : scene.rings, 'step': 0.0005},
+                        {'label': 'Diameter', 'class': 'diameterSlider', 'min': 0.001, 'max': 2.5, 'value': scene is null ? 0.4 : scene.diameter, 'step': 0.005},
+                        {'label': 'Zoom', 'class': 'zoomSlider', 'min': 0, 'max': 5, 'value': scene is null ? 1 : scene.zoom, 'step': 0.005}
                     ] %}
 
                     {% for slider in sliders %}
@@ -94,7 +97,7 @@
                     {% endfor %}
 
                     <div class="buttonBox">
-                        <a href="{{ path('sceneG2')}}" class="customButton generateButton">Reset</a>
+                        <a href="{{ path('getScene', {'id': scene is null ? null : scene.id, 'entity': 'Scene2'})}}" class="customButton generateButton">Reset</a>
                         {% if app.user %}
                             <button class="buttonModale customButton generateButton">Save</button>
                         {% endif %}
