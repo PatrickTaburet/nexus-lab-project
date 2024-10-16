@@ -26,7 +26,6 @@ use Symfony\Component\HttpFoundation\{
 };
 use Symfony\Component\{
     Routing\Annotation\Route,
-    Serializer\SerializerInterface,
 };
 use App\Model\SceneData;
 use Symfony\Bundle\SecurityBundle\Security;
@@ -35,7 +34,6 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 abstract class BaseSceneController extends AbstractController
 {
-    protected  SerializerInterface $serializer;
     protected EntityManagerInterface $entityManager;
     protected Security $security;
     protected SceneD1Repository $sceneD1Repo;
@@ -44,7 +42,6 @@ abstract class BaseSceneController extends AbstractController
     protected Scene2Repository $scene2Repo;
     
     public function __construct(
-        SerializerInterface $serializer,
         EntityManagerInterface $entityManager,
         Security $security,
         SceneD1Repository $sceneD1Repo,
@@ -52,7 +49,6 @@ abstract class BaseSceneController extends AbstractController
         Scene1Repository $scene1Repo,
         Scene2Repository $scene2Repo
     ) {
-        $this->serializer = $serializer;
         $this->entityManager = $entityManager;
         $this->security = $security;
         $this->sceneD1Repo = $sceneD1Repo;
@@ -72,6 +68,21 @@ abstract class BaseSceneController extends AbstractController
         return $data[$entity] ?? null;
     }
 
+    #[Route("scene/{entity}/{id?}", name: "getScene")]
+    public function getScene(string $entity, $id = null): Response
+    {
+        $sceneDataObj = $this->getSceneProps($entity);
+
+        if ($id !== null) { 
+            $scene = $sceneDataObj->getRepository()->find($id);
+        } else {
+            $scene = null;
+        }
+        return $this->render("{$sceneDataObj->getSceneType()}/{$sceneDataObj->getRouteName()}.html.twig", [
+            'scene' => $scene,
+        ]);  
+    }   
+
     #[Route("saveScene/{entity}/{id}", name: "saveScene")]
     public function saveArtwork(Request $request, $id, $entity): Response
     {
@@ -82,7 +93,6 @@ abstract class BaseSceneController extends AbstractController
         $repo = $this->entityManager->getRepository($sceneData->getEntityClass());
         $formType = $sceneData->getFormType();
 
-        $redirectRoute = $sceneData->getRouteName();
         $scene = $repo->find($id);
         if (!$scene) {
             throw $this->createNotFoundException('Scene not found');
@@ -102,20 +112,4 @@ abstract class BaseSceneController extends AbstractController
             'scene' => $scene
         ]);
     }   
-
-    #[Route("scene/{entity}/{id?}", name: "getScene")]
-    public function getScene(string $entity, $id = null): Response
-    {
-        $sceneDataObj = $this->getSceneProps($entity);
-
-        if ($id !== null) {
-            $scene = $sceneDataObj->getRepository()->find($id);
-        } else {
-            $scene = null;
-        }
-        return $this->render("{$sceneDataObj->getSceneType()}/{$sceneDataObj->getRouteName()}.html.twig", [
-            'scene' => $scene,
-        ]);  
-    }   
-
 }

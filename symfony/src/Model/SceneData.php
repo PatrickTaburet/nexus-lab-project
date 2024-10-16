@@ -8,7 +8,6 @@ class SceneData
     private string $entityClass;
     private string $formType;
     private string $routeName;
-    private string $newRouteName;
     private string $sceneType;
     private object $repository;
 
