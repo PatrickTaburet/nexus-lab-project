@@ -6,22 +6,23 @@ use App\Model\SceneData;
 
 class SceneDataFactory
 {
-    private array $repositoryMap;
+    private array $scenesMap;
 
-    public function __construct(array $repositoryMap)
+    public function __construct(array $scenesMap)
     {
-        // Le tableau de correspondance entre les entités et les dépôts (injection via le service)
-        $this->repositoryMap = $repositoryMap;
+        // Tableau de correspondance entre les entity et leurs propriétés 
+        // (injection via le service)
+        $this->scenesMap = $scenesMap;
     }
 
     public function createSceneData(string $entityClass): ?SceneData
     {
-        if (!isset($this->repositoryMap[$entityClass])) {
+        if (!isset($this->scenesMap[$entityClass])) {
             return null; 
         }
 
         // Récupérer les détails de la scène et créer l'objet SceneData
-        $repoData = $this->repositoryMap[$entityClass];
+        $repoData = $this->scenesMap[$entityClass];
 
         return new SceneData(
             $repoData['entityClass'],

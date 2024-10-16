@@ -32,7 +32,7 @@ services:
             - { name: kernel.event_listener, event: lexik_jwt_authentication.on_authentication_success, method: onAuthenticationSuccess }
     App\Factory\SceneDataFactory:
         arguments:
-            $repositoryMap:
+            $scenesMap:
                 SceneD1:
                     entityClass: App\Entity\SceneD1
                     formType: App\Form\SaveArtworkD1Type

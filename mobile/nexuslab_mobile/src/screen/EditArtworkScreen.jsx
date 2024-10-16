@@ -1,16 +1,12 @@
 import { ScrollView, TextInput, ImageBackground, View, Text, Button, StyleSheet, ActivityIndicator, TouchableOpacity, SafeAreaView, Image, Easing } from 'react-native';
 import React, { useState, useEffect } from 'react'
 import { CommonActions, useIsFocused } from '@react-navigation/native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import {jwtDecode} from 'jwt-decode';
 import config from '../config/config'; 
 import { colors } from '../utils/colors'
 import MyButton from '../components/MyButton';
 import globalStyles from '../utils/styles';
 import useApi from '../services/api/hooks/useApi';
-import * as ImagePicker from 'expo-image-picker';
-import { checkTokenValidity } from '../services/AuthService';
-import * as FileSystem from 'expo-file-system';
+
 
 
 const EditArtworkScreen = ({ route, navigation })  => {
