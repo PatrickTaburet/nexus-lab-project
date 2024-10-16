@@ -30,5 +30,32 @@ services:
             $entityManager: '@doctrine.orm.entity_manager'
         tags:
             - { name: kernel.event_listener, event: lexik_jwt_authentication.on_authentication_success, method: onAuthenticationSuccess }
+    App\Factory\SceneDataFactory:
+        arguments:
+            $repositoryMap:
+                SceneD1:
+                    entityClass: App\Entity\SceneD1
+                    formType: App\Form\SaveArtworkD1Type
+                    routeName: sceneD1
+                    sceneType: data_scene
+                    repository: '@App\Repository\SceneD1Repository'
+                SceneD2:
+                    entityClass: App\Entity\SceneD2
+                    formType: App\Form\SaveArtworkD2Type
+                    routeName: sceneD2
+                    sceneType: data_scene
+                    repository: '@App\Repository\SceneD2Repository'
+                Scene1:
+                    entityClass: App\Entity\Scene1
+                    formType: App\Form\SaveArtworkG1Type
+                    routeName: sceneG1
+                    sceneType: generative_scene
+                    repository: '@App\Repository\Scene1Repository'
+                Scene2:
+                    entityClass: App\Entity\Scene2
+                    formType: App\Form\SaveArtworkG2Type
+                    routeName: sceneG2
+                    sceneType: generative_scene
+                    repository: '@App\Repository\Scene2Repository'
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones

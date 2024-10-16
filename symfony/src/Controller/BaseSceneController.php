@@ -20,6 +20,7 @@ use App\Repository\{
     Scene1Repository,
     Scene2Repository
 };
+use App\Factory\SceneDataFactory;
 use Symfony\Component\HttpFoundation\{
     Response,
     Request,
@@ -27,57 +28,34 @@ use Symfony\Component\HttpFoundation\{
 use Symfony\Component\{
     Routing\Annotation\Route,
 };
-use App\Model\SceneData;
 use Symfony\Bundle\SecurityBundle\Security;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+
 
 abstract class BaseSceneController extends AbstractController
 {
     protected EntityManagerInterface $entityManager;
     protected Security $security;
-    protected SceneD1Repository $sceneD1Repo;
-    protected SceneD2Repository $sceneD2Repo;
-    protected Scene1Repository $scene1Repo;
-    protected Scene2Repository $scene2Repo;
+    private SceneDataFactory $sceneDataFactory;
+
     
-    public function __construct(
-        EntityManagerInterface $entityManager,
-        Security $security,
-        SceneD1Repository $sceneD1Repo,
-        SceneD2Repository $sceneD2Repo,
-        Scene1Repository $scene1Repo,
-        Scene2Repository $scene2Repo
-    ) {
+    public function __construct(SceneDataFactory $sceneDataFactory, Security $security, EntityManagerInterface $entityManager)
+    {
+        $this->sceneDataFactory = $sceneDataFactory;
         $this->entityManager = $entityManager;
         $this->security = $security;
-        $this->sceneD1Repo = $sceneD1Repo;
-        $this->sceneD2Repo = $sceneD2Repo;
-        $this->scene1Repo = $scene1Repo;
-        $this->scene2Repo = $scene2Repo;
-    }
-
-    private function getSceneProps(string $entity): ?SceneData
-    {
-        $data = [
-            'SceneD1' => new SceneData(SceneD1::class, SaveArtworkD1Type::class, 'sceneD1', 'data_scene', $this->sceneD1Repo),
-            'SceneD2' => new SceneData(SceneD2::class, SaveArtworkD2Type::class, 'sceneD2', 'data_scene', $this->sceneD2Repo),
-            'Scene1' => new SceneData(Scene1::class, SaveArtworkG1Type::class, 'sceneG1', 'generative_scene', $this->scene1Repo),
-            'Scene2' => new SceneData(Scene2::class, SaveArtworkG2Type::class, 'sceneG2', 'generative_scene', $this->scene2Repo)
-        ];
-        return $data[$entity] ?? null;
     }
 
     #[Route("scene/{entity}/{id?}", name: "getScene")]
     public function getScene(string $entity, $id = null): Response
     {
-        $sceneDataObj = $this->getSceneProps($entity);
-
-        if ($id !== null) { 
-            $scene = $sceneDataObj->getRepository()->find($id);
-        } else {
-            $scene = null;
+        $sceneDataObj = $this->sceneDataFactory->createSceneData($entity);
+        if (!$sceneDataObj) {
+            throw $this->createNotFoundException('Scene type not found.');
         }
+        $scene = $id !== null ? $sceneDataObj->getRepository()->find($id) : null;
+
         return $this->render("{$sceneDataObj->getSceneType()}/{$sceneDataObj->getRouteName()}.html.twig", [
             'scene' => $scene,
         ]);  
@@ -86,7 +64,7 @@ abstract class BaseSceneController extends AbstractController
     #[Route("saveScene/{entity}/{id}", name: "saveScene")]
     public function saveArtwork(Request $request, $id, $entity): Response
     {
-        $sceneData = $this->getSceneProps($entity);
+        $sceneData = $this->sceneDataFactory->createSceneData($entity);
         if (!$sceneData) {
             throw $this->createNotFoundException('Invalid entity type.');
         }
