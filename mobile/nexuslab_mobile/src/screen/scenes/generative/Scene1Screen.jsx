@@ -1,5 +1,5 @@
 import React, {useState, useEffect, useRef} from 'react';
-import { SafeAreaView, TouchableOpacity, Text, StyleSheet, Modal, View, TextInput, ActivityIndicator } from 'react-native';
+import { SafeAreaView, TouchableOpacity, Text, StyleSheet, Modal, View, TextInput, ActivityIndicator, ImageBackground } from 'react-native';
 import { WebView } from 'react-native-webview';
 import { Asset } from 'expo-asset';
 import { colors } from '../../../utils/colors'
@@ -156,41 +156,47 @@ const Scene1Screen = ({ navigation }) => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <TouchableOpacity 
-        onPress={()=>{navigation.goBack()}}
-        style={styles.backButton}
+      <ImageBackground
+        source={require('../../../assets/design/background-pannel-mobile.jpg')}
+        style={styles.backgroundImage} 
+        resizeMode="cover"
       >
-        <Ionicons 
-          name={"arrow-back"}
-          size={23}
-          color={'white'}
-        />
-      </TouchableOpacity>
-      <Text style={[styles.text, globalStyles.mainTitle]}>Random Line Walkers</Text>
+        <TouchableOpacity 
+          onPress={()=>{navigation.goBack()}}
+          style={styles.backButton}
+        >
+          <Ionicons 
+            name={"arrow-back"}
+            size={23}
+            color={'white'}
+          />
+        </TouchableOpacity>
+        <Text style={[styles.text, globalStyles.mainTitle]}>Random Line Walkers</Text>
 
-      {htmlContent && (
-        <WebView 
-          ref={webViewRef}
-          originWhitelist={['*']}
-          source={{ uri: htmlContent }}
-          javaScriptEnabled={true}
-          domStorageEnabled={true}
-          style={styles.webview}
-          onMessage={handleWebViewMessage}
-          onLoadStart={() => setInitialLoading(true)}
-          onLoadEnd={() => setInitialLoading(false)}
+        {htmlContent && (
+          <WebView 
+            ref={webViewRef}
+            originWhitelist={['*']}
+            source={{ uri: htmlContent }}
+            javaScriptEnabled={true}
+            domStorageEnabled={true}
+            style={styles.webview}
+            onMessage={handleWebViewMessage}
+            onLoadStart={() => setInitialLoading(true)}
+            onLoadEnd={() => setInitialLoading(false)}
+          />
+        )}
+        <SaveArtworkModal 
+          visible={modalVisible}
+          onClose={() => {
+            setModalVisible(false);
+            deleteArtwork();
+          }}
+          onSubmit={handleSaveArtwork}
         />
-      )}
-      <SaveArtworkModal 
-        visible={modalVisible}
-        onClose={() => {
-          setModalVisible(false);
-          deleteArtwork();
-        }}
-        onSubmit={handleSaveArtwork}
-      />
-      {initialLoading && <InitialLoadingOverlay />}
-      {sendingDataLoading && <SendingDataLoadingOverlay />}
+        {initialLoading && <InitialLoadingOverlay />}
+        {sendingDataLoading && <SendingDataLoadingOverlay />}
+      </ImageBackground>
     </SafeAreaView> 
   );
 };
@@ -202,6 +208,7 @@ const styles = StyleSheet.create({
   },
   webview: {
     flex: 1,
+    backgroundColor: 'transparent'
   },
   text:{
     color:'white',
@@ -215,7 +222,11 @@ const styles = StyleSheet.create({
     left: 15,
     zIndex: 1000,
   },
-
+  backgroundImage: {
+    flex: 1,
+    width: '100%',
+    height: '100%',
+  },
   // Modale
 
   modalContainer: {
