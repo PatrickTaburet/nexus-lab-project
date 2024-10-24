@@ -28,7 +28,7 @@
         {%  for user in users %}
             <tr>
                 <td>{{user.id}}</td>
-                <td class ='imgContainer'><img class="userImg" src="{{ vich_uploader_asset(user, 'imageFile')}}" alt="article_picture"></td>
+                <td class ='imgContainer'><img class="userImg" src="{{ vich_uploader_asset(user, 'imageFile')}}" alt="Profile picture"></td>
                 <td>{{user.email}}</td>
                 <td>{{user.pseudo}}</td>
                 <td>{% for role in user.roles %}

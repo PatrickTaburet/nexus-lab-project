@@ -18,9 +18,27 @@ const AuthNavigator = ({ isLoggedIn })  => {
         </>
       ) : (
         <>
-          <Stack.Screen name="Welcome" component={WelcomeScreen} />
-          <Stack.Screen name="Login" component={LoginScreen} />
-          <Stack.Screen name="Signup" component={SignupScreen} />
+          <Stack.Screen 
+            name="Welcome" 
+            component={WelcomeScreen}
+            options={{
+              accessibilityLabel: 'Welcome screen, to login or signup.',
+            }} 
+          />
+          <Stack.Screen 
+            name="Login" 
+            component={LoginScreen}
+            options={{
+              accessibilityLabel: 'Authentification screen, login to continue',
+            }} 
+           />
+          <Stack.Screen 
+            name="Signup" 
+            component={SignupScreen}
+            options={{
+              accessibilityLabel: 'Registration screen, fill the form to create an account',
+            }} 
+          />
         </>
       )}
     </Stack.Navigator>

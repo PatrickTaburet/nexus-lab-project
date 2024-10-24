@@ -20,20 +20,37 @@ const WelcomeScreen = () => {
   return (
     <View style={styles.container}>
       <View style={styles.content}>
-        <Text style={[styles.headerText, globalStyles.text3]}>vdddddddvffd</Text>
+        <Text 
+          style={[styles.headerText, globalStyles.text3]}
+          accessible={true}
+          accessibilityRole="header"
+        >
+          Welcome to NexusLab !
+        </Text>
         <Image 
           source={NexusLabImage}
           style={styles.logo}
+          accessible={true}
+          accessibilityLabel="Purple NexusLab logo"
+          accessibilityRole="image"
         />
     
         <View style={styles.buttonContainer}>
           <MyButton
             onPress={HandleLogin}
+            accessible={true} 
+            accessibilityLabel="Login" 
+            accessibilityHint="Touch to authenticate"
+            accessibilityRole="button"
           >
             Login
           </MyButton>
           <MyButton
             onPress={HandleSignup}
+            accessible={true} 
+            accessibilityLabel="Signup" 
+            accessibilityHint="Touch to registrate"
+            accessibilityRole="button"
           >
             Sign up
           </MyButton>

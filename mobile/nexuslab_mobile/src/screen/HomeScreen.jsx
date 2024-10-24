@@ -71,12 +71,16 @@ const HomeScreen = ({ navigation })  => {
             [{ nativeEvent: { contentOffset: { y: scrollY } } }],
             { useNativeDriver: false }
           )}
+          accessible={true}
+          accessibilityLabel="Home page with the last generated artworks"
         >
             <View style={styles.topContainer}>
               <Image
                 source={{ uri: logoUrl }}
                 style={styles.logoImage}
                 resizeMode="contain"
+                accessible={true} 
+                accessibilityLabel="NexusLab Logo"
               />
               <Text style={[styles.text, {textAlign: 'center', width: 250}]}>Collaborative platform for generative art and creative coding ! </Text>
             </View>
@@ -94,6 +98,9 @@ const HomeScreen = ({ navigation })  => {
               onPress={() => {navigation.navigate('Gallery')}}
               style={styles.galleryButton}
               textStyle={styles.textButton}
+              accessible={true}
+              accessibilityLabel="Acess to public gallery of generated artworks"
+              accessibilityHint="Touch to access to gallery"
             >
               Watch in the gallery
             </MyButton>
@@ -103,11 +110,16 @@ const HomeScreen = ({ navigation })  => {
               <Image 
                 source={{ uri: imagePath1 }}
                 style={styles.image}
+                accessible={true}
+                accessibilityLabel="Art gallery image"
               />
               <MyButton
                 onPress={() => {navigation.navigate('Create', { screen: 'CreateMain' })}}
                 style={styles.createButton}
                 textStyle={styles.textButton}
+                accessible={true}
+                accessibilityLabel="Acess to Create section for create artworks"
+                accessibilityHint="Touch to access to Create section"
               >
                 Generate Art
               </MyButton>
@@ -115,17 +127,25 @@ const HomeScreen = ({ navigation })  => {
                 onPress={() => {setModalVisible(true)}}
                 style={styles.roleButton}
                 textStyle={styles.textButton}
+                accessible={true}
+                accessibilityLabel="Modale for role request description"
+                accessibilityHint="Touch to open modale"
               >
                 Get Artist Role
               </MyButton>
               <Image 
                 source={{ uri: imagePath2 }}
                 style={styles.image}
+                accessible={true}
+                accessibilityLabel="Code lines image"
               />   
               <MyButton
                 onPress={() => {navigation.navigate('AboutUs')}}
                 isSecondary={true}
                 style={styles.aboutUs}
+                accessible={true}
+                accessibilityLabel="Acess to About section, informations about NexusLab"
+                accessibilityHint="Touch to access to About section"
               >
                 About us
             </MyButton>
@@ -137,6 +157,10 @@ const HomeScreen = ({ navigation })  => {
             onClose={() => {
               setModalVisible(false);
             }}
+            accessible={true}
+            accessibilityViewIsModal={true}
+            accessibilityLabel="Get Artist role"
+            accessibilityHint="Touch to close the modal"
           />
         </ScrollView>
    

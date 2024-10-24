@@ -41,7 +41,6 @@ function setup() {
   lineSlider = select('#lineSlider');
   weightSlider = select('#weightSlider');
   saturationSlider = select('#saturationSlider');
-
   opacitySlider = select('#opacitySlider');
   velocitySlider = select('#velocitySlider');
   noiseOctaveSlider = select('#noiseOctaveSlider');

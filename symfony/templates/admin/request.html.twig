@@ -44,7 +44,7 @@
             <div><p>Bio :</p>{{request.description}}</div>
             <hr class="hrStyle">
             <div class="sceneImgDiv">
-                <img class="sceneImg" src="{{ vich_uploader_asset(request, 'imageFile')}}" alt="scene_picture">
+                <img class="sceneImg" src="{{ vich_uploader_asset(request, 'imageFile')}}" alt="Scene picture">
             </div>
             <div class="download">
                 <a href="{{ asset('code/' ~ request.codeFile) }}" download>Download Code File</a>

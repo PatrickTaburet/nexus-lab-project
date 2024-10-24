@@ -20,7 +20,7 @@ const SliderItem = ({item, index, scrollX}) => {
       />
       <LinearGradient colors={['transparent', 'rgba(0,0,0,0.8)']} style={styles.background}>
         <View style={{alignItems: 'flex-end'}}>
-          <Text style={[styles.text, {}]}>Create by :  <Text style={styles.pseudo}>{item.user.username}</Text></Text>
+          <Text style={[styles.text, {}]}>Created by :  <Text style={styles.pseudo}>{item.user.username}</Text></Text>
 
         </View>
         <View  style={{gap: 10}}>

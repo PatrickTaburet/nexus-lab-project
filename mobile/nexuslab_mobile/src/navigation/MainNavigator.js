@@ -27,11 +27,16 @@ const MainNavigator = () => {
             shadowOpacity: 0, // Supprime l'ombre sur iOS
           },
           headerShown: true, // Cacher le header pour le TabNavigator
+          accessibilityLabel: 'Main screen with navigattion bottom bar and user profile header',
           header: (props) => (
             <View style={{ pointerEvents: 'box-none', zIndex: 1000 }}>
               <TouchableOpacity
                 onPress={() => navigation.navigate('Profile')}
                 style={{ marginRight: -7, marginTop: -1, zIndex: 1000, position:'absolute', right:15, top:7 }}
+                accessible={true} 
+                accessibilityRole="button" 
+                accessibilityLabel="Show user profile" 
+                accessibilityHint="Touch to open user profile modale"
               >
                 <Ionicons name="person-circle-outline" size={42} color="white" />
               </TouchableOpacity>
@@ -45,6 +50,7 @@ const MainNavigator = () => {
         options={{
           presentation: 'modal',
           headerShown: false,
+          accessibilityLabel: 'User profile screen',
         }}
       />
       <Stack.Screen
@@ -63,6 +69,7 @@ const MainNavigator = () => {
             fontSize: 18, 
           },
           headerTintColor: colors.lightest, // Icon
+          accessibilityLabel: 'Edit user profile screen',
         }}
       />
       <Stack.Screen
@@ -81,6 +88,7 @@ const MainNavigator = () => {
             fontSize: 18, 
           },
           headerTintColor: colors.lightest, // Icon
+          accessibilityLabel: 'User personnal artworks gallery',
         }}
       />
       <Stack.Screen
@@ -99,6 +107,7 @@ const MainNavigator = () => {
             fontSize: 18,
           },
           headerTintColor: colors.lightest, // Icon
+          accessibilityLabel: 'Edit user artwork',
         }}
       />
 

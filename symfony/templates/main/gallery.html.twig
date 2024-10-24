@@ -13,12 +13,12 @@
     <div class="galleryHeader">
         <div class="sideBarBoxLeft">
             <div class="colorBarLeft"></div>
-            <img class="sideBarLeft" src={{asset("/images/design/sideBarLeft.png")}} alt="sideBarLeft">
+            <img class="sideBarLeft" src={{asset("/images/design/sideBarLeft.png")}} alt="Style side bar left">
         </div>
         <h1>Welcome to the member's artwork gallery</h1>
         <div class="sideBarBoxRight">
             <div class="colorBarRight"></div>
-            <img class="sideBarRight" src={{asset("/images/design/sideBarRight.png")}} alt="sideBarRight">
+            <img class="sideBarRight" src={{asset("/images/design/sideBarRight.png")}} alt="Style side bar right">
         </div>
     </div>
 
@@ -26,7 +26,7 @@
 
     <div class="sortingForm">
         <div class="formContainer">
-           <img class="sortingSquareImg" src={{asset("/images/design/square2.png")}} alt="sorting-square">
+           <img class="sortingSquareImg" src={{asset("/images/design/square2.png")}} alt="Stlye sorting selection square">
             {{ form_start(form) }}
                 <div class="form-group">
                     {{ form_label(form.sortSelect, null, { "label_attr": {"class" : "formLabel" } })}}
@@ -46,20 +46,20 @@
                 <div class="card">
                     <div class="cardHeader">
                         <a href="{{ vich_uploader_asset(scene, 'imageFile') }}" class="imgContainer" data-lightbox="gallery" data-title="{{ scene.title }}">
-                            <img src="{{ vich_uploader_asset(scene, 'imageFile') }}" alt="{{ scene.user.pseudo }}" class="artworkImg">
+                            <img src="{{ vich_uploader_asset(scene, 'imageFile') }}" alt="{{ scene.user.pseudo }} artwork" class="artworkImg" >
                         </a>
                         <p class="cardTitle">{{ scene.title }}</p>
                         <div class="commentBox">
                         {% if scene.comment %}
                             {{ scene.comment }}
                         {% else %}
-                            <img src="{{ asset('/images/icons/no-comment-white.png') }}" alt="no-comment" class="noCommentImg">
+                            <img src="{{ asset('/images/icons/no-comment-white.png') }}" alt="No comment" class="noCommentImg">
                         {% endif %}
                         </div>
                     </div>
                     <div class="cardBottom">
                         <div class="cardAttribute">
-                            <img src="{{ vich_uploader_asset(scene.user, 'imageFile') }}" alt="avatar" class="smallAvatar"/>
+                            <img src="{{ vich_uploader_asset(scene.user, 'imageFile') }}" alt="{{ scene.user.pseudo }} avatar" class="smallAvatar"/>
                             <div class="userInfo">
                                 <p>Created by&nbsp; <span><a href="#">{{ scene.user.pseudo }}</a></span></p>
                                 <p>{{scene.updatedAt|date('F j, Y, g:i a')}}</p>

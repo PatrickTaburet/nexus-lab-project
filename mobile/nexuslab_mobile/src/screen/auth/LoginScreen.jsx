@@ -18,6 +18,7 @@ const LoginScreen = ({ navigation }) => {
   const [error, setError] = useState('');
   const [checked, setChecked] = useState(false);
   const { isLoggedIn, setIsLoggedIn } = useAuth();
+  const [isPasswordVisible, setIsPasswordVisible] = useState(false);
 
   const handleLogin = async () => {
     try {
@@ -50,6 +51,9 @@ const LoginScreen = ({ navigation }) => {
       <TouchableOpacity 
         style={styles.backButton}
         onPress={() => navigation.navigate('Welcome')}
+        accessible={true}
+        accessibilityLabel="Back to Home page"
+        accessibilityRole="button"
       >
         <Ionicons name={"arrow-back-circle"} color={colors.lightest} size={50} />
       </TouchableOpacity>
@@ -57,7 +61,13 @@ const LoginScreen = ({ navigation }) => {
       {/* Form */}
       
       <View style={styles.formContainer}>
-        <Text style={[styles.mainText, globalStyles.text3]}>LOGIN</Text>
+        <Text 
+          style={[styles.mainText, globalStyles.text3]}
+          accessible={true}
+          accessibilityRole="header"
+        >
+          LOGIN
+        </Text>
         <View style={styles.inputContainer}>
           <Ionicons 
             name={"mail-outline"}
@@ -68,6 +78,11 @@ const LoginScreen = ({ navigation }) => {
             placeholder='Enter your Email'
             value={email}
             onChangeText={text => setEmail(text)}
+            accessible={true}
+            accessibilityLabel="Email"
+            accessibilityHint="Enter your email address here"
+            keyboardType="email-address"
+            autoCapitalize="none"
           />
         </View>
         <View style={styles.inputContainer}>
@@ -77,11 +92,26 @@ const LoginScreen = ({ navigation }) => {
           style={styles.inputIcon}
           />
           <TextInput 
+            style={styles.pswInput}
             placeholder='Enter your Password'
-            secureTextEntry={true}
+            secureTextEntry={!isPasswordVisible}
             value={password}
             onChangeText={text => setPassword(text)}
+            accessible={true}
+            accessibilityLabel="Password"
+            accessibilityHint="Enter your password here"
+            autoCapitalize="none"
           />
+           <TouchableOpacity 
+            onPress={() => setIsPasswordVisible(!isPasswordVisible)}
+            style={styles.eyeIcon}
+          >
+            <Ionicons 
+              name={isPasswordVisible ? "eye" : "eye-off"}
+              size={24}
+              color="gray"
+            />
+          </TouchableOpacity>
         </View>
         <View style={styles.bottom}>
           <View style={styles.checkboxContainer}>
@@ -90,8 +120,19 @@ const LoginScreen = ({ navigation }) => {
               onPress={() => setChecked(!checked)}
               uncheckedColor={"white"}
               color={"rgb(217, 0, 255)"}
+              accessible={true}
+              accessibilityLabel="Remember me"
+              accessibilityRole="checkbox"
             />
-            <Text style={styles.checkboxText} onPress={() => setChecked(!checked)}>Forgot password?</Text>
+            <Text 
+              style={styles.checkboxText} 
+              onPress={() => setChecked(!checked)}
+              accessible={true}
+              accessibilityLabel="Remember me"
+              accessibilityRole="button"
+            >
+              Remember me?
+            </Text>
           </View>
 
           <TouchableOpacity
@@ -103,10 +144,22 @@ const LoginScreen = ({ navigation }) => {
         <MyButton
           onPress={handleLogin}
           style={styles.submitButton}
+          accessible={true}
+          accessibilityLabel="Login"
+          accessibilityHint="Press to log in with the entered information"
+          accessibilityRole="button"
         >
           Login
         </MyButton>
-        {error ? <Text style={globalStyles.warning} >{error}</Text> : null}
+        {error ? (
+          <Text 
+            style={globalStyles.warning}
+            accessible={true}
+            accessibilityLiveRegion="assertive" 
+          >
+            {error}
+          </Text>
+        ) : null}
       </View>
 
     </View>
@@ -181,5 +234,11 @@ const styles = StyleSheet.create({
       fontSize: 20,
       marginRight: 20,
       color: "rgb(217, 0, 255)"
+    },
+    pswInput:{
+      width: "70%"
+    },
+    eyeIcon:{
+      marginLeft: 7
     }
 })

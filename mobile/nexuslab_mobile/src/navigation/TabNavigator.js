@@ -39,18 +39,8 @@ const CreateStackScreen = () => (
       component={CreateScreen} 
       options={{
         headerShown: false,
-        //headerTransparent: false,
-        // presentation: 'modal',
-        // headerTitle: 'Generative Scenes',
-        // headerBackTitle: 'Back',
-        // headerStyle: {
-        //   backgroundColor: 'rgba(0, 0, 0, 0.7)',
-        // },
-        // headerTitleStyle: { // Text
-        //   color: colors.lightest,
-        //   fontSize: 18, 
-        // },
-        // headerTintColor: colors.lightest, // Icon
+        accessibilityLabel: 'Main creation screen',
+        accessibilityHint: 'Choose your type of creative art',
       }}
     />
     <CreateStack.Screen
@@ -69,6 +59,7 @@ const CreateStackScreen = () => (
             fontSize: 18, 
           },
           headerTintColor: colors.lightest, // Icon
+          accessibilityLabel: 'List of Generative Art scenes to create artworks',
         }}
       />
       <CreateStack.Screen
@@ -87,6 +78,7 @@ const CreateStackScreen = () => (
             fontSize: 18, 
           },
           headerTintColor: colors.lightest, // Icon
+          accessibilityLabel: 'List of Data Art Visualization scenes to create artworks',
         }}
       />
       <CreateStack.Screen
@@ -95,6 +87,7 @@ const CreateStackScreen = () => (
         options={{
           presentation: 'modal',
           headerShown: false,
+          accessibilityLabel: 'Generative Art scene : Random Line walkers',
         }}
       />
       <CreateStack.Screen
@@ -103,6 +96,7 @@ const CreateStackScreen = () => (
         options={{
           presentation: 'modal',
           headerShown: false,
+          accessibilityLabel: 'Generative Art scene : Noise Orbit',
         }}
       />
       <CreateStack.Screen
@@ -111,6 +105,7 @@ const CreateStackScreen = () => (
         options={{
           presentation: 'modal',
           headerShown: false,
+          accessibilityLabel: 'Data Art scene : C02 Emission Explorer',
         }}
       />
       <CreateStack.Screen
@@ -119,6 +114,7 @@ const CreateStackScreen = () => (
         options={{
           presentation: 'modal',
           headerShown: false,
+          accessibilityLabel: 'Data Art scene : Demographic Artistery',
         }}
       />
   </CreateStack.Navigator>
@@ -129,25 +125,29 @@ const TabNavigator = ( ) => {
     <Tab.Navigator
       screenOptions={{
         tabBarStyle: {
-          backgroundColor: colors.purple_dark, // Utilisez la couleur de votre choix
-          borderTopWidth: 0, // Supprime la bordure supérieure si nécessaire
+          backgroundColor: colors.purple_dark, 
+          borderTopWidth: 0,
         },
-        tabBarActiveTintColor: colors.lightest, // Couleur de l'icône et du texte actifs
-        tabBarInactiveTintColor: colors.primary, // Couleur de l'icône et du texte inactifs
+        tabBarActiveTintColor: colors.lightest, 
+        tabBarInactiveTintColor: colors.primary,
       }}
+      accessible={true}
+      accessibilityLabel="Bottom navigation bar"
+      accessibilityRole="tablist" 
     >
-        <Tab.Screen 
-            name="Home"
-            component={HomeScreen}
-            options={{
-                headerShown: false,
-                tabBarLabel: 'Accueil',
-                tabBarIcon: ({ color, size }) => (
-                    <Ionicons name="home" color={color} size={size} />
-                )
-            }}
+      <Tab.Screen 
+          name="Home"
+          component={HomeScreen}
+          options={{
+              headerShown: false,
+              tabBarLabel: 'Accueil',
+              tabBarIcon: ({ color, size }) => (
+                  <Ionicons name="home" color={color} size={size} />
+              ),
+              accessibilityRole: 'tab',
+              accessibilityLabel: 'Access to Home page'
+          }}
         />
-
         <Tab.Screen 
           name="Create"
           component={CreateStackScreen}
@@ -157,32 +157,37 @@ const TabNavigator = ( ) => {
             tabBarIcon: ({ color, size }) => (
               <Ionicons name="add-circle" color={color} size={size} />
             ),
-            tabBarStyle: getTabBarStyle(route)
+            tabBarStyle: getTabBarStyle(route),
+            accessibilityRole: 'tab',
+            accessibilityLabel: 'Access to Create section, to create new artworks'
           })}
         />
         <Tab.Screen 
-            name="Gallery"
-            component={GalleryScreen}
-            options={{
-                headerShown: false,
-                tabBarLabel: 'Gallery',
-                tabBarIcon: ({ color, size }) => (
-                  <Ionicons name="images" color={color} size={size} />
-                )
-            }}
+          name="Gallery"
+          component={GalleryScreen}
+          options={{
+            headerShown: false,
+            tabBarLabel: 'Gallery',
+            tabBarIcon: ({ color, size }) => (
+              <Ionicons name="images" color={color} size={size} />
+            ),
+            accessibilityRole: 'tab',
+            accessibilityLabel: 'Access to public artworks Gallery'
+          }}
         />
         <Tab.Screen 
-            name="Community"
-            component={CommunityScreen}
-            options={{
-                headerShown: false,
-                tabBarLabel: 'Community',
-                tabBarIcon: ({ color, size }) => (
-                  <Ionicons name="people" color={color} size={size} />
-                )
-            }}
+          name="Community"
+          component={CommunityScreen}
+          options={{
+            headerShown: false,
+            tabBarLabel: 'Community',
+            tabBarIcon: ({ color, size }) => (
+              <Ionicons name="people" color={color} size={size} />
+            ),
+            accessibilityRole: 'tab',
+            accessibilityLabel: 'Access to Community section'
+          }}
         />
-
     </Tab.Navigator>
   );
 };
