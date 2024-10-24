@@ -27,25 +27,19 @@ export default function LikesManager({ userId, sceneId, likesNum, entity, isLike
   }
 
   return (
-    <View style={styles.container}>
-        {isLiked? (
-            <Ionicons 
-            onPress={handleLike} 
-            name={"heart"}
-            size={27}
-            style={styles.inputIcon}
-            />
-        ) : (
-            <Ionicons 
-                onPress={handleLike} 
-                name={"heart-outline"}
-                size={27}
-                style={styles.inputIcon}
-            />
-      )}
-    
-      <Text style={styles.numLikes}>{likes} like{ likes<=1 ?  '' : 's' }</Text>
-
+    <View style={styles.container}> 
+        <Ionicons 
+          onPress={handleLike} 
+          name={isLiked ? 'heart' : 'heart-outline'}
+          size={27}
+          style={styles.inputIcon}
+          accessible={true}
+          accessibilityLabel={isLiked ? "Unlike artwork" : "Like artwork"}
+          accessibilityHint={`Tap to ${isLiked ? 'remove your like' : 'like this artwork'}`}
+        />
+      <Text style={styles.numLikes} accessible={true} accessibilityLabel={`${likes} likes`}>
+        {likes} like{likes <= 1 ? '' : 's'}
+      </Text>
   </View>
   )
 }

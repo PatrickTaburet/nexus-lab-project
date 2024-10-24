@@ -37,6 +37,9 @@ const MyButton = ({children, style, onPress, color, isSecondary = false, textSty
           <TouchableOpacity 
             style={styles.touchable}
             onPress={onPress}
+            accessibilityLabel={children}  
+            accessibilityHint="Tap to perform the action" 
+            accessibilityRole="button"
           >
             <Text style={[styles.text, finalTextStyle, isSecondary && {color: 'black'}]}   numberOfLines={0} >{children}</Text>
           </TouchableOpacity>

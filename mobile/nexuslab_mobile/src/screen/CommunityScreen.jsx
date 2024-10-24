@@ -13,8 +13,17 @@ const CommunityScreen = ({ navigation })  => {
           source={{ uri: decorUrl }}
           style={styles.profileImage}
           resizeMode="contain"
+          accessible={true}
+          accessibilityLabel="Purple NexusLab logo"
       />
-        <Text style={styles.text}>Community section incoming..</Text>
+      <Text
+        style={styles.text}
+        accessible={true}
+        accessibilityLabel="Community section message"
+        accessibilityHint="Indicates that the community section is coming soon"
+      >
+        Community section incoming..
+      </Text>
     </SafeAreaView> 
 
   )

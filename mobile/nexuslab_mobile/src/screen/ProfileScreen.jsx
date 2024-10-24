@@ -115,12 +115,12 @@ const ProfileScreen = ({ navigation })  => {
       resizeMode="cover"
     >
     <View style={styles.header}>
-      <TouchableOpacity onPress={() => navigation.goBack()} style={styles.closeButton}>
-        <Ionicons name="close" size={38} color="white" />
+      <TouchableOpacity onPress={() => navigation.goBack()} style={styles.closeButton} accessible={true} accessibilityLabel="Close">
+        <Ionicons name="close" size={38} color="white"/>
       </TouchableOpacity>
     </View>
     <SafeAreaView style={[styles.globalContainer, { height: getContainerHeight() }]}>
-      <TouchableOpacity onPress={() => navigation.navigate('EditProfile')} style={styles.editButton}>
+      <TouchableOpacity onPress={() => navigation.navigate('EditProfile')} style={styles.editButton} accessible={true} accessibilityLabel="Edit Profile">
         <FontAwesome5 name="user-edit" size={24} color="white" />
       </TouchableOpacity>
       <View style={styles.container}>
@@ -129,6 +129,8 @@ const ProfileScreen = ({ navigation })  => {
             <Image
               source={{ uri: avatarUrl }}
               style={styles.profileImage}
+              accessible={true}
+              accessibilityLabel={`Profile picture of ${userData.pseudo}`}
             />
                       
             <Animated.Image
@@ -137,20 +139,25 @@ const ProfileScreen = ({ navigation })  => {
                 styles.circleImg,
                 { transform: [{ rotate: spin }] }
               ]}
+              accessible={true}
+              accessibilityLabel="Decorative animated image"
             />
-            <Text style={styles.text}>Pseudo : {userData.pseudo}</Text>
-            <Text style={styles.text}>Email: {userData.email}</Text>
-            <Text style={styles.text}>Role : {userData.roles[0] ? "USER" : ""}{userData.roles[1] ? " / ARTIST" : ""}{userData.roles[2] ? " / ADMIN" : ""}</Text>
-         
+            <Text style={styles.text} accessible={true} accessibilityLabel={`Pseudo: ${userData.pseudo}`}>Pseudo: {userData.pseudo}</Text>
+            <Text style={styles.text} accessible={true} accessibilityLabel={`Email: ${userData.email}`}>Email: {userData.email}</Text>
+            <Text style={styles.text} accessible={true} accessibilityLabel={`Role: ${userData.roles.join(', ')}`}>
+              Role: {userData.roles[0] ? "USER" : ""}{userData.roles[1] ? " / ARTIST" : ""}{userData.roles[2] ? " / ADMIN" : ""}
+            </Text>
           </>
         ) : (
-          <Text style={styles.text}>Aucune donnée utilisateur disponible</Text>
+          <Text style={styles.text} accessible={true} accessibilityLabel="No user data available">No user data available</Text>
         )}
         <View style={styles.globalButtonBox}>
           <View style={styles.userButtonBox}>
             <MyButton
               onPress={() => {navigation.navigate("MyArtworks")}}
               textStyle = {{fontSize: 16}}
+              accessible={true}
+              accessibilityLabel="Navigate to My Artworks"
             >
               My Artworks
             </MyButton>
@@ -159,6 +166,8 @@ const ProfileScreen = ({ navigation })  => {
             <MyButton
               // onPress={}
               isSecondary={true}
+              accessible={true}
+              accessibilityLabel="Navigate to Artist Dashboard"
             >
               Artist Dashboard
             </MyButton>
@@ -168,11 +177,13 @@ const ProfileScreen = ({ navigation })  => {
           <MyButton
             // onPress={}
             isSecondary={true} 
+            accessible={true}
+            accessibilityLabel="Navigate to Admin Dashboard"
           >
             Admin Dashboard
           </MyButton>
         ) : null}
-        <TouchableOpacity onPress={onLogoutPress}>
+        <TouchableOpacity onPress={onLogoutPress} accessible={true} accessibilityLabel="Logout">
           <Text style={[styles.logoutText, globalStyles.text3]}>Logout</Text>
         </TouchableOpacity>
       </View>

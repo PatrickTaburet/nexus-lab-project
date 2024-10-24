@@ -47,15 +47,27 @@ const CreateScreen = ({ navigation }) => {
           source={require('../assets/design/hexagonal-background.jpg')}
           style={styles.backgroundImage}
           resizeMode="cover"
+          accessible={true}
+          accessibilityLabel="Background image of hexagonal pattern"
         />
       </Animated.View>
       <View style={styles.container}>
-      <Text style={[styles.title, globalStyles.mainTitle]}>Choose a category</Text>
+        <Text
+          style={[styles.title, globalStyles.mainTitle]}
+          accessible={true}
+          accessibilityLabel="Choose a category title"
+          accessibilityHint="Select a category of creative art for your artwork"
+        >
+          Choose a category
+        </Text>
         <MyBigButton
           HandlePress={() => {handleNavigate('GenerateScene')}}
           myStyle={styles.customButton}
           buttonStyle={styles.buttonStyle}
           textStyle={styles.textStyle}
+          accessible={true}
+          accessibilityLabel="Generative Art button"
+          accessibilityHint="Tap to explore Generative Art options"
         >
           Generative Art
         </MyBigButton>
@@ -64,6 +76,9 @@ const CreateScreen = ({ navigation }) => {
           myStyle={styles.customButton}
           buttonStyle={styles.buttonStyle}
           textStyle={styles.textStyle}
+          accessible={true}
+          accessibilityLabel="Data Art button"
+          accessibilityHint="Tap to explore Data Art options"
         >
           Data Art
         </MyBigButton>

@@ -48,6 +48,8 @@ const DataSceneScreen = ({ navigation }) => {
           source={require('../assets/design/hexagonal-background.jpg')}
           style={styles.backgroundImage}
           resizeMode="cover"
+          accessible={true}
+          accessibilityLabel="Background image of hexagonal pattern"
         />
       </Animated.View>
       <View style={styles.container}>
@@ -55,12 +57,22 @@ const DataSceneScreen = ({ navigation }) => {
           contentContainerStyle={{ justifyContent: 'center', alignItems: 'center'}}
           style={styles.scrollViewStyle}
         >
-          <Text style={[styles.title, globalStyles.mainTitle]}>Choose a scene</Text>
+          <Text 
+            style={[styles.title, globalStyles.mainTitle]}
+            accessible={true}
+            accessibilityLabel="Choose a scene title"
+            accessibilityHint="Select a scene for your artwork"
+          >
+            Choose a scene
+          </Text>
           <MyBigButton
             HandlePress={() => {handleNavigate('SceneD2')}}
             myStyle={styles.customButton}
             buttonStyle={styles.buttonStyle}
             textStyle={styles.textStyle}
+            accessible={true}
+            accessibilityLabel="Demographic Artistery button"
+            accessibilityHint="Tap to explore Demographic Artistry"
           >
             Demographic Artistery
           </MyBigButton>
@@ -69,6 +81,9 @@ const DataSceneScreen = ({ navigation }) => {
             myStyle={styles.customButton}
             buttonStyle={styles.buttonStyle}
             textStyle={styles.textStyle}
+            accessible={true}
+            accessibilityLabel="CO2 Emissions Explorer button"
+            accessibilityHint="Tap to explore CO2 Emissions Explorer"
           >
             CO2 Emissions Explorer
           </MyBigButton>
@@ -76,6 +91,9 @@ const DataSceneScreen = ({ navigation }) => {
             myStyle={styles.customButton}
             buttonStyle={styles.buttonStyle}
             textStyle={styles.textStyleOff}
+            accessible={true}
+            accessibilityLabel="Incoming feature"
+            accessibilityHint="This feature is coming soon"
           >
             Incoming ..
           </MyBigButton>

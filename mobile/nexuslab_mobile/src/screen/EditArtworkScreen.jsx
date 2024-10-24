@@ -107,10 +107,13 @@ const EditArtworkScreen = ({ route, navigation })  => {
             <Image
               source={{ uri: artworkUrl }}
               style={styles.artworkImage}
+              accessible={true}
+              accessibilityLabel="Artwork image"
+              accessibilityHint="This is the artwork you are updating"
             />
             <View style={styles.labelInputContainer}>
-              <Text style={styles.textLabel}>Title</Text>
-              <View style={styles.inputContainer}>
+            <Text style={styles.textLabel} accessible={true} accessibilityLabel="Title label" accessibilityHint="Input field for the artwork title">Title</Text>
+            <View style={styles.inputContainer}>
                 <TextInput 
                   value={title}
                   onChangeText={text => setTitle(text)}
@@ -119,12 +122,15 @@ const EditArtworkScreen = ({ route, navigation })  => {
                   onContentSizeChange={(event) => {
                     setInputHeight1(Math.max(40, event.nativeEvent.contentSize.height));
                   }}
+                  accessible={true}
+                  accessibilityLabel="Title input field"
+                  accessibilityHint="Enter the title of the artwork"
                 />
               </View>
             </View>     
             <View style={styles.labelInputContainer}>
-              <Text style={styles.textLabel}>Comment</Text>
-              <View style={styles.inputContainer}>
+            <Text style={styles.textLabel} accessible={true} accessibilityLabel="Comment label" accessibilityHint="Input field for comments">Comment</Text>
+            <View style={styles.inputContainer}>
                 <TextInput 
                   value={comment}
                   onChangeText={text => setComment(text)}
@@ -133,6 +139,9 @@ const EditArtworkScreen = ({ route, navigation })  => {
                   onContentSizeChange={(event) => {
                     setInputHeight2(Math.max(40, event.nativeEvent.contentSize.height));
                   }}
+                  accessible={true}
+                  accessibilityLabel="Comment input field"
+                  accessibilityHint="Enter your comments about the artwork"
                 />
               </View>
             </View>  
@@ -140,6 +149,9 @@ const EditArtworkScreen = ({ route, navigation })  => {
                 <MyButton
                   onPress={HandleUpdateArtwork}
                   style={styles.submitButton}
+                  accessible={true}
+                  accessibilityLabel="Update artwork button"
+                  accessibilityHint="Tap to update the artwork with the entered title and comment"
                 >
                   Update
                 </MyButton>

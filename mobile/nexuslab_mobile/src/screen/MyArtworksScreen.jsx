@@ -44,23 +44,50 @@ const SceneCard = React.memo(({ item, onImagePress, onLabelPress, api, onDeleteS
       }}
       onSubmit={deleteArtwork}
       title={`Delete the Artwork : ${item.title} ?`}
+      accessibilityLabel={`Delete artwork modal for ${item.title}`}
     />
     <TouchableWithoutFeedback  
       onPress={() => onImagePress(imagePath)}
+      accessible={true}
+      accessibilityLabel={`Open artwork titled ${item.title}`}
     >
       <Image 
         source={{ uri: imagePath }}
         style={styles.image}
-        
+        accessible={true}
+        accessibilityLabel={`Artwork titled ${item.title}`}
       />
     </TouchableWithoutFeedback >
       <View style={styles.cardContent}>
-        <Text style={styles.title}>Title : {item.title}</Text>
-        <Text style={styles.comment}>Comment : {item.comment}</Text>
+        <Text 
+          style={styles.title} 
+          accessible={true} 
+          accessibilityLabel={`Artwork Title: ${item.title}`}
+        >
+          Title: {item.title}
+        </Text>
+        <Text 
+          style={styles.comment} 
+          accessible={true} 
+          accessibilityLabel={`Comment: ${item.comment}`} 
+        >
+          Comment: {item.comment}
+        </Text>
         <View style={styles.separator}></View>
-        <Text style={styles.text}>Date : {item.updatedAt}</Text> 
+        <Text 
+          style={styles.text} 
+          accessible={true} 
+          accessibilityLabel={`Date: ${item.updatedAt}`}
+        >
+          Date: {item.updatedAt}
+        </Text> 
         <View style={styles.bottomCard}>
-          <TouchableOpacity onPress={() => onLabelPress(idPrefix)} style={styles.labelContainer}>
+          <TouchableOpacity 
+            onPress={() => onLabelPress(idPrefix)} 
+            style={styles.labelContainer}
+            accessible={true}
+            accessibilityLabel={`View label for ${idPrefix}`}
+          >
             <Text 
               style={[styles.label, idPrefix.includes('D') ? styles.labelData : styles.labelGenerative]}
             >
@@ -78,13 +105,13 @@ const SceneCard = React.memo(({ item, onImagePress, onLabelPress, api, onDeleteS
                   case "SceneD2":
                     return "Demographic Artistry";
                   default:
-                    return "Unknown scene"; // or some default value
+                    return "Unknown scene"; 
                 }
               })()}
             </Text >
           </TouchableOpacity>
           <Text style={styles.likeTxt}>
-          {item.likes} like{item.like > 0 ? "s" : ""}
+            {item.likes} like{item.like > 0 ? "s" : ""}
           </Text>
         </View>
         <View style={styles.buttonBottom}>
@@ -92,12 +119,18 @@ const SceneCard = React.memo(({ item, onImagePress, onLabelPress, api, onDeleteS
             onPress={() => {setModalVisible(true)}}
             isSecondary={true}
             style={styles.cardButton}
+            accessible={true}
+            accessibilityLabel={`Delete artwork titled ${item.title}`}
+            accessibilityHint="Touch to delete this artwork"
           >       
             Delete
           </MyButton>
           <MyButton
             onPress={() => navigation.navigate('EditArtwork', { idPrefix, sceneId })}
             style={styles.cardButton}
+            accessible={true}
+            accessibilityLabel={`Edit artwork titled ${item.title}`}
+            accessibilityHint="Touch to edit this artwork"
           >       
             Edit
           </MyButton>

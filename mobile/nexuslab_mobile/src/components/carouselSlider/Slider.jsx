@@ -1,7 +1,7 @@
 import { View, StyleSheet, ActivityIndicator} from 'react-native';
-import React, { Component, useState, useRef, useEffect, useCallback} from 'react';
+import React, { useState,useEffect, useCallback} from 'react';
 import SliderItem from './SliderItem';
-import Animated, {useAnimatedRef, useAnimatedScrollHandler, useSharedValue} from 'react-native-reanimated';
+import Animated, { useAnimatedScrollHandler, useSharedValue} from 'react-native-reanimated';
 import Pagination from './Pagination';
 
 const Slider = ({sliderContent}) => {
@@ -36,17 +36,17 @@ const Slider = ({sliderContent}) => {
   }
   
   return (
-    <View style={styles.container}>
+    <View style={styles.container} accessible={true} accessibilityLabel="Image slider">
         {(!sliderContent || sliderContent.length === 0) && (
-          <View style={styles.loader}>
+          <View style={styles.loader} accessibilityLabel="Loading" accessibilityRole="status">
             <ActivityIndicator size="large" />
           </View>
         )}
       <Animated.FlatList
         data={data}
         keyExtractor={(item, index) => `${item.id}_${index}`} 
-        renderItem={({item, index}) => (
-          <SliderItem item={item} index={index} scrollX={scrollX}/>
+        renderItem={({item}) => (
+          <SliderItem item={item} />
         )}
         horizontal
         showsHorizontalScrollIndicator={false}
@@ -57,10 +57,14 @@ const Slider = ({sliderContent}) => {
         onEndReached={() => setData([...data, ...sliderContent])}
         onEndReachedThreshold={0.5}
         scrollEventThrottle={16}
+        accessibilityLabel="Slider of the last three artworks generated on NexusLab" 
+        accessibilityRole="list" 
       />
       <Pagination 
         items={sliderContent} 
         paginationIndex={paginationIndex % sliderContent.length}
+        accessible={true}
+        accessibilityLabel="Pagination controls"
       />
     </View>
   )

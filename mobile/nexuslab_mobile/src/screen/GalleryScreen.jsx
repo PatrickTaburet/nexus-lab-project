@@ -21,31 +21,51 @@ const SceneCard = React.memo(({ item, onImagePress, onLabelPress }) => {
     <View style={styles.card}> 
     <TouchableWithoutFeedback  
       onPress={() => onImagePress(imagePath)}
+      accessibilityRole="button"
+      accessibilityLabel="View image"
+      accessibilityHint="Double tap to view the full image"
     >
       <Image 
         source={{ uri: imagePath }}
         style={styles.image}
+        accessible={true}
+        accessibilityLabel="Artwork image"
+        accessibilityHint="This is an artwork"
         
       />
     </TouchableWithoutFeedback >
       <View style={styles.cardContent}>
-        <Text style={styles.title}>{item.title}</Text>
-        <Text style={styles.comment}>{item.comment}</Text>
+      <Text style={styles.title} accessibilityLabel="Artwork title">{item.title}</Text>
+      <Text style={styles.comment} accessibilityLabel="Comment">{item.comment}</Text>
         <View style={styles.separator}></View>
         <View style={styles.userContainer}>
           <Image 
             source={{ uri: avatarPath }}
             style={styles.avatarImage}
+            accessible={true}
+            accessibilityLabel="User avatar"
+            accessibilityHint="This is the profile picture of the artwork creator"
           />
           <View>
-            <Text style={styles.username}>Created by  <Text style={{color: colors.primary_dark, fontSize: 17}}>{item.user.username}</Text></Text>
-            <Text style={styles.date}>{item.updatedAt}</Text> 
+            <Text style={styles.username}>
+              Created by 
+              <Text style={{ color: colors.primary_dark, fontSize: 17 }} accessibilityLabel="Username">
+                {item.user.username}
+              </Text>
+            </Text>
+            <Text style={styles.date} accessibilityLabel="Date of last update">{item.updatedAt}</Text>
           </View>
         </View>
         <View style={styles.bottomCard}>
-          <TouchableOpacity onPress={() => onLabelPress(idPrefix)}>
+          <TouchableOpacity 
+            onPress={() => onLabelPress(idPrefix)}
+            accessibilityRole="button"
+            accessibilityLabel="View art type"
+            accessibilityHint="Tap to view more scenes of this type of art"
+          >
             <Text 
               style={[styles.label, idPrefix.includes('D') ? styles.labelData : styles.labelGenerative]}
+              accessibilityLabel={idPrefix.includes('D') ? "Data Art" : "Generative Art"}
             >
               {idPrefix.includes('D') ? "Data Art" : "Generative Art"}
             </Text>
@@ -163,10 +183,12 @@ const GalleryScreen = ({ navigation })  => {
                 setSelectedOption(item.value); 
               }}
               placeholder="Sort by .."
+              accessibilityLabel="Sort options"
+              accessibilityHint="Choose how to sort the gallery artworks"
             />
           </View>
-          <Text style={[styles.headerTitle, globalStyles.mainTitle]}>
-              Gallery
+          <Text style={[styles.headerTitle, globalStyles.mainTitle]} accessibilityRole="header" accessibilityLevel={1}>
+            Gallery
           </Text>
         </View>
 
@@ -191,6 +213,8 @@ const GalleryScreen = ({ navigation })  => {
           offset: ITEM_HEIGHT * index,
           index,
         })}
+        accessibilityLabel="Gallery list"
+        accessibilityHint="Scroll through the items in the gallery"
       />
       </ImageBackground>
       <Modal visible={!!fullScreenImage} transparent={true} onRequestClose={() => setFullScreenImage(null)}>
@@ -198,16 +222,26 @@ const GalleryScreen = ({ navigation })  => {
           style={styles.fullScreenContainer} 
           onPress={() => setFullScreenImage(null)}
           activeOpacity={1}
+          accessibilityLabel="Full screen image"
+          accessibilityHint="Tap to close the image"
         >
           <Image 
             source={{ uri: fullScreenImage }} 
             style={styles.fullScreenImage} 
             resizeMode="contain"
+            accessibilityLabel="Full screen image"
           />
         </TouchableOpacity>
       </Modal>
       <TouchableOpacity onPress={resetPages} style={styles.arrowIconTouch}>
-        <Ionicons name="arrow-up-circle" size={47} color={colors.cyan} style={styles.arrowIcon}/>
+        <Ionicons 
+          name="arrow-up-circle" 
+          size={47} 
+          color={colors.cyan} 
+          style={styles.arrowIcon}
+          accessibilityLabel="Reset pages"
+          accessibilityHint="Double tap to reset the gallery to the top"
+        />
       </TouchableOpacity>
     </SafeAreaView>
 

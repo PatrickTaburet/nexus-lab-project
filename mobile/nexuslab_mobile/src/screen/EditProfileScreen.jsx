@@ -109,15 +109,13 @@ const EditProfileScreen = ({ navigation })  => {
       });
     }
 
-    // console.log(formData)
     try {
       const  response = await api.post(`/editUser/${userId}`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
       });
-      // console.log(response.data)
-
+    
       if (response && email !== tokenUsername){
         await checkTokenValidity(handleLogout, setIsLoggedIn, email);
       }
@@ -186,6 +184,9 @@ const EditProfileScreen = ({ navigation })  => {
             <Image
               source={{ uri: avatarUrl }}
               style={styles.profileImage}
+              accessible={true}
+              accessibilityLabel="User's profile picture"
+              accessibilityHint="This is your current profile picture"
             />              
             <Animated.Image
               source={{ uri: decorUrl }}
@@ -193,6 +194,9 @@ const EditProfileScreen = ({ navigation })  => {
                 styles.circleImg,
                 { transform: [{ rotate: spin }] }
               ]}
+              accessible={true}
+              accessibilityLabel="Decorative image"
+              accessibilityHint="This is a decorative element"
             />
             <View style={styles.inputContainer}>
               <Ionicons 
@@ -200,7 +204,13 @@ const EditProfileScreen = ({ navigation })  => {
               size={20}
               style={styles.inputIcon}
               />
-              <TouchableOpacity onPress={handleSelectImage} style={styles.imagePicker}>
+              <TouchableOpacity 
+                onPress={handleSelectImage} 
+                style={styles.imagePicker}
+                accessible={true}
+                accessibilityLabel="Change profile picture"
+                accessibilityHint="Tap to select a new profile picture"
+              >
                 <Text>{profilePicture ? profilePicture.name : 'Change Profile Picture'}</Text>
               </TouchableOpacity>
             </View>
@@ -213,6 +223,9 @@ const EditProfileScreen = ({ navigation })  => {
               <TextInput 
                 value={username}
                 onChangeText={text => setUsername(text)}
+                accessible={true}
+                accessibilityLabel="Username input"
+                accessibilityHint="Enter your username"
               />
             </View>
             <View style={styles.inputContainer}>
@@ -224,6 +237,9 @@ const EditProfileScreen = ({ navigation })  => {
               <TextInput 
                 value={email}
                 onChangeText={text => setEmail(text)}
+                accessible={true}
+                accessibilityLabel="Email input"
+                accessibilityHint="Enter your email address"
               />
             </View>
             <View style={styles.inputContainer}>
@@ -235,6 +251,10 @@ const EditProfileScreen = ({ navigation })  => {
               <TextInput 
                 placeholder='Enter new password'
                 onChangeText={text => setPassword(text)}
+                secureTextEntry={true}
+                accessible={true}
+                accessibilityLabel="New password input"
+                accessibilityHint="Enter a new password for your account"
               />
             </View>
             <View style={styles.inputContainer}>
@@ -246,12 +266,19 @@ const EditProfileScreen = ({ navigation })  => {
               <TextInput 
                 placeholder='Repeat password'
                 onChangeText={text => setConfirmPassword(text)}
+                secureTextEntry={true}
+                accessible={true}
+                accessibilityLabel="Confirm password input"
+                accessibilityHint="Repeat your new password for confirmation"
               />
             </View>
             <View style={styles.globalButtonBox}>
                 <MyButton
                   onPress={HandleUpdateProfile}
                   style={styles.submitButton}
+                  accessible={true}
+                  accessibilityLabel="Update profile button"
+                  accessibilityHint="Tap to save your changes"
                 >
                   Update
                 </MyButton>

@@ -28,24 +28,23 @@ const LoginScreen = ({ navigation }) => {
             'Content-Type': 'application/json',
         },
       });
-  
-        console.log('API Response:', response.data);
-        const { token } = response.data;
-        decodedToken = jwtDecode(token);
-        userId = decodedToken.id;
-        await AsyncStorage.setItem('token', token);
-        await AsyncStorage.setItem('userId', userId.toString());
-        // await AsyncStorage.setItem('refresh_token', refresh_token);
-        // await AsyncStorage.setItem('refresh_token_expiration', refresh_token_expiration);
+      console.log('API Response:', response.data);
+      const { token } = response.data;
+      decodedToken = jwtDecode(token);
+      userId = decodedToken.id;
+      await AsyncStorage.setItem('token', token);
+      await AsyncStorage.setItem('userId', userId.toString());
+      // await AsyncStorage.setItem('refresh_token', refresh_token);
+      // await AsyncStorage.setItem('refresh_token_expiration', refresh_token_expiration);
 
-        setIsLoggedIn(true);
-        navigation.replace('TabNavigator');
+      setIsLoggedIn(true);
+      navigation.replace('TabNavigator');
         
     } catch (err) {
       console.log('Error:', err.response?.data);
       setError('Invalid email or password');
     }
-};
+  };
   return (
     <View style={styles.container}>
       <TouchableOpacity 
@@ -137,6 +136,9 @@ const LoginScreen = ({ navigation }) => {
 
           <TouchableOpacity
             onPress={() => navigation.navigate('Signup')}
+            accessible={true}
+            accessibilityLabel="Access to Signup page"
+            accessibilityRole="button"
           >
             <Text style={[styles.signup, globalStyles.text2]}>Sign up</Text>
           </TouchableOpacity>

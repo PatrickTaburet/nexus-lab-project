@@ -33,6 +33,10 @@ export default function CustomSelect({ data, onChange, placeholder }) {
                 activeOpacity={0.8}
                 onPress={toogleExpanded}
                 // hitSlop={{ top: 20, bottom: 30, left: 20, right: 20 }} 
+                accessible={true}
+                accessibilityLabel={expanded ? "Collapse dropdown" : "Expand dropdown"}
+                accessibilityHint={`Tap to ${expanded ? 'collapse' : 'expand'} the options`}
+                accessibilityRole="button"
             >
                 <Text style={styles.text}>{value || placeholder}</Text>
                 <Ionicons 
@@ -53,6 +57,8 @@ export default function CustomSelect({ data, onChange, placeholder }) {
                                         top,
                                     },
                                 ]}
+                                accessible={true}
+                                accessibilityLabel="Dropdown options"
                             >
                                 <FlatList
                                     keyExtractor = {(item) => item.value}
@@ -62,7 +68,8 @@ export default function CustomSelect({ data, onChange, placeholder }) {
                                             activeOpacity={0.8} 
                                             style={styles.optionItem}
                                             onPress={() => onSelect(item)}
-
+                                            accessibilityLabel={item.label}
+                                            accessibilityHint={`Select ${item.label}`}
                                         >
                                             <Text style={styles.optionItemTxt}>{item.label}</Text>
                                         </TouchableOpacity>

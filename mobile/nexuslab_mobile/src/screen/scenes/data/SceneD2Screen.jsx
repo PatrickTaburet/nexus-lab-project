@@ -17,7 +17,7 @@ const SaveArtworkModal = ({ visible, onClose, onSubmit }) => {
   const [comment, setComment] = useState('');
 
   return (
-    <Modal visible={visible} transparent animationType="slide">
+    <Modal visible={visible} transparent animationType="slide" accessible={true}>
       <View style={styles.modalContainer}>
         <View style={styles.modalContent}>
           <Text style={[styles.modalHeader, globalStyles.mainTitle]}>Save my Artwork</Text>
@@ -26,6 +26,9 @@ const SaveArtworkModal = ({ visible, onClose, onSubmit }) => {
             placeholder="Title"
             value={title}
             onChangeText={setTitle}
+            accessible={true}
+            accessibilityLabel="Artwork Title"
+            accessibilityHint="Enter the title for your artwork"
           />
           <TextInput
             style={styles.input}
@@ -33,6 +36,9 @@ const SaveArtworkModal = ({ visible, onClose, onSubmit }) => {
             value={comment}
             onChangeText={setComment}
             multiline
+            accessible={true}
+            accessibilityLabel="Artwork Comment"
+            accessibilityHint="Enter comments or description for your artwork"
           />
           <View style={styles.buttonContainer}>
             <MyButton
@@ -41,12 +47,18 @@ const SaveArtworkModal = ({ visible, onClose, onSubmit }) => {
                 setTitle('');
                 setComment('');
               }}
+              accessible={true}
+              accessibilityLabel="Submit Artwork"
+              accessibilityHint="Tap to submit your artwork details"
             >
               Submit
             </MyButton>
             <MyButton
               onPress={onClose}
               isSecondary={true}
+              accessible={true}
+              accessibilityLabel="Close Modal"
+              accessibilityHint="Tap to go back without saving"
             >
               Back
             </MyButton>
@@ -68,10 +80,15 @@ const SceneD2Screen = ({ navigation }) => {
 
   useEffect(() => {
     async function loadHtmlFile() {
-      const htmlAsset = Asset.fromModule(require('../../../assets/webView/SceneD2.html'));
-      await htmlAsset.downloadAsync();
-      setHtmlContent(htmlAsset.uri);
-      setInitialLoading(false);   
+      try {
+        const htmlAsset = Asset.fromModule(require('../../../assets/webView/SceneD2.html'));
+        await htmlAsset.downloadAsync();
+        setHtmlContent(htmlAsset.uri);
+      } catch (error) {
+        console.error('Erreur de téléchargement du fichier HTML:', error);
+      } finally {
+        setInitialLoading(false);
+      }
     }
     loadHtmlFile();
   }, []);
@@ -221,6 +238,9 @@ const SceneD2Screen = ({ navigation }) => {
         <TouchableOpacity 
           onPress={()=>{navigation.goBack()}}
           style={styles.backButton}
+          accessible={true}
+          accessibilityLabel="Go back"
+          accessibilityHint="Returns to the previous screen"
         >
           <Ionicons 
             name={"arrow-back"}
@@ -228,8 +248,12 @@ const SceneD2Screen = ({ navigation }) => {
             color={'white'}
           />
         </TouchableOpacity>
-        <Text style={[styles.text, globalStyles.mainTitle]}>Demographic Artistery</Text>
+        <Text style={[styles.text, globalStyles.mainTitle]} accessible={true} accessibilityLabel="Title" accessibilityHint="Title of the artwork">
+          Demographic Artistery
+        </Text>
 
+        {/* WebView : data art scene */}
+        
         {htmlContent && (
           <WebView 
             ref={webViewRef}
@@ -244,8 +268,18 @@ const SceneD2Screen = ({ navigation }) => {
             onMessage={handleWebViewMessage}
             onLoadStart={() => setInitialLoading(true)}
             onLoadEnd={() => setInitialLoading(false)}
+            onError={(syntheticEvent) => {
+              const { nativeEvent } = syntheticEvent;
+              console.error('WebView Error: ', nativeEvent);
+            }}
+            accessible={true}
+            accessibilityLabel="Interactive content area"
+            accessibilityHint="This area displays the interactive web content related to the artwork."
           />
         )}
+
+        {/* Saving modale */}
+
         <SaveArtworkModal 
           visible={modalVisible}
           onClose={() => {

@@ -55,12 +55,17 @@ const GenerateSceneScreen = ({ navigation }) => {
           contentContainerStyle={{ justifyContent: 'center', alignItems: 'center'}}
           style={styles.scrollViewStyle}
         >
-          <Text style={[styles.title, globalStyles.mainTitle]}>Choose a scene</Text>
+          <Text style={[styles.title, globalStyles.mainTitle]} accessibilityLabel="Choose a scene" accessibilityRole="header" accessibilityLevel={1}>
+            Choose a scene
+          </Text>
           <MyBigButton
             HandlePress={() => {handleNavigate('Scene1')}}
             myStyle={styles.customButton}
             buttonStyle={styles.buttonStyle}
             textStyle={styles.textStyle}
+            accessibilityRole="button"
+            accessibilityLabel="Navigate to Random Line Walkers scene"
+            accessibilityHint="Tap to explore the Random Line Walkers scene"
           >
             Random Line Walkers
           </MyBigButton>
@@ -69,6 +74,9 @@ const GenerateSceneScreen = ({ navigation }) => {
             myStyle={styles.customButton}
             buttonStyle={styles.buttonStyle}
             textStyle={styles.textStyle}
+            accessibilityRole="button"
+            accessibilityLabel="Navigate to Noise Orbit scene"
+            accessibilityHint="Tap to explore the Noise Orbit scene"
           >
             Noise Orbit
           </MyBigButton>
@@ -76,6 +84,9 @@ const GenerateSceneScreen = ({ navigation }) => {
             myStyle={styles.customButton}
             buttonStyle={styles.buttonStyle}
             textStyle={styles.textStyleOff}
+            accessibilityRole="button"
+            accessibilityLabel="Upcoming feature"
+            accessibilityHint="This feature is coming soon"
           >
             Incoming ..
           </MyBigButton>

@@ -8,27 +8,48 @@ const MyModale = ({ visible, onClose, onSubmit, title, content }) => {
   return (
     <Modal visible={visible} transparent animationType="slide">
       <View style={myStyles.modalContainer}>
-        <View style={myStyles.modalContent}>
-          {title ? ( <Text style={[myStyles.modalHeader, styles.mainTitle]}>{title}</Text>) : null}
+        <View style={myStyles.modalContent} accessible={true}>
+
+          {title ? (
+            <Text 
+              style={[myStyles.modalHeader, styles.mainTitle]} 
+              accessibilityRole="header"
+            >
+              {title}
+            </Text>
+          ) : null}
+
           {content ? (
             <Text 
             style={myStyles.modaltxt}
             numberOfLines={0}
+            accessible={true}
             >
-                {content}
+              {content}
             </Text>
           ) : null}
+
           <View style={myStyles.modalBtnContainer}>
+
             {onSubmit ? (
             <MyButton
               onPress={onSubmit}
+              accessible={true}
+              accessibilityLabel="Confirm action"
+              accessibilityHint="Confirms the action and proceeds"
+              accessibilityRole="button" 
             >
               Confirm 
             </MyButton>
             ) : null}
+
             <MyButton
               onPress={onClose}
               isSecondary={true}
+              accessible={true}
+              accessibilityLabel="Go back"
+              accessibilityHint="Closes the modal without making changes"
+              accessibilityRole="button" 
             >
               Back
             </MyButton>

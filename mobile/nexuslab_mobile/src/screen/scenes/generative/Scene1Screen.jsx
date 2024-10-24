@@ -15,32 +15,45 @@ const SaveArtworkModal = ({ visible, onClose, onSubmit }) => {
   const [comment, setComment] = useState('');
 
   return (
-    <Modal visible={visible} transparent animationType="slide">
+    <Modal visible={visible} transparent animationType="slide" accessible={true}>
       <View style={styles.modalContainer}>
         <View style={styles.modalContent}>
-          <Text style={[styles.modalHeader, globalStyles.mainTitle]}>Save my Artwork</Text>
-          <TextInput
+          <Text style={[styles.modalHeader, globalStyles.mainTitle]} accessible={true} accessibilityLabel="Save Artwork Header">
+            Save my Artwork
+          </Text>          <TextInput
             style={styles.input}
             placeholder="Title"
             value={title}
             onChangeText={setTitle}
+            accessible={true}
+            accessibilityLabel="Artwork Title"
+            accessibilityHint="Enter the title for your artwork"
           />
           <TextInput
             style={styles.input}
             placeholder="Comment"
             value={comment}
             onChangeText={setComment}
+            accessible={true}
+            accessibilityLabel="Artwork Title"
+            accessibilityHint="Enter the title for your artwork"
             multiline
           />
           <View style={styles.buttonContainer}>
             <MyButton
               onPress={() => onSubmit(title, comment)}
+              accessible={true}
+              accessibilityLabel="Submit Artwork"
+              accessibilityHint="Tap to submit your artwork details"
             >
               Submit
             </MyButton>
             <MyButton
               onPress={onClose}
               isSecondary={true}
+              accessible={true}
+              accessibilityLabel="Close Modal"
+              accessibilityHint="Tap to go back without saving"
             >
               Back
             </MyButton>
@@ -164,6 +177,9 @@ const Scene1Screen = ({ navigation }) => {
         <TouchableOpacity 
           onPress={()=>{navigation.goBack()}}
           style={styles.backButton}
+          accessible={true}
+          accessibilityLabel="Go back"
+          accessibilityHint="Returns to the previous screen"
         >
           <Ionicons 
             name={"arrow-back"}
@@ -171,7 +187,11 @@ const Scene1Screen = ({ navigation }) => {
             color={'white'}
           />
         </TouchableOpacity>
-        <Text style={[styles.text, globalStyles.mainTitle]}>Random Line Walkers</Text>
+        <Text style={[styles.text, globalStyles.mainTitle]} accessible={true} accessibilityLabel="Title" accessibilityHint="Title of the artwork">
+          Random Line Walkers
+        </Text>
+
+        {/* WebView : generative art scene */}
 
         {htmlContent && (
           <WebView 
@@ -184,8 +204,18 @@ const Scene1Screen = ({ navigation }) => {
             onMessage={handleWebViewMessage}
             onLoadStart={() => setInitialLoading(true)}
             onLoadEnd={() => setInitialLoading(false)}
+            onError={(syntheticEvent) => {
+              const { nativeEvent } = syntheticEvent;
+              console.error('WebView Error: ', nativeEvent);
+            }}
+            accessible={true}
+            accessibilityLabel="Interactive content area"
+            accessibilityHint="This area displays the interactive web content related to the artwork."
           />
         )}
+
+        {/* Saving modale */}
+        
         <SaveArtworkModal 
           visible={modalVisible}
           onClose={() => {

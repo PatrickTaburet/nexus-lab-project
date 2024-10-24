@@ -87,6 +87,9 @@ const SignupScreen = () => {
       <TouchableOpacity 
         style={styles.backButton}
         onPress={() => navigation.navigate('Welcome')}
+        accessible={true}
+        accessibilityLabel="Go back to the welcome screen"
+        accessibilityHint="Returns to the welcome screen for more options"
       >
       <Ionicons name={"arrow-back-circle"} color={colors.lightest} size={50} />
       </TouchableOpacity>
@@ -107,6 +110,9 @@ const SignupScreen = () => {
               placeholder='Username'
               value={username}
               onChangeText={setUsername}
+              accessible={true}
+              accessibilityLabel="Username"
+              accessibilityHint="Enter your username here"
             />
           </View>
           <View style={styles.inputContainer}>
@@ -119,6 +125,9 @@ const SignupScreen = () => {
               placeholder='Email'
               value={email}
               onChangeText={setEmail}
+              accessible={true}
+              accessibilityLabel="Email address"
+              accessibilityHint="Enter your email address here"
             />
           </View>
           <View style={styles.inputContainer}>
@@ -132,6 +141,9 @@ const SignupScreen = () => {
               secureTextEntry={true}
               value={password}
               onChangeText={setPassword}
+              accessible={true}
+              accessibilityLabel="Password"
+              accessibilityHint="Enter your password here"
             />          
           </View>
           <View style={styles.inputContainer}>
@@ -145,6 +157,9 @@ const SignupScreen = () => {
               secureTextEntry={true}
               value={confirmPassword}
               onChangeText={setConfirmPassword}
+              accessible={true}
+              accessibilityLabel="Confirm password"
+              accessibilityHint="Re-enter your password to confirm"
             />
           </View>
           <View style={styles.inputContainer}>
@@ -153,30 +168,59 @@ const SignupScreen = () => {
             size={20}
             style={styles.inputIcon}
             />
-            <TouchableOpacity onPress={handleSelectImage} style={styles.imagePicker}>
+            <TouchableOpacity 
+              onPress={handleSelectImage} 
+              style={styles.imagePicker}
+              accessible={true}
+              accessibilityLabel={profilePicture ? 'Change profile picture' : 'Select profile picture'}
+              accessibilityHint="Choose an image to use as your profile picture"
+            >
               <Text>{profilePicture ? 'Change Profile Picture' : 'Select Profile Picture'}</Text>
             </TouchableOpacity>
           </View>
+
           {profilePicture && (
-            <Image source={{ uri: profilePicture.uri }} style={styles.image} />
+            <Image 
+              source={{ uri: profilePicture.uri }} 
+              style={styles.image} 
+              accessible={true}
+              accessibilityLabel="Selected profile picture"
+            />
           )}
-          
+
           <View style={styles.checkboxContainer}>
             <Checkbox
               status={checked ? 'checked' : 'unchecked'}
               onPress={() => setChecked(!checked)}
               uncheckedColor={"white"}
               color={"rgb(217, 0, 255)"}
+              accessible={true}
+              accessibilityLabel="Agree to terms"
             />
-            <Text style={styles.checkboxText} onPress={() => setChecked(!checked)}>Agree terms</Text>
+            <Text 
+              style={styles.checkboxText} 
+              onPress={() => setChecked(!checked)}
+              accessible={true}
+              accessibilityLabel="Terms agreement text"
+              accessibilityHint="Click here to agree to the terms and conditions"
+            >
+              Agree terms
+            </Text>
           </View>
           <MyButton
             onPress={handleRegister}
             style={styles.submitButton}
+            accessible={true}
+            accessibilityLabel="Register button"
+            accessibilityHint="Press here to create an account with the provided information"
           >
             Register
           </MyButton>
-          {error ? <Text style={globalStyles.warning} >{error}</Text> : null}
+          {error ? (
+            <Text style={globalStyles.warning} accessible={true} accessibilityLabel="Registration error">
+              {error}
+            </Text>
+          ) : null}
         </View>
       </ScrollView>
     </View>

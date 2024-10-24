@@ -26,6 +26,9 @@ const MyBigButton = ({children, myStyle, HandlePress, buttonStyle, textStyle, is
       <TouchableOpacity 
         style={buttonCombinedStyle}
         onPress={HandlePress}
+        accessibilityLabel={children}  
+        accessibilityHint="Tap to perform the action" 
+        accessibilityRole="button"
       >
         <LinearGradient
           colors={isSecondary ? ['#E5E5EA', '#AAAAAA', '#666666']  : ['#AF40FF', '#5B42F3', '#00DDEB']}
