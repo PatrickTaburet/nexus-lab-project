@@ -1,5 +1,5 @@
 import React, {useState, useEffect, useRef} from 'react';
-import { SafeAreaView, TouchableOpacity, Text, StyleSheet, Modal, View, TextInput, ActivityIndicator, ImageBackground } from 'react-native';
+import { Image, SafeAreaView, TouchableOpacity, Text, StyleSheet, Modal, View, TextInput, ActivityIndicator, ImageBackground } from 'react-native';
 import { WebView } from 'react-native-webview';
 import { Asset } from 'expo-asset';
 import { colors } from '../../../utils/colors'
@@ -8,66 +8,10 @@ import { Ionicons } from '@expo/vector-icons';
 import useApi from '../../../services/api/hooks/useApi';
 import AsyncStorage from '@react-native-async-storage/async-storage'; 
 import {jwtDecode} from 'jwt-decode';
-import MyButton from '../../../components/MyButton';
 import * as FileSystem from 'expo-file-system';
 import config from '../../../config/config'; 
+import SaveArtworkModal from '../../../components/SaveArtworkModale';
 
-const SaveArtworkModal = ({ visible, onClose, onSubmit }) => {
-  const [title, setTitle] = useState('');
-  const [comment, setComment] = useState('');
-
-  return (
-    <Modal visible={visible} transparent animationType="slide" accessible={true}>
-      <View style={styles.modalContainer}>
-        <View style={styles.modalContent}>
-          <Text style={[styles.modalHeader, globalStyles.mainTitle]}>Save my Artwork</Text>
-          <TextInput
-            style={styles.input}
-            placeholder="Title"
-            value={title}
-            onChangeText={setTitle}
-            accessible={true}
-            accessibilityLabel="Artwork Title"
-            accessibilityHint="Enter the title for your artwork"
-          />
-          <TextInput
-            style={styles.input}
-            placeholder="Comment"
-            value={comment}
-            onChangeText={setComment}
-            multiline
-            accessible={true}
-            accessibilityLabel="Artwork Comment"
-            accessibilityHint="Enter comments or description for your artwork"
-          />
-          <View style={styles.buttonContainer}>
-            <MyButton
-              onPress={() => {
-                onSubmit(title, comment);
-                setTitle('');
-                setComment('');
-              }}
-              accessible={true}
-              accessibilityLabel="Submit Artwork"
-              accessibilityHint="Tap to submit your artwork details"
-            >
-              Submit
-            </MyButton>
-            <MyButton
-              onPress={onClose}
-              isSecondary={true}
-              accessible={true}
-              accessibilityLabel="Close Modal"
-              accessibilityHint="Tap to go back without saving"
-            >
-              Back
-            </MyButton>
-          </View>
-        </View>
-      </View>
-    </Modal>
-  );
-};
 
 const SceneD2Screen = ({ navigation }) => {
   const [htmlContent, setHtmlContent] = useState(null);
@@ -77,6 +21,7 @@ const SceneD2Screen = ({ navigation }) => {
   const {api} = useApi();
   const [initialLoading, setInitialLoading] = useState(true); 
   const [sendingDataLoading, setSendingDataLoading] = useState(false); 
+  const [imagePreview, setImagePreview] = useState(null);
 
   useEffect(() => {
     async function loadHtmlFile() {
@@ -121,10 +66,8 @@ const SceneD2Screen = ({ navigation }) => {
           const countryName = file.split('_')[0];
           data[countryName] = JSON.parse(content);
         }
-        //console.log('Données chargées:', data);
-        // setPopulationData(data); 
+
         const populationDataString = JSON.stringify(data);
-        //console.log(populationDataString);
          
         if (webViewRef.current) {
           const jsCode = `
@@ -134,7 +77,7 @@ const SceneD2Screen = ({ navigation }) => {
           webViewRef.current.injectJavaScript(jsCode);
         }
       } catch (error) {
-        console.error('Erreur lors du chargement des données:', error);
+        console.error('Error during data loading:', error);
       } 
     };
   
@@ -143,8 +86,6 @@ const SceneD2Screen = ({ navigation }) => {
 
   const handleWebViewMessage = (event) => {
     const data = JSON.parse(event.nativeEvent.data);
-    console.log('Message reçu:');
-    // console.log(data);
     // console.log('Données reçues de la WebView:', data);
     sendDataToBackend(data);
   };
@@ -166,21 +107,43 @@ const SceneD2Screen = ({ navigation }) => {
           'Content-Type': 'application/json',
         },
       });
+
       if (response.status !== 200) {
-        throw new Error("Erreur lors de l'envoi des données à l'API");
+        throw new Error("Error sending data to the API");
       }
 
       const result = await response.data;
-      console.log("result")
-      console.log(result)
+
       setCurrentSceneId(result.sceneId);
+      getImagePreview(result.sceneId);
       setModalVisible(true);
       setSendingDataLoading(false);
     } catch (error) {
-      console.error("Erreur lors de l'envoi des données:", error);
+      console.error("Error sending data:", error);
       setSendingDataLoading(false); 
     }
   };
+
+  const getImagePreview = async (sceneId) => {
+    try {
+      const response = await api.post(`/saveScene/getPreview`, {
+        sceneId: sceneId,
+        sceneType: "SceneD2"
+      }, {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+      const result = await response.data; 
+      setImagePreview(result.imageName);
+     
+      if (response.status !== 200) {
+        throw new Error("Error getting image preview");
+      }
+    } catch (error) {
+      console.error("Error trying to get image preview:", error);
+    }
+  }
 
   const handleSaveArtwork = async (title, comment) => {
     try {
@@ -194,25 +157,25 @@ const SceneD2Screen = ({ navigation }) => {
       });
       // console.log(response.data);
       if (response.status !== 200) {
-        throw new Error("Erreur lors de la mise à jour de la scène");
+        throw new Error("Error updating the scene");
       }
       setModalVisible(false);
       alert(`Artwork ${title} save in the gallery`);
     } catch (error) {
-      console.error("Erreur lors de la mise à jour de la scène:", error);
+      console.error("Error trying to update the scene:", error);
     }
   };
 
-  const deleteArtwork = async($currentSceneId) => {
+  const deleteArtwork = async() => {
     try {
       const response = await api.post(`/artworks/delete/${currentSceneId}/SceneD2`);
       // console.log(response.data);
       if (response.status !== 200) {
-        throw new Error("Erreur lors de la suppression de la scène");
+        throw new Error("Error deleting the scene");
       }
       console.log(`Artwork removed`);
     } catch (error) {
-      console.error("Erreur lors de la suppression de la scène:", error);
+      console.error("Error trying to delete the scene:", error);
     }
   };
 
@@ -282,6 +245,8 @@ const SceneD2Screen = ({ navigation }) => {
 
         <SaveArtworkModal 
           visible={modalVisible}
+          imagePreview={imagePreview}
+          imageFolder={"sceneD2Img"}
           onClose={() => {
             setModalVisible(false);
             deleteArtwork(currentSceneId);
@@ -321,43 +286,6 @@ const styles = StyleSheet.create({
     width: '100%',
     height: '100%',
   },
-  // Modale
-
-  modalContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
-  },
-  modalContent: {
-    backgroundColor: colors.purple_dark,
-    padding: 20,
-    borderRadius: 10,
-    width: '80%',
-    borderWidth: 2,
-    borderColor: colors.cyan,
-  },
-  input: {
-    borderWidth: 1,
-    borderColor: '#ddd',
-    padding: 10,
-    marginBottom: 15,
-    borderRadius: 5,
-    backgroundColor: colors.lightest
-  },
-  submitButton: {
-  },
-  closeButton: {
-    color: colors.purple_dark,
-    margin: 0
-  },
-  modalHeader:{
-    textAlign: "center",
-    marginBottom: 15,
-    fontSize: 19,
-    height: 40,
-    marginTop: 10,
-  },
   loadingOverlay: {
     position: 'absolute',
     left: 0,
@@ -367,13 +295,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  buttonContainer:{
-    display:'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    gap: 15,
-    marginTop: 5,
-  }
+
 });
 
 export default SceneD2Screen;

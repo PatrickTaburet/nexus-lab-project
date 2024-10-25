@@ -111,7 +111,7 @@ class api_BaseSceneController extends AbstractController
         }
     }
 
-    #[Route("api/generative/getPreview", name: "api_getPreview", methods: ["POST"])]
+    #[Route("api/saveScene/getPreview", name: "api_getPreview", methods: ["POST"])]
     public function api_getPreview(Request $request): JsonResponse
     {
         try {
