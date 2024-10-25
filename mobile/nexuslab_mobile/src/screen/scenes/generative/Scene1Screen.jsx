@@ -1,5 +1,5 @@
-import React, {useState, useEffect, useRef} from 'react';
-import { SafeAreaView, TouchableOpacity, Text, StyleSheet, Modal, View, TextInput, ActivityIndicator, ImageBackground } from 'react-native';
+import React, { useState, useEffect, useRef} from 'react';
+import { Image, SafeAreaView, TouchableOpacity, Text, StyleSheet, Modal, View, TextInput, ActivityIndicator, ImageBackground } from 'react-native';
 import { WebView } from 'react-native-webview';
 import { Asset } from 'expo-asset';
 import { colors } from '../../../utils/colors'
@@ -9,10 +9,12 @@ import useApi from '../../../services/api/hooks/useApi';
 import AsyncStorage from '@react-native-async-storage/async-storage'; 
 import {jwtDecode} from 'jwt-decode';
 import MyButton from '../../../components/MyButton';
+import config from '../../../config/config'; 
 
-const SaveArtworkModal = ({ visible, onClose, onSubmit }) => {
+const SaveArtworkModal = ({ visible, onClose, onSubmit, imagePreview }) => {
   const [title, setTitle] = useState('');
   const [comment, setComment] = useState('');
+  const previewUrl = `${config.apiUrl}/images/scene1Img/${imagePreview}`;
 
   return (
     <Modal visible={visible} transparent animationType="slide" accessible={true}>
@@ -20,7 +22,17 @@ const SaveArtworkModal = ({ visible, onClose, onSubmit }) => {
         <View style={styles.modalContent}>
           <Text style={[styles.modalHeader, globalStyles.mainTitle]} accessible={true} accessibilityLabel="Save Artwork Header">
             Save my Artwork
-          </Text>          <TextInput
+          </Text>     
+            {imagePreview && (
+              <Image 
+                source={{ uri: previewUrl }} 
+                style={styles.preview}
+                accessible={true}
+                accessibilityLabel="Artwrk preview image"
+                resizeMode="contain" 
+              />
+            )}     
+          <TextInput
             style={styles.input}
             placeholder="Title"
             value={title}
@@ -41,7 +53,11 @@ const SaveArtworkModal = ({ visible, onClose, onSubmit }) => {
           />
           <View style={styles.buttonContainer}>
             <MyButton
-              onPress={() => onSubmit(title, comment)}
+              onPress={() =>{
+                onSubmit(title, comment);
+                setTitle("");
+                setComment("");
+              } }
               accessible={true}
               accessibilityLabel="Submit Artwork"
               accessibilityHint="Tap to submit your artwork details"
@@ -72,6 +88,7 @@ const Scene1Screen = ({ navigation }) => {
   const {api} = useApi();
   const [initialLoading, setInitialLoading] = useState(true); 
   const [sendingDataLoading, setSendingDataLoading] = useState(false); 
+  const [imagePreview, setImagePreview] = useState(null);
 
   useEffect(() => {
     async function loadHtmlFile() {
@@ -85,7 +102,7 @@ const Scene1Screen = ({ navigation }) => {
 
   const handleWebViewMessage = (event) => {
     const data = JSON.parse(event.nativeEvent.data);
-    // console.log('Données reçues de la WebView:', data);
+    //console.log('Données reçues de la WebView:', data);
     sendDataToBackend(data);
   };
 
@@ -106,19 +123,42 @@ const Scene1Screen = ({ navigation }) => {
       });
       
       if (response.status !== 200) {
-        throw new Error("Erreur lors de l'envoi des données à l'API");
+        throw new Error("Error sending data to the API");
       }
 
       const result = await response.data;
    
       setCurrentSceneId(result.sceneId);
+      getImagePreview(result.sceneId);
       setModalVisible(true);
       setSendingDataLoading(false);
     } catch (error) {
-      console.error("Erreur lors de l'envoi des données:", error);
+      console.error("Error sending data :", error);
       setSendingDataLoading(false); 
     }
   };
+
+  const getImagePreview = async (sceneId) => {
+    try {
+      const response = await api.post(`/generative/getPreview`, {
+        sceneId: sceneId,
+        sceneType: "Scene1"
+      }, {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+      const result = await response.data;
+      setImagePreview(result.imageName);
+     
+      if (response.status !== 200) {
+        throw new Error("Error getting image preview");
+      }
+    } catch (error) {
+      console.error("Error trying to get image preview:", error);
+
+    }
+  }
 
   const handleSaveArtwork = async (title, comment) => {
     try {
@@ -132,12 +172,12 @@ const Scene1Screen = ({ navigation }) => {
       });
       // console.log(response.data);
       if (response.status !== 200) {
-        throw new Error("Erreur lors de la mise à jour de la scène");
+        throw new Error("Error updating the scene");
       }
       setModalVisible(false);
       alert(`Artwork ${title} save in the gallery`);
     } catch (error) {
-      console.error("Erreur lors de la mise à jour de la scène:", error);
+      console.error("Error trying to update the scene:", error);
     }
   };
 
@@ -146,24 +186,24 @@ const Scene1Screen = ({ navigation }) => {
       const response = await api.post(`/artworks/delete/${currentSceneId}/Scene1`);
       // console.log(response.data);
       if (response.status !== 200) {
-        throw new Error("Erreur lors de la suppression de la scène");
+        throw new Error("Error deleting the scene");
       }
       console.log(`Artwork removed`);
     } catch (error) {
-      console.error("Erreur lors de la suppression de la scène:", error);
+      console.error("Error trying to delete the scene:", error);
     }
   };
   
-    const InitialLoadingOverlay = () => (
-      <View style={[styles.loadingOverlay, { backgroundColor: colors.purple_dark }]}>
-        <ActivityIndicator size="large" color={colors.purple_light} />
-      </View>
-    );
+  const InitialLoadingOverlay = () => (
+    <View style={[styles.loadingOverlay, { backgroundColor: colors.purple_dark }]}>
+      <ActivityIndicator size="large" color={colors.purple_light} />
+    </View>
+  );
 
-    const SendingDataLoadingOverlay = () => (
-      <View style={[styles.loadingOverlay, { backgroundColor: 'rgba(0, 0, 0, 0.5)' }]}>
-        <ActivityIndicator size="large" color={colors.purple_light} />
-      </View>
+  const SendingDataLoadingOverlay = () => (
+    <View style={[styles.loadingOverlay, { backgroundColor: 'rgba(0, 0, 0, 0.5)' }]}>
+      <ActivityIndicator size="large" color={colors.purple_light} />
+    </View>
   );
 
 
@@ -218,6 +258,7 @@ const Scene1Screen = ({ navigation }) => {
         
         <SaveArtworkModal 
           visible={modalVisible}
+          imagePreview={imagePreview}
           onClose={() => {
             setModalVisible(false);
             deleteArtwork();
@@ -303,6 +344,13 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     gap: 15,
     marginTop: 5
+  },
+  preview:{
+    borderRadius: 15,
+    borderWidth: 2,
+    borderColor: colors.cyan,
+    height: 240,
+    marginBottom: 25
   }
 });
 

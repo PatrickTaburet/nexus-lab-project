@@ -98,11 +98,12 @@ class api_GenerativeSceneController extends AbstractController
             $id = $data->getId();
             return new JsonResponse([
                 'message' => 'Data successfully saved!',
-                'sceneId' => $id
+                'sceneId' => $id,
             ]);
 
         // redirection managed in javascript
         } 
         return new JsonResponse('Error: Missing data!', Response::HTTP_BAD_REQUEST);
     }
+
 }

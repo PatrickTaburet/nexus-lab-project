@@ -110,4 +110,36 @@ class api_BaseSceneController extends AbstractController
             ], 400);
         }
     }
+
+    #[Route("api/generative/getPreview", name: "api_getPreview", methods: ["POST"])]
+    public function api_getPreview(Request $request): JsonResponse
+    {
+        try {
+            $data = json_decode($request->getContent(), true);
+ 
+            if (!$data) {
+                throw new \Exception('Invalid JSON data');
+            }
+
+            $sceneId = $data['sceneId'] ?? null;
+            $entity = $data['sceneType'] ?? null;
+            $entityClass = "App\\Entity\\" . $entity;
+            if (!class_exists($entityClass)) {
+                throw new \Exception('Invalid entity type');
+            }
+
+            $repo = $this->entityManager->getRepository($entityClass);
+            $preview = $repo->find($sceneId);
+            $previewName = $preview->getImageName();
+        
+            return new JsonResponse([
+                'imageName' => $previewName,
+            ], Response::HTTP_OK);
+            
+        } catch (\Exception $e) {
+            return new JsonResponse([
+                'error' => $e->getMessage()
+            ], 400);
+        }
+    }
 }
