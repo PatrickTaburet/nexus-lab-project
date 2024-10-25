@@ -40,7 +40,6 @@ export default function CustomSelect({ data, onChange, placeholder }) {
             >
                 <Text style={styles.text}>{value || placeholder}</Text>
                 <Ionicons 
-                    // onPress={handleLike} 
                     name={expanded ? "caret-up" : "caret-down"}
                     size={25}
                     style={styles.arrowIcon}

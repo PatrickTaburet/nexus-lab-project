@@ -1,4 +1,4 @@
-import { View, Text, Button, Image, StyleSheet, SafeAreaView } from 'react-native';
+import { Text, Image, StyleSheet, SafeAreaView } from 'react-native';
 import { colors } from '../utils/colors'
 import config from '../config/config'; 
 import React from 'react'
@@ -25,7 +25,6 @@ const CommunityScreen = ({ navigation })  => {
         Community section incoming..
       </Text>
     </SafeAreaView> 
-
   )
 }
 

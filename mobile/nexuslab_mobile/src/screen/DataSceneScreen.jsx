@@ -7,8 +7,11 @@ import { colors } from '../utils/colors';
 
 
 const DataSceneScreen = ({ navigation }) => {
+
+  // Image background parallax effect
+
   const { width } = useWindowDimensions();
-  const translateX = useRef(new Animated.Value(-width * 0.7)).current; // Départ hors écran à gauche (60% de la largeur)
+  const translateX = useRef(new Animated.Value(-width * 0.7)).current; // Départ hors écran à gauche (70% de la largeur)
 
   const animateForward = useCallback(() => {
     translateX.setValue(-width * 0.7); // Reset to initial position
@@ -23,10 +26,9 @@ const DataSceneScreen = ({ navigation }) => {
   useFocusEffect(
     useCallback(() => {
       animateForward();
-      // Optionally, you can return a cleanup function if needed
-      return () => {
-        // Any cleanup code
-      };
+     // If cleanup function is needed
+      // return () => {
+      // };
     }, [animateForward])
   );
 

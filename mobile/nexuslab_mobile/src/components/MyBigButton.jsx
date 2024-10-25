@@ -4,8 +4,10 @@ import globalStyles from '../utils/styles';
 import { colors } from '../utils/colors'
 import { LinearGradient } from 'expo-linear-gradient';
 
-const MyBigButton = ({children, myStyle, HandlePress, buttonStyle, textStyle, isSecondary=false }) => {
+const MyBigButton = ({children, myStyle, HandlePress, buttonStyle, textStyle, isSecondary = false }) => {
 
+  // Merges the provided textStyle prop with default styles,
+  // while explicitly removing margin and padding properties to prevent layout conflicts.
   const CustomTextStyle = {
     ...textStyle,
     marginTop: undefined,
@@ -39,9 +41,7 @@ const MyBigButton = ({children, myStyle, HandlePress, buttonStyle, textStyle, is
           <Text style={[styles.text, CustomTextStyle]} >{children}</Text>
         </LinearGradient>
       </TouchableOpacity>
-
     </View>
-
   )
 }
 
@@ -60,8 +60,6 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     borderWidth: 1,
     borderColor: colors.cyan,
-    // minHeight: 40,
-    // maxHeight: 50,
     justifyContent: 'center', 
     alignItems: 'center',
     zIndex: 1,
@@ -80,10 +78,6 @@ const styles = StyleSheet.create({
     fontSize: 17,
     justifyContent: 'center',
     lineHeight: 1,
-    // maxWidth: 150,
-    // minWidth: 110,
-    // minHeight: 40,
-    // maxHeight: 50,
     padding: 10,
     paddingHorizontal: 14,
     margin: 3,

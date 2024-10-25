@@ -1,11 +1,11 @@
 import React from 'react';
 import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
-import globalStyles from '../utils/styles';
-import { colors } from '../utils/colors'
 import { LinearGradient } from 'expo-linear-gradient';
 
 const MyButton = ({children, style, onPress, color, isSecondary = false, textStyle  }) => {
 
+  // Merges the provided textStyle prop with default styles,
+  // while explicitly removing margin and padding properties to prevent layout conflicts.
   const finalTextStyle = {
     ...textStyle,
     marginTop: undefined,

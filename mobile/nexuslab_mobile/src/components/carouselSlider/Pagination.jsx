@@ -1,12 +1,7 @@
-import { StyleSheet, Text, View, Dimensions} from 'react-native'
+import { StyleSheet, View} from 'react-native'
 import React from 'react'
 
 const Pagination = ({items, paginationIndex}) => {
-    // console.log('pagination :');
-    
-    // console.log(items.length)
-    // console.log(paginationIndex)
-
   return (
     <View style={styles.container}>
         {items.map((_,index) => {
@@ -15,7 +10,7 @@ const Pagination = ({items, paginationIndex}) => {
                     key={index} 
                     style={[
                         styles.dot, 
-                        {backgroundColor: paginationIndex === index ? '#222' : '#aaa'}, //00fff7
+                        {backgroundColor: paginationIndex === index ? '#222' : '#aaa'},
                     ]}
                 />
             );

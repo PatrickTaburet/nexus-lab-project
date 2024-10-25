@@ -19,14 +19,14 @@ const MainNavigator = () => {
         name="MainTabs"
         component={TabNavigator}
         options={({ navigation }) => ({
-          headerTransparent: true, // Rend le header transparent
-          headerTitle: '', // Supprime le titre du header
+          headerTransparent: true, 
+          headerTitle: '', 
           headerStyle: {
-            backgroundColor: 'transparent', // Assure que le fond est transparent
-            elevation: 0, // Supprime l'ombre sur Android
-            shadowOpacity: 0, // Supprime l'ombre sur iOS
+            backgroundColor: 'transparent', 
+            elevation: 0, 
+            shadowOpacity: 0, 
           },
-          headerShown: true, // Cacher le header pour le TabNavigator
+          headerShown: true, 
           accessibilityLabel: 'Main screen with navigattion bottom bar and user profile header',
           header: (props) => (
             <View style={{ pointerEvents: 'box-none', zIndex: 1000 }}>
@@ -110,7 +110,6 @@ const MainNavigator = () => {
           accessibilityLabel: 'Edit user artwork',
         }}
       />
-
     </Stack.Navigator>
   );
 };

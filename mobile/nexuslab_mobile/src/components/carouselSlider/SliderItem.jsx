@@ -42,7 +42,6 @@ const SliderItem = ({item}) => {
             {item.comment}
           </Text>
         </View>
-   
       </LinearGradient>
     </Animated.View>
   )
@@ -52,12 +51,12 @@ export default SliderItem
 
 const styles = StyleSheet.create({
   title: {
-      fontSize: 18,
-      color: 'white',
+    fontSize: 18,
+    color: 'white',
   },
   text: {
-      fontSize: 14,
-      color: 'white',
+    fontSize: 14,
+    color: 'white',
   },
   pseudo:{
     color: colors.cyan,

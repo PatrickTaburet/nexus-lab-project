@@ -62,9 +62,8 @@ const MyModale = ({ visible, onClose, onSubmit, title, content }) => {
 
 export default MyModale;
 
- // Modal 
- const myStyles = StyleSheet.create({
- modalContainer: {
+const myStyles = StyleSheet.create({
+  modalContainer: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
@@ -98,4 +97,4 @@ export default MyModale;
     fontSize: 16,
     color: 'white'
   },
- })
+})

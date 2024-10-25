@@ -8,6 +8,7 @@ import MyButton from '../../components/MyButton';
 import { Checkbox } from 'react-native-paper';
 import * as ImagePicker from 'expo-image-picker';
 import { signup } from '../../services/api/authApi';
+import * as FileSystem from 'expo-file-system';
 
 const SignupScreen = () => {
 
@@ -36,6 +37,13 @@ const SignupScreen = () => {
 
     if (!result.canceled) {
     const uri = result.assets[0].uri;
+
+    const fileInfo = await FileSystem.getInfoAsync(uri);
+    if (fileInfo.size > 2 * 1024 * 1024) {
+      alert('The image is too large. Please select an image smaller than 2 MB.');
+      return;
+    }
+
     const name = uri.split('/').pop();
     const type = 'image/' + name.split('.').pop();
 
@@ -91,10 +99,9 @@ const SignupScreen = () => {
         accessibilityLabel="Go back to the welcome screen"
         accessibilityHint="Returns to the welcome screen for more options"
       >
-      <Ionicons name={"arrow-back-circle"} color={colors.lightest} size={50} />
+        <Ionicons name={"arrow-back-circle"} color={colors.lightest} size={50} />
       </TouchableOpacity>
       <ScrollView  contentContainerStyle={{ justifyContent: 'center', alignItems: 'center', paddingBottom: 50}}>
-
 
         {/* Form */}
 
@@ -102,9 +109,9 @@ const SignupScreen = () => {
           <Text style={[styles.mainText, globalStyles.text3]}>SIGN UP</Text>
           <View style={styles.inputContainer}>
             <Ionicons 
-            name={"person-outline"}
-            size={20}
-            style={styles.inputIcon}
+              name={"person-outline"}
+              size={20}
+              style={styles.inputIcon}
             />
             <TextInput 
               placeholder='Username'
@@ -117,9 +124,9 @@ const SignupScreen = () => {
           </View>
           <View style={styles.inputContainer}>
             <Ionicons 
-            name={"mail-outline"}
-            size={20}
-            style={styles.inputIcon}
+              name={"mail-outline"}
+              size={20}
+              style={styles.inputIcon}
             />
             <TextInput 
               placeholder='Email'
@@ -132,9 +139,9 @@ const SignupScreen = () => {
           </View>
           <View style={styles.inputContainer}>
             <Ionicons 
-            name={"lock-closed-outline"}
-            size={20}
-            style={styles.inputIcon}
+              name={"lock-closed-outline"}
+              size={20}
+              style={styles.inputIcon}
             />
             <TextInput 
               placeholder='Password'
@@ -148,9 +155,9 @@ const SignupScreen = () => {
           </View>
           <View style={styles.inputContainer}>
             <Ionicons 
-            name={"lock-closed-outline"}
-            size={20}
-            style={styles.inputIcon}
+              name={"lock-closed-outline"}
+              size={20}
+              style={styles.inputIcon}
             />
             <TextInput 
               placeholder='Confirm Password'
@@ -164,9 +171,9 @@ const SignupScreen = () => {
           </View>
           <View style={styles.inputContainer}>
             <Ionicons 
-            name={"person-circle-outline"}
-            size={20}
-            style={styles.inputIcon}
+              name={"person-circle-outline"}
+              size={20}
+              style={styles.inputIcon}
             />
             <TouchableOpacity 
               onPress={handleSelectImage} 
@@ -216,11 +223,13 @@ const SignupScreen = () => {
           >
             Register
           </MyButton>
+
           {error ? (
             <Text style={globalStyles.warning} accessible={true} accessibilityLabel="Registration error">
               {error}
             </Text>
           ) : null}
+
         </View>
       </ScrollView>
     </View>
@@ -230,64 +239,64 @@ const SignupScreen = () => {
 export default SignupScreen
 
 const styles = StyleSheet.create({
-    container: {
-      flex: 1,
-      backgroundColor: colors.web_black,
-      padding: 20,
-    },
-    backButton: {
-      position: 'absolute',
-      top: 45,
-      left : 20,
-      backgroundColor: 'transparent',
-      borderRadius: 25,
-      zIndex: 3,
-    },
-    mainText:{
-      color: "rgb(217, 0, 255)",
-      marginBottom: 30,
-      fontSize: 44
-    },
-    text:{
-      color: "white"
-    },
-    image: {
-      width: 100,
-      height: 100,
-      borderRadius: 50,
-      marginTop: 10,
-    },
-    formContainer : {
-      marginTop: 55,
-      justifyContent: "center",
-      alignItems: "center",
-      backgroundColor: '#222',
-      width: '100%',
-      paddingVertical: 30
-    },
-    inputContainer:{
-      marginVertical: 15,
-      alignItems: "center",
-      flexDirection: 'row',
-      width: '80%',
-      height:40,
-      backgroundColor: "white",
-      borderRadius:10,
-      borderWidth: 1
-    },    
-    inputIcon:{
-      margin:7
-    },
-    submitButton:{
-      width: 130,
-      height: 50,
-      marginTop: 30
-    },
-    checkboxContainer:{
-      flexDirection: 'row',
-      alignItems: 'center',
-    },
-    checkboxText:{
-      color: "white",
-    },
+  container: {
+    flex: 1,
+    backgroundColor: colors.web_black,
+    padding: 20,
+  },
+  backButton: {
+    position: 'absolute',
+    top: 45,
+    left : 20,
+    backgroundColor: 'transparent',
+    borderRadius: 25,
+    zIndex: 3,
+  },
+  mainText:{
+    color: "rgb(217, 0, 255)",
+    marginBottom: 30,
+    fontSize: 44
+  },
+  text:{
+    color: "white"
+  },
+  image: {
+    width: 100,
+    height: 100,
+    borderRadius: 50,
+    marginTop: 10,
+  },
+  formContainer : {
+    marginTop: 55,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: '#222',
+    width: '100%',
+    paddingVertical: 30
+  },
+  inputContainer:{
+    marginVertical: 15,
+    alignItems: "center",
+    flexDirection: 'row',
+    width: '80%',
+    height:40,
+    backgroundColor: "white",
+    borderRadius:10,
+    borderWidth: 1
+  },    
+  inputIcon:{
+    margin:7
+  },
+  submitButton:{
+    width: 130,
+    height: 50,
+    marginTop: 30
+  },
+  checkboxContainer:{
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  checkboxText:{
+    color: "white",
+  },
 })

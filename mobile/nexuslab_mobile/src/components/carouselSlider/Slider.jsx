@@ -26,7 +26,7 @@ const Slider = ({sliderContent}) => {
     if (viewableItems[0]?.index !== undefined && viewableItems[0]?.index !== null) {
       const currentIndex = viewableItems[0].index;
       setPaginationIndex(currentIndex);
-      console.log("pagination : " + currentIndex);
+      // console.log("pagination : " + currentIndex);
     }
   }, []);
 
@@ -38,7 +38,7 @@ const Slider = ({sliderContent}) => {
   return (
     <View style={styles.container} accessible={true} accessibilityLabel="Image slider">
         {(!sliderContent || sliderContent.length === 0) && (
-          <View style={styles.loader} accessibilityLabel="Loading" accessibilityRole="status">
+          <View style={styles.loader} accessibilityLabel="Loading" >
             <ActivityIndicator size="large" />
           </View>
         )}
@@ -76,14 +76,12 @@ const styles = StyleSheet.create({
   container: {
     justifyContent: 'center',
     alignItems: 'center',
-    // height: 350
   },
   text: {
     fontSize: 16,
     marginBottom: 20,
     color: 'white',
     textAlign: 'center',
-    // width: 250,
   },
   loader:{
     flex: 1,

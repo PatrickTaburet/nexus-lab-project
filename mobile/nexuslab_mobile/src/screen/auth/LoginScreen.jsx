@@ -3,7 +3,6 @@ import React, {useState} from 'react';
 import { colors } from '../../utils/colors'
 import globalStyles from '../../utils/styles';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import { useNavigation } from '@react-navigation/native';
 import MyButton from '../../components/MyButton';
 import { Checkbox } from 'react-native-paper';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -133,7 +132,6 @@ const LoginScreen = ({ navigation }) => {
               Remember me?
             </Text>
           </View>
-
           <TouchableOpacity
             onPress={() => navigation.navigate('Signup')}
             accessible={true}
@@ -153,6 +151,7 @@ const LoginScreen = ({ navigation }) => {
         >
           Login
         </MyButton>
+
         {error ? (
           <Text 
             style={globalStyles.warning}
@@ -162,8 +161,8 @@ const LoginScreen = ({ navigation }) => {
             {error}
           </Text>
         ) : null}
-      </View>
 
+      </View>
     </View>
   )
 }
@@ -178,7 +177,6 @@ const styles = StyleSheet.create({
       justifyContent: 'center',
       alignItems: 'center',
     },
-
     backButton: {
       position: 'absolute',
       top: 45,
@@ -186,7 +184,6 @@ const styles = StyleSheet.create({
       backgroundColor: "",
       borderRadius: 25,
     },
-
     mainText:{
       color: "rgb(217, 0, 255)",
       marginBottom: 20,
@@ -199,7 +196,6 @@ const styles = StyleSheet.create({
       backgroundColor: '#222',
       width: '100%',
       paddingVertical: 30
-      
     },
     inputContainer:{
       marginVertical: 15,

@@ -1,6 +1,6 @@
 import { ScrollView, TextInput, ImageBackground, View, Text, Button, StyleSheet, ActivityIndicator, TouchableOpacity, SafeAreaView, Image, Easing } from 'react-native';
 import React, { useState, useEffect } from 'react'
-import { CommonActions, useIsFocused } from '@react-navigation/native';
+import { useIsFocused } from '@react-navigation/native';
 import config from '../config/config'; 
 import { colors } from '../utils/colors'
 import MyButton from '../components/MyButton';
@@ -22,17 +22,13 @@ const EditArtworkScreen = ({ route, navigation })  => {
   const [imageName, setImageName] = useState('');
 
   const fetchArtworkData = async () => {
-    console.log('fetch start');
     try {
       const response = await api.get(`/artworks/${sceneId}/${idPrefix}`, {
         headers: {
           'Content-Type': 'application/json',
         },
       });
-      console.log('response :');
-      
-      console.log(response.data);
-
+      // console.log(response.data);
       setTitle(response.data.title);
       setComment(response.data.comment);
       setImageName(response.data.imageName);
@@ -45,18 +41,14 @@ const EditArtworkScreen = ({ route, navigation })  => {
 
   const HandleUpdateArtwork = async () => {
     const data = { title, comment };
-    console.log("-----------");
-    console.log(data);
-
+    // console.log(data);
     try {
       const  response = await api.post(`/myArtworks/update/${sceneId}/${idPrefix}`, data, {
         headers: {
           'Content-Type': 'application/json',
         },
       }); 
-
-      console.log(response.data) 
-
+      // console.log(response.data) 
       if (response.status === 200 ) {
         alert('Update successful!');
         navigation.goBack();
@@ -92,7 +84,7 @@ const EditArtworkScreen = ({ route, navigation })  => {
   }
 
   const artworkUrl = route ? `${config.apiUrl}/images/${idPrefix}Img/${imageName}` : null; 
-  const decorUrl = `${config.apiUrl}/images/design/circle2.png`;
+  const decorUrl = `${config.apiUrl}/images/design/circle2.png`; // TODO : Add circle animation
 
 
   return (
@@ -112,8 +104,8 @@ const EditArtworkScreen = ({ route, navigation })  => {
               accessibilityHint="This is the artwork you are updating"
             />
             <View style={styles.labelInputContainer}>
-            <Text style={styles.textLabel} accessible={true} accessibilityLabel="Title label" accessibilityHint="Input field for the artwork title">Title</Text>
-            <View style={styles.inputContainer}>
+              <Text style={styles.textLabel} accessible={true} accessibilityLabel="Title label" accessibilityHint="Input field for the artwork title">Title</Text>
+              <View style={styles.inputContainer}>
                 <TextInput 
                   value={title}
                   onChangeText={text => setTitle(text)}
@@ -129,8 +121,8 @@ const EditArtworkScreen = ({ route, navigation })  => {
               </View>
             </View>     
             <View style={styles.labelInputContainer}>
-            <Text style={styles.textLabel} accessible={true} accessibilityLabel="Comment label" accessibilityHint="Input field for comments">Comment</Text>
-            <View style={styles.inputContainer}>
+              <Text style={styles.textLabel} accessible={true} accessibilityLabel="Comment label" accessibilityHint="Input field for comments">Comment</Text>
+              <View style={styles.inputContainer}>
                 <TextInput 
                   value={comment}
                   onChangeText={text => setComment(text)}
@@ -146,24 +138,22 @@ const EditArtworkScreen = ({ route, navigation })  => {
               </View>
             </View>  
             <View style={styles.globalButtonBox}>
-                <MyButton
-                  onPress={HandleUpdateArtwork}
-                  style={styles.submitButton}
-                  accessible={true}
-                  accessibilityLabel="Update artwork button"
-                  accessibilityHint="Tap to update the artwork with the entered title and comment"
-                >
-                  Update
-                </MyButton>
-                {error ? <Text style={globalStyles.warning} >{error}</Text> : null}
-
+              <MyButton
+                onPress={HandleUpdateArtwork}
+                style={styles.submitButton}
+                accessible={true}
+                accessibilityLabel="Update artwork button"
+                accessibilityHint="Tap to update the artwork with the entered title and comment"
+              >
+                Update
+              </MyButton>
+              {error ? <Text style={globalStyles.warning} >{error}</Text> : null}
             </View>
           </View>
         </SafeAreaView>
         </ScrollView>
       </ImageBackground>
-  </SafeAreaView>
-
+    </SafeAreaView>
   );
 }
 

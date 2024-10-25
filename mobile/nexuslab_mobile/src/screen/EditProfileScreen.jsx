@@ -48,11 +48,13 @@ const EditProfileScreen = ({ navigation })  => {
 
     if (!result.canceled) {
     const uri = result.assets[0].uri;
+
     const fileInfo = await FileSystem.getInfoAsync(uri);
-    if (fileInfo.size > 10 * 1024 * 1024) {
-      alert('The image is too large. Please select an image smaller than 10 MB.');
+    if (fileInfo.size > 2 * 1024 * 1024) {
+      alert('The image is too large. Please select an image smaller than 2 MB.');
       return;
     }
+    
     const name = uri.split('/').pop();
     const type = 'image/' + name.split('.').pop();
 
@@ -282,6 +284,7 @@ const EditProfileScreen = ({ navigation })  => {
                 >
                   Update
                 </MyButton>
+
                 {error ? <Text style={globalStyles.warning} >{error}</Text> : null}
 
             </View>
@@ -289,8 +292,7 @@ const EditProfileScreen = ({ navigation })  => {
         </SafeAreaView>
         </ScrollView>
       </ImageBackground>
-  </SafeAreaView>
-
+    </SafeAreaView>
   );
 }
 
@@ -328,7 +330,6 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     color: 'white'
   },
-
   profileImage: {
     width: 128,
     height: 128,
@@ -337,7 +338,6 @@ const styles = StyleSheet.create({
     position: "absolute",
     top : 0,
     marginTop: 41
-
   },
   circleImg: {
     width: 170,
@@ -345,7 +345,6 @@ const styles = StyleSheet.create({
     position: "relative",
     marginTop: 20,
     marginBottom: 10
-    
   },
   secondButton:{
     width: 150,

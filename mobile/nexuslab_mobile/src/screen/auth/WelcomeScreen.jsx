@@ -8,14 +8,13 @@ import MyButton from '../../components/MyButton';
 
 const WelcomeScreen = () => {
   const navigation = useNavigation();
-
+  
   const HandleLogin = () => {
     navigation.navigate('Login');
   }
   const HandleSignup = () => {
     navigation.navigate('Signup');
   }
-
 
   return (
     <View style={styles.container}>
@@ -63,35 +62,35 @@ const WelcomeScreen = () => {
 export default WelcomeScreen 
 
 const styles = StyleSheet.create({
-    container: {
-      flex: 1,
-      backgroundColor: colors.secondary_dark,
-    },
-    content : {
-      flex: 1,
-      justifyContent: 'center',
-      alignItems: 'center',
-      gap: 50
-    },
-    logo : {
-        width: 300,
-        resizeMode: 'contain',
-        position: 'absolute',
-        bottom: -230,
-    },
-    headerText:{
-      color: 'white',
-      fontSize: 40,
-      textAlign: 'center',
-      marginBottom: -200,
-    },
-    buttonContainer:{
-      flexDirection: 'row',
-      bottom:115,
-      position: 'absolute',
-      gap: 15
-    },
-    text:{
-      color: "white"
-    }
+  container: {
+    flex: 1,
+    backgroundColor: colors.secondary_dark,
+  },
+  content : {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    gap: 50
+  },
+  logo : {
+    width: 300,
+    resizeMode: 'contain',
+    position: 'absolute',
+    bottom: -230,
+  },
+  headerText:{
+    color: 'white',
+    fontSize: 40,
+    textAlign: 'center',
+    marginBottom: -200,
+  },
+  buttonContainer:{
+    flexDirection: 'row',
+    bottom:115,
+    position: 'absolute',
+    gap: 15
+  },
+  text:{
+    color: "white"
+  }
 })

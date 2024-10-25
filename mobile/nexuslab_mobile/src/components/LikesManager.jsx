@@ -16,9 +16,9 @@ export default function LikesManager({ userId, sceneId, likesNum, entity, isLike
         'Content-Type': 'application/json',
       },
     });
-    // console.log(response.data);
     const data = await response.data;
-      // Update the like count
+
+    // Update the like count
     if (data.message === 'Like successfully added.') {
       setLikes(likes + 1);
     } else if (data.message === 'Like successfully deleted.') {
