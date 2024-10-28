@@ -1,7 +1,7 @@
 import { TouchableWithoutFeedback , ImageBackground, View, Text, ScrollView, StyleSheet,TouchableOpacity, Modal, SafeAreaView, Image, ActivityIndicator, FlatList} from 'react-native';
 import React, { useState, useEffect, useCallback, useRef } from 'react'
 import useApi from '../services/api/hooks/useApi';
-import {  useIsFocused } from '@react-navigation/native';
+import { useIsFocused } from '@react-navigation/native';
 import config from '../config/config'; 
 import { colors } from '../utils/colors';
 import globalStyles from '../utils/styles';
@@ -9,8 +9,6 @@ import { Ionicons } from '@expo/vector-icons';
 import MyButton from '../components/MyButton';
 import MyBigButton from '../components/MyBigButton';
 import MyModale from '../components/MyModale';
-
-const ITEM_HEIGHT = 300; 
 
 const SceneCard = React.memo(({ item, onImagePress, onLabelPress, api, onDeleteSuccess, navigation }) => {
   const idPrefix = item.id.split('_')[0]; 
@@ -153,7 +151,11 @@ const MyArtworksScreen = ({ navigation })  => {
   const scrollViewRef = useRef(null);
   const prevIsGenerativeArtRef = useRef(isGenerativeArt);
 
+  console.log('--------------------------0');
+
   const fetchScenes = useCallback(async (reset = false) => {
+    console.log('--------------------------3');
+
     if (loading) return;
     setLoading(true);
 
@@ -177,7 +179,7 @@ const MyArtworksScreen = ({ navigation })  => {
       if (scrollViewRef.current) {
         scrollViewRef.current.scrollTo({ y: 0, animated: true });
       }
-    } catch (error) {
+    } catch (error) {     
       console.error('Error fetching scenes:', error);
     } finally {
       setLoading(false); 
@@ -185,15 +187,16 @@ const MyArtworksScreen = ({ navigation })  => {
   }, [api, page, isGenerativeArt, loading]);
   
   const resetPages = () => {
-    setScenes([]); // On vide les scènes
-    setPage(1);    // Retour à la première page
-    setHasMore(true); // On autorise de nouveau la pagination
+    setScenes([]);
+    setPage(1);  
+    setHasMore(true); 
   };
 
   useEffect(() => {
+    console.log('--------------------------1');
+
     if (isFocused) {
       if (prevIsGenerativeArtRef.current !== isGenerativeArt) {
-        // isGenerativeArt a changé
         console.log("isGenerativeArt a changé");
         fetchScenes(true);
       }
@@ -204,6 +207,8 @@ const MyArtworksScreen = ({ navigation })  => {
   }, [isFocused, page, isGenerativeArt]);
 
   useEffect(() => {
+    console.log('--------------------------2');
+
     resetPages();
   }, [isGenerativeArt]);
 
@@ -268,7 +273,7 @@ const MyArtworksScreen = ({ navigation })  => {
             buttonStyle={styles.buttonStyle}
             isSecondary={isGenerativeArt ? true : false}
           >       
-            <Text>Generative{'\n'}Art</Text>
+            Generative Art
           </MyBigButton>
           <MyBigButton
             HandlePress={() => {
@@ -276,7 +281,7 @@ const MyArtworksScreen = ({ navigation })  => {
             }}
             textStyle={isGenerativeArt ? styles.submitButtonOff : styles.submitButtonOn}
             buttonStyle = { styles.buttonStyle}
-            myStyle={[styles.submitButton, {'width' : 90}]}
+            myStyle={[styles.submitButton, {'width' : 90, marginRight: 7}]}
             isSecondary={isGenerativeArt ? false : true}
           >       
             Data Art
@@ -425,7 +430,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     width: '100%',
-    gap: 55,
+    gap: 40,
     top: 50, 
     zIndex:1000,
   },
