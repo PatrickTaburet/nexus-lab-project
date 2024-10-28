@@ -47,7 +47,7 @@ export const checkTokenValidity = async (handleLogout, setIsLoggedIn, email = nu
         }
       }
     } else  {
-      console.error('Token is null or undefined');
+      console.log('Token is null or undefined');
       await handleLogout();
       return;
     }

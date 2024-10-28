@@ -48,7 +48,7 @@ const SceneCard = React.memo(({ item, onImagePress, onLabelPress }) => {
           />
           <View>
             <Text style={styles.username}>
-              Created by 
+              Created by {' '}
               <Text style={{ color: colors.primary_dark, fontSize: 17 }} accessibilityLabel="Username">
                 {item.user.username}
               </Text>

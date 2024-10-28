@@ -183,6 +183,7 @@ const styles = StyleSheet.create({
       left : 20,
       backgroundColor: "",
       borderRadius: 25,
+      zIndex: 10
     },
     mainText:{
       color: "rgb(217, 0, 255)",

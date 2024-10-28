@@ -1,5 +1,5 @@
 import { Image, StyleSheet, Text, View, TouchableOpacity } from 'react-native';
-import React, { useRef, useState } from 'react';
+import React, { useRef } from 'react';
 import { colors } from '../../utils/colors';
 import NexusLabImage from '../../assets/logo/NexusLab-full-purple.png';
 import globalStyles from '../../utils/styles';
@@ -11,7 +11,6 @@ import videoSource from '../../assets/design/videos/orbit-scene.mp4';
 const WelcomeScreen = () => {
   const navigation = useNavigation();
   const video = useRef(null);
-  const [status, setStatus] = useState({});
 
   const HandleLogin = () => {
     navigation.navigate('Login');
@@ -30,16 +29,9 @@ const WelcomeScreen = () => {
         isLooping
         shouldPlay
         isMuted
-        onPlaybackStatusUpdate={status => setStatus(() => status)}
+        accessibilityLabel="Black and white generative art video"
       />
       <View style={styles.content}>
-        <Text 
-          style={[styles.headerText, globalStyles.text3]}
-          accessible={true}
-          accessibilityRole="header"
-        >
-          Welcome to NexusLab !
-        </Text>
         <Image 
           source={NexusLabImage}
           style={styles.logo}
@@ -47,7 +39,22 @@ const WelcomeScreen = () => {
           accessibilityLabel="Purple NexusLab logo"
           accessibilityRole="image"
         />
-    
+        <View style={styles.header}>
+          <Text 
+            style={[styles.headerText, globalStyles.text3]}
+            accessible={true}
+            accessibilityRole="header"
+          >
+            Welcome to NexusLab !
+          </Text>
+          <Text 
+            style={[styles.subTitle, globalStyles.text3]}
+            accessible={true}
+            accessibilityLabel="Subtitle"
+          >
+            Join the creative community
+          </Text>
+        </View>
         <View style={styles.buttonContainer}>
           <MyButton
             onPress={HandleLogin}
@@ -100,13 +107,26 @@ const styles = StyleSheet.create({
     position: 'absolute',
     bottom: -130,
   },
+  header:{
+    display: 'flex',
+    justifyContent: "center",
+    alignItems: "center",
+    width: '80%',
+    gap: 30
+  },
   headerText:{
-    color: 'white',
+    color: colors.web_white,
     fontSize: 30,
     textAlign: 'center',
     marginTop: 130,
-    width: '70%',
     lineHeight: 40,
+  },
+  subTitle:{
+    color: colors.web_white,
+    fontSize: 20,
+    textAlign: 'center',
+    lineHeight: 30,
+    marginBottom: 40
   },
   buttonContainer:{
     flexDirection: 'row',
@@ -114,7 +134,4 @@ const styles = StyleSheet.create({
     position: 'absolute',
     gap: 15
   },
-  text:{
-    color: "white"
-  }
 })
