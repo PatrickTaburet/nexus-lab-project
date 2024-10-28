@@ -386,14 +386,14 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontSize: 18,
     fontWeight: 'bold',
-    color: colors.lightest,
+    color: colors.web_white,
     paddingHorizontal: 10
   },
   comment: {
     textAlign: 'center',
     fontSize: 15,
     marginTop: 5,
-    color: colors.lightest,
+    color: colors.web_white,
     paddingHorizontal: 10
   },
 

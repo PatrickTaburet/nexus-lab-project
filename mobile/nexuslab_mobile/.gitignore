@@ -33,3 +33,14 @@ yarn-error.*
 
 # typescript
 *.tsbuildinfo
+
+# Large media files
+*.mp4
+*.mov
+*.avi
+*.wmv
+*.flv
+*.webm
+
+# Large video file
+mobile/nexuslab_mobile/src/assets/design/videos/orbit-scene.mp4

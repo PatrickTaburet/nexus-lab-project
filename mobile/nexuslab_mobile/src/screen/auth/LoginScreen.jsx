@@ -53,7 +53,7 @@ const LoginScreen = ({ navigation }) => {
         accessibilityLabel="Back to Home page"
         accessibilityRole="button"
       >
-        <Ionicons name={"arrow-back-circle"} color={colors.lightest} size={50} />
+        <Ionicons name={"arrow-back-circle"} color={colors.web_white} size={50} />
       </TouchableOpacity>
 
       {/* Form */}
@@ -179,7 +179,7 @@ const styles = StyleSheet.create({
     },
     backButton: {
       position: 'absolute',
-      top: 45,
+      top: 15,
       left : 20,
       backgroundColor: "",
       borderRadius: 25,

@@ -1,14 +1,18 @@
 import { Image, StyleSheet, Text, View, TouchableOpacity } from 'react-native';
-import React from 'react';
+import React, { useRef, useState } from 'react';
 import { colors } from '../../utils/colors';
 import NexusLabImage from '../../assets/logo/NexusLab-full-purple.png';
 import globalStyles from '../../utils/styles';
 import { useNavigation } from '@react-navigation/native';
 import MyButton from '../../components/MyButton';
+import { Video } from 'expo-av';
+import videoSource from '../../assets/design/videos/orbit-scene.mp4';
 
 const WelcomeScreen = () => {
   const navigation = useNavigation();
-  
+  const video = useRef(null);
+  const [status, setStatus] = useState({});
+
   const HandleLogin = () => {
     navigation.navigate('Login');
   }
@@ -18,6 +22,16 @@ const WelcomeScreen = () => {
 
   return (
     <View style={styles.container}>
+      <Video
+        ref={video}
+        style={styles.backgroundVideo}
+        source={videoSource}
+        resizeMode="cover"
+        isLooping
+        shouldPlay
+        isMuted
+        onPlaybackStatusUpdate={status => setStatus(() => status)}
+      />
       <View style={styles.content}>
         <Text 
           style={[styles.headerText, globalStyles.text3]}
@@ -64,7 +78,15 @@ export default WelcomeScreen
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: colors.secondary_dark,
+    backgroundColor: 'black',
+  },
+  backgroundVideo: {
+    position: 'absolute',
+    top: 230,
+    left: 0,
+    bottom: 0,
+    right: 0,
+    height: 362
   },
   content : {
     flex: 1,
@@ -76,17 +98,19 @@ const styles = StyleSheet.create({
     width: 300,
     resizeMode: 'contain',
     position: 'absolute',
-    bottom: -230,
+    bottom: -130,
   },
   headerText:{
     color: 'white',
-    fontSize: 40,
+    fontSize: 30,
     textAlign: 'center',
-    marginBottom: -200,
+    marginTop: 130,
+    width: '70%',
+    lineHeight: 40,
   },
   buttonContainer:{
     flexDirection: 'row',
-    bottom:115,
+    bottom: 45,
     position: 'absolute',
     gap: 15
   },

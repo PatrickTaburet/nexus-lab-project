@@ -65,10 +65,10 @@ const MainNavigator = () => {
             backgroundColor: 'rgba(0, 0, 0, 0.8)', 
           },
           headerTitleStyle: { // Text
-            color: colors.lightest,
+            color: colors.web_white,
             fontSize: 18, 
           },
-          headerTintColor: colors.lightest, // Icon
+          headerTintColor: colors.web_white, // Icon
           accessibilityLabel: 'Edit user profile screen',
         }}
       />
@@ -84,10 +84,10 @@ const MainNavigator = () => {
             backgroundColor: 'rgba(0, 0, 0, 0.8)', 
           },
           headerTitleStyle: { // Text
-            color: colors.lightest,
+            color: colors.web_white,
             fontSize: 18, 
           },
-          headerTintColor: colors.lightest, // Icon
+          headerTintColor: colors.web_white, // Icon
           accessibilityLabel: 'User personnal artworks gallery',
         }}
       />
@@ -103,10 +103,10 @@ const MainNavigator = () => {
             backgroundColor: 'rgba(0, 0, 0, 0.8)', 
           },
           headerTitleStyle: { // Text
-            color: colors.lightest,
+            color: colors.web_white,
             fontSize: 18,
           },
-          headerTintColor: colors.lightest, // Icon
+          headerTintColor: colors.web_white, // Icon
           accessibilityLabel: 'Edit user artwork',
         }}
       />

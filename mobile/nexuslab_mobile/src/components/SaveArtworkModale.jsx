@@ -98,7 +98,7 @@ const styles = StyleSheet.create({
     padding: 10,
     marginBottom: 15,
     borderRadius: 5,
-    backgroundColor: colors.lightest,
+    backgroundColor: colors.web_white,
   },
   modalHeader: {
     textAlign: "center",

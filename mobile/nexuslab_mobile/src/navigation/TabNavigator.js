@@ -55,10 +55,10 @@ const CreateStackScreen = () => (
             backgroundColor: 'rgba(0, 0, 0, 0.7)', 
           },
           headerTitleStyle: { // Text
-            color: colors.lightest,
+            color: colors.web_white,
             fontSize: 18, 
           },
-          headerTintColor: colors.lightest, // Icon
+          headerTintColor: colors.web_white, // Icon
           accessibilityLabel: 'List of Generative Art scenes to create artworks',
         }}
       />
@@ -74,10 +74,10 @@ const CreateStackScreen = () => (
             backgroundColor: 'rgba(0, 0, 0, 0.7)', 
           },
           headerTitleStyle: { // Text
-            color: colors.lightest,
+            color: colors.web_white,
             fontSize: 18, 
           },
-          headerTintColor: colors.lightest, // Icon
+          headerTintColor: colors.web_white, // Icon
           accessibilityLabel: 'List of Data Art Visualization scenes to create artworks',
         }}
       />
@@ -128,7 +128,7 @@ const TabNavigator = ( ) => {
           backgroundColor: colors.purple_dark, 
           borderTopWidth: 0,
         },
-        tabBarActiveTintColor: colors.lightest, 
+        tabBarActiveTintColor: colors.web_white, 
         tabBarInactiveTintColor: colors.primary,
       }}
       accessible={true}

@@ -231,7 +231,7 @@ span {
 }
 .cardTitle{
     font: var(--var-heading);
-    color: var(--var-lightest);
+    color: var(--var-white);
     padding: 0.5em 0;
     word-wrap: break-word;
 }

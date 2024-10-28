@@ -99,7 +99,7 @@ const SignupScreen = () => {
         accessibilityLabel="Go back to the welcome screen"
         accessibilityHint="Returns to the welcome screen for more options"
       >
-        <Ionicons name={"arrow-back-circle"} color={colors.lightest} size={50} />
+        <Ionicons name={"arrow-back-circle"} color={colors.web_white} size={50} />
       </TouchableOpacity>
       <ScrollView  contentContainerStyle={{ justifyContent: 'center', alignItems: 'center', paddingBottom: 50}}>
 
@@ -246,7 +246,7 @@ const styles = StyleSheet.create({
   },
   backButton: {
     position: 'absolute',
-    top: 45,
+    top: 15,
     left : 20,
     backgroundColor: 'transparent',
     borderRadius: 25,
