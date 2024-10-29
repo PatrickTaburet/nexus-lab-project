@@ -53,28 +53,34 @@
                 </tr>
             </thead>
             <tbody>
-                {% for artwork in artworks %}
-                    {% set entityName = artwork|class_name|split('\\')|last %}
-                    {% set entityLabel = entities[entityName] %}
-                    {% if is_granted('ROLE_USER') and artwork.user == app.user %}
-                        <tr>
-                            <td>
-                                <a href="{{ vich_uploader_asset(artwork, 'imageFile') }}" data-lightbox="artwork" data-title="{{ artwork.title }}">
-                                    <img src="{{ vich_uploader_asset(artwork, 'imageFile') }}" alt="artwork picture" class="artworkImg">
-                                </a>
-                            </td>
-                            <td>{{ artwork.title }}</td>
-                            <td class="commentTable">{{ artwork.comment }}</td>
-                            <td class="dateTable">{{ entityLabel }}</td>
-                            <td class="likeTable">{{ artwork.likes|length }}</td>
-                            <td class="dateTable">{{ artwork.updatedAt|date('F j, Y, g:i a') }}</td>
-                            <td>
-                                <a href="{{ path('editArtwork', {'id': artwork.id, 'entity': entityName}) }}" class="customButton generateButton">Update</a>
-                                <button class="buttonModale customButton generateButton" data-delete-url="{{ path('deleteArtwork', {'id': artwork.id, 'entity': entityName}) }}">Delete</button>
-                            </td>
-                        </tr>
-                    {% endif %}
-                {% endfor %}
+                {% if artworks is empty %}
+                <tr>
+                    <td colspan="7" class="noArtwork">No artwork found</td>
+                </tr>
+                {% else %}
+                    {% for artwork in artworks %}
+                        {% set entityName = artwork|class_name|split('\\')|last %}
+                        {% set entityLabel = entities[entityName] %}
+                        {% if is_granted('ROLE_USER') and artwork.user == app.user %}
+                            <tr>
+                                <td>
+                                    <a href="{{ vich_uploader_asset(artwork, 'imageFile') }}" data-lightbox="artwork" data-title="{{ artwork.title }}">
+                                        <img src="{{ vich_uploader_asset(artwork, 'imageFile') }}" alt="artwork picture" class="artworkImg">
+                                    </a>
+                                </td>
+                                <td>{{ artwork.title }}</td>
+                                <td class="commentTable">{{ artwork.comment }}</td>
+                                <td class="dateTable">{{ entityLabel }}</td>
+                                <td class="likeTable">{{ artwork.likes|length }}</td>
+                                <td class="dateTable">{{ artwork.updatedAt|date('F j, Y, g:i a') }}</td>
+                                <td>
+                                    <a href="{{ path('editArtwork', {'id': artwork.id, 'entity': entityName}) }}" class="customButton generateButton">Update</a>
+                                    <button class="buttonModale customButton generateButton" data-delete-url="{{ path('deleteArtwork', {'id': artwork.id, 'entity': entityName}) }}">Delete</button>
+                                </td>
+                            </tr>
+                        {% endif %}
+                    {% endfor %}
+                {% endif %}
             </tbody>
         </table>
     {% endfor %}

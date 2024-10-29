@@ -193,7 +193,7 @@ FLying card
   position: fixed;
   bottom: 80px;
   left: 50px;
-  z-index: 2;
+  z-index: 1000;
 }
 .flyingCard a{
   font-size:15px;

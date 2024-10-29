@@ -62,8 +62,9 @@ class AdminController extends AbstractController
             ->leftJoin('s1.likes', 'l1')->addSelect('l1')
             ->leftJoin('s2.likes', 'l2')->addSelect('l2')
             ->leftJoin('sd1.likes', 'l3')->addSelect('l3')
-            ->leftJoin('sd2.likes', 'l4')->addSelect('l4');
-    
+            ->leftJoin('sd2.likes', 'l4')->addSelect('l4')
+            ->orderBy('u.createdAt', 'DESC');
+            
         $allUsers = $paginator->paginate(
             $queryBuilder,
             $request->query->getInt('page', 1),

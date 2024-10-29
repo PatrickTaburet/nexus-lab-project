@@ -32,3 +32,11 @@ yarn-error.log
 ###> lexik/jwt-authentication-bundle ###
 /config/jwt/*.pem
 ###< lexik/jwt-authentication-bundle ###
+
+# Ignore uploaded scene code files
+/public/code/
+/public/code/*
+
+# Ignore design and artworks images
+/public/images/
+/public/images/*
