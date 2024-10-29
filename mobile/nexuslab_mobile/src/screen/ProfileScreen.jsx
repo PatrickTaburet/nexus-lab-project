@@ -25,8 +25,6 @@ const ProfileScreen = ({ navigation })  => {
   const fetchUserData = async () => {
    
     try {
-      console.log("11111");
-      
       const token = await AsyncStorage.getItem('token');
       const decodedToken = jwtDecode(token);
       const userId = decodedToken.id;

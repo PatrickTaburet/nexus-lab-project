@@ -9,6 +9,8 @@ import { Checkbox } from 'react-native-paper';
 import * as ImagePicker from 'expo-image-picker';
 import { signup } from '../../services/api/authApi';
 import * as FileSystem from 'expo-file-system';
+import MyModale from '../../components/MyModale';
+import ModalContent from '../../components/ModalContent';
 
 const SignupScreen = () => {
 
@@ -20,6 +22,7 @@ const SignupScreen = () => {
   const [checked, setChecked] = useState(false);
   const [profilePicture, setProfilePicture] = useState(null);
   const [error, setError] = useState('');
+  const [modalVisible, setModalVisible] = useState(false);
 
   const handleSelectImage = async () => {
     const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
@@ -56,8 +59,13 @@ const SignupScreen = () => {
   };
 
   const handleRegister = async () => {
+
     if (password !== confirmPassword) {
       setError("Passwords do not match");
+      return;
+    }
+    if (!checked) {
+      setError("You must agree to the terms");
       return;
     }
 
@@ -92,6 +100,22 @@ const SignupScreen = () => {
 
   return (
     <View style={styles.container}>
+
+       <MyModale
+        visible={modalVisible}
+        onClose={() => {
+          setModalVisible(false);
+        }}
+        onSubmit={()=>{
+          setChecked(true);
+          setModalVisible(false);
+        }}
+        title={`Accept Terms and Conditions`}
+        accessibilityLabel={`Terms and Conditions`}
+      >
+        <ModalContent/>
+      </MyModale>
+
       <TouchableOpacity 
         style={styles.backButton}
         onPress={() => navigation.navigate('Welcome')}
@@ -202,7 +226,7 @@ const SignupScreen = () => {
               uncheckedColor={"white"}
               color={"rgb(217, 0, 255)"}
               accessible={true}
-              accessibilityLabel="Agree to terms"
+              accessibilityLabel="Agree to terms and conditions"
             />
             <Text 
               style={styles.checkboxText} 
@@ -211,8 +235,20 @@ const SignupScreen = () => {
               accessibilityLabel="Terms agreement text"
               accessibilityHint="Click here to agree to the terms and conditions"
             >
-              Agree terms
+              Agree
             </Text>
+            <TouchableOpacity 
+              onPress={() => {setModalVisible(true)}}
+              accessible={true}
+              accessibilityLabel="Modale for role request description"
+              accessibilityHint="Touch to open modale"
+              accessibilityRole='button'
+            >
+              <Text style={[styles.checkboxText, {"color": colors.cyan}]}> terms and conditions</Text>
+            </TouchableOpacity>
+              
+              
+          
           </View>
           <MyButton
             onPress={handleRegister}

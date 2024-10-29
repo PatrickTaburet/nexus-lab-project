@@ -61,6 +61,38 @@ img{
 .vichImgContainer{
    
 }
+/* vich uploader button */
+
+input[type="file"]::file-selector-button {
+  align-items: center;
+  background-color: rgb(5, 6, 45);
+  border: 0;
+  border-radius: 8px;
+  box-shadow: rgba(151, 65, 252, 0.2) 0 15px 30px -5px;
+  box-sizing: border-box;
+  display: flex;
+  font-family: Phantomsans, sans-serif;
+  font-size: 17px;
+  justify-content: center;
+  line-height: 1em;
+  max-width: 100%;
+  min-width: 170px;
+  padding: 3px;
+  text-decoration: none;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  white-space: nowrap;
+  cursor: pointer;
+  color: var(--var-white);
+  padding: 10px 14px;
+  margin: 0;
+  box-shadow: inset 0 0 10px var(--var-primary);
+}
+
+input[type="file"]::file-selector-button:hover {
+  background-image: linear-gradient(144deg,#AF40FF, #5B42F3 50%,#00DDEB);
+}
 section .register
 {
   position: absolute;
@@ -105,11 +137,15 @@ section .register .content .form .inputBox
   width: 100%;
   margin: 15px 0 15px 0;
 }
-.passwordInput, .agreeTerms{
+.passwordInput{
   margin-bottom: 15px;
 }
+.agreeTerms{
+  margin-bottom: 15px;
+  margin-top: 10px;
+}
 .imagePreview{
-  margin: 3px 0 15px 0;
+  margin: 23px 0 15px 77px;
 }
 
 section .register .content .form .inputBox input 
@@ -157,14 +193,32 @@ section .register .content .form .inputBox i
 }
 .register .content .form .links a:nth-child(2) 
 {
-  color: rgb(217, 0, 255);
+  color: var(--var-white);
   font-weight: 600;
 }
 .submitBtn{
-    color: rgb(217, 0, 255);
+    color: var(--var-white);
     font-weight: 600;
 }
+.policyLink{
+  color: var(--var-cyan)!important;
+  font-size: 14px;
+  margin: auto;
+}
+.checkboxAgree{
+  margin-bottom: 3px;
+  cursor: pointer;
+}
+.checkboxItem{
+  cursor: pointer;
 
+}
+.policyContainer{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
 
 @media (max-width: 900px)
 {

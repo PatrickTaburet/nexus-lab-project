@@ -1,10 +1,10 @@
 import React from 'react';
-import { Modal, View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { Modal, View, Text, TouchableOpacity, StyleSheet, ScrollView } from 'react-native';
 import MyButton from './MyButton';
 import styles from '../utils/styles';
 import { colors } from '../utils/colors';
 
-const MyModale = ({ visible, onClose, onSubmit, title, content }) => {
+const MyModale = ({ visible, onClose, onSubmit, title, content, children }) => {
   return (
     <Modal visible={visible} transparent animationType="slide">
       <View style={myStyles.modalContainer}>
@@ -28,6 +28,10 @@ const MyModale = ({ visible, onClose, onSubmit, title, content }) => {
               {content}
             </Text>
           ) : null}
+
+          <ScrollView>
+            {children}
+          </ScrollView>
 
           <View style={myStyles.modalBtnContainer}>
 
@@ -68,6 +72,8 @@ const myStyles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    maxHeight: '80%',
+    marginVertical: 'auto'
   },
   modalContent: {
     backgroundColor: colors.purple_dark,

@@ -32,9 +32,12 @@
               {{ form_label(registrationForm.imageFile) }}
               {{ form_widget(registrationForm.imageFile, { "attr": {"class" : "imagePreview" } }) }}
             </div>
-            <div class="links agreeTerms">        
-              {{ form_label(registrationForm.agreeTerms) }}
-              {{ form_widget(registrationForm.agreeTerms) }}
+            <div class="links agreeTerms"> 
+              <div class="policyContainer">
+                {{ form_label(registrationForm.agreeTerms) }}
+                {{ form_widget(registrationForm.agreeTerms) }}
+              </div>       
+              <a href="{{ path('privacyPolicy')}}" class="policyLink">Terms and conditions</a>
             </div>
             <div class="links">        
               {{ form_label(registrationForm.Submit) }}
