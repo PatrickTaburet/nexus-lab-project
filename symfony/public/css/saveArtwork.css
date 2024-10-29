@@ -13,7 +13,7 @@ h1{
     width: 700px;
 }
 .form{
-    color: white;
+    color: var(--var-white);
 }
 .form input{
     width: 200px;

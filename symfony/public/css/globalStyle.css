@@ -119,7 +119,7 @@ Loading screen image
     height: 100%;
     top: 0;
     left: 0;
-    background-color: #000000; /* Vous pouvez changer la couleur de fond */
+    background-color: var(--var-black);
     display: flex;
     justify-content: center;
     align-items: center;
@@ -235,7 +235,7 @@ Update button style
     touch-action: manipulation;
     white-space: nowrap;
     cursor: pointer;
-    color: #FFFFFF;
+	color: var(--var-white);
     padding: 10px 14px;
     margin: 10px;
     box-shadow: inset 0 0 10px var(--var-primary);
@@ -270,7 +270,7 @@ Update button style
     touch-action: manipulation;
     white-space: nowrap;
     cursor: pointer;
-    color: #FFFFFF;
+	color: var(--var-white);
     padding: 10px 14px;
     margin: 10px;
     transition: border-color 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
@@ -305,7 +305,7 @@ Pagination
     border: 1px solid #ccc;
     border-radius: 5px;
     text-decoration: none;
-    color: white;
+    color: var(--var-white);
     background-color:#68009d;
   }
   .pagination a:hover {
@@ -315,7 +315,7 @@ Pagination
   }
   .pagination .current {
     background-color: #337ab7;
-    color: #fff;
+    color: var(--var-white);
     border-color: #337ab7;
     font-weight: bold;
     padding: 5px 10px;
@@ -335,7 +335,7 @@ Privacy Policy
     justify-content: center;
     padding: 30px;
     background-color: var(--var-main-darkest);
-    color: white;
+    color: var(--var-white);
     height: 100%;
 }
 .privacyContainer h1{
@@ -360,7 +360,7 @@ footer {
     background: #6441A5;  /* fallback for old browsers */
     background: -webkit-linear-gradient(to left, #2a0845, #6441A5);  /* Chrome 10-25, Safari 5.1-6 */
     background: linear-gradient(to left, #2a0845, #6441A5); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-    color: white;
+    color: var(--var-white);
     justify-content: center;
     flex-direction: column;
     align-items:center;
@@ -414,7 +414,7 @@ footer {
     margin-bottom: 15px;
 }
 .bottomFooter a{
-    color: white;
+    color: var(--var-white);
     cursor: pointer;
     transition: 0.3s;
     font-size: 15px;

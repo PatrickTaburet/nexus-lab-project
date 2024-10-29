@@ -123,7 +123,7 @@ const styles = StyleSheet.create({
     button:{
         height: 40,
         justifyContent: 'space-between',
-        backgroundColor: '#fff',
+        backgroundColor: '#F5F5F5',
         flexDirection: 'row',
         width: 110,
         alignItems: 'center',

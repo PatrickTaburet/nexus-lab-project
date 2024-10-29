@@ -102,7 +102,7 @@ Sorting form
     justify-content: center;
     margin: 12px ;
     align-items: center;
-    color: white;
+    color: var(--var-white);
     z-index: 2;
 }
 .formLabel{
@@ -203,13 +203,13 @@ h1 {
     width: 3em;
     height: 3em;
     border-radius: 200px;
-    outline: 2px solid white;
+    outline: 2px solid var(--var-white);
     margin-right: 1.4em;
     border-radius: 50%;
 }
 
 span {
-    color: white;
+    color: var(--var-white);
 }
 .artworkImg{
     width: 100%;
@@ -386,7 +386,7 @@ Open with parameters slide button
     display: flex;
     align-items: center;
     background: #68009d;
-    color: white;
+    color: var(--var-white);
     padding: 8px 10px;
     border-radius: 50px;
     box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25);

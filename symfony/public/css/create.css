@@ -13,7 +13,7 @@ h1{
     font-weight: 500;
 }
 h2{
-    color: white;
+    color: var(--var-white);
     margin-bottom: 3%;
 }
 
@@ -30,7 +30,7 @@ h2{
     align-items: center;
     width: 20vw;
     height: 20vw;
-    color: white;
+    color: var(--var-white);
     border-radius: 15px;
     border: 5px;
     font-size: 2vw;

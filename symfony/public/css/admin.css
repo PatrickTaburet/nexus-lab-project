@@ -60,7 +60,7 @@ th,
 td {
 	padding: 15px;
 	background-color: rgba(255,255,255,0.2);
-	color: #fff;
+	color: var(--var-white);
   
 }
 .commentTable{
@@ -119,7 +119,7 @@ Dashboard
     font-size: 50px;
 }
 .subTitle{
-    color: white;
+    color: var(--var-white);
     font-weight: 400;
 }
 .dashboardTable{
@@ -167,7 +167,7 @@ Dashboard
     margin: 20px;
 }
 .openReqContent{
-    color: white;
+    color: var(--var-white);
     display: flex;
     justify-content: left;
     flex-direction: column;

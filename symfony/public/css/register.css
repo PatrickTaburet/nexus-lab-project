@@ -1,7 +1,7 @@
 
 main 
 {
-  background: #000;
+  background: var(--var-black);
 }
 section 
 {
@@ -74,7 +74,7 @@ section .register
   border-radius: 4px;
   box-shadow: 0 15px 35px rgba(0,0,0,9);
   margin-bottom: 100px;
-  color:white
+  color: var(--var-white);
 }
 section .register .content 
 {
@@ -121,7 +121,7 @@ section .register .content .form .inputBox input
   outline: none;
   padding: 5px 10px 7.5px;
   border-radius: 4px;
-  color: #fff;
+	color: var(--var-white);
   font-weight: 500;
   font-size: 1em;
 }
@@ -140,7 +140,7 @@ section .register .content .form .inputBox i
 {
   transform: translateY(-7.5px);
   font-size: 0.8em;
-  color: #fff;
+	color: var(--var-white);
 }
 .register .content .form .links 
 {
@@ -152,7 +152,7 @@ section .register .content .form .inputBox i
 }
 .register .content .form .links a 
 {
-  color: #fff;
+	color: var(--var-white);
   text-decoration: none;
 }
 .register .content .form .links a:nth-child(2) 

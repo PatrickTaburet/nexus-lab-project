@@ -49,7 +49,7 @@ input[type="file"]::file-selector-button {
     touch-action: manipulation;
     white-space: nowrap;
     cursor: pointer;
-    color: #FFFFFF;
+	color: var(--var-white);
     padding: 10px 14px;
     margin: 0;
     box-shadow: inset 0 0 10px var(--var-primary);
@@ -281,7 +281,7 @@ Change password
     margin-bottom: 20px;
 }
 .label-psw{
-    color: white;
+    color: var(--var-white);
 }
 
 .buttonBoxPsw{

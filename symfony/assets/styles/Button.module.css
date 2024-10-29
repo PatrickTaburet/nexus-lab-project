@@ -19,7 +19,7 @@
   touch-action: manipulation;
   white-space: nowrap;
   cursor: pointer;
-  color: #FFFFFF;
+  color: #F5F5F5;
 }
 
 .customButton:active,

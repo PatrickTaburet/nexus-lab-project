@@ -170,7 +170,7 @@
         transform: rotate(120deg); }
 
     .hexContent {
-    color: #fff;
+    color: var(--var-white);
     display: block;
     height: 180px;
     margin: 0 auto;
@@ -212,7 +212,8 @@
         -o-transition: all 0.3s cubic-bezier(0.165, 0.84, 0.44, 1) 0s;
         transition: all 0.3s cubic-bezier(0.165, 0.84, 0.44, 1) 0s; }
     .hexContent:hover {
-        color: #fff; }
+        color: #F5F5F5; 
+    }
 
    /* .hexagonItem:nth-last-child(1), .hexagonItem:nth-last-child(2), .hexagonItem:nth-last-child(3) {
         -webkit-transform: rotate(30deg) translate(87px, -80px);

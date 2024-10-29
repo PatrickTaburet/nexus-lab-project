@@ -72,7 +72,7 @@ Generative scenes
   z-index: 2;
   font-size: 35px;
   font-weight: 700;
-  color: white;
+  color: var(--var-white);
   transition: 0.4s;
 }
 .labelBox a:hover{
@@ -98,14 +98,14 @@ Generative scenes
 .descriptionContent{
     width: 100%;
     height: 100%;
-    color: white;
+    color: var(--var-white);
 }
 .descriptionContent a{
   color: #00DDEB;
 }
 .descriptionContent a:hover{
   transition: 0.3s;
-  color: #ffffff;
+	color: var(--var-white);
 }
 /* Decors */
 
@@ -180,7 +180,7 @@ UI pannel style
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  color: white;
+  color: var(--var-white);
   width: 90%;
 }
   
@@ -230,7 +230,7 @@ UI pannel style
   }
   
   .bubble {
-    background: white;
+    background: var(--var-white);
     border: 3px solid #cbd2da;
     position: absolute;
     border-radius: 50%;
@@ -266,7 +266,7 @@ UI pannel style
     justify-content: center;
     align-items: center;
     margin: 20px 20px 20px 50px;
-    color: white
+    color: var(--var-white);
   }
 
   .checkboxContainer p{
@@ -309,7 +309,7 @@ UI pannel style
   background: -webkit-linear-gradient(#ebebeb,#f1f1f1);
   box-shadow: -2px 2px 8px rgba(0, 0, 0, 0.2), 
         -1px 1px 2px rgba(0, 0, 0, 0.3), 
-        inset 1px 1px 1px #ffffff;
+        inset 1px 1px 1px var(--var-white);
   -webkit-transition: all 1s;
   
 }
@@ -402,7 +402,7 @@ Modale
   box-shadow: rgb(38, 57, 77) 0px 20px 30px -10px;
   opacity: 0;
   border-radius: 10px;
-  color: white;
+  color: var(--var-white);
 }
 /* .superModale p {
   text-align: center;

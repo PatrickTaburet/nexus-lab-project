@@ -83,7 +83,7 @@ const styles = StyleSheet.create({
     margin: 3,
     shadowInset: { offset: { width: 0, height: 0 }, opacity: 1, radius: 10, color: colors.primary },
     cursor: 'pointer',
-    color: '#FFFFFF',
+    color: '#F5F5F5',
   },
 
 })
