@@ -34,13 +34,13 @@ const SliderItem = ({item}) => {
           >
             {item.title}
           </Text>
-          <Text 
+          {/* <Text 
             style={styles.text} 
             accessibilityRole="text" 
             accessibilityLabel={`Comment: ${item.comment}`} 
           >
             {item.comment}
-          </Text>
+          </Text> */}
         </View>
       </LinearGradient>
     </Animated.View>

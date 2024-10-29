@@ -23,7 +23,7 @@ const SaveArtworkModal = ({ visible, onClose, onSubmit, imagePreview, imageFolde
               source={{ uri: previewUrl }} 
               style={styles.preview}
               accessible={true}
-              accessibilityLabel="Artwrk preview image"
+              accessibilityLabel="Artwork preview image"
               resizeMode="contain" 
             />
           )}

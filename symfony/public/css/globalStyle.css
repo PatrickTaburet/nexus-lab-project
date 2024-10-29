@@ -29,6 +29,10 @@ h1{
     font-family: var(--var-title);
     animation: text-glow 1.3s ease-in-out infinite alternate;
 }
+.glow{
+    font-family: var(--var-title);
+    animation: text-glow 1.3s ease-in-out infinite alternate;
+}
 @keyframes text-glow {
     from {
         text-shadow: 0 0 1px var(--var-primary);
@@ -74,6 +78,7 @@ CSS variables
     --var-small-heading: normal normal 400 1em/1em 'Outfit', sans-serif;
     
     --var-para: normal normal 300 1em/1.55em 'Outfit', sans-serif;
+
     }
 
 

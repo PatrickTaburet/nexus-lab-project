@@ -2,7 +2,7 @@ import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import {colors} from '../utils/colors'
 
-const ModalContent = () => {
+const PolicyModalContent = () => {
   return (
     <View style={styles.container}>
       <Text style={styles.sectionTitle}>NexusLab Privacy Policy</Text>
@@ -93,6 +93,7 @@ const ModalContent = () => {
   );
 };
 
+export default PolicyModalContent;
 
 const styles = StyleSheet.create({
     container: {
@@ -118,5 +119,3 @@ const styles = StyleSheet.create({
       color: colors.web_white
     },
   });
-
-export default ModalContent;

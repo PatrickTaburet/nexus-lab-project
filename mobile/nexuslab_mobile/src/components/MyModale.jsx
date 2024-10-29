@@ -7,6 +7,7 @@ import { colors } from '../utils/colors';
 const MyModale = ({ visible, onClose, onSubmit, title, content, children }) => {
   return (
     <Modal visible={visible} transparent animationType="slide">
+      <View style={myStyles.overlay}></View>
       <View style={myStyles.modalContainer}>
         <View style={myStyles.modalContent} accessible={true}>
 
@@ -71,9 +72,17 @@ const myStyles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
     maxHeight: '80%',
     marginVertical: 'auto'
+  },
+  overlay:{
+    position: 'absolute',
+    top: 0,
+    bottom: 0,
+    flex:1,
+    height: '100%',
+    width: '100%',
+    backgroundColor: 'rgba(0, 0, 0, 0.6)',
   },
   modalContent: {
     backgroundColor: colors.purple_dark,
@@ -87,7 +96,7 @@ const myStyles = StyleSheet.create({
   },
   modalHeader:{
     textAlign: "center",
-    fontSize: 19,
+    fontSize: 23,
     height: 40,
     marginTop: 10,
   },

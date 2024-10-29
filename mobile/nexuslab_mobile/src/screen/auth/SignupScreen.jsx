@@ -10,7 +10,7 @@ import * as ImagePicker from 'expo-image-picker';
 import { signup } from '../../services/api/authApi';
 import * as FileSystem from 'expo-file-system';
 import MyModale from '../../components/MyModale';
-import ModalContent from '../../components/ModalContent';
+import ModalContent from '../../components/PolicyModalContent';
 
 const SignupScreen = () => {
 

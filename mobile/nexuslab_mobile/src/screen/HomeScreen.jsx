@@ -7,7 +7,8 @@ import {  useIsFocused } from '@react-navigation/native';
 import Slider from '../components/carouselSlider/Slider'
 import MyButton from '../components/MyButton';
 import ArtistRoleModale from '../components/MyModale'
-
+import AboutUsModale from '../components/MyModale';
+import AboutUsModaleContent from '../components/AboutUsModalContent'
 const { height, width } = Dimensions.get('window');
 
 const HomeScreen = ({ navigation })  => {
@@ -19,7 +20,8 @@ const HomeScreen = ({ navigation })  => {
   const imagePath1 = `${config.apiUrl}/images/design/gallery.jpg`;
   const imagePath2 = `${config.apiUrl}/images/design/share-your-code.jpg`;
   const scrollY = useRef(new Animated.Value(0)).current;
-  const [modalVisible, setModalVisible] = useState(false);
+  const [ArtistModalVisible, setArtistModalVisible] = useState(false);
+  const [AboutModalVisible, setAboutModalVisible] = useState(false);
 
 
   const fetchScenes = useCallback(async () => {
@@ -124,7 +126,7 @@ const HomeScreen = ({ navigation })  => {
                 Generate Art
               </MyButton>
               <MyButton
-                onPress={() => {setModalVisible(true)}}
+                onPress={() => {setArtistModalVisible(true)}}
                 style={styles.roleButton}
                 textStyle={styles.textButton}
                 accessible={true}
@@ -140,7 +142,7 @@ const HomeScreen = ({ navigation })  => {
                 accessibilityLabel="Code lines image"
               />   
               <MyButton
-                onPress={() => {navigation.navigate('AboutUs')}}
+                onPress={() => {setAboutModalVisible(true)}}
                 isSecondary={true}
                 style={styles.aboutUs}
                 accessible={true}
@@ -153,15 +155,28 @@ const HomeScreen = ({ navigation })  => {
           <ArtistRoleModale 
             title={"Get Artist Role"}
             content={"Do you want to become an even more active member and share your generative scenes with the community? \n Simply head over to the web version of NexusLab and fill out a quick form. We'll get back to you as soon as possible! No need to create a new account ;)"}
-            visible={modalVisible}
+            visible={ArtistModalVisible}
             onClose={() => {
-              setModalVisible(false);
+              setArtistModalVisible(false);
             }}
             accessible={true}
             accessibilityViewIsModal={true}
             accessibilityLabel="Get Artist role"
             accessibilityHint="Touch to close the modal"
           />
+          <AboutUsModale
+             title={"About NexusLab"}
+             visible={AboutModalVisible}
+             onClose={() => {
+               setAboutModalVisible(false);
+             }}
+             accessible={true}
+             accessibilityViewIsModal={true}
+             accessibilityLabel="Information about NexusLab"
+             accessibilityHint="Touch to close the modal"
+          >
+            <AboutUsModaleContent/>
+          </AboutUsModale>
         </ScrollView>
    
     </SafeAreaView>

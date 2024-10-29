@@ -172,11 +172,13 @@ Dashboard
     justify-content: left;
     flex-direction: column;
     align-items: start;
-    padding: 10px;
+    padding: 23px;
     box-shadow: 0 0 10px var(--var-primary);
     background-color: var( --var-card-dark);
-   max-width: 800px;
+    max-width: 800px;
     border-radius: 15px;
+    min-width: 400px;
+
 }
 .openReqContent h2{
     margin: auto;
@@ -331,11 +333,12 @@ Media queries
         justify-content: left;
         flex-direction: column;
         align-items: start;
-        padding: 10px;
+        padding: 18px;
         box-shadow: 0 0 10px var(--var-primary);
         background-color: var( --var-card-dark);
         min-width: 200px;
         border-radius: 15px;
+        
     }
     .sceneImg{
         width: 70%;
