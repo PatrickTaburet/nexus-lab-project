@@ -204,11 +204,11 @@ const styles = StyleSheet.create({
   },
   safeArea:{
     flex: 1,
-    backgroundColor: 'black', 
+    backgroundColor: colors.web_black, 
   },
   loadingSafeArea:{
     flex: 1,
-    backgroundColor: 'black', 
+    backgroundColor: colors.web_black, 
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -254,7 +254,7 @@ const styles = StyleSheet.create({
   text: {
     fontSize: 15,
     marginBottom: 10,
-    color: 'white'
+    color: colors.web_white
   },
   logoutText:{
     fontSize: 23,
@@ -279,7 +279,7 @@ const styles = StyleSheet.create({
   secondButton:{
     width: 150,
     margin: 0,
-    color: 'black'
+    color: colors.web_black
   },
   submitButton:{
     margin: 0,

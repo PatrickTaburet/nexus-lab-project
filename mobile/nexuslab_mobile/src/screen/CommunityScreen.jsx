@@ -40,7 +40,7 @@ const styles = StyleSheet.create({
   text: {
     fontSize: 20,
     marginBottom: 20,
-    color:'white',
+    color:colors.web_white,
     marginBottom: 100
   },
   profileImage: {

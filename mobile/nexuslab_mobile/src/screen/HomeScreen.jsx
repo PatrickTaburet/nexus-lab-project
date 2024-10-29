@@ -185,7 +185,7 @@ const styles = StyleSheet.create({
   },
   safeArea:{
     flex: 1,
-    backgroundColor: 'black', 
+    backgroundColor: colors.web_black, 
   },
   backgroundImage: {   
     width: '100%',

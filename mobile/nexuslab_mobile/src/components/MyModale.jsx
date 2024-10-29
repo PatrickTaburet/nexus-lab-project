@@ -95,6 +95,6 @@ const myStyles = StyleSheet.create({
   modaltxt:{
     textAlign: "center",
     fontSize: 16,
-    color: 'white'
+    color: colors.web_white,
   },
 })

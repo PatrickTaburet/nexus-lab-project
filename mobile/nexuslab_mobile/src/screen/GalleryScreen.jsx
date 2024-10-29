@@ -267,7 +267,7 @@ const styles = StyleSheet.create({
   },
   card: {
     marginBottom: 20,
-    backgroundColor: 'white',
+    backgroundColor: colors.web_white,
     borderRadius: 12,
     borderStyle: 'solid',
     borderWidth: 1.5,
@@ -299,11 +299,11 @@ const styles = StyleSheet.create({
   },
   username: {
     fontSize: 15,
-    color: 'white',
+    color: colors.web_white,
   },
   date: {
     fontSize: 15,
-    color: 'white',
+    color: colors.web_white,
   },
   loader: {
     width:'100%',
@@ -312,7 +312,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   inputIcon:{
-    color:'white'
+    color: colors.web_white
   },
   selectContainer:{
     position:'absolute',
@@ -348,7 +348,7 @@ const styles = StyleSheet.create({
     height: 50,
     borderRadius: 70,
     borderWidth: 1.5,
-    borderColor: 'white'
+    borderColor: colors.web_white
   },
   userContainer:{
     flexDirection: 'row',
@@ -366,7 +366,7 @@ const styles = StyleSheet.create({
   },
   label:{
     fontSize: 16,
-    color: 'white',
+    color: colors.web_white,
     textAlign:'center',
     paddingVertical: 5,
     borderRadius: 6

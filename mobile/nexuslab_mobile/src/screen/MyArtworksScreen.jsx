@@ -1,4 +1,4 @@
-import { TouchableWithoutFeedback , ImageBackground, View, Text, ScrollView, StyleSheet,TouchableOpacity, Modal, SafeAreaView, Image, ActivityIndicator, FlatList} from 'react-native';
+import { PanResponder, TouchableWithoutFeedback , ImageBackground, View, Text, ScrollView, StyleSheet,TouchableOpacity, Modal, SafeAreaView, Image, ActivityIndicator, FlatList} from 'react-native';
 import React, { useState, useEffect, useCallback, useRef } from 'react'
 import useApi from '../services/api/hooks/useApi';
 import { useIsFocused } from '@react-navigation/native';
@@ -151,11 +151,23 @@ const MyArtworksScreen = ({ navigation })  => {
   const scrollViewRef = useRef(null);
   const prevIsGenerativeArtRef = useRef(isGenerativeArt);
 
-  console.log('--------------------------0');
+  useEffect(() => {
+    if (isFocused) {
+      if (prevIsGenerativeArtRef.current !== isGenerativeArt) {
+        console.log("isGenerativeArt a changé");
+        fetchScenes(true);
+      }
+      fetchScenes();
+    }
+    // Mettre à jour la référence après l'exécution de l'effet
+    prevIsGenerativeArtRef.current = isGenerativeArt;
+  }, [isFocused, page, isGenerativeArt]);
+
+  useEffect(() => {
+    resetPages();
+  }, [isGenerativeArt]);
 
   const fetchScenes = useCallback(async (reset = false) => {
-    console.log('--------------------------3');
-
     if (loading) return;
     setLoading(true);
 
@@ -192,26 +204,6 @@ const MyArtworksScreen = ({ navigation })  => {
     setHasMore(true); 
   };
 
-  useEffect(() => {
-    console.log('--------------------------1');
-
-    if (isFocused) {
-      if (prevIsGenerativeArtRef.current !== isGenerativeArt) {
-        console.log("isGenerativeArt a changé");
-        fetchScenes(true);
-      }
-      fetchScenes();
-    }
-    // Mettre à jour la référence après l'exécution de l'effet
-    prevIsGenerativeArtRef.current = isGenerativeArt;
-  }, [isFocused, page, isGenerativeArt]);
-
-  useEffect(() => {
-    console.log('--------------------------2');
-
-    resetPages();
-  }, [isGenerativeArt]);
-
   const handleImagePress = (imagePath) => {
     setFullScreenImage(imagePath);
   };
@@ -222,6 +214,26 @@ const MyArtworksScreen = ({ navigation })  => {
       screen: target,  // cible l'écran spécifique du CreateStack
     });
   };
+
+  // Changer l'état des bouttons avec un swipe
+  const panResponder = useRef(
+    PanResponder.create({
+      onMoveShouldSetPanResponder: (evt, gestureState) => {
+        const { dx } = gestureState;
+        return Math.abs(dx) > 10; // Seuil pour détecter le swipe
+      },
+      onPanResponderEnd: (evt, gestureState) => {
+        const { dx } = gestureState;
+        if (dx > 20) {
+          // Swipe vers la droite
+          setIsGenerativeArt(true);
+        } else if (dx < -20) {
+          // Swipe vers la gauche
+          setIsGenerativeArt(false);
+        }
+      },
+    })
+  ).current;
 
   const renderPagination = () => (
     <View style={styles.paginationContainer}>
@@ -256,7 +268,7 @@ const MyArtworksScreen = ({ navigation })  => {
   );
 
   return (
-    <SafeAreaView  style={styles.globalContainer}>
+    <SafeAreaView  style={styles.globalContainer} {...panResponder.panHandlers}>
       <ImageBackground
         source={require('../assets/design/hexagonal-background.jpg')}
         style={styles.backgroundImage} 
@@ -365,7 +377,7 @@ const styles = StyleSheet.create({
   },
   card: {
     marginBottom: 20,
-    backgroundColor: 'white',
+    backgroundColor: colors.web_white,
     borderRadius: 12,
     borderStyle: 'solid',
     borderWidth: 1.5,
@@ -399,13 +411,13 @@ const styles = StyleSheet.create({
 
   text: {
     fontSize: 15,
-    color: 'white',
+    color: colors.web_white,
     textAlign: 'center',
 
   },
   textNoData:{
     fontSize: 15,
-    color: 'white',
+    color: colors.web_white,
     textAlign: 'center',
     top: 250
 
@@ -436,17 +448,17 @@ const styles = StyleSheet.create({
   },
   submitButtonOn:{
     fontSize: 13,
-    color: 'black',
+    color: colors.web_black,
       fontWeight: '700'
   },
   submitButtonOff:{
-    color: 'white',
+    color: colors.web_white,
     fontSize: 13,
   },
   submitButton: {
     borderWidth: 5, 
     borderRadius: 50,
-    borderColor: 'black'
+    borderColor: colors.web_black
   },
 
   ///////
@@ -474,7 +486,7 @@ const styles = StyleSheet.create({
   },
   label:{
     fontSize: 16,
-    color: 'white',
+    color: colors.web_white,
     textAlign:'center',
     paddingVertical: 5,
     borderRadius: 6
@@ -512,10 +524,10 @@ const styles = StyleSheet.create({
     width: 120, 
   },
   deleteButton:{
-    color: 'black',
+    color: colors.web_black,
   },
   likeTxt:{
-    color: 'white',
+    color: colors.web_white,
     fontSize: 18,
     marginTop: 17,
     marginRight: 58
@@ -538,7 +550,7 @@ const styles = StyleSheet.create({
   },
   paginationButton: {
     borderRadius:50,
-    backgroundColor: 'black',
+    backgroundColor: colors.web_black,
   },
   paginationText: {
     textAlign:'center',
@@ -551,7 +563,7 @@ const styles = StyleSheet.create({
     paddingTop: 7,
     borderRadius: 70,
     borderWidth: 4,
-    borderColor: 'black'
+    borderColor: colors.web_black
   },
   disabledButton: {
     backgroundColor: 'grey', // Une couleur plus claire ou grisée

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { View, Text, StyleSheet} from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import useApi from '../services/api/hooks/useApi';
+import { colors } from '../utils/colors'
 
 export default function LikesManager({ userId, sceneId, likesNum, entity, isLikedByUser}) {
   const [isLiked, setIsLiked] = useState(isLikedByUser);
@@ -46,11 +47,11 @@ export default function LikesManager({ userId, sceneId, likesNum, entity, isLike
 
 const styles = StyleSheet.create({
     numLikes:{
-        color:'white',
+        color: colors.web_white,
         fontSize: 18
     },
     inputIcon:{
-        color:'white',
+        color: colors.web_white,
     },
     container:{
       flexDirection:'row',

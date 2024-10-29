@@ -7,6 +7,7 @@ import AuthNavigator from './src/navigation/AuthNavigator';
 import { AuthProvider, useAuth } from './src/navigation/AuthContext';
 import { checkTokenValidity } from './src/services/AuthService';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import {colors} from './src/utils/colors'
 
 SplashScreen.preventAutoHideAsync();
 
@@ -46,7 +47,7 @@ export default function App() {
 
   useEffect(() => {
     StatusBar.setBarStyle('light-content');
-    StatusBar.setBackgroundColor('black'); // ou Transparent 
+    StatusBar.setBackgroundColor(colors.web_black);
     StatusBar.setTranslucent(true);
   }, []);
 

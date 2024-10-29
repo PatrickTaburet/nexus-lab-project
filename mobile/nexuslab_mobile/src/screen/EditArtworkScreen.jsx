@@ -165,7 +165,7 @@ const styles = StyleSheet.create({
   },
   loadingSafeArea:{
     flex: 1,
-    backgroundColor: 'black', 
+    backgroundColor: colors.web_black, 
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -189,7 +189,7 @@ const styles = StyleSheet.create({
   text: {
     fontSize: 15,
     marginBottom: 10,
-    color: 'white'
+    color: colors.web_white
   },
   artworkImage: {
     width: 228,
@@ -217,7 +217,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     flexDirection: 'row',
     width: '80%',
-    backgroundColor: "white",
+    backgroundColor: colors.web_white,
     borderRadius:10,
     borderWidth: 1
   },
@@ -232,6 +232,6 @@ const styles = StyleSheet.create({
   },
   textLabel:{
     fontSize: 13,
-    color: 'white',
+    color: colors.web_white,
   }
 })

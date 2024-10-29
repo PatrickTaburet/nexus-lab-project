@@ -304,7 +304,7 @@ const styles = StyleSheet.create({
   },
   loadingSafeArea:{
     flex: 1,
-    backgroundColor: 'black', 
+    backgroundColor: colors.web_black, 
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -328,7 +328,7 @@ const styles = StyleSheet.create({
   text: {
     fontSize: 15,
     marginBottom: 10,
-    color: 'white'
+    color: colors.web_white
   },
   profileImage: {
     width: 128,
@@ -349,7 +349,7 @@ const styles = StyleSheet.create({
   secondButton:{
     width: 150,
     margin: 0,
-    color: 'black'
+    color: colors.web_black
   },
   submitButton:{
     height: 50,
@@ -373,7 +373,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     width: '80%',
     height:40,
-    backgroundColor: "white",
+    backgroundColor: colors.web_white,
     borderRadius:10,
     borderWidth: 1
   },

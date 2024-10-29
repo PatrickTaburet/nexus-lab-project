@@ -154,7 +154,7 @@ const Scene1Screen = ({ navigation }) => {
           <Ionicons 
             name={"arrow-back"}
             size={23}
-            color={'white'}
+            color={colors.web_white}
           />
         </TouchableOpacity>
         <Text style={[styles.text, globalStyles.mainTitle]} accessible={true} accessibilityLabel="Title" accessibilityHint="Title of the artwork">
@@ -213,7 +213,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'transparent'
   },
   text:{
-    color:'white',
+    color: colors.web_white,
     textAlign: 'center',
     fontSize: 18,
     margin: 20,

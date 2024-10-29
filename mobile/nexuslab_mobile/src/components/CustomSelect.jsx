@@ -107,7 +107,7 @@ const styles = StyleSheet.create({
     options:{
         position:"absolute",
         // top:53,
-        backgroundColor: 'white',
+        backgroundColor: '#F5F5F5',
         width: 110,
         padding: 10,
         borderRadius: 6,

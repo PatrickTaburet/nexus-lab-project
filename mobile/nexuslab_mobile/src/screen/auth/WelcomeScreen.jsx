@@ -85,7 +85,7 @@ export default WelcomeScreen
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: 'black',
+    backgroundColor: colors.web_black,
   },
   backgroundVideo: {
     position: 'absolute',

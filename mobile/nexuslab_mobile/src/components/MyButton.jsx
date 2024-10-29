@@ -41,7 +41,7 @@ const MyButton = ({children, style, onPress, color, isSecondary = false, textSty
             accessibilityHint="Tap to perform the action" 
             accessibilityRole="button"
           >
-            <Text style={[styles.text, finalTextStyle, isSecondary && {color: 'black'}]}   numberOfLines={0} >{children}</Text>
+            <Text style={[styles.text, finalTextStyle, isSecondary && {color: '#1A1A1A'}]}   numberOfLines={0} >{children}</Text>
           </TouchableOpacity>
         </View>
       </LinearGradient>
