@@ -2,24 +2,6 @@
 
 namespace App\Controller;
 
-use App\Entity\{
-    SceneD1,
-    SceneD2,
-    Scene1,
-    Scene2
-};
-use App\Form\{
-    SaveArtworkD1Type,
-    SaveArtworkD2Type,
-    SaveArtworkG1Type,
-    SaveArtworkG2Type
-};
-use App\Repository\{
-    SceneD1Repository,
-    SceneD2Repository,
-    Scene1Repository,
-    Scene2Repository
-};
 use App\Factory\SceneDataFactory;
 use Symfony\Component\HttpFoundation\{
     Response,

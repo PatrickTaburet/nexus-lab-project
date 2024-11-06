@@ -29,7 +29,7 @@ class ArtistController extends AbstractController
         if ( $form->isSubmitted() && $form->isValid()){
             /** @var UploadedFile $file */
             $file = $form->get('codeFile')->getData();
-                // Extract the file name and extension
+            // Extract the file name and extension
             $fileName = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
             $fileExtension = $file->guessExtension();           
             // Generate a unique file name
@@ -68,12 +68,11 @@ class ArtistController extends AbstractController
     {
         $user = $this->getUser();
         if (!$user instanceof User) {
-            // Gérez le cas où l'utilisateur n'est pas connecté ou est d'un type inattendu
             throw $this->createAccessDeniedException('You must be logged in to access this page.');
         }
         $userId = $user->getId();
         $sceneRequests = $newScene->findby(['user' => $userId]);
-            // Sorting all requests by creation date
+        // Sorting all requests by creation date
         $sceneRequests = $newScene->findBy(
             ['user' => $userId],
             ['updatedAt' => 'DESC']

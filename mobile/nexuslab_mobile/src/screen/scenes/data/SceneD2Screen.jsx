@@ -86,7 +86,7 @@ const SceneD2Screen = ({ navigation }) => {
 
   const handleWebViewMessage = (event) => {
     const data = JSON.parse(event.nativeEvent.data);
-    // console.log('Données reçues de la WebView:', data);
+    console.log('Données reçues de la WebView:', data);
     sendDataToBackend(data);
   };
 
@@ -237,7 +237,7 @@ const SceneD2Screen = ({ navigation }) => {
             }}
             accessible={true}
             accessibilityLabel="Interactive content area"
-            accessibilityHint="This area displays the interactive web content related to the artwork."
+            accessibilityHint="This area displays the interactive web content related to the artwork creation."
           />
         )}
 
