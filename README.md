@@ -155,4 +155,4 @@ Full License Text
 
 ## 📧 Contact  
 If you have any questions or suggestions, feel free to reach out at:
-Patrick Taburet - patrick.taburet@nexuslab.com
+Patrick Taburet - patrick.taburet@gmail.com
