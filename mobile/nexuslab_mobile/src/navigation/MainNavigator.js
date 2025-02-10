@@ -29,7 +29,7 @@ const MainNavigator = () => {
           headerShown: true, 
           accessibilityLabel: 'Main screen with navigattion bottom bar and user profile header',
           header: (props) => (
-            <View style={{ pointerEvents: 'box-none', zIndex: 1000 }}>
+            <View style={{ pointerEvents: 'box-none', zIndex: 1000, height: 50, backgroundColor: 'transparent'}}>
               <TouchableOpacity
                 onPress={() => navigation.navigate('Profile')}
                 style={{ marginRight: -7, marginTop: -1, zIndex: 1000, position:'absolute', right:15, top:7 }}
