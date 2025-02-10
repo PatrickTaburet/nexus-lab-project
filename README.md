@@ -75,9 +75,9 @@ Ensure you have the following installed:
 ## 📱 Usage
 - **Web Frontend**: Accessible at `http://localhost:8000`  
 - **Mobile**:
-   1. Ensure you have the Expo Go app installed on your mobile device.
-   2. Run the mobile app with the command npx expo start in the mobile/nexuslab_mobile directory.
-   3. Scan the QR code using the Expo Go app to launch the app on your phone.
+1. Ensure you have the Expo Go app installed on your mobile device.
+2. Run the mobile app with the command npx expo start in the mobile/nexuslab_mobile directory.
+3. Scan the QR code using the Expo Go app to launch the app on your phone.
 
 ---
 
