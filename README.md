@@ -18,8 +18,9 @@
 ---
 
 ## 📖 Project Overview  
-NexusLab is designed to make digital artistic practices such as *generative art* and *data art* accessible to both beginners and experts.  
-The project is available as **web and mobile versions**, offering a seamless and secure experience with modern technologies.
+NexusLab is designed to make digital artistic practices such as *generative art* and *data art* accessible to both beginners and experts.
+It aims to build a community where users can co-create, share knowledge, and explore new forms of digital expression. 
+Available on both web and mobile platforms, the project utilizes modern technologies like React, Symfony, and React Native to offer a seamless and secure experience for users across devices.
 
 ---
 
