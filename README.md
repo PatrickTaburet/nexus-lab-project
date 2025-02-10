@@ -86,7 +86,7 @@ You can download the project documentation (PDF version) in french here:
 
 ---
 
-## 🖼️ Screenshots
+## 📷 Screenshots
 Here are some screenshots of the NexusLab project in action:
 
    ### Web Interface:
