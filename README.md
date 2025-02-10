@@ -8,10 +8,10 @@
 - [Project Overview](#-project-overview)  
 - [Technologies Used](#-technologies-used)  
 - [Installation](#-installation)  
-- [Usage](#-usage)  
-- [Accessibility](#-accessibility)  
-- [Documentation and Download](#-documentation-and-download)  
+- [Usage](#-usage)
+- [Documentation and Download](#-documentation-and-download)
 - [Screenshots](#-screenshots)  
+- [Accessibility](#-accessibility)  
 - [Contributing](#-contributing)  
 - [License](#-license)  
 
@@ -80,15 +80,6 @@ Ensure you have the following installed:
 
 ---
 
-## ♿ Accessibility  
-Efforts have been made to ensure accessibility:  
-- Proper HTML tags for semantic structure.  
-- Full keyboard navigation on the web version.  
-- Alternative text for images.  
-- `accessibilityLabel` and `accessible` attributes in React Native.  
-
----
-
 ## 📄 Documentation and Download  
 You can download the project documentation (PDF version) in french here:
 [Download NexusLab Project PDF](./doc/DOSSIER_PROJET_NEXUS_LAB-Taburet_Patrick.pdf)
@@ -130,6 +121,15 @@ Here are some screenshots of the NexusLab project in action:
    - Application Overview
      
    ![AppMobile](./doc/screenshots/screenshot-6.webp) 
+
+---
+
+## ♿ Accessibility  
+Efforts have been made to ensure accessibility:  
+- Proper HTML tags for semantic structure.  
+- Full keyboard navigation on the web version.  
+- Alternative text for images.  
+- `accessibilityLabel` and `accessible` attributes in React Native.  
 
 ---
 
