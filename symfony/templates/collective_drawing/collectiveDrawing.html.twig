@@ -1,0 +1,35 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Collective Drawing{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('css/collectiveDrawing.css') }}">
+{% endblock %}
+
+{% block body %}
+
+<div class="headerTitle">
+    {# <img class="titleImg" src={{ asset("/images/design/title3.png")}} alt="Style element title square"> #}
+    <h1>Collective Drawing</h1>
+</div>
+
+<!-- Toolbar -->
+<div id="toolbar">
+    <button onclick="setBrush()">🖌 Pinceau</button>
+    <button onclick="setEraser()">🧽 Gomme</button>
+    <button onclick="addRectangle()">⬛ Rectangle</button>
+    <button onclick="addCircle()">⚫ Cercle</button>
+    <button onclick="undo()">↩️ Undo</button>
+    <button onclick="redo()">↪️ Redo</button>
+    <button onclick="clearCanvas()">🗑 Effacer</button>
+</div>
+
+<!-- Canvas -->
+<canvas id="drawingCanvas"></canvas>
+
+
+<script src="https://cdn.jsdelivr.net/npm/fabric@latest/dist/index.min.js"></script>
+<script defer src="{{ asset('js/fabricSettings.js') }}" ></script>
+
+{% endblock %}

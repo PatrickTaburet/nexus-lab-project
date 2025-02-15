@@ -99,6 +99,13 @@ class MainController extends AbstractController
     public function dataArtHome(): Response
     {
         return $this->render('main/dataArtHome.html.twig', [
+        ]);
+    }
+
+    #[Route("/create/collective-drawing", name: "collectiveDrawing")]
+    public function collectiveDrawing(): Response
+    {
+        return $this->render('collective_drawing/collectiveDrawing.html.twig', [
         ]);   
     }
 
