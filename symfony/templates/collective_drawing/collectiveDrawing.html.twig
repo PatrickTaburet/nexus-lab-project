@@ -16,18 +16,18 @@
 
 <!-- Toolbar -->
 <div id="toolbar">
-    <button onclick="setBrush()">🖌 Pinceau</button>
-    <button onclick="setEraser()">🧽 Gomme</button>
+<button onclick="setSelectionMode()">🖱️ Select</button>
+    <button onclick="setBrush()">🖌 Brush</button>
+    <button onclick="setEraser()">🧽 Eraser</button>
     <button onclick="addRectangle()">⬛ Rectangle</button>
-    <button onclick="addCircle()">⚫ Cercle</button>
+    <button onclick="addCircle()">⚫ Circle</button>
     <button onclick="undo()">↩️ Undo</button>
     <button onclick="redo()">↪️ Redo</button>
-    <button onclick="clearCanvas()">🗑 Effacer</button>
+    <button onclick="clearCanvas()">🗑 Erased All</button>
 </div>
 
 <!-- Canvas -->
 <canvas id="drawingCanvas"></canvas>
-
 
 <script src="https://cdn.jsdelivr.net/npm/fabric@latest/dist/index.min.js"></script>
 <script defer src="{{ asset('js/fabricSettings.js') }}" ></script>

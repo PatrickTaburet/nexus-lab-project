@@ -1,31 +1,35 @@
 document.addEventListener("DOMContentLoaded", function () {
-    // Vérifie que Fabric.js est bien chargé
     if (typeof fabric === "undefined") {
-        console.error("Fabric.js n'est pas chargé !");
+        console.error("Fabric.js is not loaded!");
         return;
     }
 
-    // Initialisation du canvas
+    // Canvas init
     const canvas = new fabric.Canvas("drawingCanvas", {
         width: 800,
         height: 500,
-        isDrawingMode: false // Désactivé au départ
+        isDrawingMode: false
     });
 
-    // Définir le fond noir correctement
-    canvas.backgroundColor = "#000";  // Utiliser backgroundColor directement
-    canvas.renderAll();               // Appliquer le fond noir
-
-    // Historique pour Undo/Redo
+    // Undo/Redo historic
     let undoStack = [];
     let redoStack = [];
 
+
     function saveState() {
         redoStack = [];
-        undoStack.push(JSON.stringify(canvas));
+        undoStack.push(JSON.stringify(canvas.toJSON(['backgroundColor'])));
     }
 
-    // Activation du pinceau
+    // Activate select mode
+    window.setSelectionMode = function () {
+        canvas.isDrawingMode = false;
+        canvas.selection = true;
+        canvas.forEachObject(obj => obj.selectable = true);
+        console.log("Mode sélection activé !");
+    };
+
+    // Activate brush mode
     window.setBrush = function () {
         canvas.isDrawingMode = true;
         if (!canvas.freeDrawingBrush) {
@@ -36,18 +40,18 @@ document.addEventListener("DOMContentLoaded", function () {
         console.log("Pinceau activé !");
     };
 
-    // Activation de la gomme
+    // Activate Eraser
     window.setEraser = function () {
         canvas.isDrawingMode = true;
         if (!canvas.freeDrawingBrush) {
             canvas.freeDrawingBrush = new fabric.PencilBrush(canvas);
         }
-        canvas.freeDrawingBrush.color = "#000"; // Gomme = fond noir
+        canvas.freeDrawingBrush.color = "#fff"; // Eraser = white background
         canvas.freeDrawingBrush.width = 10;
         console.log("Gomme activée !");
     };
 
-    // Ajouter un rectangle
+    // Add Rectangle
     window.addRectangle = function () {
         saveState();
         let rect = new fabric.Rect({
@@ -60,7 +64,7 @@ document.addEventListener("DOMContentLoaded", function () {
         canvas.add(rect);
     };
 
-    // Ajouter un cercle
+    // Add Circle
     window.addCircle = function () {
         saveState();
         let circle = new fabric.Circle({
@@ -72,32 +76,39 @@ document.addEventListener("DOMContentLoaded", function () {
         canvas.add(circle);
     };
 
-    // Undo (annuler dernière action)
+    // Undo last action
     window.undo = function () {
-        if (undoStack.length > 0) {
-            redoStack.push(JSON.stringify(canvas));
-            canvas.loadFromJSON(undoStack.pop(), () => canvas.renderAll());
+        if (undoStack.length > 1) {
+            redoStack.push(undoStack.pop());
+            let previousState = undoStack[undoStack.length - 1];
+            canvas.loadFromJSON(previousState, function () {
+                canvas.renderAll();
+            });
         }
     };
 
-    // Redo (refaire action annulée)
+    // Redo last action
     window.redo = function () {
         if (redoStack.length > 0) {
-            undoStack.push(JSON.stringify(canvas));
-            canvas.loadFromJSON(redoStack.pop(), () => canvas.renderAll());
+            let nextState = redoStack.pop();
+            undoStack.push(nextState);
+            canvas.loadFromJSON(nextState, function () {
+                canvas.renderAll();
+            });
         }
     };
 
-    // Effacer tout
+    // Clear all
     window.clearCanvas = function () {
         saveState();
         canvas.clear();
-        canvas.backgroundColor = "#000"; // Réinitialiser le fond noir
+        canvas.backgroundColor = "#fff";
         canvas.renderAll();
     };
 
-    // Sauvegarde de l'état du canvas à chaque modification
+    // Saving canvas state after each modification
     canvas.on("object:added", saveState);
     canvas.on("object:modified", saveState);
     canvas.on("object:removed", saveState);
+    canvas.on("path:created", saveState);
 });
