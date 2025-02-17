@@ -10,16 +10,47 @@ document.addEventListener("DOMContentLoaded", function () {
         height: 500,
         isDrawingMode: false
     });
+    // current unsaved state
+    let state;
 
     // Undo/Redo historic
     let undoStack = [];
     let redoStack = [];
 
-
     function saveState() {
         redoStack = [];
-        undoStack.push(JSON.stringify(canvas.toJSON(['backgroundColor'])));
+        document.getElementById('redo').disabled = true;
+        if (state) {
+            undoStack.push(state);
+            document.getElementById('undo').disabled = false;
+        }
+        state = JSON.stringify(canvas.toJSON(["backgroundColor"]));
+
     }
+    
+    function replay(playStack, saveStack, buttonsOn, buttonsOff) {
+        console.log(playStack.length );
+        
+            saveStack.push(state);
+            state = playStack.pop();
+
+            document.querySelector(buttonsOn).disabled = true;
+            document.querySelector(buttonsOff).disabled = true;
+
+            canvas.clear();
+            canvas.loadFromJSON(state, function () {
+                canvas.renderAll();
+                // Réactiver les boutons une fois l'état chargé
+                document.querySelector(buttonsOn).disabled = false;
+                if (playStack.length) {
+                    document.querySelector(buttonsOff).disabled = false;
+                }
+            });  
+      
+    }
+
+    // Save the initial state
+    saveState();
 
     // Activate select mode
     window.setSelectionMode = function () {
@@ -53,7 +84,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Add Rectangle
     window.addRectangle = function () {
-        saveState();
         let rect = new fabric.Rect({
             left: 100,
             top: 100,
@@ -62,11 +92,11 @@ document.addEventListener("DOMContentLoaded", function () {
             height: 60
         });
         canvas.add(rect);
+        // saveState(); 
     };
 
     // Add Circle
     window.addCircle = function () {
-        saveState();
         let circle = new fabric.Circle({
             left: 150,
             top: 150,
@@ -74,41 +104,37 @@ document.addEventListener("DOMContentLoaded", function () {
             fill: "red"
         });
         canvas.add(circle);
+        // saveState(); 
     };
 
-    // Undo last action
-    window.undo = function () {
-        if (undoStack.length > 1) {
-            redoStack.push(undoStack.pop());
-            let previousState = undoStack[undoStack.length - 1];
-            canvas.loadFromJSON(previousState, function () {
-                canvas.renderAll();
-            });
-        }
-    };
-
-    // Redo last action
-    window.redo = function () {
-        if (redoStack.length > 0) {
-            let nextState = redoStack.pop();
-            undoStack.push(nextState);
-            canvas.loadFromJSON(nextState, function () {
-                canvas.renderAll();
-            });
-        }
-    };
-
-    // Clear all
-    window.clearCanvas = function () {
-        saveState();
-        canvas.clear();
-        canvas.backgroundColor = "#fff";
+    document.getElementById("backgroundColorPicker").addEventListener("input", function (event) {
+        let newColor = event.target.value;
+        canvas.backgroundColor = newColor;
         canvas.renderAll();
-    };
+        saveState();
+    });
+
+
+    // Boutons undo et redo
+    document.getElementById('undo').addEventListener('click', function () {
+        replay(undoStack, redoStack, '#redo', '#undo'); 
+    });
+
+    document.getElementById('redo').addEventListener('click', function () {
+        replay(redoStack, undoStack, '#undo', '#redo'); 
+    });
 
     // Saving canvas state after each modification
     canvas.on("object:added", saveState);
     canvas.on("object:modified", saveState);
     canvas.on("object:removed", saveState);
     canvas.on("path:created", saveState);
+    
+    // Clear all
+    window.clearCanvas = function () {
+        canvas.clear();
+        canvas.backgroundColor = "#fff";
+        saveState();
+        canvas.renderAll();
+    };
 });

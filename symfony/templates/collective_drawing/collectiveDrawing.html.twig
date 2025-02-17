@@ -21,9 +21,10 @@
     <button onclick="setEraser()">🧽 Eraser</button>
     <button onclick="addRectangle()">⬛ Rectangle</button>
     <button onclick="addCircle()">⚫ Circle</button>
-    <button onclick="undo()">↩️ Undo</button>
-    <button onclick="redo()">↪️ Redo</button>
+    <button id="undo" disabled>↩️ Undo</button>
+    <button id="redo" disabled>↪️ Redo</button>
     <button onclick="clearCanvas()">🗑 Erased All</button>
+    <input type="color" id="backgroundColorPicker">
 </div>
 
 <!-- Canvas -->
