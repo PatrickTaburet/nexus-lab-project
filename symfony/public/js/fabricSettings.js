@@ -10,45 +10,59 @@ document.addEventListener("DOMContentLoaded", function () {
         height: 500,
         isDrawingMode: false
     });
-    // current unsaved state
-    let state;
 
     // Undo/Redo historic
     let undoStack = [];
     let redoStack = [];
 
     function saveState() {
-        redoStack = [];
-        document.getElementById('redo').disabled = true;
-        if (state) {
-            undoStack.push(state);
-            document.getElementById('undo').disabled = false;
+        console.log('savestate');
+        let state = JSON.stringify(canvas.toJSON(["backgroundColor"]));
+        undoStack.push(state);
+        redoStack = []; // Clear redo stack when a new action is performed
+        updateButtons();
+        console.log("undostack -->" + undoStack.length);
+        console.log("redostack -->" + redoStack.length);
+    }
+
+    function undo() {
+        if (undoStack.length > 1) {
+            console.log(undoStack.length);
+
+            let currentState = undoStack.pop();
+            redoStack.push(currentState);
+            let previousState = undoStack[undoStack.length - 1];
+            loadState(previousState);
         }
-        state = JSON.stringify(canvas.toJSON(["backgroundColor"]));
-
-    }
-    
-    function replay(playStack, saveStack, buttonsOn, buttonsOff) {
-        console.log(playStack.length );
-        
-            saveStack.push(state);
-            state = playStack.pop();
-
-            document.querySelector(buttonsOn).disabled = true;
-            document.querySelector(buttonsOff).disabled = true;
-
-            canvas.clear();
-            canvas.loadFromJSON(state, function () {
-                canvas.renderAll();
-                // Réactiver les boutons une fois l'état chargé
-                document.querySelector(buttonsOn).disabled = false;
-                if (playStack.length) {
-                    document.querySelector(buttonsOff).disabled = false;
-                }
-            });  
-      
+        updateButtons();
+        console.log("undostack -->" + undoStack.length);
+        console.log("redostack -->" + redoStack.length);
     }
 
+    function redo() {
+        if (redoStack.length > 0) {
+            let nextState = redoStack.pop();
+            undoStack.push(nextState);
+            loadState(nextState);
+        }
+        updateButtons();
+        console.log("undostack -->" + undoStack.length);
+        console.log("redostack -->" + redoStack.length);
+    }
+
+    function loadState(state) {
+        canvas.clear();
+        canvas.loadFromJSON(state, function () {
+            canvas.renderAll();
+             canvas.requestRenderAll();
+            updateButtons();
+        });
+    }
+
+    function updateButtons() {
+        document.getElementById('undo').disabled = (undoStack.length <= 1);
+        document.getElementById('redo').disabled = (redoStack.length === 0);
+    }
     // Save the initial state
     saveState();
 
@@ -92,7 +106,8 @@ document.addEventListener("DOMContentLoaded", function () {
             height: 60
         });
         canvas.add(rect);
-        // saveState(); 
+        saveState();
+
     };
 
     // Add Circle
@@ -104,7 +119,8 @@ document.addEventListener("DOMContentLoaded", function () {
             fill: "red"
         });
         canvas.add(circle);
-        // saveState(); 
+        saveState();
+
     };
 
     document.getElementById("backgroundColorPicker").addEventListener("input", function (event) {
@@ -115,19 +131,15 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
 
-    // Boutons undo et redo
-    document.getElementById('undo').addEventListener('click', function () {
-        replay(undoStack, redoStack, '#redo', '#undo'); 
-    });
-
-    document.getElementById('redo').addEventListener('click', function () {
-        replay(redoStack, undoStack, '#undo', '#redo'); 
-    });
+    // Undo and redo buttons
+    document.getElementById('undo').addEventListener('click', undo);
+    document.getElementById('redo').addEventListener('click', redo);
 
     // Saving canvas state after each modification
-    canvas.on("object:added", saveState);
+    
+    // canvas.on("object:added", saveState);
     canvas.on("object:modified", saveState);
-    canvas.on("object:removed", saveState);
+    // canvas.on("object:removed", saveState);
     canvas.on("path:created", saveState);
     
     // Clear all
