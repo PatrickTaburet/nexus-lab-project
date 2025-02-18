@@ -1,3 +1,19 @@
 #drawingCanvas {
     border: 2px solid black;
 }
+.sandbox-container{
+    display: flex;
+
+}
+#toolbar{
+    display: flex;
+    flex-direction: column;
+    margin: 15px;
+}
+#toolbar button, #toolbar input{
+    margin: 10px 0 ;
+}
+.disabled-btn {
+    opacity: 0.8;
+    cursor: not-allowed;
+}

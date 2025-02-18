@@ -14,21 +14,30 @@
     <h1>Collective Drawing</h1>
 </div>
 
-<!-- Toolbar -->
-<div id="toolbar">
-<button onclick="setSelectionMode()">🖱️ Select</button>
-    <button onclick="setBrush()">🖌 Brush</button>
-    <button onclick="setEraser()">🧽 Eraser</button>
-    <button onclick="addRectangle()">⬛ Rectangle</button>
-    <button onclick="addCircle()">⚫ Circle</button>
-    <button id="undo" disabled>↩️ Undo</button>
-    <button id="redo" disabled>↪️ Redo</button>
-    <button onclick="clearCanvas()">🗑 Erased All</button>
-    <input type="color" id="backgroundColorPicker">
+<div class="sandbox-container">
+    <!-- Canvas -->
+    <canvas id="drawingCanvas"></canvas>
+
+    <!-- Toolbar -->
+    <div id="toolbar">
+        <button class="tool-btn" id="selectButton">🖱️ Select</button>
+        <div>
+            <button class="tool-btn" id="brushButton">🖌 Brush</button>
+            <input type="color" id="brushColorPicker">
+            <input type="range" id="brushSizeSlider" min="1" max="20" value="5" step="1">
+        </div>
+        <button class="tool-btn" id="eraserButton">🧽 Eraser</button>
+        <button class="toolbar-btn" id="rectangleButton">⬛ Rectangle</button>
+        <button class="toolbar-btn" id="circleButton">⚫ Circle</button>
+        <button class="toolbar-btn" id="undo" disabled>↩️ Undo</button>
+        <button class="toolbar-btn" id="redo" disabled>↪️ Redo</button>
+        <button class="toolbar-btn" id="clearCanvasButton">🗑 Erased All</button>
+        <input type="color" id="backgroundColorPicker">
+    </div>
+
+
 </div>
 
-<!-- Canvas -->
-<canvas id="drawingCanvas"></canvas>
 
 <script src="https://cdn.jsdelivr.net/npm/fabric@latest/dist/index.min.js"></script>
 <script defer src="{{ asset('js/fabricSettings.js') }}" ></script>
