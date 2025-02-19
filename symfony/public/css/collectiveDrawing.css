@@ -9,11 +9,28 @@
     display: flex;
     flex-direction: column;
     margin: 15px;
+    gap: 20px;
 }
-#toolbar button, #toolbar input{
-    margin: 10px 0 ;
+/* #toolbar button, #toolbar input{
+    margin: 15px 0 ;
+} */
+.range-slider{
+    margin: 0;
 }
 .disabled-btn {
     opacity: 0.8;
     cursor: not-allowed;
+}
+.btn-top-box{
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+}
+.btn-top-box input, .btn-top-box button{
+    margin: 0 0 10px 0;
+}
+.eraser-btn-box{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
 }

@@ -1,9 +1,9 @@
 document.addEventListener("DOMContentLoaded", function () {
-    // Undo/Redo historic
     let undoStack = [];
     let redoStack = [];
     let brushcolor = "black";
     let brushSize = 5;
+    let eraserSize = 10;
     const MAX_HISTORY_SIZE = 10;
 
     if (typeof fabric === "undefined") {
@@ -11,7 +11,7 @@ document.addEventListener("DOMContentLoaded", function () {
         return;
     }
 
-    // Canvas init
+    // --- Canvas init
     const canvas = new fabric.Canvas("drawingCanvas", {
         width: 800,
         height: 500,
@@ -30,6 +30,8 @@ document.addEventListener("DOMContentLoaded", function () {
         console.log("undostack -->" + undoStack.length);
         console.log("redostack -->" + redoStack.length);
     }
+
+    // --- Undo / Redo historic manager
 
     function undo() {
         if (undoStack.length > 1) {
@@ -64,7 +66,7 @@ document.addEventListener("DOMContentLoaded", function () {
         canvas.clear();
         canvas.loadFromJSON(state, function () {
             canvas.renderAll();
-             canvas.requestRenderAll();
+            canvas.requestRenderAll();
             updateButtons();
         });
     }
@@ -74,10 +76,10 @@ document.addEventListener("DOMContentLoaded", function () {
         document.getElementById('redo').disabled = (redoStack.length === 0);
     }
 
-    // Save the initial state
+    // --- Save the initial state
     saveState();
 
-    // Activate select mode
+    // --- Activate select mode
     window.setSelectionMode = function () {
         canvas.isDrawingMode = false;
         canvas.selection = true;
@@ -85,7 +87,7 @@ document.addEventListener("DOMContentLoaded", function () {
         console.log("Mode sélection activé !");
     };
 
-    // Activate brush mode
+    // --- Activate brush mode
     window.setBrush = function () {
         canvas.isDrawingMode = true;
         if (!canvas.freeDrawingBrush) {
@@ -96,18 +98,18 @@ document.addEventListener("DOMContentLoaded", function () {
         console.log("Pinceau activé !");
     };
 
-    // Activate Eraser
+    // --- Activate Eraser
     window.setEraser = function () {
         canvas.isDrawingMode = true;
         if (!canvas.freeDrawingBrush) {
             canvas.freeDrawingBrush = new fabric.PencilBrush(canvas);
         }
         canvas.freeDrawingBrush.color = "#fff"; // Eraser = white background
-        canvas.freeDrawingBrush.width = 10;
+        canvas.freeDrawingBrush.width = eraserSize;
         console.log("Gomme activée !");
     };
 
-    // Add Rectangle
+    // --- Add Rectangle
     window.addRectangle = function () {
         let rect = new fabric.Rect({
             left: 100,
@@ -121,7 +123,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     };
 
-    // Add Circle
+    // --- Add Circle
     window.addCircle = function () {
         let circle = new fabric.Circle({
             left: 150,
@@ -134,7 +136,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     };
 
-    // Clear all
+    // --- Clear all
     window.clearCanvas = function () {
         canvas.clear();
         canvas.backgroundColor = "#fff";
@@ -142,18 +144,20 @@ document.addEventListener("DOMContentLoaded", function () {
         canvas.renderAll();
     };
 
-    // Undo and redo buttons
+    // --- Undo and redo buttons
     document.getElementById('undo').addEventListener('click', undo);
     document.getElementById('redo').addEventListener('click', redo);
 
-    // Tools buttons 
+    // --- Tools buttons 
     document.getElementById("rectangleButton").addEventListener("click", addRectangle);
     document.getElementById("circleButton").addEventListener("click", addCircle);
     document.getElementById("clearCanvasButton").addEventListener("click", clearCanvas);
     // document.getElementById("lineButton").addEventListener("click", setLine);
     // document.getElementById("textButton").addEventListener("click", setText);
 
-    // Color picker
+    // --- Tools inputs settings
+
+    // color peakers
     document.getElementById("backgroundColorPicker").addEventListener("input", function (event) {
         let newColor = event.target.value;
         canvas.backgroundColor = newColor;
@@ -161,34 +165,56 @@ document.addEventListener("DOMContentLoaded", function () {
         saveState();
     });
 
-    // Brush settings
     document.getElementById("brushColorPicker").addEventListener("input", function(event){
         brushcolor = event.target.value;
-        activateBrushMode();
+        activateMode("brush");
         canvas.renderAll();
     });
     
+    // range sliders
     document.getElementById("brushSizeSlider").addEventListener("input", function(event){
         brushSize = Number(event.target.value);
-        activateBrushMode();
+        activateMode("brush");
         canvas.renderAll();
     });
 
+    document.getElementById("eraserSlider").addEventListener("input", function(event){
+        eraserSize = Number(event.target.value);
+        activateMode("eraser");
+        canvas.renderAll();
+    });
+
+    // --- Buttons select and activation system
+
     const buttons = document.querySelectorAll('.tool-btn');
 
-    function activateBrushMode() {
+    buttons.forEach(button => {
+        button.addEventListener('click', handleButtonClick);
+    });
+
+    function activateMode(mode) {
         const selectButton = document.getElementById('selectButton');
         const brushButton = document.getElementById('brushButton');
         const eraserButton = document.getElementById('eraserButton');
+        
         selectButton.classList.remove('disabled-btn');
         selectButton.disabled = false;
-        brushButton.classList.add('disabled-btn');
-        brushButton.disabled = true;
-        eraserButton.classList.add('disabled-btn');
+        brushButton.classList.remove('disabled-btn');
+        brushButton.disabled = false;
+        eraserButton.classList.remove('disabled-btn');
         eraserButton.disabled = false;
-        setBrush();
+        
+        if (mode === 'brush') {
+            brushButton.classList.add('disabled-btn');
+            brushButton.disabled = true;
+            setBrush();
+        } else if (mode === 'eraser') {
+            eraserButton.classList.add('disabled-btn');
+            eraserButton.disabled = true;
+            setEraser();
+        }
     }
-      
+
     function handleButtonClick(event) {
         buttons.forEach(button => {
             if (button === event.target) {
@@ -208,16 +234,15 @@ document.addEventListener("DOMContentLoaded", function () {
                 setEraser();
                 break;
             case 'brushButton':
-                activateBrushMode();
+                activateMode("brush");
                 break;
             default:
                 break;
         } 
     }
-    buttons.forEach(button => {
-        button.addEventListener('click', handleButtonClick);
-    });
-    // Saving canvas state after each modification
+
+    // --- Saving canvas state after each modification
+
     canvas.on("object:modified", saveState);
     canvas.on("path:created", saveState);
     // canvas.on("object:added", saveState);
