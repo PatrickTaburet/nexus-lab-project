@@ -25,6 +25,12 @@
             <div class="btn-top-box">
                 <button class="tool-btn" id="brushButton">🖌 Brush</button>
                 <input type="color" id="brushColorPicker">
+                <select id="brushStyle">
+                    <option value="solid">Solid</option>
+                    <option value="dotted">Dotted</option>
+                    <option value="dashed">Dashed</option>
+                    <option value="glow">Glow</option>
+                </select>
             </div>
             <input type="range" class="range-slider" id="brushSizeSlider" min="1" max="20" value="5" step="1">
         </div>
@@ -46,10 +52,19 @@
         <button class="toolbar-btn" id="rectangleButton">⬛ Rectangle</button>
         <button class="toolbar-btn" id="circleButton">⚫ Circle</button>
         <button class="toolbar-btn" id="triangleButton">▲ Triangle</button>
+        <button class="toolbar-btn" id="lineButton">📏 Line</button>
+        <div>
+            <input type="checkbox" id="mirrorMode">
+            Symmetry Mode
+        </div>
         <button class="toolbar-btn" id="undo" disabled>↩️ Undo</button>
         <button class="toolbar-btn" id="redo" disabled>↪️ Redo</button>
         <button class="toolbar-btn" id="clearCanvasButton">🗑 Erased All</button>
-        <input type="color" id="backgroundColorPicker">
+        <div>
+            <span>Background</span>
+            <input type="color" id="backgroundColorPicker">
+        </div>
+
     </div>
 
 

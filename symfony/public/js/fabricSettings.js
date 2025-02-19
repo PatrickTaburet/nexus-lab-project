@@ -5,8 +5,10 @@ document.addEventListener("DOMContentLoaded", function () {
     let textColor = "black";
     let brushSize = 5;
     let eraserSize = 10;
-    let textValue;
-    let imageFile;
+    let textValue, imageFile;
+    let brushStyle = "solid";
+    let isMirror = false;
+    let mirrorPath = null;
     const MAX_HISTORY_SIZE = 10;
 
     if (typeof fabric === "undefined") {
@@ -87,7 +89,6 @@ document.addEventListener("DOMContentLoaded", function () {
         canvas.isDrawingMode = false;
         canvas.selection = true;
         canvas.forEachObject(obj => obj.selectable = true);
-        console.log("Mode sélection activé !");
     };
 
     // --- Activate brush mode
@@ -98,7 +99,24 @@ document.addEventListener("DOMContentLoaded", function () {
         }
         canvas.freeDrawingBrush.color = brushColor;
         canvas.freeDrawingBrush.width = brushSize;
-        console.log("Pinceau activé !");
+
+        const spacingFactor = 2;
+
+        canvas.freeDrawingBrush.strokeDashArray = null;
+        canvas.freeDrawingBrush.shadow = null;
+
+        if (brushStyle === "solid") {
+            canvas.freeDrawingBrush.strokeDashArray = null;
+        } else if (brushStyle === "dotted") {
+            canvas.freeDrawingBrush.strokeDashArray = [1, brushSize * spacingFactor]; 
+        } else if (brushStyle === "dashed") {
+            canvas.freeDrawingBrush.strokeDashArray = [brushSize * 4, brushSize * spacingFactor]; 
+        } else if (brushStyle === "glow") {
+            canvas.freeDrawingBrush.shadow = new fabric.Shadow({
+                color: 'rgba(0, 255, 255, 0.9)',
+                blur: 15
+            });
+        }
     };
 
     // --- Activate Eraser
@@ -109,7 +127,6 @@ document.addEventListener("DOMContentLoaded", function () {
         }
         canvas.freeDrawingBrush.color = "#fff"; // Eraser = white background
         canvas.freeDrawingBrush.width = eraserSize;
-        console.log("Gomme activée !");
     };
 
     // --- Add Rectangle
@@ -147,6 +164,16 @@ document.addEventListener("DOMContentLoaded", function () {
             fill: "yellow"
         });
         canvas.add(triangle);
+        saveState();
+    };
+
+    // --- Add Triangle
+    function addLine() {
+        let line = new fabric.Line([200,200,400,200],{
+            stroke: "black",
+            strokeWidth: 3
+        });
+        canvas.add(line);
         saveState();
     };
 
@@ -204,11 +231,12 @@ document.addEventListener("DOMContentLoaded", function () {
     document.getElementById("triangleButton").addEventListener("click", addTriangle);
     document.getElementById("clearCanvasButton").addEventListener("click", clearCanvas);
     document.getElementById("imageButton").addEventListener("click", addImage);
-    // document.getElementById("lineButton").addEventListener("click", setLine);
+    document.getElementById("lineButton").addEventListener("click", addLine);
 
     // --- Tools inputs settings
 
-    // color peakers
+    // background
+
     document.getElementById("backgroundColorPicker").addEventListener("input", function (event) {
         let newColor = event.target.value;
         canvas.backgroundColor = newColor;
@@ -216,27 +244,38 @@ document.addEventListener("DOMContentLoaded", function () {
         saveState();
     });
 
+    // brush
+
     document.getElementById("brushColorPicker").addEventListener("input", function(event){
         brushColor = event.target.value;
         activateMode("brush");
         canvas.renderAll();
     });
 
-    document.getElementById("textColorPicker").addEventListener("input", function(event){
-        textColor = event.target.value;
-    });
-    
-    // range sliders
     document.getElementById("brushSizeSlider").addEventListener("input", function(event){
         brushSize = Number(event.target.value);
         activateMode("brush");
         canvas.renderAll();
     });
 
+    document.getElementById("brushStyle").addEventListener("change", function () {
+        brushStyle = this.value;
+        activateMode("brush");
+        canvas.renderAll();
+    });
+    
+    // eraser
+
     document.getElementById("eraserSlider").addEventListener("input", function(event){
         eraserSize = Number(event.target.value);
         activateMode("eraser");
         canvas.renderAll();
+    });
+    
+    // text
+
+    document.getElementById("textColorPicker").addEventListener("input", function(event){
+        textColor = event.target.value;
     });
 
     document.getElementById("textButton").addEventListener("click", function(){
@@ -245,11 +284,22 @@ document.addEventListener("DOMContentLoaded", function () {
         canvas.renderAll();
     });
 
+    // image
+
     document.getElementById("imageInput").addEventListener("change", function (event) {
         const file = event.target.files[0];
         if (!file) return;
         imageFile = file;
     });
+
+    
+    // mirror mode
+    document.getElementById("mirrorMode").addEventListener("change", function () {
+        isMirror = this.checked;
+        activateMode("brush");
+    });
+
+    
 
     // --- Buttons select and activation system
 
