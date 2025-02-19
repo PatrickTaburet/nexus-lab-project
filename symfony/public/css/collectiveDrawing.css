@@ -34,3 +34,13 @@
     flex-direction: column;
     gap: 10px;
 }
+.brush-btn-box, .text-btn-box{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+.img-btn-box{
+    gap: 10px;
+    display: flex;
+    justify-content: center;
+}

@@ -1,9 +1,12 @@
 document.addEventListener("DOMContentLoaded", function () {
     let undoStack = [];
     let redoStack = [];
-    let brushcolor = "black";
+    let brushColor = "black";
+    let textColor = "black";
     let brushSize = 5;
     let eraserSize = 10;
+    let textValue;
+    let imageFile;
     const MAX_HISTORY_SIZE = 10;
 
     if (typeof fabric === "undefined") {
@@ -80,7 +83,7 @@ document.addEventListener("DOMContentLoaded", function () {
     saveState();
 
     // --- Activate select mode
-    window.setSelectionMode = function () {
+    function setSelectionMode() {
         canvas.isDrawingMode = false;
         canvas.selection = true;
         canvas.forEachObject(obj => obj.selectable = true);
@@ -88,18 +91,18 @@ document.addEventListener("DOMContentLoaded", function () {
     };
 
     // --- Activate brush mode
-    window.setBrush = function () {
+    function setBrush() {
         canvas.isDrawingMode = true;
         if (!canvas.freeDrawingBrush) {
             canvas.freeDrawingBrush = new fabric.PencilBrush(canvas);
         }
-        canvas.freeDrawingBrush.color = brushcolor;
+        canvas.freeDrawingBrush.color = brushColor;
         canvas.freeDrawingBrush.width = brushSize;
         console.log("Pinceau activé !");
     };
 
     // --- Activate Eraser
-    window.setEraser = function () {
+    function setEraser() {
         canvas.isDrawingMode = true;
         if (!canvas.freeDrawingBrush) {
             canvas.freeDrawingBrush = new fabric.PencilBrush(canvas);
@@ -110,7 +113,7 @@ document.addEventListener("DOMContentLoaded", function () {
     };
 
     // --- Add Rectangle
-    window.addRectangle = function () {
+    function addRectangle() {
         let rect = new fabric.Rect({
             left: 100,
             top: 100,
@@ -124,7 +127,7 @@ document.addEventListener("DOMContentLoaded", function () {
     };
 
     // --- Add Circle
-    window.addCircle = function () {
+    function addCircle() {
         let circle = new fabric.Circle({
             left: 150,
             top: 150,
@@ -133,11 +136,58 @@ document.addEventListener("DOMContentLoaded", function () {
         });
         canvas.add(circle);
         saveState();
+    };
 
+    // --- Add Triangle
+    function addTriangle() {
+        let triangle = new fabric.Triangle({
+            left: 200,
+            top: 200,
+            radius: 40,
+            fill: "yellow"
+        });
+        canvas.add(triangle);
+        saveState();
+    };
+
+    // --- Add Text
+    function addText() {
+        let text = new fabric.Text(
+            textValue, 
+            {fill: textColor}
+        );
+        canvas.add(text);
+        saveState();
+    };
+
+    // --- Add Image
+    function addImage() {
+        if (!imageFile) {
+            alert("No image file selected");
+            return;
+        }
+        const reader = new FileReader();
+        reader.onload = function(event) {
+            const imgObj = new Image();
+            imgObj.src = event.target.result;
+            imgObj.onload = function() {
+                const img = new fabric.Image(imgObj, {
+                    left: 100,
+                    top: 100,
+                    angle: 0,
+                    opacity: 1,
+                    
+                });
+                img.scaleToWidth(400);
+                canvas.add(img);
+                saveState();
+            }
+        }
+        reader.readAsDataURL(imageFile);
     };
 
     // --- Clear all
-    window.clearCanvas = function () {
+    function clearCanvas() {
         canvas.clear();
         canvas.backgroundColor = "#fff";
         saveState();
@@ -151,9 +201,10 @@ document.addEventListener("DOMContentLoaded", function () {
     // --- Tools buttons 
     document.getElementById("rectangleButton").addEventListener("click", addRectangle);
     document.getElementById("circleButton").addEventListener("click", addCircle);
+    document.getElementById("triangleButton").addEventListener("click", addTriangle);
     document.getElementById("clearCanvasButton").addEventListener("click", clearCanvas);
+    document.getElementById("imageButton").addEventListener("click", addImage);
     // document.getElementById("lineButton").addEventListener("click", setLine);
-    // document.getElementById("textButton").addEventListener("click", setText);
 
     // --- Tools inputs settings
 
@@ -166,9 +217,13 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
     document.getElementById("brushColorPicker").addEventListener("input", function(event){
-        brushcolor = event.target.value;
+        brushColor = event.target.value;
         activateMode("brush");
         canvas.renderAll();
+    });
+
+    document.getElementById("textColorPicker").addEventListener("input", function(event){
+        textColor = event.target.value;
     });
     
     // range sliders
@@ -182,6 +237,18 @@ document.addEventListener("DOMContentLoaded", function () {
         eraserSize = Number(event.target.value);
         activateMode("eraser");
         canvas.renderAll();
+    });
+
+    document.getElementById("textButton").addEventListener("click", function(){
+        textValue = document.getElementById("textInput").value;
+        addText();
+        canvas.renderAll();
+    });
+
+    document.getElementById("imageInput").addEventListener("change", function (event) {
+        const file = event.target.files[0];
+        if (!file) return;
+        imageFile = file;
     });
 
     // --- Buttons select and activation system
