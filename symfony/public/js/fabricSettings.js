@@ -5,7 +5,7 @@ document.addEventListener("DOMContentLoaded", function () {
     let textColor = "black";
     let brushSize = 5;
     let eraserSize = 10;
-    let textValue, imageFile;
+    let textValue, imageFile, clipboard;
     let shapesColor = "blue"
     let backgroundColor = 'white'
     let brushStyle = "solid";
@@ -79,6 +79,57 @@ document.addEventListener("DOMContentLoaded", function () {
         document.getElementById('redo').disabled = (redoStack.length === 0);
     }
 
+    // --- Copy / Paste systemm
+
+    async function copy() {
+        const activeObject = canvas.getActiveObject();
+        if (!activeObject) return;
+    
+        try {
+            const cloned = await activeObject.clone();
+            if (cloned instanceof fabric.ActiveSelection) {
+                cloned.canvas = canvas;
+            }
+            clipboard = cloned;
+        } catch (error) {
+            console.error("Error during cloning:", error);
+        }
+    }
+
+    async function paste() {
+        if (!clipboard) return;
+        console.log('Original clipboard:', clipboard);
+    
+        try {
+            const clonedObj = await clipboard.clone();
+    
+            canvas.discardActiveObject();
+    
+            if (clonedObj instanceof fabric.ActiveSelection) {
+                clonedObj.canvas = canvas;
+                clonedObj.forEachObject((obj) => {
+                    canvas.add(obj);
+                });
+                clonedObj.setCoords();
+            } else {                
+                clonedObj.set({
+                    left: clonedObj.left + 10,
+                    top: clonedObj.top + 10,
+                    evented: true,
+                });
+                canvas.add(clonedObj);
+            }
+            clipboard = clonedObj;
+            canvas.setActiveObject(clonedObj);
+            canvas.requestRenderAll();
+    
+            console.log('Pasted object:', clonedObj);
+        } catch (error) {
+            console.error("Error during pasting:", error);
+        }
+    }
+    
+
     // --- Save the initial state
     saveState();
 
@@ -118,12 +169,20 @@ document.addEventListener("DOMContentLoaded", function () {
     };
 
     // --- Activate Eraser
+    // function setEraser() {
+    //     canvas.isDrawingMode = true;
+    //     if (!canvas.freeDrawingBrush) {
+    //         canvas.freeDrawingBrush = new fabric.PencilBrush(canvas);
+    //     }
+    //     canvas.freeDrawingBrush.color = "#fff"; // Eraser = white background
+    //     canvas.freeDrawingBrush.width = eraserSize;
+    // };
     function setEraser() {
         canvas.isDrawingMode = true;
         if (!canvas.freeDrawingBrush) {
             canvas.freeDrawingBrush = new fabric.PencilBrush(canvas);
         }
-        canvas.freeDrawingBrush.color = "#fff"; // Eraser = white background
+        canvas.freeDrawingBrush.color = backgroundColor; 
         canvas.freeDrawingBrush.width = eraserSize;
     };
 
@@ -255,6 +314,9 @@ document.addEventListener("DOMContentLoaded", function () {
     document.getElementById("backgroundColorPicker").addEventListener("input", function (event) {
         backgroundColor= event.target.value;
         canvas.backgroundColor = backgroundColor;
+        if(document.getElementById("eraserButton").classList.contains("disabled-btn")){
+            setEraser();
+        }
         canvas.renderAll();
         saveState();
     });
@@ -311,7 +373,7 @@ document.addEventListener("DOMContentLoaded", function () {
     // mirror mode
     document.getElementById("mirrorMode").addEventListener("change", function () {
         isMirror = this.checked;
-        activateMode("brush");
+        this.checked && activateMode("brush");
     });
 
     
@@ -386,6 +448,18 @@ document.addEventListener("DOMContentLoaded", function () {
             redo();
         }
     });
+
+    document.addEventListener("keydown", function (event) {    
+        if (event.ctrlKey && event.key === "c") {
+            event.preventDefault();
+            copy();
+        } else if (event.ctrlKey && event.key === "v") {
+            event.preventDefault();
+            paste();
+        }
+    });
+
+
 
     // --- Saving canvas state after each modification
 
