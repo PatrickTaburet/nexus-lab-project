@@ -1,9 +1,14 @@
 #drawingCanvas {
+    position: relative;
     border: 2px solid black;
+    background: repeating-conic-gradient(#ddd 0% 25%, transparent 0% 50%) 0% 0% / 20px 20px;
 }
 .sandbox-container{
     display: flex;
-
+    position: relative; 
+    width: fit-content;
+    padding: 10px;
+    background-color: #f0f0f0;
 }
 #toolbar{
     display: flex;
@@ -23,7 +28,7 @@
 }
 .btn-top-box{
     display: flex;
-    justify-content: center;
+    justify-content: start;
     gap: 15px;
 }
 .btn-top-box input, .btn-top-box button{
@@ -43,4 +48,25 @@
     gap: 10px;
     display: flex;
     justify-content: center;
+}
+.shapes-btn-container{
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    gap: 15px;
+}
+.shapes-btn-box{
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+}
+.background-btn-box{
+    display: flex;
+    align-items: center;
+}
+.background-btn-box span{
+    margin-right: 10px;
+}
+.background-btn-box div{
+    margin-left: 20px;
 }

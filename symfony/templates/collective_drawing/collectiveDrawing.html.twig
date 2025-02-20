@@ -16,7 +16,9 @@
 
 <div class="sandbox-container">
     <!-- Canvas -->
-    <canvas id="drawingCanvas"></canvas>
+    <div class="canvas-container">
+        <canvas id="drawingCanvas"></canvas>
+    </div>
 
     <!-- Toolbar -->
     <div id="toolbar">
@@ -49,10 +51,16 @@
             <button class="img-btn" id="imageButton">Add Image</button>
             <input type="file" id="imageInput" accept="image/*">
         </div>
-        <button class="toolbar-btn" id="rectangleButton">⬛ Rectangle</button>
-        <button class="toolbar-btn" id="circleButton">⚫ Circle</button>
-        <button class="toolbar-btn" id="triangleButton">▲ Triangle</button>
-        <button class="toolbar-btn" id="lineButton">📏 Line</button>
+        <div class="shapes-btn-container">
+            <div class="shapes-btn-box">
+                <button class="toolbar-btn" id="rectangleButton">⬛ Rectangle</button>
+                <button class="toolbar-btn" id="circleButton">⚫ Circle</button>
+                <button class="toolbar-btn" id="triangleButton">▲ Triangle</button>
+                <button class="toolbar-btn" id="lineButton">📏 Line</button>
+            </div>
+            <input type="color" id="shapesColorPicker">
+        </div>
+
         <div>
             <input type="checkbox" id="mirrorMode">
             Symmetry Mode
@@ -60,16 +68,17 @@
         <button class="toolbar-btn" id="undo" disabled>↩️ Undo</button>
         <button class="toolbar-btn" id="redo" disabled>↪️ Redo</button>
         <button class="toolbar-btn" id="clearCanvasButton">🗑 Erased All</button>
-        <div>
+        <div class="background-btn-box">
             <span>Background</span>
             <input type="color" id="backgroundColorPicker">
+            <div>
+                <input type="checkbox" id="alphaCheckbox"> 
+                <span>Alpha</span>
+            </div>
         </div>
-
     </div>
-
-
 </div>
-
+<button id="saveImageButton">Save drawing</button>
 
 <script src="https://cdn.jsdelivr.net/npm/fabric@latest/dist/index.min.js"></script>
 <script defer src="{{ asset('js/fabricSettings.js') }}" ></script>

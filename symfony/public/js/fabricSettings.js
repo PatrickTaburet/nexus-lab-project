@@ -6,9 +6,11 @@ document.addEventListener("DOMContentLoaded", function () {
     let brushSize = 5;
     let eraserSize = 10;
     let textValue, imageFile;
+    let shapesColor = "blue"
+    let backgroundColor = 'white'
     let brushStyle = "solid";
-    let isMirror = false;
-    let mirrorPath = null;
+    // let isMirror = false;
+    // let mirrorPath = null;
     const MAX_HISTORY_SIZE = 10;
 
     if (typeof fabric === "undefined") {
@@ -22,6 +24,8 @@ document.addEventListener("DOMContentLoaded", function () {
         height: 500,
         isDrawingMode: false
     });
+    canvas.backgroundColor = backgroundColor;
+    canvas.renderAll();
 
     function saveState() {
         console.log('savestate');
@@ -32,16 +36,14 @@ document.addEventListener("DOMContentLoaded", function () {
         }
         redoStack = []; // Clear redo stack when a new action is performed
         updateButtons();
-        console.log("undostack -->" + undoStack.length);
-        console.log("redostack -->" + redoStack.length);
+        // console.log("undostack -->" + undoStack.length);
+        // console.log("redostack -->" + redoStack.length);
     }
 
     // --- Undo / Redo historic manager
 
     function undo() {
         if (undoStack.length > 1) {
-            console.log(undoStack.length);
-
             redoStack.push(undoStack.pop());
             if (redoStack.length > MAX_HISTORY_SIZE) {
                 redoStack.shift();
@@ -49,8 +51,6 @@ document.addEventListener("DOMContentLoaded", function () {
             loadState(undoStack[undoStack.length - 1]);
         }
         updateButtons();
-        console.log("undostack -->" + undoStack.length);
-        console.log("redostack -->" + redoStack.length);
     }
 
     function redo() {
@@ -63,8 +63,6 @@ document.addEventListener("DOMContentLoaded", function () {
             loadState(nextState);
         }
         updateButtons();
-        console.log("undostack -->" + undoStack.length);
-        console.log("redostack -->" + redoStack.length);
     }
 
     function loadState(state) {
@@ -134,7 +132,7 @@ document.addEventListener("DOMContentLoaded", function () {
         let rect = new fabric.Rect({
             left: 100,
             top: 100,
-            fill: "blue",
+            fill: shapesColor,
             width: 80,
             height: 60
         });
@@ -146,10 +144,10 @@ document.addEventListener("DOMContentLoaded", function () {
     // --- Add Circle
     function addCircle() {
         let circle = new fabric.Circle({
-            left: 150,
-            top: 150,
+            left: 250,
+            top: 100,
             radius: 40,
-            fill: "red"
+            fill: shapesColor
         });
         canvas.add(circle);
         saveState();
@@ -158,10 +156,10 @@ document.addEventListener("DOMContentLoaded", function () {
     // --- Add Triangle
     function addTriangle() {
         let triangle = new fabric.Triangle({
-            left: 200,
-            top: 200,
+            left: 400,
+            top: 100,
             radius: 40,
-            fill: "yellow"
+            fill: shapesColor
         });
         canvas.add(triangle);
         saveState();
@@ -169,8 +167,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // --- Add Triangle
     function addLine() {
-        let line = new fabric.Line([200,200,400,200],{
-            stroke: "black",
+        let line = new fabric.Line([750,150,550,150],{
+            stroke: shapesColor,
             strokeWidth: 3
         });
         canvas.add(line);
@@ -213,10 +211,21 @@ document.addEventListener("DOMContentLoaded", function () {
         reader.readAsDataURL(imageFile);
     };
 
+    // Background alpha
+
+    document.getElementById("alphaCheckbox").addEventListener("change", function() {
+        if (this.checked){
+            canvas.backgroundColor = null;
+        } else {
+            canvas.backgroundColor = backgroundColor;
+        }
+        canvas.renderAll();
+    });
+
     // --- Clear all
     function clearCanvas() {
         canvas.clear();
-        canvas.backgroundColor = "#fff";
+        canvas.backgroundColor = backgroundColor;
         saveState();
         canvas.renderAll();
     };
@@ -235,11 +244,17 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // --- Tools inputs settings
 
+    // Shapes
+
+    document.getElementById("shapesColorPicker").addEventListener("input", function (event) {
+        shapesColor = event.target.value;
+    });
+
     // background
 
     document.getElementById("backgroundColorPicker").addEventListener("input", function (event) {
-        let newColor = event.target.value;
-        canvas.backgroundColor = newColor;
+        backgroundColor= event.target.value;
+        canvas.backgroundColor = backgroundColor;
         canvas.renderAll();
         saveState();
     });
@@ -300,7 +315,6 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
     
-
     // --- Buttons select and activation system
 
     const buttons = document.querySelectorAll('.tool-btn');
@@ -358,10 +372,54 @@ document.addEventListener("DOMContentLoaded", function () {
         } 
     }
 
+    // --- Keyboard shortcuts
+
+    document.addEventListener("keydown", function (event) {    
+        if (event.ctrlKey && event.key === "z") {
+            event.preventDefault();
+            undo();
+        } else if (event.ctrlKey && event.shiftKey && event.key.toLowerCase() === "z") { 
+            event.preventDefault();
+            redo();
+        } else if (event.ctrlKey && event.key === "y") {
+            event.preventDefault();
+            redo();
+        }
+    });
+
     // --- Saving canvas state after each modification
 
     canvas.on("object:modified", saveState);
     canvas.on("path:created", saveState);
     // canvas.on("object:added", saveState);
     // canvas.on("object:removed", saveState);
+
+    // --- Save canvas
+
+    function downloadCanvas(format = 'png') {
+        const link = document.createElement('a');
+        link.href = canvas.toDataURL({format: format, quality: 1});
+        link.download = `my_drawing.${format}`;
+        link.click();
+      }
+      
+
+    // function saveCanvasAsJSON() {
+    //     const json = JSON.stringify(canvas.toJSON());
+    //     localStorage.setItem("savedCanvas", json);
+    // }
+    
+    // function loadCanvasFromJSON() {
+    //     const json = localStorage.getItem("savedCanvas");
+    //     if (json) {
+    //         canvas.loadFromJSON(json, function () {
+    //             canvas.renderAll();
+    //         });
+    //     }
+    // }
+    
+
+    document.getElementById("saveImageButton").addEventListener("click", function() {
+        downloadCanvas("png");
+    });
 });
