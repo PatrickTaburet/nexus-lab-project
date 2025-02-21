@@ -4,13 +4,10 @@ document.addEventListener("DOMContentLoaded", function () {
     let brushColor = "black";
     let textColor = "black";
     let brushSize = 5;
-    let eraserSize = 10;
     let textValue, imageFile, clipboard;
-    let shapesColor = "blue"
+    let shapesColor = "black"
     let backgroundColor = 'white'
     let brushStyle = "solid";
-    // let isMirror = false;
-    // let mirrorPath = null;
     const MAX_HISTORY_SIZE = 10;
 
     if (typeof fabric === "undefined") {
@@ -129,6 +126,17 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     }
     
+    // Zoom in / out
+        
+    function zoomCanvas(factor) {
+        let zoom = canvas.getZoom();
+        let newZoom = zoom * factor;
+    
+        if (newZoom > 5) newZoom = 5;
+        if (newZoom < 0.5) newZoom = 0.5;
+    
+        canvas.zoomToPoint({ x: canvas.width / 2, y: canvas.height / 2 }, newZoom);
+    }
 
     // --- Save the initial state
     saveState();
@@ -163,28 +171,12 @@ document.addEventListener("DOMContentLoaded", function () {
         } else if (brushStyle === "glow") {
             canvas.freeDrawingBrush.shadow = new fabric.Shadow({
                 color: 'rgba(0, 255, 255, 0.9)',
-                blur: 15
+                blur: 15 * (brushSize /10),
             });
         }
     };
 
-    // --- Activate Eraser
-    // function setEraser() {
-    //     canvas.isDrawingMode = true;
-    //     if (!canvas.freeDrawingBrush) {
-    //         canvas.freeDrawingBrush = new fabric.PencilBrush(canvas);
-    //     }
-    //     canvas.freeDrawingBrush.color = "#fff"; // Eraser = white background
-    //     canvas.freeDrawingBrush.width = eraserSize;
-    // };
-    function setEraser() {
-        canvas.isDrawingMode = true;
-        if (!canvas.freeDrawingBrush) {
-            canvas.freeDrawingBrush = new fabric.PencilBrush(canvas);
-        }
-        canvas.freeDrawingBrush.color = backgroundColor; 
-        canvas.freeDrawingBrush.width = eraserSize;
-    };
+
 
     // --- Add Rectangle
     function addRectangle() {
@@ -293,6 +285,11 @@ document.addEventListener("DOMContentLoaded", function () {
     document.getElementById('undo').addEventListener('click', undo);
     document.getElementById('redo').addEventListener('click', redo);
 
+    // --- Zoom buttons
+
+    document.getElementById("zoomOutButton").addEventListener("click",  () => {zoomCanvas(0.9)})
+    document.getElementById("zoomInButton").addEventListener("click", () => { zoomCanvas(1.1)})
+
     // --- Tools buttons 
     document.getElementById("rectangleButton").addEventListener("click", addRectangle);
     document.getElementById("circleButton").addEventListener("click", addCircle);
@@ -314,41 +311,32 @@ document.addEventListener("DOMContentLoaded", function () {
     document.getElementById("backgroundColorPicker").addEventListener("input", function (event) {
         backgroundColor= event.target.value;
         canvas.backgroundColor = backgroundColor;
-        if(document.getElementById("eraserButton").classList.contains("disabled-btn")){
-            setEraser();
-        }
         canvas.renderAll();
         saveState();
     });
+    
 
     // brush
 
     document.getElementById("brushColorPicker").addEventListener("input", function(event){
         brushColor = event.target.value;
-        activateMode("brush");
+        handleBrushMode();
         canvas.renderAll();
     });
 
     document.getElementById("brushSizeSlider").addEventListener("input", function(event){
         brushSize = Number(event.target.value);
-        activateMode("brush");
+        handleBrushMode();
         canvas.renderAll();
     });
 
     document.getElementById("brushStyle").addEventListener("change", function () {
         brushStyle = this.value;
-        activateMode("brush");
+        handleBrushMode();
         canvas.renderAll();
     });
     
-    // eraser
 
-    document.getElementById("eraserSlider").addEventListener("input", function(event){
-        eraserSize = Number(event.target.value);
-        activateMode("eraser");
-        canvas.renderAll();
-    });
-    
     // text
 
     document.getElementById("textColorPicker").addEventListener("input", function(event){
@@ -370,13 +358,6 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
     
-    // mirror mode
-    document.getElementById("mirrorMode").addEventListener("change", function () {
-        isMirror = this.checked;
-        this.checked && activateMode("brush");
-    });
-
-    
     // --- Buttons select and activation system
 
     const buttons = document.querySelectorAll('.tool-btn');
@@ -385,27 +366,15 @@ document.addEventListener("DOMContentLoaded", function () {
         button.addEventListener('click', handleButtonClick);
     });
 
-    function activateMode(mode) {
+    function handleBrushMode() {
         const selectButton = document.getElementById('selectButton');
         const brushButton = document.getElementById('brushButton');
-        const eraserButton = document.getElementById('eraserButton');
         
         selectButton.classList.remove('disabled-btn');
         selectButton.disabled = false;
-        brushButton.classList.remove('disabled-btn');
-        brushButton.disabled = false;
-        eraserButton.classList.remove('disabled-btn');
-        eraserButton.disabled = false;
-        
-        if (mode === 'brush') {
-            brushButton.classList.add('disabled-btn');
-            brushButton.disabled = true;
-            setBrush();
-        } else if (mode === 'eraser') {
-            eraserButton.classList.add('disabled-btn');
-            eraserButton.disabled = true;
-            setEraser();
-        }
+        brushButton.classList.add('disabled-btn');
+        brushButton.disabled = true;
+        setBrush();
     }
 
     function handleButtonClick(event) {
@@ -423,11 +392,8 @@ document.addEventListener("DOMContentLoaded", function () {
             case 'selectButton':
                 setSelectionMode();
                 break;
-            case 'eraserButton':
-                setEraser();
-                break;
             case 'brushButton':
-                activateMode("brush");
+                handleBrushMode();
                 break;
             default:
                 break;
@@ -436,6 +402,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // --- Keyboard shortcuts
 
+    // Undo / Redo
     document.addEventListener("keydown", function (event) {    
         if (event.ctrlKey && event.key === "z") {
             event.preventDefault();
@@ -449,6 +416,7 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     });
 
+    // Copy / Paste
     document.addEventListener("keydown", function (event) {    
         if (event.ctrlKey && event.key === "c") {
             event.preventDefault();
@@ -459,7 +427,40 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     });
 
+    // Delete
 
+    document.addEventListener("keydown", function(event){
+        if (event.key === "Delete"){
+            deleteSelectedObjects();
+        }
+    })
+
+    function deleteSelectedObjects(){
+        let activeObjects = canvas.getActiveObjects();
+
+        if (activeObjects.length) {            
+            activeObjects.forEach(obj => {
+                canvas.remove(obj);
+            });
+            canvas.discardActiveObject();
+            canvas.requestRenderAll(); 
+        }
+    }
+
+    // Zoom
+
+    document.addEventListener("keydown", function (event) {
+        if (event.ctrlKey) { 
+            if (event.key === "+") {
+                zoomCanvas(1.1); 
+                event.preventDefault(); 
+            } else if (event.key === "-") {
+                zoomCanvas(0.9); 
+                event.preventDefault();
+            }
+        }
+    });
+    
 
     // --- Saving canvas state after each modification
 
