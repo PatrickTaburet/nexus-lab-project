@@ -498,3 +498,35 @@ document.addEventListener("DOMContentLoaded", function () {
         downloadCanvas("png");
     });
 });
+
+
+  
+  // --------- Sliders animation ---------
+    
+  const allRanges = document.querySelectorAll(".range-wrap");
+  allRanges.forEach((wrap) => {
+    const range = wrap.querySelector(".range");
+    const bubble = wrap.querySelector(".bubble");
+
+    range.addEventListener("input", () => {
+      setBubble(range, bubble);
+    });
+
+    // setting bubble on DOM load
+    setBubble(range, bubble);
+  });
+
+  function setBubble(range, bubble) {
+    const val = range.value;
+
+    const min = range.min || 0.001;
+    const max =  range.max || 0.1;
+
+    const offset = Number(((val - min) * 100) / (max - min));
+
+    bubble.textContent = val;
+
+    // yes, 14px is a magic number
+    bubble.style.left = `calc(${offset}% - 14px)`;
+  }
+
