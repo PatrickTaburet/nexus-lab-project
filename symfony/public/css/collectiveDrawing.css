@@ -47,16 +47,33 @@ main{
 
 .canvas-container{
     margin-top: 3vh;
+    margin-bottom: 20px;
 }
 #drawingCanvas {
     position: relative;
-    border: 2px solid black;
+    border: 3px solid black;
     background: repeating-conic-gradient(#ddd 0% 25%, transparent 0% 50%) 0% 0% / 20px 20px;
+    clip-path: polygon(40px 0, 100% 0%, 100% calc(100% - 40px), calc(100% - 40px) 100%, 0 100%, 0 40px);
 }
+
 .canvas-bottom{
+    color:#cbd2da;
     display: flex;
+    flex-direction: row;
     justify-content: space-between;
-    padding: 1vw 1vw 0 1vw;
+    padding: 5px 40px;
+    width: 50vw;
+}
+.undo-redo-container{
+    display: flex;
+}
+.zoom-container{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+#zoomOutButton, #zoomInButton{
+    min-width: 20px!important;
 }
 .sandbox-container{
     display: flex;
@@ -64,13 +81,18 @@ main{
     width: fit-content;
     padding: 10px;
     gap: 5vw;
-
 }
 #toolbar{
     display: flex;
     flex-direction: column;
     margin: 15px;
     gap: 20px;
+}
+.toolbar-btn{
+    font-size: 15px!important;
+}
+#clearCanvasButton{
+    margin-top: 15px;
 }
 /* #toolbar button, #toolbar input{
     margin: 15px 0 ;
@@ -79,17 +101,19 @@ main{
     margin: 0;
 }
 .disabled-btn {
-    opacity: 0.8;
-    cursor: not-allowed;
+    opacity: 0.5;
+    cursor: none;
+    pointer-events: none;
 }
 .btn-top-box{
     display: flex;
     justify-content: start;
+    align-items: center;
     gap: 15px;
 }
-.btn-top-box input, .btn-top-box button{
+/* .btn-top-box input, .btn-top-box button{
     margin: 0 0 10px 0;
-}
+} */
 .eraser-btn-box{
     display: flex;
     flex-direction: column;
@@ -124,22 +148,50 @@ main{
 .background-btn-box{
     display: flex;
     align-items: center;
+    color: var(--var-white);
+    margin: 0 0 0 10px;
+    font-size: 18px;
 }
 .background-btn-box span{
     margin-right: 10px;
 }
 .background-btn-box div{
-    margin-left: 20px;
+    margin-left: 10px;
+    width: 180px;
 }
-
-
+#imageInput{
+    color:#ddd;
+    margin: 5px;
+}
+#brushColorPicker, #textColorPicker, #backgroundColorPicker{
+    width: 40px;
+    height: 40px;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    /* background-color: var(--var-primary); */
+    /* border: 5px solid var(--var-primary); */
+    cursor: pointer;
+}
+#shapesColorPicker{
+    width: 70px;
+    height: 70px;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    cursor: pointer;
+}
+#textInput{
+    margin: 5px;
+    width: 70%;
+}
 /* ------- SciFi box card -------*/
   
 .card {
     background: rgba(0,0,0,.5);
-    /* width: 70%; */
+    /* min-width: 5vw; */
     height: 100%;
-    padding: var(--var-notchSize/2) var(--var-notchSize);
+    /* padding: var(--var-notchSize/2) var(--var-notchSize); */
     box-shadow: inset 0 0 10px var(--var-primary);
     clip-path: polygon(40px 0, 100% 0%, 100% calc(100% - 40px), calc(100% - 40px) 100%, 0 100%, 0 40px);
     padding: 10px;
@@ -216,12 +268,12 @@ main{
 /* Select */
 
 .inputBox{
-    width: 100%;
+    /* width: 100%; */
     display: flex;
     justify-content: center;
     flex-direction: column;
     align-items: center;
-    margin-bottom: 15px;
+    /* margin-bottom: 15px; */
   }
   
   /* .form-group{
@@ -275,6 +327,12 @@ main{
     margin: 0 25px 0 25px;
   }
 
+  .sliderBox{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 5px;
+  }
 
 /* Custom Bar */
 
@@ -334,4 +392,79 @@ main{
 
 }
 
+
+ /* ---- Checkbox ---- */
+
+ .checkboxContainer{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: var(--var-white);
+    width: 45%;
+    /* padding-left: 30px; */
+  }
+  .checkboxContainer p {
+    width: 40%;
+ 
+  }
+  
+  .checkbox{
+  width:178px;
+  min-width: 178px;
+  height:78px;
+  border-radius:40px;
+  -webkit-appearance: none;
+  position:relative;
+  margin:0 0 0 -30px;
+  box-shadow: inset 1px 1px 1px rgba(0, 0, 0, 0.4);
+  background: -webkit-linear-gradient(144deg,#AF40FF, #5B42F3 50%,#00DDEB);
+  scale: 0.45;
+  
+  }
+  .checkbox:checked{
+  background: -webkit-linear-gradient(#bfe09c,#a1f83d);
+  box-shadow: inset 1px 1px 3px rgba(0, 0, 0, 0.4);
+  }
+  .checkbox:before {
+  content:"|||";
+  letter-spacing:1px;
+  color: rgba(0,0,0,.15);
+  font-size:22px;
+  font-weight:100;
+  text-shadow:1px 1px 1px rgb(138, 138, 138);
+  width:26px;
+  height:26px;
+  padding:19px;
+  top:7px;
+  left:9px;
+  position:absolute;
+  border-radius:40px;
+  background: -webkit-linear-gradient(#ebebeb,#f1f1f1);
+  box-shadow: -2px 2px 8px rgba(0, 0, 0, 0.2), 
+        -1px 1px 2px rgba(0, 0, 0, 0.3), 
+        inset 1px 1px 1px var(--var-white);
+  -webkit-transition: all 1s;
+  
+  }
+  .checkbox:checked:before {
+  left:106px;
+  background:#f1f1f1;
+  }
+  .checkbox:after {
+  content:"";
+  width:14px;
+  height:14px;
+  top:32px;
+  right:-30px;
+  position:absolute;
+  border-radius:40px;
+  background: -webkit-linear-gradient(#fcc4c5,#e12c2d);
+  box-shadow: inset -1px -1px 4px #8d0808, 
+        inset 1px 1px 2px #bb1313;			
+  }
+  .checkbox:checked:after {
+  background: -webkit-linear-gradient(#d8eec4,#5fa718);
+  box-shadow: inset -1px -1px 4px #417f0b, 
+        inset 1px 1px 2px #5b9f1a;			
+  }
   

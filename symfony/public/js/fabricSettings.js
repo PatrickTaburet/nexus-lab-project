@@ -9,6 +9,8 @@ document.addEventListener("DOMContentLoaded", function () {
     let backgroundColor = 'white'
     let brushStyle = "solid";
     const MAX_HISTORY_SIZE = 10;
+    let undoButton = document.getElementById('undo');
+    let redoButton = document.getElementById('redo');
 
     if (typeof fabric === "undefined") {
         console.error("Fabric.js is not loaded!");
@@ -17,13 +19,13 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // --- Canvas init
     const canvas = new fabric.Canvas("drawingCanvas", {
-        width: 800,
-        height: 500,
+        width: window.innerWidth / 2,
+        height: window.innerHeight / 1.7,
         isDrawingMode: false
     });
     canvas.backgroundColor = backgroundColor;
     canvas.renderAll();
-
+    
     function saveState() {
         console.log('savestate');
         let state = JSON.stringify(canvas.toJSON(["backgroundColor"]));
@@ -72,8 +74,10 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     function updateButtons() {
-        document.getElementById('undo').disabled = (undoStack.length <= 1);
-        document.getElementById('redo').disabled = (redoStack.length === 0);
+        undoButton.disabled = (undoStack.length <= 1);
+        redoButton.disabled = (redoStack.length === 0);
+        undoButton.classList.toggle("disabled-btn", undoButton.disabled);
+        redoButton.classList.toggle("disabled-btn", redoButton.disabled);
     }
 
     // --- Copy / Paste systemm
@@ -282,8 +286,9 @@ document.addEventListener("DOMContentLoaded", function () {
     };
 
     // --- Undo and redo buttons
-    document.getElementById('undo').addEventListener('click', undo);
-    document.getElementById('redo').addEventListener('click', redo);
+
+    undoButton.addEventListener('click', undo);
+    redoButton.addEventListener('click', redo);
 
     // --- Zoom buttons
 

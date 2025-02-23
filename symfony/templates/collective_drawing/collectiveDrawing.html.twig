@@ -21,13 +21,21 @@
 
         <div class="canvas-container">
             <canvas id="drawingCanvas"></canvas>
-            <div class="canvas-bottom">
-                <div>
-                    <button id="zoomOutButton" class="customButton">-</button>
-                    <span>Zoom</span>
-                    <button id="zoomInButton" class="customButton">+</button>
+            <div class="card-border">
+                <div class="card ">
+                    <div class="canvas-bottom">
+                        <div class="zoom-container">
+                            <button id="zoomOutButton" class="customButton">-</button>
+                            <span>Zoom</span>
+                            <button id="zoomInButton" class="customButton">+</button>
+                        </div>
+                        <div class="undo-redo-container">
+                            <button class="customButton" id="undo" disabled>↩️ Undo</button>
+                            <button class="customButton" id="redo" disabled>↪️ Redo</button>  
+                        </div>
+                        <button id="saveImageButton" class="customButton">Save drawing</button>
+                    </div>
                 </div>
-            <button id="saveImageButton" class="customButton">Save drawing</button>
             </div>
         </div>
 
@@ -38,7 +46,7 @@
             <div class="card-border">
                 <div class="card ">
                     <div class="card-title">
-                        Control parameters
+                        ToolBox
                     </div>
                     <div class="separator"></div>
                     <div class="card-content" id="card-contentD2">
@@ -89,18 +97,17 @@
                                 </div>
                                 <input type="color" id="shapesColorPicker">
                             </div>
-
-                            <button class="toolbar-btn customButton" id="undo" disabled>↩️ Undo</button>
-                            <button class="toolbar-btn customButton" id="redo" disabled>↪️ Redo</button>
-                            <button class="toolbar-btn customButton" id="clearCanvasButton">🗑 Erased All</button>
                             <div class="background-btn-box">
                                 <span>Background</span>
                                 <input type="color" id="backgroundColorPicker">
                                 <div>
-                                    <input type="checkbox" id="alphaCheckbox"> 
-                                    <span>Alpha</span>
+                                    <div class="checkboxContainer">
+                                        <p>Alpha</p>
+                                        <input type="checkbox" id="alphaCheckbox" class="checkbox">
+                                    </div>
                                 </div>
                             </div>
+                            <button class=" customButton" id="clearCanvasButton">🗑 Erased All</button>
                         {# </div> #}
                     </div>
                 </div>

@@ -48,12 +48,12 @@ Data vizyalise scenes
 #myCanvas{
   position: relative;
   display: block;
-  margin: auto; /* centers the canvas */
+  margin: auto; 
   /* margin-bottom: 230px;
   margin-top: 15px; */
   top:-150px;
   margin-top: 200px;
-  border: 3px solid black; /* Vous pouvez personnaliser la bordure comme vous le souhaitez */
+  border: 3px solid black; 
   clip-path: polygon(40px 0, 100% 0%, 100% calc(100% - 40px), calc(100% - 40px) 100%, 0 100%, 0 40px);
 }
 /* Left Side */
