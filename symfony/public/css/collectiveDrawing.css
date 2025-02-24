@@ -90,6 +90,8 @@ main{
 }
 .toolbar-btn{
     font-size: 15px!important;
+    justify-content: flex-start!important;
+    margin: 3px 5px 3px 5px!important;
 }
 #clearCanvasButton{
     margin-top: 15px;
@@ -115,6 +117,10 @@ main{
 /* .btn-top-box input, .btn-top-box button{
     margin: 0 0 10px 0;
 } */
+.selection-tools{
+    display: flex;
+    gap: 10px;
+}
 .eraser-btn-box{
     display: flex;
     flex-direction: column;
@@ -128,7 +134,32 @@ main{
 .text-btn-box{
     margin-left: 10px;
 }
-
+.text-icon-container{
+    display: flex;
+    gap: 30px;
+  
+}
+.img-icon-container{
+    display: flex;
+}
+.shapes-icon-container{
+    display: flex;
+    align-items: center;
+}
+.txt-icon{
+    opacity: 0.5;
+    position: absolute;
+    right: 30px;
+    cursor: none;
+    pointer-events: none;
+}
+.img-icon{
+    position: absolute;
+    right: 30px;
+    opacity: 0.5;
+    cursor: none;
+    pointer-events: none;
+}
 .shapes-btn-container{
     display: flex;
     justify-content: start;
@@ -146,6 +177,7 @@ main{
     color: var(--var-white);
     margin: 0 0 0 10px;
     font-size: 18px;
+    height: 55px;
 }
 .background-btn-box span{
     margin-right: 10px;
@@ -160,6 +192,9 @@ main{
     padding: 5px;
     box-shadow: 0 0 10px var(--var-primary);
     margin-bottom: 10px;
+}
+.ux-icons{
+    margin-right: 10px;
 }
 
 /* ------- Color pickers -------*/
@@ -331,7 +366,6 @@ main{
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-bottom: 5px;
   }
 
 /* Custom Bar */
@@ -408,6 +442,7 @@ main{
 }
 
 .checkbox{
+    cursor: pointer;
     width:178px;
     min-width: 178px;
     height:78px;
@@ -532,21 +567,23 @@ main{
 #textInput {
 	font-family: inherit;
 	line-height:inherit;
-	color:var(--var-main-darkest);
-    font-weight: 700;
+	color:var(--var-main-fg);
 	min-width:12em;
     height: 25px;
+    background-color: var(--var-secondary-dark);
 }
 
 ::placeholder {
-	color:var(--var-line-dark);
+	color:#eeeeeeab;
     font-weight: 500;
 }
 
 /* ---- Input file ---- */
+
 #imageInput{
     color:#ddd;
     margin: 5px;
+    z-index: 5;
 }
 .img-btn-box{
     margin-top: 10px;
@@ -569,8 +606,8 @@ input[type=file]::file-selector-button {
     border: none;
     background: var(--var-secondary-dark);
     padding: 8px 12px;
-    border: 1px solid #ccc;
-    border-radius: 0.25rem;
+    border: 2px solid #ccc;
+    border-radius: 0.5rem;
     color: #fff;
     cursor: pointer;
 }

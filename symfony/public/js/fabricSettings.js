@@ -2,10 +2,10 @@ document.addEventListener("DOMContentLoaded", function () {
     let undoStack = [];
     let redoStack = [];
     let brushColor = "white";
-    let textColor = "white";
+    let textColor = "#D63BD9";
     let brushSize = 5;
     let textValue, imageFile, clipboard;
-    let shapesColor = "white"
+    let shapesColor = "#00fff7"
     let backgroundColor = 'black'
     let brushStyle = "solid";
     const MAX_HISTORY_SIZE = 10;
@@ -239,10 +239,13 @@ document.addEventListener("DOMContentLoaded", function () {
                 left : 300,
                 fill: textColor
             }
-        );
-        canvas.add(text);
-        saveState();
+        );  
+        if (textValue){ 
+            canvas.add(text);
+            saveState();
+        }
     };
+
 
     // --- Add Image
     function addImage() {
@@ -437,6 +440,8 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
     // Delete
+    let deleteButton = document.getElementById("deleteButton");
+    deleteButton.addEventListener("click", deleteSelectedObjects); 
 
     document.addEventListener("keydown", function(event){
         if (event.key === "Delete"){
@@ -455,6 +460,15 @@ document.addEventListener("DOMContentLoaded", function () {
             canvas.requestRenderAll(); 
         }
     }
+
+    canvas.on('selection:created', () => {
+        deleteButton.classList.remove('disabled-btn');
+        deleteButton.disabled = false;
+    });
+    canvas.on('selection:cleared', () => {
+        deleteButton.classList.add('disabled-btn');
+        deleteButton.disabled = true;
+    });
 
     // Zoom
 
@@ -475,6 +489,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     canvas.on("object:modified", saveState);
     canvas.on("path:created", saveState);
+
     // canvas.on("object:added", saveState);
     // canvas.on("object:removed", saveState);
 

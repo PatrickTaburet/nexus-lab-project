@@ -30,10 +30,10 @@
                             <button id="zoomInButton" class="customButton">+</button>
                         </div>
                         <div class="undo-redo-container">
-                            <button class="customButton" id="undo" disabled>↩️ Undo</button>
-                            <button class="customButton" id="redo" disabled>↪️ Redo</button>  
+                            <button class="customButton" id="undo" disabled>{{ ux_icon('fa-solid:undo', {width: 16, height: 16, class: 'ux-icons'}) }} Undo</button>
+                            <button class="customButton" id="redo" disabled>{{ ux_icon("fa-solid:redo", {width: 16, height: 16, class: 'ux-icons'}) }} Redo</button>  
                         </div>
-                        <button id="saveImageButton" class="customButton">Save drawing</button>
+                        <button id="saveImageButton" class="customButton">{{ ux_icon('fluent:save-16-filled', {width: 20, height: 20, class: 'ux-icons'}) }}Save</button>
                     </div>
                 </div>
             </div>
@@ -50,15 +50,15 @@
                     </div>
                     <div class="separator"></div>
                     <div class="card-content" id="card-contentD2">
-                        <div class="tool-section-frame">
-                            <button class="tool-btn customButton" id="selectButton">🖱️ Select</button>
+                        <div class="tool-section-frame selection-tools">
+                            <button class="tool-btn customButton" id="selectButton">{{ ux_icon('tabler:pointer-filled', {width: 16, height: 16, class: 'ux-icons'}) }} Select</button>
+                            <button class="customButton disabled-btn" id="deleteButton" disabled>{{ ux_icon('icomoon-free:cross', {width: 14, height: 14, class: 'ux-icons'}) }} Delete</button>
                         </div>
                         <div class="tool-section-frame">
                             <div class="brush-btn-box">
                                 <div class="btn-top-box">
-                                    <button class="tool-btn customButton" id="brushButton">🖌 Brush</button>
-                                    <input type="color" id="brushColorPicker">
-                                    
+                                    <button class="tool-btn customButton" id="brushButton">{{ ux_icon('fa-solid:paint-brush', {width: 16, height: 16, class: 'ux-icons'}) }} Brush</button>
+                                    <input type="color" id="brushColorPicker"  value="#ffffff">                        
                                     <div class="inputBox">
                                         <select id="brushStyle">
                                             <option value="solid">Solid</option>
@@ -80,7 +80,7 @@
                             <button class="tool-btn" id="eraserButton">🧽 Eraser</button>
                             <input type="range" class="range-slider" id="eraserSlider" min="1" max="30" value="10" step="1">
                         </div> #}
-                        <div class="tool-section-frame">
+                        <div class="tool-section-frame text-icon-container">
                             <div class="text-btn-box">
                                 <div class="text-input-container">
                                     <span class="input">
@@ -89,28 +89,30 @@
                                     </span>
                                 </div>
                                 <div class="txt-bottom-box">
-                                
-                                    <input type="color" id="textColorPicker">
+                                    <input type="color" id="textColorPicker"  value="#D63BD9">
                                     <button class="text-btn customButton" id="textButton">Add Text</button>
                                 </div>
                             </div>
+                            {{ ux_icon('icon-park-solid:text', {width: 96, height: 96, class: 'ux-icons txt-icon'}) }} 
                         </div>
-                        <div class="tool-section-frame">
+                        <div class="tool-section-frame img-icon-container">
                             <div class="img-btn-box">
                                 <input type="file" id="imageInput" class="custom-file-input" accept="image/*">
                                 <button class="img-btn customButton" id="imageButton">Add Image</button>
                             </div>
+                            {{ ux_icon('fa:picture-o', {width: 90, height: 96, class: 'ux-icons img-icon'}) }} 
                         </div>
-                        <div class="tool-section-frame">
+                        <div class="tool-section-frame shapes-icon-container">
                             <div class="shapes-btn-container">
                                 <div class="shapes-btn-box">
-                                    <button class="toolbar-btn customButton" id="rectangleButton">⬛ Rectangle</button>
-                                    <button class="toolbar-btn customButton" id="circleButton">⚫ Circle</button>
-                                    <button class="toolbar-btn customButton" id="triangleButton">▲ Triangle</button>
-                                    <button class="toolbar-btn customButton" id="lineButton">📏 Line</button>
+                                    <button class="toolbar-btn customButton" id="rectangleButton">   {{ ux_icon('ic:baseline-square', {width: 16, height: 16, class: 'ux-icons'}) }} Rectangle</button>
+                                    <button class="toolbar-btn customButton" id="circleButton">{{ ux_icon('ic:baseline-circle', {width: 16, height: 16, class: 'ux-icons'}) }} Circle</button>
+                                    <button class="toolbar-btn customButton" id="triangleButton">{{ ux_icon('ion:triangle-sharp', {width: 16, height: 16, class: 'ux-icons'}) }}Triangle</button>
+                                    <button class="toolbar-btn customButton" id="lineButton">{{ ux_icon('uil:line-alt', {width: 16, height: 16, class: 'ux-icons'}) }} Line</button>
                                 </div>
-                                <input type="color" id="shapesColorPicker">
+                                <input type="color" id="shapesColorPicker" value="#00fff7">
                             </div>
+                            {{ ux_icon('famicons:shapes', {width: 90, height: 96, class: 'ux-icons img-icon'}) }} 
                         </div>
                         <div class="tool-section-frame">
                             <div class="background-btn-box">
@@ -124,7 +126,7 @@
                                 </div>
                             </div>
                         </div>
-                        <button class=" customButton" id="clearCanvasButton">🗑 Erased All</button>
+                        <button class=" customButton" id="clearCanvasButton">{{ ux_icon('icomoon-free:bin', {width: 15, height: 15, class: 'ux-icons'}) }} Clear All</button>
                     </div>
                 </div>
             </div>
