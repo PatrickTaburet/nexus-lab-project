@@ -50,8 +50,10 @@
                     </div>
                     <div class="separator"></div>
                     <div class="card-content" id="card-contentD2">
-                        {# <div id="toolbar"> #}
+                        <div class="tool-section-frame">
                             <button class="tool-btn customButton" id="selectButton">🖱️ Select</button>
+                        </div>
+                        <div class="tool-section-frame">
                             <div class="brush-btn-box">
                                 <div class="btn-top-box">
                                     <button class="tool-btn customButton" id="brushButton">🖌 Brush</button>
@@ -66,28 +68,40 @@
                                         </select>
                                     </div>
                                 </div>
-                                <div class="sliderBox">
+                            </div>
+                            <div class="sliderBox">
                                 <div class="range-wrap">
                                     <input type="range" class="range" id="brushSizeSlider"  min="1" max="20" value="5" step="1">
-                                        <output class="bubble"></output>
-                                    </div>
+                                    <output class="bubble"></output>
                                 </div>
                             </div>
-                            {# <div class="eraser-btn-box">
-                                <button class="tool-btn" id="eraserButton">🧽 Eraser</button>
-                                <input type="range" class="range-slider" id="eraserSlider" min="1" max="30" value="10" step="1">
-                            </div> #}
+                        </div>
+                        {# <div class="eraser-btn-box">
+                            <button class="tool-btn" id="eraserButton">🧽 Eraser</button>
+                            <input type="range" class="range-slider" id="eraserSlider" min="1" max="30" value="10" step="1">
+                        </div> #}
+                        <div class="tool-section-frame">
                             <div class="text-btn-box">
-                                <div class="btn-top-box">
-                                    <button class="text-btn customButton" id="textButton">Add Text</button>
-                                    <input type="color" id="textColorPicker">
+                                <div class="text-input-container">
+                                    <span class="input">
+                                        <input type="text" id="textInput" placeholder="Your text">
+                                        <span></span>	
+                                    </span>
                                 </div>
-                                <input type="text" id="textInput">
+                                <div class="txt-bottom-box">
+                                
+                                    <input type="color" id="textColorPicker">
+                                    <button class="text-btn customButton" id="textButton">Add Text</button>
+                                </div>
                             </div>
+                        </div>
+                        <div class="tool-section-frame">
                             <div class="img-btn-box">
-                                <input type="file" id="imageInput" accept="image/*">
+                                <input type="file" id="imageInput" class="custom-file-input" accept="image/*">
                                 <button class="img-btn customButton" id="imageButton">Add Image</button>
                             </div>
+                        </div>
+                        <div class="tool-section-frame">
                             <div class="shapes-btn-container">
                                 <div class="shapes-btn-box">
                                     <button class="toolbar-btn customButton" id="rectangleButton">⬛ Rectangle</button>
@@ -97,6 +111,8 @@
                                 </div>
                                 <input type="color" id="shapesColorPicker">
                             </div>
+                        </div>
+                        <div class="tool-section-frame">
                             <div class="background-btn-box">
                                 <span>Background</span>
                                 <input type="color" id="backgroundColorPicker">
@@ -107,8 +123,8 @@
                                     </div>
                                 </div>
                             </div>
-                            <button class=" customButton" id="clearCanvasButton">🗑 Erased All</button>
-                        {# </div> #}
+                        </div>
+                        <button class=" customButton" id="clearCanvasButton">🗑 Erased All</button>
                     </div>
                 </div>
             </div>

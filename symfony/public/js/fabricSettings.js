@@ -1,12 +1,12 @@
 document.addEventListener("DOMContentLoaded", function () {
     let undoStack = [];
     let redoStack = [];
-    let brushColor = "black";
-    let textColor = "black";
+    let brushColor = "white";
+    let textColor = "white";
     let brushSize = 5;
     let textValue, imageFile, clipboard;
-    let shapesColor = "black"
-    let backgroundColor = 'white'
+    let shapesColor = "white"
+    let backgroundColor = 'black'
     let brushStyle = "solid";
     const MAX_HISTORY_SIZE = 10;
     let undoButton = document.getElementById('undo');
@@ -234,7 +234,11 @@ document.addEventListener("DOMContentLoaded", function () {
     function addText() {
         let text = new fabric.Text(
             textValue, 
-            {fill: textColor}
+            {
+                top : 300,
+                left : 300,
+                fill: textColor
+            }
         );
         canvas.add(text);
         saveState();

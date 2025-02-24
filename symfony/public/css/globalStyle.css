@@ -58,7 +58,7 @@ CSS variables
     --var-secondary: #D63BD9;
     --var-secondary-dark: #7B6CD9;
     --var-purple-dark: #3a175f;
-    
+    --var-custom-button: rgb(5, 6, 45);
 
     --var-soft-blue: #8bacda;
     --var-cyan: #00fff7;
@@ -221,7 +221,7 @@ Update button style
 
 .customButton{
     align-items: center;
-    background-color: rgb(5, 6, 45);
+    background-color: var(--var-custom-button);
     border: 0;
     border-radius: 8px;
     box-shadow: rgba(151, 65, 252, 0.2) 0 15px 30px -5px;
