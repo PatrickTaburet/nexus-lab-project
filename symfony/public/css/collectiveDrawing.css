@@ -51,7 +51,7 @@ main{
 }
 #drawingCanvas {
     position: relative;
-    border: 3px solid black;
+    border: 3px dashed var(--var-primary);
     background: repeating-conic-gradient(#dddddd67 0% 25%, transparent 0% 50%) 0% 0% / 20px 20px;
     clip-path: polygon(40px 0, 100% 0%, 100% calc(100% - 40px), calc(100% - 40px) 100%, 0 100%, 0 40px);
 }
@@ -61,9 +61,10 @@ main{
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    padding: 5px 40px;
+    padding: 0px 40px;
     width: 45vw;
 }
+
 .undo-redo-container{
     display: flex;
 }
@@ -78,9 +79,19 @@ main{
 .sandbox-container{
     display: flex;
     position: relative; 
+    justify-content: center;
     width: fit-content;
     padding: 10px;
     gap: 5vw;
+    height: 100%;
+    width: 100%;
+}
+.parametersBox{
+    padding-bottom: 100px;
+    position: absolute;
+    right: 2vw;
+    top: -5vh;
+
 }
 #toolbar{
     display: flex;
@@ -89,7 +100,7 @@ main{
     gap: 20px;
 }
 .toolbar-btn{
-    font-size: 15px!important;
+    font-size: 14px!important;
     justify-content: flex-start!important;
     margin: 3px 5px 3px 5px!important;
 }
@@ -103,7 +114,7 @@ main{
     margin: 0;
 }
 .disabled-btn {
-    opacity: 0.5;
+    opacity: 0.6;
     cursor: none;
     pointer-events: none;
 }
@@ -159,12 +170,18 @@ main{
     opacity: 0.5;
     cursor: none;
     pointer-events: none;
+    color: black;
+
+}
+.player-icon{
+    right: 50px;
 }
 .shapes-btn-container{
     display: flex;
     justify-content: start;
     align-items: center;
     gap: 15px;
+    padding-top: 5px;
 }
 .shapes-btn-box{
     display: flex;
@@ -191,7 +208,7 @@ main{
     border-radius: 0.5em;
     padding: 5px;
     box-shadow: 0 0 10px var(--var-primary);
-    margin-bottom: 10px;
+    margin-bottom: 8px;
 }
 .ux-icons{
     margin-right: 10px;
@@ -232,8 +249,8 @@ main{
     padding: 10px;
     .card-title {
         font-weight: 700;
-        font-size: 20px;
-        padding: 15px 0 0 0;
+        font-size: 25px;
+        padding: 10px 0 0 0;
         animation: text-glow 1.1s ease-in-out infinite alternate;
     }
     
@@ -241,7 +258,7 @@ main{
         height: 1px;
         width: 100%;
         background-color: var(--var-primary);
-        margin: 20px 0;
+        margin: 10px 0 18px 0;
         box-shadow: 0 0 10px var(--var-primary);
     }
     
@@ -276,7 +293,7 @@ main{
     box-sizing: border-box;
     display: flex;
     font-family: Phantomsans, sans-serif;
-    font-size: 17px;
+    font-size: 15px;
     justify-content: center;
     line-height: 1em;
     max-width: 100%;
@@ -310,16 +327,6 @@ main{
     align-items: center;
     /* margin-bottom: 15px; */
   }
-  
-  /* .form-group{
-    display: flex;
-    justify-content: center;
-    margin: 12px ;
-    align-items: center;
-    color: var(--var-white);
-    z-index: 2;
-  } */
-  
   .formLabel{
     font-size: 22px;
     padding: 10px ; 
@@ -337,8 +344,8 @@ main{
   .inputBox select {
     z-index: 2;
     display: block;
-    width: 80%;
-    height: 33px;
+    width: 100%;
+    height: 30px;
     text-align: start;
     /* padding: 0.5rem; */
     font-size: 1rem;
@@ -349,7 +356,7 @@ main{
     /* opacity: 0.5; */
     background-clip: padding-box;
     transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
-    margin: 5px;
+    margin: 5px 5px 5px 20px;
   }
   
 
@@ -357,14 +364,14 @@ main{
 
 .range-wrap {
     position: relative;
-    width: 80%;
+    width: 100%;
     padding: 1em 0; /*  Giving more room for hover  */
-    margin: 0 25px 0 25px;
+    margin: 0 0 0 10px;
   }
 
   .sliderBox{
     display: flex;
-    justify-content: center;
+    justify-content: start;
     align-items: center;
   }
 
@@ -526,7 +533,7 @@ main{
 	background: linear-gradient(21deg, #10abff, #1beabd);
 	padding: 3px;
 	display: inline-block;
-	border-radius: 9999em;
+	border-radius: 0.3em;
 	*:not(span) {
 		position: relative;
 		display: inherit;
@@ -606,7 +613,7 @@ input[type=file]::file-selector-button {
     border: none;
     background: var(--var-secondary-dark);
     padding: 8px 12px;
-    border: 2px solid #ccc;
+    border: 1px solid #ccc;
     border-radius: 0.5rem;
     color: #fff;
     cursor: pointer;
@@ -618,3 +625,54 @@ input[type=file]:focus {
     outline: 2px dashed #000;
     outline-offset: 2px;
   }
+
+
+  /* ---- Multiplayer panel ---- */
+
+
+.multiplayer-container{
+    left: 5vw;
+    top: 3vw;
+    position: absolute;
+    font-size: 15px;
+    color: var(--var-white);
+    z-index: 10;
+}
+.multiplayer-container h3{
+    color: var(--var-white);
+    /* background-color: #00000071; */
+}
+
+.multiplayer-container .card-title{
+    font-size: 25px;
+    color: var(--var-black);
+}
+.players{
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    min-height: 15vh;
+    background-color: #0000005d;
+}
+.players div{
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+}
+.chat{
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    padding: 10px;
+    font-size: 13px;
+    min-height: 20vh;
+    background-color: #0000005d;
+
+}
+.multi-card{
+    padding: 15px;
+    min-width: 17vw;
+}
+.multi-card .card-title{
+    padding-bottom: 5px;
+}

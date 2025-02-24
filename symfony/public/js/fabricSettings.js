@@ -1,8 +1,9 @@
 document.addEventListener("DOMContentLoaded", function () {
+
     let undoStack = [];
     let redoStack = [];
     let brushColor = "white";
-    let textColor = "#D63BD9";
+    let textColor = "#00fff7";
     let brushSize = 5;
     let textValue, imageFile, clipboard;
     let shapesColor = "#00fff7"
@@ -16,8 +17,9 @@ document.addEventListener("DOMContentLoaded", function () {
         console.error("Fabric.js is not loaded!");
         return;
     }
-
+        
     // --- Canvas init
+
     const canvas = new fabric.Canvas("drawingCanvas", {
         width: window.innerWidth / 2,
         height: window.innerHeight / 1.7,
@@ -25,7 +27,31 @@ document.addEventListener("DOMContentLoaded", function () {
     });
     canvas.backgroundColor = backgroundColor;
     canvas.renderAll();
-    
+
+    function resizeCanvas() {
+        const newWidth = window.innerWidth / 2;
+        const newHeight = window.innerHeight / 1.7;
+
+        const scaleX = newWidth / canvas.width;
+        const scaleY = newHeight / canvas.height;
+
+        // Resize every objects on the canvas
+        canvas.getObjects().forEach((obj) => {
+            obj.scaleX *= scaleX;
+            obj.scaleY *= scaleY;
+            obj.left *= scaleX;
+            obj.top *= scaleY;
+            obj.setCoords(); 
+        });
+
+        // Resize canvas
+        canvas.setDimensions({ width: newWidth, height: newHeight });
+        canvas.renderAll();
+    }
+
+
+    window.addEventListener("resize", resizeCanvas);
+
     function saveState() {
         console.log('savestate');
         let state = JSON.stringify(canvas.toJSON(["backgroundColor"]));

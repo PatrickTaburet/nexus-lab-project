@@ -17,6 +17,47 @@
 <div class="mainContainer">
     <div class="sandbox-container">
 
+        {# Multiplayer panel #}
+
+         <div class="multiplayer-container">
+            <div class="card-border">
+                <div class="card multi-card">
+                    <h2 class="card-title">
+                        Multiplayer panel
+                    </h2>
+                    <div class="separator"></div>
+                    <div class="card-content">
+                        <div class="tool-section-frame">
+                            <h3>Players</h3>
+                        </div>
+                         <div class="tool-section-frame players">
+                            <div>
+                                <p>- Player 1</p>
+                                <p>- Player 2</p>
+                                <p>- Player 3</p>
+                                <p>- ...</p>
+                                <p>- ...</p>
+                            </div>
+                            {{ ux_icon('iconamoon:profile-bold', {width: 95, height: 95, class: 'ux-icons img-icon player-icon'}) }}
+                        </div>
+                    </div>
+                    <div class="separator"></div>
+                    <div class="card-content">
+                        <div class="tool-section-frame">
+                            <h3>Chat</h3>
+                        </div>
+                        <div class="tool-section-frame">
+                            <div class="chat">
+                                <p>- Player 1 : Lorem ipsum !</p>
+                                <p>- Player 2 : Ipsum lorem ?</p>
+                                <p>- ...</p>
+                            </div>
+                        </div> 
+                    </div>
+                </div>
+            </div>
+        </div>
+
         {# Canvas #}
 
         <div class="canvas-container">
@@ -39,20 +80,20 @@
             </div>
         </div>
 
-{# Parameters #}
+    {# Toolbox / Parameters #}
 
         <!-- Toolbar -->
         <div class="parametersBox">
             <div class="card-border">
                 <div class="card ">
-                    <div class="card-title">
+                    <h2 class="card-title">
                         ToolBox
-                    </div>
+                    </h2>
                     <div class="separator"></div>
                     <div class="card-content" id="card-contentD2">
                         <div class="tool-section-frame selection-tools">
                             <button class="tool-btn customButton" id="selectButton">{{ ux_icon('tabler:pointer-filled', {width: 16, height: 16, class: 'ux-icons'}) }} Select</button>
-                            <button class="customButton disabled-btn" id="deleteButton" disabled>{{ ux_icon('icomoon-free:cross', {width: 14, height: 14, class: 'ux-icons'}) }} Delete</button>
+                            <button class="customButton disabled-btn" id="deleteButton" disabled>{{ ux_icon('icomoon-free:cross', {width: 13, height: 13, class: 'ux-icons'}) }} Delete</button>
                         </div>
                         <div class="tool-section-frame">
                             <div class="brush-btn-box">
@@ -89,11 +130,11 @@
                                     </span>
                                 </div>
                                 <div class="txt-bottom-box">
-                                    <input type="color" id="textColorPicker"  value="#D63BD9">
+                                    <input type="color" id="textColorPicker"  value="#00fff7">
                                     <button class="text-btn customButton" id="textButton">Add Text</button>
                                 </div>
                             </div>
-                            {{ ux_icon('icon-park-solid:text', {width: 96, height: 96, class: 'ux-icons txt-icon'}) }} 
+                            {{ ux_icon('icon-park-solid:text', {width: 94, height: 94, class: 'ux-icons txt-icon'}) }} 
                         </div>
                         <div class="tool-section-frame img-icon-container">
                             <div class="img-btn-box">
@@ -112,7 +153,7 @@
                                 </div>
                                 <input type="color" id="shapesColorPicker" value="#00fff7">
                             </div>
-                            {{ ux_icon('famicons:shapes', {width: 90, height: 96, class: 'ux-icons img-icon'}) }} 
+                            {{ ux_icon('famicons:shapes', {width: 98, height: 98, class: 'ux-icons img-icon'}) }} 
                         </div>
                         <div class="tool-section-frame">
                             <div class="background-btn-box">
@@ -133,6 +174,7 @@
         </div>        
     </div>
 <div>
+
 <script src="https://cdn.jsdelivr.net/npm/fabric@latest/dist/index.min.js"></script>
 <script defer src="{{ asset('js/fabricSettings.js') }}" ></script>
 
