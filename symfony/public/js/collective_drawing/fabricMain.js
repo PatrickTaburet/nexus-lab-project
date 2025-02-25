@@ -1,17 +1,17 @@
+import { addRectangle, addCircle, addTriangle, addLine, addText, addImage, setBrush } from './drawingModule.js';
+import { saveState, undo, redo } from './utils.js';
+
+let brushColor = "white";
+let textColor = "#00fff7";
+let brushSize = 5;
+let imageFile, clipboard;
+let shapesColor = "#00fff7"
+let backgroundColor = 'black'
+let brushStyle = "solid";
+
+
 document.addEventListener("DOMContentLoaded", function () {
 
-    let undoStack = [];
-    let redoStack = [];
-    let brushColor = "white";
-    let textColor = "#00fff7";
-    let brushSize = 5;
-    let textValue, imageFile, clipboard;
-    let shapesColor = "#00fff7"
-    let backgroundColor = 'black'
-    let brushStyle = "solid";
-    const MAX_HISTORY_SIZE = 10;
-    let undoButton = document.getElementById('undo');
-    let redoButton = document.getElementById('redo');
 
     if (typeof fabric === "undefined") {
         console.error("Fabric.js is not loaded!");
@@ -52,59 +52,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
     window.addEventListener("resize", resizeCanvas);
 
-    function saveState() {
-        console.log('savestate');
-        let state = JSON.stringify(canvas.toJSON(["backgroundColor"]));
-        undoStack.push(state);
-        if (undoStack.length > MAX_HISTORY_SIZE) {
-            undoStack.shift();
-        }
-        redoStack = []; // Clear redo stack when a new action is performed
-        updateButtons();
-        // console.log("undostack -->" + undoStack.length);
-        // console.log("redostack -->" + redoStack.length);
-    }
-
-    // --- Undo / Redo historic manager
-
-    function undo() {
-        if (undoStack.length > 1) {
-            redoStack.push(undoStack.pop());
-            if (redoStack.length > MAX_HISTORY_SIZE) {
-                redoStack.shift();
-            }
-            loadState(undoStack[undoStack.length - 1]);
-        }
-        updateButtons();
-    }
-
-    function redo() {
-        if (redoStack.length > 0) {
-            let nextState = redoStack.pop();
-            undoStack.push(nextState);
-            if (undoStack.length > MAX_HISTORY_SIZE) {
-                undoStack.shift();
-            }
-            loadState(nextState);
-        }
-        updateButtons();
-    }
-
-    function loadState(state) {
-        canvas.clear();
-        canvas.loadFromJSON(state, function () {
-            canvas.renderAll();
-            canvas.requestRenderAll();
-            updateButtons();
-        });
-    }
-
-    function updateButtons() {
-        undoButton.disabled = (undoStack.length <= 1);
-        redoButton.disabled = (redoStack.length === 0);
-        undoButton.classList.toggle("disabled-btn", undoButton.disabled);
-        redoButton.classList.toggle("disabled-btn", redoButton.disabled);
-    }
 
     // --- Copy / Paste systemm
 
@@ -169,7 +116,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     // --- Save the initial state
-    saveState();
+    saveState(canvas);
 
     // --- Activate select mode
     function setSelectionMode() {
@@ -178,126 +125,8 @@ document.addEventListener("DOMContentLoaded", function () {
         canvas.forEachObject(obj => obj.selectable = true);
     };
 
-    // --- Activate brush mode
-    function setBrush() {
-        canvas.isDrawingMode = true;
-        if (!canvas.freeDrawingBrush) {
-            canvas.freeDrawingBrush = new fabric.PencilBrush(canvas);
-        }
-        canvas.freeDrawingBrush.color = brushColor;
-        canvas.freeDrawingBrush.width = brushSize;
+ 
 
-        const spacingFactor = 2;
-
-        canvas.freeDrawingBrush.strokeDashArray = null;
-        canvas.freeDrawingBrush.shadow = null;
-
-        if (brushStyle === "solid") {
-            canvas.freeDrawingBrush.strokeDashArray = null;
-        } else if (brushStyle === "dotted") {
-            canvas.freeDrawingBrush.strokeDashArray = [1, brushSize * spacingFactor]; 
-        } else if (brushStyle === "dashed") {
-            canvas.freeDrawingBrush.strokeDashArray = [brushSize * 4, brushSize * spacingFactor]; 
-        } else if (brushStyle === "glow") {
-            canvas.freeDrawingBrush.shadow = new fabric.Shadow({
-                color: 'rgba(0, 255, 255, 0.9)',
-                blur: 15 * (brushSize /10),
-            });
-        }
-    };
-
-
-
-    // --- Add Rectangle
-    function addRectangle() {
-        let rect = new fabric.Rect({
-            left: 100,
-            top: 100,
-            fill: shapesColor,
-            width: 80,
-            height: 60
-        });
-        canvas.add(rect);
-        saveState();
-
-    };
-
-    // --- Add Circle
-    function addCircle() {
-        let circle = new fabric.Circle({
-            left: 250,
-            top: 100,
-            radius: 40,
-            fill: shapesColor
-        });
-        canvas.add(circle);
-        saveState();
-    };
-
-    // --- Add Triangle
-    function addTriangle() {
-        let triangle = new fabric.Triangle({
-            left: 400,
-            top: 100,
-            radius: 40,
-            fill: shapesColor
-        });
-        canvas.add(triangle);
-        saveState();
-    };
-
-    // --- Add Triangle
-    function addLine() {
-        let line = new fabric.Line([750,150,550,150],{
-            stroke: shapesColor,
-            strokeWidth: 3
-        });
-        canvas.add(line);
-        saveState();
-    };
-
-    // --- Add Text
-    function addText() {
-        let text = new fabric.Text(
-            textValue, 
-            {
-                top : 300,
-                left : 300,
-                fill: textColor
-            }
-        );  
-        if (textValue){ 
-            canvas.add(text);
-            saveState();
-        }
-    };
-
-
-    // --- Add Image
-    function addImage() {
-        if (!imageFile) {
-            alert("No image file selected");
-            return;
-        }
-        const reader = new FileReader();
-        reader.onload = function(event) {
-            const imgObj = new Image();
-            imgObj.src = event.target.result;
-            imgObj.onload = function() {
-                const img = new fabric.Image(imgObj, {
-                    left: 100,
-                    top: 100,
-                    angle: 0,
-                    opacity: 1,
-                    
-                });
-                img.scaleToWidth(400);
-                canvas.add(img);
-                saveState();
-            }
-        }
-        reader.readAsDataURL(imageFile);
-    };
 
     // Background alpha
 
@@ -314,14 +143,13 @@ document.addEventListener("DOMContentLoaded", function () {
     function clearCanvas() {
         canvas.clear();
         canvas.backgroundColor = backgroundColor;
-        saveState();
+        saveState(canvas);
         canvas.renderAll();
     };
 
-    // --- Undo and redo buttons
-
-    undoButton.addEventListener('click', undo);
-    redoButton.addEventListener('click', redo);
+// --- Undo and redo buttons
+    document.getElementById('undo').addEventListener('click', function() {undo(canvas)});
+    document.getElementById('redo').addEventListener('click', function() {redo(canvas)});
 
     // --- Zoom buttons
 
@@ -329,12 +157,17 @@ document.addEventListener("DOMContentLoaded", function () {
     document.getElementById("zoomInButton").addEventListener("click", () => { zoomCanvas(1.1)})
 
     // --- Tools buttons 
-    document.getElementById("rectangleButton").addEventListener("click", addRectangle);
-    document.getElementById("circleButton").addEventListener("click", addCircle);
-    document.getElementById("triangleButton").addEventListener("click", addTriangle);
+    document.getElementById("rectangleButton").addEventListener("click", () => {addRectangle(canvas, shapesColor)});
+    document.getElementById("circleButton").addEventListener("click", () => {addCircle(canvas, shapesColor)});
+    document.getElementById("triangleButton").addEventListener("click", () => {addTriangle(canvas, shapesColor)});
     document.getElementById("clearCanvasButton").addEventListener("click", clearCanvas);
-    document.getElementById("imageButton").addEventListener("click", addImage);
-    document.getElementById("lineButton").addEventListener("click", addLine);
+    document.getElementById("imageButton").addEventListener("click", () => {addImage(canvas, imageFile)});
+    document.getElementById("lineButton").addEventListener("click", () => {addLine(canvas, shapesColor)});
+    document.getElementById("textButton").addEventListener("click", function(){
+        let textValue = document.getElementById("textInput").value;
+        addText(canvas, textColor, textValue);
+        canvas.renderAll();
+    });
 
     // --- Tools inputs settings
 
@@ -350,7 +183,7 @@ document.addEventListener("DOMContentLoaded", function () {
         backgroundColor= event.target.value;
         canvas.backgroundColor = backgroundColor;
         canvas.renderAll();
-        saveState();
+        saveState(canvas);
     });
     
 
@@ -381,11 +214,7 @@ document.addEventListener("DOMContentLoaded", function () {
         textColor = event.target.value;
     });
 
-    document.getElementById("textButton").addEventListener("click", function(){
-        textValue = document.getElementById("textInput").value;
-        addText();
-        canvas.renderAll();
-    });
+
 
     // image
 
@@ -412,7 +241,7 @@ document.addEventListener("DOMContentLoaded", function () {
         selectButton.disabled = false;
         brushButton.classList.add('disabled-btn');
         brushButton.disabled = true;
-        setBrush();
+        setBrush(canvas, brushColor, brushSize);
     }
 
     function handleButtonClick(event) {
@@ -444,13 +273,13 @@ document.addEventListener("DOMContentLoaded", function () {
     document.addEventListener("keydown", function (event) {    
         if (event.ctrlKey && event.key === "z") {
             event.preventDefault();
-            undo();
+            undo(canvas);
         } else if (event.ctrlKey && event.shiftKey && event.key.toLowerCase() === "z") { 
             event.preventDefault();
-            redo();
+            redo(canvas);
         } else if (event.ctrlKey && event.key === "y") {
             event.preventDefault();
-            redo();
+            redo(canvas);
         }
     });
 
@@ -513,11 +342,11 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // --- Saving canvas state after each modification
 
-    canvas.on("object:modified", saveState);
-    canvas.on("path:created", saveState);
+    canvas.on("object:modified", () => { saveState(canvas) });
+    canvas.on("path:created", () => { saveState(canvas) });
 
-    // canvas.on("object:added", saveState);
-    // canvas.on("object:removed", saveState);
+    // canvas.on("object:added", () => { saveState(canvas) });
+    // canvas.on("object:removed", () => { saveState(canvas) });
 
     // --- Save canvas
 
