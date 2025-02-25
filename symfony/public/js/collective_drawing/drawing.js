@@ -1,36 +1,11 @@
-
-
 import { saveState } from './utils.js';
 
-// --- Activate brush mode
-export function setBrush(canvas, brushColor, brushSize) {
-    canvas.isDrawingMode = true;
-    if (!canvas.freeDrawingBrush) {
-        canvas.freeDrawingBrush = new fabric.PencilBrush(canvas);
-    }
-    canvas.freeDrawingBrush.color = brushColor;
-    canvas.freeDrawingBrush.width = brushSize;
-
-    const spacingFactor = 2;
-
-    canvas.freeDrawingBrush.strokeDashArray = null;
-    canvas.freeDrawingBrush.shadow = null;
-
-    if (brushStyle === "solid") {
-        canvas.freeDrawingBrush.strokeDashArray = null;
-    } else if (brushStyle === "dotted") {
-        canvas.freeDrawingBrush.strokeDashArray = [1, brushSize * spacingFactor]; 
-    } else if (brushStyle === "dashed") {
-        canvas.freeDrawingBrush.strokeDashArray = [brushSize * 4, brushSize * spacingFactor]; 
-    } else if (brushStyle === "glow") {
-        canvas.freeDrawingBrush.shadow = new fabric.Shadow({
-            color: 'rgba(0, 255, 255, 0.9)',
-            blur: 15 * (brushSize /10),
-        });
-    }
+// --- Activate select mode
+export function setSelectionMode(canvas) {
+    canvas.isDrawingMode = false;
+    canvas.selection = true;
+    canvas.forEachObject(obj => obj.selectable = true);
 };
-
-
 
 // --- Add Rectangle
 export function addRectangle(canvas, shapesColor) {
