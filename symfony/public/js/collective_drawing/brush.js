@@ -41,17 +41,24 @@ export function setBrush(canvas) {
     canvas.freeDrawingBrush.strokeDashArray = null;
     canvas.freeDrawingBrush.shadow = null;
 
-    if (brushStyle === "solid") {
-        canvas.freeDrawingBrush.strokeDashArray = null;
-    } else if (brushStyle === "dotted") {
-        canvas.freeDrawingBrush.strokeDashArray = [1, brushSize * spacingFactor]; 
-    } else if (brushStyle === "dashed") {
-        canvas.freeDrawingBrush.strokeDashArray = [brushSize * 4, brushSize * spacingFactor]; 
-    } else if (brushStyle === "glow") {
-        canvas.freeDrawingBrush.shadow = new fabric.Shadow({
-            color: 'rgba(0, 255, 255, 0.9)',
-            blur: 15 * (brushSize /10),
-        });
+    switch (brushStyle) {
+        case "solid":
+            canvas.freeDrawingBrush.strokeDashArray = null;
+            break;
+        case "dotted":
+            canvas.freeDrawingBrush.strokeDashArray = [1, brushSize * spacingFactor]; 
+            break;
+        case "dashed":
+            canvas.freeDrawingBrush.strokeDashArray = [brushSize * 4, brushSize * spacingFactor]; 
+            break;
+        case "glow":
+            canvas.freeDrawingBrush.shadow = new fabric.Shadow({
+                color: 'rgba(0, 255, 255, 0.9)',
+                blur: 15 * (brushSize /10),
+            });
+            break;
+        default:
+            break;
     }
 };
 

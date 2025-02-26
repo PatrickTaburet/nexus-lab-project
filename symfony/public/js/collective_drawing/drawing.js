@@ -1,56 +1,81 @@
-import { saveState } from './utils.js';
+import { saveState } from './historicManager.js';
 
+// Shapes color
+let shapesColor = "#00fff7";
+document.getElementById("shapesColorPicker").addEventListener("input", function (event) {
+    shapesColor = event.target.value;
+});
+let shapeX = window.innerWidth * 0.1;
+let shapeY = window.innerWidth * 0.1;
+let globalOffset = window.innerWidth * 0.1;
+let shapesOffset = {
+    rectangle: 10,
+    circle: 10,
+    triangle: 10,
+    line: 10
+}
+const INDIVIDUAL_OFFSET = 15;
 // --- Activate select mode
 export function setSelectionMode(canvas) {
     canvas.isDrawingMode = false;
     canvas.selection = true;
-    canvas.forEachObject(obj => obj.selectable = true);
 };
 
 // --- Add Rectangle
-export function addRectangle(canvas, shapesColor) {
+export function addRectangle(canvas) {
     let rect = new fabric.Rect({
-        left: 100,
-        top: 100,
+        left: shapeX + shapesOffset.rectangle,
+        top: shapeY + shapesOffset.rectangle,
         fill: shapesColor,
         width: 80,
         height: 60
     });
+    shapesOffset.rectangle += INDIVIDUAL_OFFSET;
     canvas.add(rect);
     saveState(canvas);
-
 };
 
 // --- Add Circle
-export function addCircle(canvas, shapesColor) {
+export function addCircle(canvas) {
     let circle = new fabric.Circle({
-        left: 250,
-        top: 100,
+        left: shapeX + globalOffset + shapesOffset.circle,
+        top: shapeY + shapesOffset.circle,
         radius: 40,
         fill: shapesColor
     });
+    shapesOffset.circle += INDIVIDUAL_OFFSET;
     canvas.add(circle);
     saveState(canvas);
 };
 
 // --- Add Triangle
-export function addTriangle(canvas, shapesColor) {
+export function addTriangle(canvas) {
     let triangle = new fabric.Triangle({
-        left: 400,
-        top: 100,
+        left: shapeX + (globalOffset * 2 )+ shapesOffset.triangle,
+        top: shapeY + shapesOffset.triangle,
         radius: 40,
         fill: shapesColor
     });
+    shapesOffset.triangle += INDIVIDUAL_OFFSET;
     canvas.add(triangle);
     saveState(canvas);
 };
 
-// --- Add Triangle
-export function addLine(canvas, shapesColor) {
-    let line = new fabric.Line([750,150,550,150],{
-        stroke: shapesColor,
-        strokeWidth: 3
-    });
+// --- Add Line
+export function addLine(canvas) {
+    let line = new fabric.Line(
+        [
+            shapeX * 2 + shapesOffset.line, 
+            shapeY * 2 + shapesOffset.line, 
+            shapeX + shapesOffset.line,
+            shapeY * 2  + shapesOffset.line
+        ],
+        {
+            stroke: shapesColor,
+            strokeWidth: 3
+        }
+    );
+    shapesOffset.line += INDIVIDUAL_OFFSET;
     canvas.add(line);
     saveState(canvas);
 };

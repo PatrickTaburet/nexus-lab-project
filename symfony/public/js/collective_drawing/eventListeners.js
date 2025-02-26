@@ -1,8 +1,8 @@
-import { zoomCanvas, resizeCanvas, clearCanvas, saveState, undo, redo, downloadCanvas } from './utils.js';
+import { zoomCanvas, resizeCanvas, clearCanvas, downloadCanvas, deleteSelectedObjects } from './tools.js';
 import { addRectangle, addCircle, addTriangle, addLine, addText, addImage,  } from './drawing.js';
 import { handleButtonClick } from './brush.js';
+import { saveState, undo, redo } from './historicManager.js';
 
-let shapesColor = "#00fff7";
 let imageFile;
 let textColor = "#00fff7";
 let backgroundColor = "black";
@@ -42,23 +42,27 @@ export function setupEventListeners(canvas) {
     document.getElementById("zoomInButton").addEventListener("click", () => { zoomCanvas(canvas, 1.1)})
 
     // --- Tools buttons 
-    document.getElementById("rectangleButton").addEventListener("click", () => {addRectangle(canvas, shapesColor)});
-    document.getElementById("circleButton").addEventListener("click", () => {addCircle(canvas, shapesColor)});
-    document.getElementById("triangleButton").addEventListener("click", () => {addTriangle(canvas, shapesColor)});
+    document.getElementById("rectangleButton").addEventListener("click", () => {addRectangle(canvas)});
+    document.getElementById("circleButton").addEventListener("click", () => {addCircle(canvas)});
+    document.getElementById("triangleButton").addEventListener("click", () => {addTriangle(canvas)});
     document.getElementById("clearCanvasButton").addEventListener("click", ()=> {clearCanvas(canvas, backgroundColor)});
     document.getElementById("imageButton").addEventListener("click", () => {addImage(canvas, imageFile)});
-    document.getElementById("lineButton").addEventListener("click", () => {addLine(canvas, shapesColor)});
+    document.getElementById("lineButton").addEventListener("click", () => {addLine(canvas)});
     document.getElementById("textButton").addEventListener("click", function(){
         let textValue = document.getElementById("textInput").value;
         addText(canvas, textColor, textValue);
         canvas.renderAll();
     });
-    
+    document.getElementById("deleteButton").addEventListener("click", ()=> {deleteSelectedObjects(canvas)}); 
+
     // --- Select and activation system buttons
 
     document.querySelectorAll('.tool-btn').forEach(button => {
         button.addEventListener('click', (event) => {handleButtonClick(event, canvas)});
     });
+
+    
+    // --- Tools inputs settings
 
     // Background alpha
 
@@ -71,9 +75,6 @@ export function setupEventListeners(canvas) {
         canvas.renderAll();
     });
 
-
-    // --- Tools inputs settings
-
     // background
 
     document.getElementById("backgroundColorPicker").addEventListener("input", function (event) {
@@ -84,12 +85,6 @@ export function setupEventListeners(canvas) {
     });
 
 
-    // Shapes
-
-    document.getElementById("shapesColorPicker").addEventListener("input", function (event) {
-        shapesColor = event.target.value;
-    });
-    
     // image
 
     document.getElementById("imageInput").addEventListener("change", function (event) {

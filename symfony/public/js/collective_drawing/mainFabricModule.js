@@ -1,4 +1,4 @@
-import { saveState } from './utils.js';
+import { saveState } from './historicManager.js';
 import { setupEventListeners } from './eventListeners.js';
 import { setupShortcuts } from './shortcuts.js';
 import { setupBrushMode } from './brush.js';

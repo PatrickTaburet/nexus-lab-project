@@ -1,4 +1,5 @@
-import { copy, paste, undo, redo, deleteSelectedObjects } from './utils.js';
+import { copy, paste, deleteSelectedObjects } from './tools.js';
+import { undo, redo } from './historicManager.js';
 
 
 export function setupShortcuts(canvas) { 
@@ -31,8 +32,6 @@ export function setupShortcuts(canvas) {
     });
 
     // Delete
-    document.getElementById("deleteButton").addEventListener("click", ()=> {deleteSelectedObjects(canvas)}); 
-
     document.addEventListener("keydown", function(event){
         if (event.key === "Delete"){
             deleteSelectedObjects(canvas);
