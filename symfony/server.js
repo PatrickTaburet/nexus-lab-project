@@ -8,36 +8,77 @@ const server = http.createServer(app);
 
 const io = new Server(server, {
     cors: {
-        origin: "*",  // Autoriser toutes les origines (change en prod)
-        methods: ["GET", "POST"]
-    }
+        origin: "*", 
+        methods: ["GET", "POST"],
+    },
+    maxHttpBufferSize: 10e6,
 });
 
-const sessions = {}; // Stocke les dessins par session
+const sessions = {}; // to stock drawings in session
 
 io.on("connection", (socket) => {
-    console.log("Nouvel utilisateur connecté:", socket.id);
+    console.log("New user connected:", socket.id);
 
-    // Rejoindre une session
     socket.on("join_session", (sessionId) => {
         socket.join(sessionId);
-        console.log(`${socket.id} a rejoint la session ${sessionId}`);
+        console.log(`${socket.id} join the session ${sessionId}`);
 
-        // Envoyer le dessin actuel s'il existe
+        // Init session
+        if (!sessions[sessionId]) {
+            sessions[sessionId] = {
+                canvasData: null,   
+                cursors: {} 
+            };
+        }
+
+        // Init cursos position fot this new user
+        if (!sessions[sessionId].cursors) {
+            sessions[sessionId].cursors = {};
+        }
+        // Send actual drawing if exists
+        socket.emit("load_canvas", sessions[sessionId]);
+        // If users are already in the sessions, send there cursor position
+        Object.keys(sessions[sessionId].cursors).forEach(userSocketId => {
+            socket.emit("cursor_move", { sessionId, pointer: sessions[sessionId].cursors[userSocketId] });
+        });
+
+
+        sessions[sessionId].cursors[socket.id] = { x: 0, y: 0 };
+    });
+
+    // User cursor tracking
+    socket.on("cursor_move", (data) => {
+        // console.log("cursor move server");
+        // console.log(data);
+
+        const { sessionId, pointer } = data;
+
+        // Update the cursor position for this user in the session
         if (sessions[sessionId]) {
-            socket.emit("load_canvas", sessions[sessionId]);
+            if (!sessions[sessionId].cursors) {
+                sessions[sessionId].cursors = {}; 
+            }
+            sessions[sessionId].cursors[socket.id] = pointer;
+            // Broadcast the new cursor position to other users in the session
+            socket.to(sessionId).emit("cursor_move", data);
         }
     });
 
-    // Recevoir un dessin et le diffuser à la session
+    // Receive a drawing and broadcast it to the session
     socket.on("draw", ({ sessionId, data }) => {
-        sessions[sessionId] = data; // Stocke l'état du canvas
-        socket.to(sessionId).emit("draw", data); // Envoie aux autres
+        sessions[sessionId] = data; //  Store the canvas state
+        socket.to(sessionId).emit("draw", data); // Send to others
     });
 
-    // Déconnexion de l'utilisateur
+    // User disconnection
     socket.on("disconnect", () => {
         console.log(`Utilisateur déconnecté: ${socket.id}`);
+        for (const sessionId in sessions) {
+            if (sessions[sessionId].cursors[socket.id]) {
+                delete sessions[sessionId].cursors[socket.id];
+                break;
+            }
+        }
     });
 });
 

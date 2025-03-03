@@ -15,6 +15,7 @@ let shapesOffset = {
     line: 10
 }
 const INDIVIDUAL_OFFSET = 15;
+
 // --- Activate select mode
 export function setSelectionMode(canvas) {
     canvas.isDrawingMode = false;

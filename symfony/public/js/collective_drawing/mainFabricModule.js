@@ -2,7 +2,7 @@ import { saveState } from './historicManager.js';
 import { setupEventListeners } from './eventListeners.js';
 import { setupShortcuts } from './shortcuts.js';
 import { setupBrushMode } from './brush.js';
-import { setupSockets } from './socketManager.js'; // Import du module socket
+import { setupSockets } from './socketManager.js';
 
 document.addEventListener("DOMContentLoaded", function () {
 
@@ -50,46 +50,6 @@ document.addEventListener("DOMContentLoaded", function () {
   canvas.on("path:created", () => { 
     saveState(canvas);
   });
-  // canvas.on("object:added", () => { 
-  //   const data = canvas.toJSON();
-  //   socket.emit("draw", { sessionId, data });
-  // });
-  // canvas.on("object:removed", () => { 
-  //   const data = canvas.toJSON();
-  //   socket.emit("draw", { sessionId, data });
-  // });
-
-  // Sockets.io
-
-  // const socket = io("http://localhost:3001"); // Connecte au serveur WebSocket
-  // const sessionId = "session1"; // ID unique pour la session (peut être dynamique)
-
-  // Rejoindre une session
-  // socket.emit("join_session", sessionId);
-
-  // Charger un dessin existant (s'il y en a un)
-  // socket.on("load_canvas", (data) => {
-  //     canvas.loadFromJSON(data, canvas.renderAll.bind(canvas));
-  // });
-
-  // Détecter les modifications sur le canvas et les envoyer au serveur
-  // canvas.on("object:modified", function () {
-  //     const data = canvas.toJSON();
-  //     socket.emit("draw", { sessionId, data });
-  // });
-
-  // Recevoir les mises à jour en temps réel et les appliquer
-//   socket.on("draw", (data) => {
-//     canvas.clear(); // Supprime tous les objets avant de recharger
-//     canvas.loadFromJSON(data, function() {
-//         canvas.renderAll();
-//         canvas.calcOffset();
-//         canvas.requestRenderAll(); // Force le rendu total
-//     });
-// });
-
-
-
 });
   
   // --------- Sliders animation ---------
