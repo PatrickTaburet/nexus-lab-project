@@ -1,3 +1,6 @@
+import { sendCanvasUpdate } from './socketManager.js'; 
+
+
 let undoStack = [];
 let redoStack = [];
 const MAX_HISTORY_SIZE = 10;
@@ -13,6 +16,7 @@ export function saveState(canvas) {
     }
     redoStack = []; // Clear redo stack when a new action is performed
     updateButtons();
+    sendCanvasUpdate(canvas);
     // console.log("undostack -->" + undoStack.length);
     // console.log("redostack -->" + redoStack.length);
 }

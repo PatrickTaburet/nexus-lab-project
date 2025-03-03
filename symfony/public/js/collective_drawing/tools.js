@@ -1,4 +1,4 @@
-
+import { saveState } from './historicManager.js'; 
 
 let clipboard;
 
@@ -34,6 +34,7 @@ export function deleteSelectedObjects(canvas){
         });
         canvas.discardActiveObject();
         canvas.requestRenderAll(); 
+        saveState(canvas);
     }
 }
 
@@ -42,7 +43,7 @@ export function clearCanvas(canvas, backgroundColor) {
     canvas.clear();
     canvas.backgroundColor = backgroundColor;
     saveState(canvas);
-    canvas.renderAll();
+    canvas.renderAll();    
 };
 
 // --- Save canvas
