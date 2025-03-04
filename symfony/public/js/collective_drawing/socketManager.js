@@ -1,42 +1,47 @@
 const socket = io("http://localhost:3001");
-const remoteCursors = {};
 const sessionId = "session1";
 const userId = "user_" + Math.floor(Math.random() * 10000); 
+const cursors = {}; // Store other users cursors
 
 export { socket };
 
 
-export function setupSockets(canvas) {
+export function setupSockets(drawingCanvas, cursorCanvas) {
 
     // Join a session
     socket.emit("join_session", sessionId);
 
     // Load an existing drawing
     socket.on("load_canvas", (data) => {
-        canvas.loadFromJSON(data, canvas.renderAll.bind(canvas));
+        drawingCanvas.loadFromJSON(data, drawingCanvas.renderAll.bind(drawingCanvas));
     });
 
     // Receive updates and apply them
     socket.on("draw", (data) => {
         // canvas.clear(); 
-        canvas.loadFromJSON(data, function() {
-            canvas.renderAll();
+        drawingCanvas.loadFromJSON(data, function() {
+            drawingCanvas.renderAll();
             // canvas.calcOffset();
-            canvas.requestRenderAll();
+            // displayOtherUsersCursor(drawingCanvas);
+            drawingCanvas.requestRenderAll();
+            cursorCanvas.renderAll();
         });
     });
 
     // Listen cursor positions
-    trackCursorMovement(canvas);
-    displayOtherUsersCursor(canvas);
+    console.log("--------");
+    console.log(cursorCanvas);
+    
+    trackCursorMovement(cursorCanvas);
+    displayOtherUsersCursor(cursorCanvas);
 
     // Listen to Fabric.js events and send updates
-    canvas.on("object:modified", () => { 
-        sendCanvasUpdate(canvas);
+    drawingCanvas.on("object:modified", () => { 
+        sendCanvasUpdate(drawingCanvas);
     });
 
-    canvas.on("path:created", () => { 
-        sendCanvasUpdate(canvas);
+    drawingCanvas.on("path:created", () => { 
+        sendCanvasUpdate(drawingCanvas);
     });
 
     // canvas.on("object:added", () => { 
@@ -63,8 +68,8 @@ function trackCursorMovement(canvas) {
 
 // Add a user's cursor to the screen
 function displayOtherUsersCursor(canvas) {
-    const cursors = {}; // Store other users' cursors
     console.log("display client");
+    socket.off("cursor_move");  
     socket.on("cursor_move", (data) => {
         console.log( data);
         const { sessionId, pointer } = data;
@@ -73,11 +78,14 @@ function displayOtherUsersCursor(canvas) {
            // Check if this user's cursor already exists
             const cursor = new fabric.Circle({
                 radius: 5,
-                fill: 'red',
+                fill: pointer.color || 'white',  
                 left: pointer.x,
                 top: pointer.y,
                 originX: 'center',
-                originY: 'center'
+                originY: 'center',
+                originY: 'center',
+                selectable: false, 
+                evented: false 
             });
 
             cursors[sessionId] = cursor;
@@ -86,8 +94,13 @@ function displayOtherUsersCursor(canvas) {
             // If the cursor exists, update its position
             const cursor = cursors[sessionId];
             cursor.set({ left: pointer.x, top: pointer.y });
-            canvas.renderAll();
         }
+        canvas.renderAll();
+
     });
+    // socket.on("load_canvas", () => {
+    //     Object.values(cursors).forEach(cursor => canvas.add(cursor));
+    //     canvas.renderAll();
+    // });
 }
 

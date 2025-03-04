@@ -60,9 +60,12 @@
 
         {# Canvas #}
 
-        <div class="canvas-container">
-            <canvas id="drawingCanvas"></canvas>
-            <div class="card-border">
+        <div class="fabric-container">
+            <div class="canvas-parent">
+                <canvas id="drawingCanvas"></canvas>
+                <canvas id="cursorCanvas"></canvas>
+            </div>
+            <div class="card-border canvas-bottom-container">
                 <div class="card ">
                     <div class="canvas-bottom">
                         <div class="zoom-container">

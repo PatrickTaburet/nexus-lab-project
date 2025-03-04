@@ -14,19 +14,27 @@ document.addEventListener("DOMContentLoaded", function () {
   // --- Canvas init
 
   const canvas = new fabric.Canvas("drawingCanvas", {
-      width: window.innerWidth / 2,
-      height: window.innerHeight / 1.7,
-      isDrawingMode: false
+    width: window.innerWidth / 2,
+    height: window.innerHeight / 1.7,
+    isDrawingMode: false
   });
   canvas.backgroundColor = 'black';
   canvas.renderAll();
+
+  const cursorCanvas = new fabric.Canvas("cursorCanvas", {
+    width: canvas.width,
+    height: canvas.height,
+    selection: false, 
+    backgroundColor: null,
+  });
+
   setupEventListeners(canvas);
   setupShortcuts(canvas);
   setupBrushMode(canvas)
 
   // Save the initial state
   saveState(canvas);
-  setupSockets(canvas);
+  setupSockets(canvas, cursorCanvas);
 
 
 
