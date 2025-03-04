@@ -53,8 +53,6 @@ io.on("connection", (socket) => {
         // console.log(data);
 
         const { sessionId, pointer } = data;
-   
-        
         // Update the cursor position for this user in the session
         if (sessions[sessionId]) {
             if (!sessions[sessionId].cursors) {
@@ -91,10 +89,7 @@ io.on("connection", (socket) => {
     // User disconnection
     socket.on("disconnect", () => {
         console.log(`Utilisateur déconnecté: ${socket.id}`);
-        for (const sessionId in sessions) {
-            console.log("sessions[sessionId]s");
-            console.log(sessions[sessionId]);
-            
+        for (const sessionId in sessions) {            
             if (sessions[sessionId] && sessions[sessionId].cursors && sessions[sessionId].cursors[socket.id]) {
                 delete sessions[sessionId].cursors[socket.id];
                 break;

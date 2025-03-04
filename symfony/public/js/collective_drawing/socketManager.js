@@ -7,7 +7,6 @@ export { socket };
 
 
 export function setupSockets(drawingCanvas, cursorCanvas) {
-
     // Join a session
     socket.emit("join_session", sessionId);
 
@@ -24,13 +23,12 @@ export function setupSockets(drawingCanvas, cursorCanvas) {
             // canvas.calcOffset();
             // displayOtherUsersCursor(drawingCanvas);
             drawingCanvas.requestRenderAll();
-            cursorCanvas.renderAll();
         });
     });
 
     // Listen cursor positions
-    console.log("--------");
-    console.log(cursorCanvas);
+    // console.log("--------");
+    // console.log(cursorCanvas);
     
     trackCursorMovement(cursorCanvas);
     displayOtherUsersCursor(cursorCanvas);
@@ -56,51 +54,44 @@ export function sendCanvasUpdate(canvas) {
 }
 
 function trackCursorMovement(canvas) {
-    canvas.on('mouse:move', (event) => {
-         // Get the cursor position on the canvas
-        const pointer = canvas.getPointer(event.e);
-        // console.log(pointer);
-        
-        // Send the cursor position to all other users via Socket.io
+    let isClicking = false;
+
+    document.addEventListener("mousemove", (event) => {
+        const rect = canvas.getBoundingClientRect();
+        const pointer = {
+            x: event.clientX - rect.left,
+            y: event.clientY - rect.top,
+            isClicking: isClicking
+        };
+
+        // Send position to others
         socket.emit("cursor_move", { sessionId, pointer });
     });
+
+    document.addEventListener('mousedown', () => {
+        isClicking = true;
+    });
+    document.addEventListener('mouseup', () => {
+        isClicking = false;
+    });
+
 }
 
 // Add a user's cursor to the screen
 function displayOtherUsersCursor(canvas) {
-    console.log("display client");
+    const ctx = canvas.getContext("2d");
     socket.off("cursor_move");  
     socket.on("cursor_move", (data) => {
-        console.log( data);
-        const { sessionId, pointer } = data;
-        // Check if this user's cursor already exists
-        if (!cursors[sessionId]) {
-           // Check if this user's cursor already exists
-            const cursor = new fabric.Circle({
-                radius: 5,
-                fill: pointer.color || 'white',  
-                left: pointer.x,
-                top: pointer.y,
-                originX: 'center',
-                originY: 'center',
-                originY: 'center',
-                selectable: false, 
-                evented: false 
-            });
+        const { pointer } = data;
 
-            cursors[sessionId] = cursor;
-            canvas.add(cursor);
-        } else {
-            // If the cursor exists, update its position
-            const cursor = cursors[sessionId];
-            cursor.set({ left: pointer.x, top: pointer.y });
-        }
-        canvas.renderAll();
+        // Efface l'ancien dessin
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
 
+        // Dessine le curseur des autres utilisateurs
+        ctx.fillStyle = pointer.isClicking ? "#ff000067" : "red"; 
+        ctx.beginPath();
+        ctx.arc(pointer.x, pointer.y, pointer.isClicking ? 7 : 5, 0, Math.PI * 2);
+        ctx.fill();
     });
-    // socket.on("load_canvas", () => {
-    //     Object.values(cursors).forEach(cursor => canvas.add(cursor));
-    //     canvas.renderAll();
-    // });
 }
 

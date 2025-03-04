@@ -20,13 +20,18 @@ document.addEventListener("DOMContentLoaded", function () {
   });
   canvas.backgroundColor = 'black';
   canvas.renderAll();
+  const cursorCanvas = document.getElementById("cursorCanvas");
 
-  const cursorCanvas = new fabric.Canvas("cursorCanvas", {
-    width: canvas.width,
-    height: canvas.height,
-    selection: false, 
-    backgroundColor: null,
-  });
+  
+  const ctx = cursorCanvas.getContext("2d");
+  cursorCanvas.width = canvas.width;
+  cursorCanvas.height = canvas.height;
+  // const cursorCanvas = new fabric.Canvas("cursorCanvas", {
+  //   width: canvas.width,
+  //   height: canvas.height,
+  //   selection: false, 
+  //   backgroundColor: null,
+  // });
 
   setupEventListeners(canvas);
   setupShortcuts(canvas);
