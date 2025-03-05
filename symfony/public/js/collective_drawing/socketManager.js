@@ -1,7 +1,6 @@
 const socket = io("http://localhost:3001");
 const sessionId = "session1";
-const userId = "user_" + Math.floor(Math.random() * 10000); 
-const cursors = {}; // Store other users cursors
+const cursors = {}; 
 
 export { socket };
 
@@ -11,24 +10,20 @@ export function setupSockets(drawingCanvas, cursorCanvas) {
     socket.emit("join_session", sessionId);
 
     // Load an existing drawing
-    socket.on("load_canvas", (data) => {
-        drawingCanvas.loadFromJSON(data, drawingCanvas.renderAll.bind(drawingCanvas));
+    socket.on("load_canvas", (canvasData) => {
+        if (canvasData){
+            drawingCanvas.loadFromJSON(canvasData, drawingCanvas.renderAll.bind(drawingCanvas));
+        }
     });
 
     // Receive updates and apply them
-    socket.on("draw", (data) => {
+    socket.on("draw", ({ canvasData }) => {
         // canvas.clear(); 
-        drawingCanvas.loadFromJSON(data, function() {
+        drawingCanvas.loadFromJSON(canvasData, function() {
             drawingCanvas.renderAll();
-            // canvas.calcOffset();
-            // displayOtherUsersCursor(drawingCanvas);
             drawingCanvas.requestRenderAll();
         });
     });
-
-    // Listen cursor positions
-    // console.log("--------");
-    // console.log(cursorCanvas);
     
     trackCursorMovement(cursorCanvas);
     displayOtherUsersCursor(cursorCanvas);
@@ -49,7 +44,7 @@ export function setupSockets(drawingCanvas, cursorCanvas) {
 }
 
 export function sendCanvasUpdate(canvas) {
-    const data = canvas.toJSON(['src']);
+    const data = { canvasData: canvas.toJSON() };
     socket.emit("draw", { sessionId, data });
 }
 
@@ -68,12 +63,8 @@ function trackCursorMovement(canvas) {
         socket.emit("cursor_move", { sessionId, pointer });
     });
 
-    document.addEventListener('mousedown', () => {
-        isClicking = true;
-    });
-    document.addEventListener('mouseup', () => {
-        isClicking = false;
-    });
+    document.addEventListener('mousedown', () => { isClicking = true; });
+    document.addEventListener('mouseup', () => { isClicking = false; });
 
 }
 
@@ -83,15 +74,22 @@ function displayOtherUsersCursor(canvas) {
     socket.off("cursor_move");  
     socket.on("cursor_move", (data) => {
         const { pointer } = data;
-
-        // Efface l'ancien dessin
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-        // Dessine le curseur des autres utilisateurs
-        ctx.fillStyle = pointer.isClicking ? "#ff000067" : "red"; 
-        ctx.beginPath();
-        ctx.arc(pointer.x, pointer.y, pointer.isClicking ? 7 : 5, 0, Math.PI * 2);
-        ctx.fill();
+        if (pointer.username) {
+            cursors[pointer.username] = pointer;
+        }
+        redrawCursors(ctx, canvas);
     });
 }
 
+function redrawCursors(ctx, canvas) {
+    // Delete the cursor of the canva
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    // for each user, draw his cursor
+    Object.keys(cursors).forEach(key => {
+        const p = cursors[key];
+        ctx.fillStyle = p.isClicking ? "red" : p.userColor; 
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.isClicking ? 7 : 5, 0, Math.PI * 2);
+        ctx.fill();
+    });
+}

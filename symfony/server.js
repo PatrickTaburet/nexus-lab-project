@@ -2,6 +2,7 @@ const express = require("express");
 const http = require("http");
 const { Server } = require("socket.io");
 const cors = require("cors");
+const usersColors = ['#FF0000', '#00FF00', '#0000FF', '#FFFF00', '#FF00FF', '#00FFFF'];
 
 const app = express();
 const server = http.createServer(app);
@@ -14,7 +15,7 @@ const io = new Server(server, {
     maxHttpBufferSize: 10e6,
 });
 
-const sessions = {}; // to stock drawings in session
+const sessions = {}; // to stock drawings and users info in session
 
 io.on("connection", (socket) => {
     console.log("New user connected:", socket.id);
@@ -27,71 +28,76 @@ io.on("connection", (socket) => {
         if (!sessions[sessionId]) {
             sessions[sessionId] = {
                 canvasData: null,   
-                cursors: {} 
+                users: {}
             };
         }
-        const userColor = getRandomColor();
+        const userIndex = Object.keys(sessions[sessionId].users).length;
+        const userColor = usersColors[userIndex % usersColors.length];
+        sessions[sessionId].users[socket.id] = {
+            socketId: socket.id,
+            username: socket.id,  
+            color: userColor,
+            pointer: { x: 0, y: 0, isClicking: false }
+        };
         
-        // Init cursos position fot this new user
-        if (!sessions[sessionId].cursors) {
-            sessions[sessionId].cursors = {};
-        }
         // Send actual drawing if exists
-        socket.emit("load_canvas", sessions[sessionId]);
-        // If users are already in the sessions, send there cursor position
-        Object.keys(sessions[sessionId].cursors).forEach(userSocketId => {
-            socket.emit("cursor_move", { sessionId, pointer: sessions[sessionId].cursors[userSocketId] });
+        socket.emit("load_canvas", sessions[sessionId].canvasData);
+
+        // Send other users' positions (and info) to the new user
+        Object.keys(sessions[sessionId].users).forEach(otherSocketId  => {
+            if (otherSocketId !== socket.id) {
+                const user = sessions[sessionId].users[otherSocketId];
+                socket.emit("cursor_move", {
+                    sessionId,
+                    pointer: {
+                        ...user.pointer,
+                        userColor: user.userColor,
+                        username: user.username
+                    }
+                });
+            }
         });
-        sessions[sessionId].cursors[socket.id] = { x: 0, y: 0, color: userColor };
-
-
     });
 
     // User cursor tracking
     socket.on("cursor_move", (data) => {
-        // console.log("cursor move server");
-        // console.log(data);
-
         const { sessionId, pointer } = data;
+
         // Update the cursor position for this user in the session
-        if (sessions[sessionId]) {
-            if (!sessions[sessionId].cursors) {
-                sessions[sessionId].cursors = {}; 
-            }
-            
-            if (!sessions[sessionId].cursors[socket.id]) {
-                sessions[sessionId].cursors[socket.id] = { color: getRandomColor() };
-            }
-    
-            sessions[sessionId].cursors[socket.id] = { 
-                ...pointer, 
-                color: sessions[sessionId].cursors[socket.id].color 
-            };
-            // console.log(socket.id);
+        if (sessions[sessionId] && sessions[sessionId].users[socket.id]){
+            sessions[sessionId].users[socket.id].pointer = pointer;
+
             // Broadcast the new cursor position to other users in the session
-            socket.to(sessionId).emit("cursor_move", { sessionId, pointer: sessions[sessionId].cursors[socket.id] });
+            socket.to(sessionId).emit("cursor_move", {
+                sessionId,
+                pointer: {
+                    ...pointer,
+                    userColor: sessions[sessionId].users[socket.id].color,
+                    username: sessions[sessionId].users[socket.id].username
+                }
+            });
         }
     });
 
     // Receive a drawing and broadcast it to the session
     socket.on("draw", ({ sessionId, data }) => {
         if (!sessions[sessionId]) {
-            sessions[sessionId] = { canvasData: null, cursors: {} };
+            sessions[sessionId] = { canvasData: null, users: {} };
         }
+        console.log("--------");
+        console.log(sessions[sessionId] );
         //  Store the canvas state
-        sessions[sessionId] = {
-            ...sessions[sessionId],  // keep the cursors
-            ...data                  // Replace canvasData only
-        }; 
-        socket.to(sessionId).emit("draw", data); // Send to others
+        sessions[sessionId].canvasData = data.canvasData;
+
+        socket.to(sessionId).emit("draw", { canvasData: data.canvasData }); // Send to others
     });
 
     // User disconnection
     socket.on("disconnect", () => {
         console.log(`Utilisateur déconnecté: ${socket.id}`);
         for (const sessionId in sessions) {            
-            if (sessions[sessionId] && sessions[sessionId].cursors && sessions[sessionId].cursors[socket.id]) {
-                delete sessions[sessionId].cursors[socket.id];
+            if (sessions[sessionId] && sessions[sessionId].users[socket.id]){
+                delete sessions[sessionId].users[socket.id];
                 break;
             }
         }
@@ -102,12 +108,3 @@ const PORT = 3001;
 server.listen(PORT, () => {
     console.log(`Serveur WebSocket en écoute sur http://localhost:${PORT}`);
 });
-
-function getRandomColor() {
-    const letters = '0123456789ABCDEF';
-    let color = '#';
-    for (let i = 0; i < 6; i++) {
-        color += letters[Math.floor(Math.random() * 16)];
-    }
-    return color;
-}

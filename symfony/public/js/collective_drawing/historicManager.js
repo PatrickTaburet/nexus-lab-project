@@ -51,6 +51,7 @@ function loadState(state, canvas) {
         canvas.renderAll();
         canvas.requestRenderAll();
         updateButtons();
+        sendCanvasUpdate(canvas);
     });
 }
 
