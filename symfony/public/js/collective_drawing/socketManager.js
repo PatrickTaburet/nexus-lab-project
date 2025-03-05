@@ -4,7 +4,6 @@ const cursors = {};
 
 export { socket };
 
-
 export function setupSockets(drawingCanvas, cursorCanvas) {
     // Join a session
     socket.emit("join_session", sessionId);
@@ -13,6 +12,7 @@ export function setupSockets(drawingCanvas, cursorCanvas) {
     socket.on("load_canvas", (canvasData) => {
         if (canvasData){
             drawingCanvas.loadFromJSON(canvasData, drawingCanvas.renderAll.bind(drawingCanvas));
+            drawingCanvas.requestRenderAll();
         }
     });
 
