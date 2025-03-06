@@ -1,14 +1,15 @@
-const socket = typeof io !== 'undefined' ? io("http://localhost:3001") : null;
+// const socket = typeof io !== 'undefined' ? io("http://localhost:3001") : null;
 
-if (!socket) {
-  console.warn("socket.io n'est pas chargé sur cette page.");
-}
+// if (!socket) {
+//   console.warn("socket.io is not loaded on this page.");
+// }
+import socket from './socketSingleton.js';
 
 const sessionId = "session1";
 const cursors = {}; 
 const currentUser = window.currentUser; 
 
-export { socket };
+// export { socket };
 
 export function setupSockets(drawingCanvas, cursorCanvas) {
     // Join a session
@@ -94,7 +95,7 @@ function redrawCursors(ctx, canvas) {
     // for each user, draw his cursor
     Object.keys(cursors).forEach(key => {
         const p = cursors[key];
-        ctx.fillStyle = p.isClicking ? "red" : p.userColor; 
+        ctx.fillStyle = p.userColor; 
         ctx.beginPath();
         ctx.arc(p.x, p.y, p.isClicking ? 7 : 5, 0, Math.PI * 2);
         ctx.fill();

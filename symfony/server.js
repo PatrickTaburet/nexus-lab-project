@@ -24,6 +24,7 @@ io.on("connection", (socket) => {
     socket.on("join_session", ({ sessionId, username, userId }) => {
         socket.join(sessionId);
         socket.userId = userId;
+        
         console.log(`${username} (${socket.id}) join the session ${sessionId}`);
         // Init session
         if (!sessions[sessionId]) {
@@ -36,6 +37,7 @@ io.on("connection", (socket) => {
         // Si l'utilisateur existe déjà, on met simplement à jour son socketId
         if (sessions[sessionId].users[userId]) {
             sessions[sessionId].users[userId].socketId = socket.id;
+            sessions[sessionId].users[userId].online = true;
         } else {
             // Sinon, on ajoute l'utilisateur et on lui assigne une couleur
             const userCount = Object.keys(sessions[sessionId].users).length;
@@ -45,7 +47,8 @@ io.on("connection", (socket) => {
                 username: username,
                 userId: userId,
                 color: userColor,
-                pointer: { x: 0, y: 0, isClicking: false }
+                pointer: { x: 0, y: 0, isClicking: false },
+                online: true
             };
         }
         broadcastUserList(sessionId);
@@ -107,7 +110,9 @@ io.on("connection", (socket) => {
         console.log(`Utilisateur déconnecté: ${socket.id}`);
         for (const sessionId in sessions) {            
             if (sessions[sessionId] && sessions[sessionId].users[socket.userId]){
-                delete sessions[sessionId].users[socket.userId];
+                // delete sessions[sessionId].users[socket.userId];
+                sessions[sessionId].users[socket.userId].online = false;
+                broadcastUserList(sessionId);
                 break;
             }
         }
@@ -117,9 +122,13 @@ io.on("connection", (socket) => {
         if (sessions[sessionId]) {
             const userList = Object.values(sessions[sessionId].users).map(user => ({
                 username: user.username,
-                userColor: user.color
+                userColor: user.color,
+                isOnline: user.online
             }));
             // Envoyer la liste au socket qui demande
+            console.log("get user server");
+            console.log(userList);
+            
             socket.emit("update_users", userList);
         } else {
             socket.emit("update_users", []);
@@ -131,11 +140,11 @@ io.on("connection", (socket) => {
 function broadcastUserList(sessionId) {
     const userList = Object.values(sessions[sessionId].users).map(user => ({
       username: user.username,
-      userColor: user.color  
+      userColor: user.color,
+      isOnline : user.online
     }));
     console.log("--------");
-
-    console.log("userList");
+    console.log("server broadcast userList");
     console.log(userList);
     
     io.to(sessionId).emit("update_users", userList);
