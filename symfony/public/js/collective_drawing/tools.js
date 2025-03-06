@@ -33,7 +33,7 @@ export function deleteSelectedObjects(canvas){
             canvas.remove(obj);
         });
         canvas.discardActiveObject();
-        canvas.requestRenderAll(); 
+        canvas.requestRenderAll();
         saveState(canvas);
     }
 }

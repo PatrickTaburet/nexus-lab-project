@@ -1,12 +1,18 @@
-const socket = io("http://localhost:3001");
+const socket = typeof io !== 'undefined' ? io("http://localhost:3001") : null;
+
+if (!socket) {
+  console.warn("socket.io n'est pas chargé sur cette page.");
+}
+
 const sessionId = "session1";
 const cursors = {}; 
+const currentUser = window.currentUser; 
 
 export { socket };
 
 export function setupSockets(drawingCanvas, cursorCanvas) {
     // Join a session
-    socket.emit("join_session", sessionId);
+    socket.emit("join_session", { sessionId, username: currentUser.username, userId: currentUser.id });
 
     // Load an existing drawing
     socket.on("load_canvas", (canvasData) => {
@@ -60,7 +66,7 @@ function trackCursorMovement(canvas) {
         };
 
         // Send position to others
-        socket.emit("cursor_move", { sessionId, pointer });
+        socket.emit("cursor_move", { sessionId, userId: currentUser.id, pointer });
     });
 
     document.addEventListener('mousedown', () => { isClicking = true; });
@@ -70,6 +76,7 @@ function trackCursorMovement(canvas) {
 
 // Add a user's cursor to the screen
 function displayOtherUsersCursor(canvas) {
+    
     const ctx = canvas.getContext("2d");
     socket.off("cursor_move");  
     socket.on("cursor_move", (data) => {

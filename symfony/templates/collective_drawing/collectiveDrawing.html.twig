@@ -18,45 +18,8 @@
     <div class="sandbox-container">
 
         {# Multiplayer panel #}
-
-         <div class="multiplayer-container">
-            <div class="card-border">
-                <div class="card multi-card">
-                    <h2 class="card-title">
-                        Multiplayer panel
-                    </h2>
-                    <div class="separator"></div>
-                    <div class="card-content">
-                        <div class="tool-section-frame">
-                            <h3>Players</h3>
-                        </div>
-                         <div class="tool-section-frame players">
-                            <div>
-                                <p>- Player 1</p>
-                                <p>- Player 2</p>
-                                <p>- Player 3</p>
-                                <p>- ...</p>
-                                <p>- ...</p>
-                            </div>
-                            {{ ux_icon('iconamoon:profile-bold', {width: 95, height: 95, class: 'ux-icons img-icon player-icon'}) }}
-                        </div>
-                    </div>
-                    <div class="separator"></div>
-                    <div class="card-content">
-                        <div class="tool-section-frame">
-                            <h3>Chat</h3>
-                        </div>
-                        <div class="tool-section-frame">
-                            <div class="chat">
-                                <p>- Player 1 : Lorem ipsum !</p>
-                                <p>- Player 2 : Ipsum lorem ?</p>
-                                <p>- ...</p>
-                            </div>
-                        </div> 
-                    </div>
-                </div>
-            </div>
-        </div>
+        <div {{ react_component('MultiplayerPanel', {"props": {"user": app.user}}) }}></div>
+         
 
         {# Canvas #}
 
@@ -177,8 +140,15 @@
         </div>        
     </div>
 <div>
+<script>
+    window.currentUser = {
+        id: {{ app.user.id|json_encode|raw }},
+        username: {{ app.user.pseudo|json_encode|raw }}
+    };
+</script>
 <script src="https://cdn.socket.io/4.5.4/socket.io.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/fabric@latest/dist/index.min.js"></script>
 <script defer type="module" src="{{ asset('js/collective_drawing/mainFabricModule.js') }}" ></script>
+
 
 {% endblock %}

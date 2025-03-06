@@ -10,6 +10,7 @@ const MAX_HISTORY_SIZE = 10;
 export function saveState(canvas) {
     console.log('savestate');
     let state = JSON.stringify(canvas.toJSON());
+    
     undoStack.push(state);
     if (undoStack.length > MAX_HISTORY_SIZE) {
         undoStack.shift();
