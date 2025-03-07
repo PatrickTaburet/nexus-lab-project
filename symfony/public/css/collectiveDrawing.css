@@ -37,7 +37,6 @@ main{
 }
   
 .mainContainer{
-    text-align: center;
     display: flex;
     justify-content: center;
     flex-direction: row;
@@ -50,18 +49,16 @@ main{
     margin-bottom: 20px;
     height: 100vh;
     position: relative;
+    margin-left: 18vw;
 
 }
-.canvas-parent{
-    position: relative;
-    height: 100%;
-}
+
 .canvas-container {
-    position: absolute!important;
+    /* position: absolute!important; */
     top: 0!important;
     left: 0!important;
     width: 100%!important;
-    height: 100%!important;
+    /* height: 100%!important; */
 }
 
 #drawingCanvas {
@@ -86,7 +83,9 @@ main{
     pointer-events: none;
 }
 .canvas-bottom-container{
+    position: relative;
     z-index: 5;
+    margin-top: 15px;
 }
 .canvas-bottom{
     color:#cbd2da;
@@ -111,26 +110,31 @@ main{
 .sandbox-container{
     display: flex;
     position: relative; 
-    justify-content: center;
+    /* justify-content: center; */
     width: fit-content;
     padding: 10px;
     gap: 5vw;
     height: 100%;
     width: 100%;
 }
+
+/* Tool Box */
+
 .parametersBox{
     padding-bottom: 100px;
     position: absolute;
     right: 2vw;
     top: -5vh;
+    z-index: 10;
+    text-align: center;
 
 }
-#toolbar{
+/* #toolbar{
     display: flex;
     flex-direction: column;
     margin: 15px;
     gap: 20px;
-}
+} */
 .toolbar-btn{
     font-size: 14px!important;
     justify-content: flex-start!important;
@@ -157,9 +161,6 @@ main{
     gap: 15px;
 }
 
-/* .btn-top-box input, .btn-top-box button{
-    margin: 0 0 10px 0;
-} */
 .selection-tools{
     display: flex;
     gap: 10px;
@@ -296,10 +297,6 @@ main{
     
     .card-content {
         text-shadow: 0px 0px 5px rgba(255,255,255,.2);
-        /* display: flex;
-        justify-content: flex-start;
-        flex-direction: column;
-        align-items: center; */
         margin: 10px;
     }
 }
@@ -657,3 +654,145 @@ input[type=file]:focus {
     outline: 2px dashed #000;
     outline-offset: 2px;
   }
+
+
+  
+/* 
+========================
+Media queries
+========================
+*/
+
+/* ----------------------------- < 1200px ------------------------------ */
+
+@media screen and (max-width: 1200px)
+{
+
+    /* Bottom toolbar */
+
+    .canvas-bottom-container .card{
+        max-width: 55vw;
+    }
+    .canvas-bottom-container{
+        justify-content: normal!important;
+        align-items: normal!important;
+        margin-left: 7vw;
+    }
+    .canvas-bottom{
+        padding: 0px 20px;
+        gap: 5px;
+        width: 50vw;
+    }
+    .zoom-container{
+        gap: 5px;
+    }
+    .zoom-container span{
+        font-size: 13px;
+    }
+    #zoomOutButton, #zoomInButton{
+        min-width: 20px!important;
+    }
+
+    /* ------------ */
+
+    .sandbox-container{
+        padding-left: 0;
+    }
+    .fabric-container{
+        width: 100vw;
+        margin-left: 0;
+    }
+    .canvas-parent{
+        margin-left: 17vw;
+    }
+    #cursorCanvas{
+        width: auto;
+        margin-left: 17vw;
+    }
+
+    /* Tool Box */
+
+    .toolbar-btn{
+        font-size: 12px!important;
+        margin: 0!important;
+    }
+    .btn-top-box{
+        gap: 5px;
+    }
+    .selection-tools{
+        gap: 5px;
+    }
+    .txt-icon{
+        display: none;
+    }
+    .img-icon{
+        display: none;
+    }
+    .shapes-btn-container{
+        padding-left: 10px;
+    }
+    .shapes-btn-box{
+        gap: 5px;
+    }
+    .background-btn-box{
+        font-size: 13px;
+    }
+    .background-btn-box div{
+        width: auto;
+        margin-left: 0;
+    }
+    .ux-icons{
+        margin-right: 5px;
+    }
+    
+    /* ------- Color pickers -------*/
+
+    #brushColorPicker, #textColorPicker, #backgroundColorPicker{
+        min-width: 35px;
+        min-height: 35px;
+    }
+
+    /* ------- SciFi box card -------*/
+    
+    .card {
+        max-width: 25vw;
+        padding: 7px;        
+        .card-content {
+            margin: 3px;
+        }
+    }
+
+    /* Button style */
+
+    .customButton{
+        font-size: 12px;
+        padding: 10px 12px;
+    }
+
+    /* ---- Sliders ---- */
+
+    .range-wrap {
+        width: 50%;
+    }
+
+    /* ---- Checkbox ---- */
+
+    .checkboxContainer p {
+        display: none;
+    }
+
+    .checkbox{
+        scale: 0.30;
+    }
+ 
+    /* Select */
+
+    .formLabel{
+        font-size: 13px;
+        padding: 10px ; 
+    }
+    .inputBox select {
+        width: 70%;
+        font-size: 13px;
+    }
+}

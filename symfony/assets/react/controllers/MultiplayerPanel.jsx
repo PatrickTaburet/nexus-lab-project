@@ -21,18 +21,18 @@ const MultiplayerPanel = () => {
   }, []);
 
   return (
-    <div className="multiplayer-container">
-      <div className="card-border">
-        <div className="card multi-card">
-          <h2 className="card-title">
+    <div className={`${styles.multiplayerContainer}`}>
+      <div className={`${styles.cardBorder}`}>
+        <div className={`${styles.card} ${styles.multiCard}`}>
+          <h2 className={`${styles.cardTitle}`}>
             Multiplayer panel
           </h2>
-          <div className="separator"></div>
-          <div className="card-content">
-              <div className="tool-section-frame">
+          <div className={`${styles.separator}`}></div>
+          <div className={`${styles.cardContent}`}>
+              <div className={`${styles.toolSectionFrame}`} >
                   <h3>Players</h3>
               </div>
-                <div className="tool-section-frame players">
+                <div className={`${styles.toolSectionFrame} ${styles.players}`}>
                   <div>
                   <ul>
                     {users.map((user, index) => 
@@ -48,13 +48,13 @@ const MultiplayerPanel = () => {
                   {/* {{ ux_icon('iconamoon:profile-bold', {width: 95, height: 95, class: 'ux-icons img-icon player-icon'}) }} */}
               </div>
             </div>
-            <div className="separator"></div>
-            <div className="card-content">
-              <div className="tool-section-frame">
+            <div className={`${styles.separator}`}></div>
+            <div className={`${styles.cardContent}`}>
+              <div className={`${styles.toolSectionFrame}`}>
                   <h3>Chat</h3>
               </div>
-              <div className="tool-section-frame">
-                  <div className="chat">
+              <div className={`${styles.toolSectionFrame}`}>
+                  <div className={`${styles.chat}`}>
                     <p>- Player 1 : Lorem ipsum !</p>
                     <p>- Player 2 : Ipsum lorem ?</p>
                     <p>- ...</p>

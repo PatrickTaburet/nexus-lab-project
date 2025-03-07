@@ -3,26 +3,27 @@
   /* ---- Multiplayer panel ---- */
 
 
-  .multiplayer-container{
-    left: 5vw;
+.multiplayerContainer{
+    left: 2vw;
     top: 3vw;
     position: absolute;
-    font-size: 15px;
     color: var(--var-white);
     z-index: 10;
+    text-align: center;
+
 }
-.multiplayer-container h3{
+.multiplayerContainer h3{
     color: var(--var-white);
     /* background-color: #00000071; */
 }
 
-.multiplayer-container .card-title{
-    font-size: 25px;
+.multiplayerContainer .cardTitle{
+    font-size: 20px;
     color: var(--var-black);
 }
 .players{
     display: flex;
-    align-items: center;
+    align-items: self-start;
     padding: 10px;
     min-height: 15vh;
     background-color: #0000005d;
@@ -42,10 +43,61 @@
     background-color: #0000005d;
 
 }
-.multi-card{
+.multiCard{
     padding: 15px;
-    min-width: 17vw;
+    min-width: 15vw;
 }
-.multi-card .card-title{
+.multiCard .cardTitle{
     padding-bottom: 5px;
 }
+.toolSectionFrame{
+    border: 1 solid var(--var-primary);
+    border-radius: 0.5em;
+    padding: 5px;
+    box-shadow: 0 0 10px var(--var-primary);
+    margin-bottom: 8px;
+}
+
+/* ------- SciFi box card -------*/
+  
+.card {
+    background: rgba(0,0,0,.5);
+    /* min-width: 5vw; */
+    height: 100%;
+    /* padding: var(--var-notchSize/2) var(--var-notchSize); */
+    box-shadow: inset 0 0 10px var(--var-primary);
+    clip-path: polygon(40px 0, 100% 0%, 100% calc(100% - 40px), calc(100% - 40px) 100%, 0 100%, 0 40px);
+    padding: 10px;
+    .card-title {
+        font-weight: 700;
+        font-size: 25px;
+        padding: 10px 0 0 0;
+        animation: text-glow 1.1s ease-in-out infinite alternate;
+    }
+    
+    .separator, .separator2 {
+        height: 1px;
+        width: 100%;
+        background-color: var(--var-primary);
+        margin: 10px 0 18px 0;
+        box-shadow: 0 0 10px var(--var-primary);
+    }
+    
+    .cardContent {
+        text-shadow: 0px 0px 5px rgba(255,255,255,.2);
+        /* display: flex;
+        justify-content: flex-start;
+        flex-direction: column;
+        align-items: center; */
+        margin: 10px;
+    }
+}
+    
+.cardBorder {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    filter: drop-shadow(0px 0px 3px var(--var-primary));
+}
+    
