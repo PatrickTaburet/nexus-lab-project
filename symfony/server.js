@@ -1,9 +1,9 @@
+const Session = require('./public/js/collective_drawing/Session');
 const express = require("express");
 const http = require("http");
 const { Server } = require("socket.io");
 const cors = require("cors");
 const { log } = require("console");
-const usersColors = ['#FF0000', '#00FF00', '#0000FF', '#FFFF00', '#FF00FF', '#00FFFF'];
 
 const app = express();
 const server = http.createServer(app);
@@ -16,7 +16,7 @@ const io = new Server(server, {
     maxHttpBufferSize: 10e6,
 });
 
-const sessions = {}; // to stock drawings and users info in session
+const sessions = {}; // to stock drawings and users info in session instances
 
 io.on("connection", (socket) => {
     console.log("New user connected:", socket.id);
@@ -28,30 +28,11 @@ io.on("connection", (socket) => {
         console.log(`${username} (${socket.id}) join the session ${sessionId}`);
         // Init session
         if (!sessions[sessionId]) {
-            sessions[sessionId] = {
-                canvasData: null,   
-                users: {}
-            };
+            sessions[sessionId] = new Session(sessionId);
         }
 
-        // Si l'utilisateur existe déjà, on met simplement à jour son socketId
-        if (sessions[sessionId].users[userId]) {
-            sessions[sessionId].users[userId].socketId = socket.id;
-            sessions[sessionId].users[userId].online = true;
-        } else {
-            // Sinon, on ajoute l'utilisateur et on lui assigne une couleur
-            const userCount = Object.keys(sessions[sessionId].users).length;
-            const userColor = usersColors[userCount % usersColors.length];
-            sessions[sessionId].users[userId] = {
-                socketId: socket.id,
-                username: username,
-                userId: userId,
-                color: userColor,
-                pointer: { x: 0, y: 0, isClicking: false },
-                online: true
-            };
-        }
-        broadcastUserList(sessionId);
+        sessions[sessionId].addUser(userId, socket.id, username);
+        io.to(sessionId).emit("update_users", sessions[sessionId].getUserList());
 
         // Send actual drawing if exists
         socket.emit("load_canvas", sessions[sessionId].canvasData);
@@ -95,24 +76,24 @@ io.on("connection", (socket) => {
     // Receive a drawing and broadcast it to the session
     socket.on("draw", ({ sessionId, data }) => {
         if (!sessions[sessionId]) {
-            sessions[sessionId] = { canvasData: null, users: {} };
+            sessions[sessionId] = new Session(sessionId);
         }
         // console.log(sessions[sessionId] );
         //  Store the canvas state
         // if (data.canvasData && data.canvasData.objects && data.canvasData.objects.length > 0) { // TODO : If first player disconnect, clear the session, else keep it intact
-        sessions[sessionId].canvasData = data.canvasData;
+        sessions[sessionId].updateCanvas(data.canvasData);
         socket.to(sessionId).emit("draw", { canvasData: data.canvasData }); // Send to others
         // }
     });
 
     // User disconnection
     socket.on("disconnect", () => {
-        console.log(`Utilisateur déconnecté: ${socket.id}`);
+        console.log(`User disconected: ${socket.id}`);
         for (const sessionId in sessions) {            
             if (sessions[sessionId] && sessions[sessionId].users[socket.userId]){
                 // delete sessions[sessionId].users[socket.userId];
-                sessions[sessionId].users[socket.userId].online = false;
-                broadcastUserList(sessionId);
+                sessions[sessionId].removeUser(socket.userId);
+                io.to(sessionId).emit("update_users", sessions[sessionId].getUserList());
                 break;
             }
         }
@@ -120,16 +101,7 @@ io.on("connection", (socket) => {
 
     socket.on("get_users", ({ sessionId }) => {
         if (sessions[sessionId]) {
-            const userList = Object.values(sessions[sessionId].users).map(user => ({
-                username: user.username,
-                userColor: user.color,
-                isOnline: user.online
-            }));
-            // Envoyer la liste au socket qui demande
-            console.log("get user server");
-            console.log(userList);
-            
-            socket.emit("update_users", userList);
+            socket.emit("update_users", sessions[sessionId].getUserList());         
         } else {
             socket.emit("update_users", []);
         }
@@ -137,20 +109,7 @@ io.on("connection", (socket) => {
     
 });
 
-function broadcastUserList(sessionId) {
-    const userList = Object.values(sessions[sessionId].users).map(user => ({
-      username: user.username,
-      userColor: user.color,
-      isOnline : user.online
-    }));
-    console.log("--------");
-    console.log("server broadcast userList");
-    console.log(userList);
-    
-    io.to(sessionId).emit("update_users", userList);
-}
-
 const PORT = 3001;
 server.listen(PORT, () => {
-    console.log(`Serveur WebSocket en écoute sur http://localhost:${PORT}`);
+    console.log(`WebSocket server listening on http://localhost:${PORT}`);
 });

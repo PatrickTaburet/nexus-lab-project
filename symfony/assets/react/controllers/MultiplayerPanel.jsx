@@ -36,7 +36,7 @@ const MultiplayerPanel = () => {
                   <div>
                   <ul>
                     {users.map((user, index) => 
-                      user.isOnline &&
+                      user.online &&
                         (
                           <li key={index} style={{ color: user.userColor }}>
                             {user.username}
