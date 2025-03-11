@@ -1,9 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import socket from '../../../public/js/collective_drawing/socketSingleton.js';
 import styles from "/assets/styles/MultiplayerPanel.module.css?module";
 
 const MultiplayerPanel = () => {
   const [users, setUsers] = useState([]);
+  const [messages, setMessages] = useState([]);
+  const [newMessage, setNewMessage] = useState("");
+  const chatContainerRef = useRef(null);
 
   useEffect(() => {
     console.log("useEffect react - mounting MultiplayerPanel");
@@ -14,12 +17,36 @@ const MultiplayerPanel = () => {
         console.log(userList);
         setUsers(userList);
     });
+    socket.on("update_chat", (chatMessages) => {
+      console.log("chat messages received", chatMessages);
+      setMessages(chatMessages);
+    });
     socket.emit("get_users", { sessionId: "session1" });
     return () => {
       socket.off("update_users");
     };
   }, []);
 
+  useEffect(() => {
+    if (chatContainerRef.current) {
+      chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
+    }
+  }, [messages]);
+
+  const handleSendMessage = (e) => {
+    console.log("----------->" + newMessage);
+    
+    e.preventDefault();
+    if (newMessage.trim() === "") return;
+    socket.emit("send_chat", {
+      sessionId: "session1",
+      message: newMessage,
+      username: window.currentUser.username,
+      userId: window.currentUser.id,
+      userColor: users.find(u => u.username === window.currentUser.username)?.userColor
+    });
+    setNewMessage("");
+  }
   return (
     <div className={`${styles.multiplayerContainer}`}>
       <div className={`${styles.cardBorder}`}>
@@ -54,11 +81,25 @@ const MultiplayerPanel = () => {
                   <h3>Chat</h3>
               </div>
               <div className={`${styles.toolSectionFrame}`}>
-                  <div className={`${styles.chat}`}>
-                    <p>- Player 1 : Lorem ipsum !</p>
-                    <p>- Player 2 : Ipsum lorem ?</p>
-                    <p>- ...</p>
+                  <div className={`${styles.chat}`} ref={chatContainerRef}>
+                    <ul>
+                      {messages.map((msg, index) => 
+                        (
+                          <li key={index} >
+                            <strong style={{ color: msg.userColor }}>{msg.username} :</strong> {msg.message}
+                          </li>
+                        ))}
+                    </ul>
                   </div>
+                  <form onSubmit={handleSendMessage}>
+                    <input
+                      type="text"
+                      placeholder="Write youre message here..."
+                      value={newMessage}
+                      onChange={(e) => setNewMessage(e.target.value)}
+                    />
+                    <button type="submit">Send</button>
+                  </form>
               </div> 
           </div>
         </div>

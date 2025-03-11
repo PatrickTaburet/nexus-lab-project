@@ -5,6 +5,7 @@ class Session {
     this.sessionId = sessionId;
     this.canvasData = null;
     this.users = {};
+    this.chatMessages = [];
   }
 
   // Add or update user in the session

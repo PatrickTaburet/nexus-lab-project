@@ -106,6 +106,15 @@ io.on("connection", (socket) => {
             socket.emit("update_users", []);
         }
     });
+
+    socket.on("send_chat", ({sessionId, message, username, userId, userColor}) => {
+        const chatMessage = { username, message, userColor };
+        if (!sessions[sessionId].chatMessages) {
+            sessions[sessionId].chatMessages = [];
+        }
+        sessions[sessionId].chatMessages.push(chatMessage);
+        io.to(sessionId).emit("update_chat", sessions[sessionId].chatMessages);
+    });
     
 });
 
