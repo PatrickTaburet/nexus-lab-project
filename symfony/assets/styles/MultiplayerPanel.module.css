@@ -43,12 +43,13 @@
     min-height: 20vh;
     background-color: #0000005d;
     height: 200px; 
-    overflow-y: scroll;
+    overflow-y: auto;
 
 }
 .multiCard{
     padding: 15px;
-    min-width: 15vw;
+    width: 15vw;
+    min-width: 230px;
 }
 .multiCard .cardTitle{
     padding-bottom: 5px;
@@ -56,9 +57,31 @@
 .toolSectionFrame{
     border: 1 solid var(--var-primary);
     border-radius: 0.5em;
-    padding: 5px;
+    padding: 5px 5px 0 5px;
     box-shadow: 0 0 10px var(--var-primary);
-    margin-bottom: 8px;
+    /* margin-bottom: 8px; */
+}
+.sendButton{
+    /* margin: 0!important; */
+    padding: 0px!important;
+    min-width: 50px!important;
+    min-height: 27px!important;
+    font-size: 12px!important;
+    border-radius: 5px!important;
+}
+.chatInput {
+    height: 20px;
+    width: 100%;
+}
+.chatInput::placeholder {
+    color: #000000; 
+    opacity: 0.5;
+}
+.sendMessageBox{
+    display: flex;
+    padding: 5px;
+    justify-content: center;
+    align-items: center;
 }
 
 /* ------- SciFi box card -------*/
@@ -103,4 +126,3 @@
     width: 100%;
     filter: drop-shadow(0px 0px 3px var(--var-primary));
 }
-    

@@ -92,13 +92,21 @@ const MultiplayerPanel = () => {
                     </ul>
                   </div>
                   <form onSubmit={handleSendMessage}>
-                    <input
-                      type="text"
-                      placeholder="Write youre message here..."
-                      value={newMessage}
-                      onChange={(e) => setNewMessage(e.target.value)}
-                    />
-                    <button type="submit">Send</button>
+                    <div className={`${styles.sendMessageBox}`}>
+                      <div className="text-input-container">
+                        <span className="input">
+                          <input
+                            type="text"
+                            placeholder="Write your message here..."
+                            className={`${styles.chatInput}`}
+                            value={newMessage}
+                            onChange={(e) => setNewMessage(e.target.value)}
+                          />                          
+                          <span></span>	
+                        </span>
+                      </div>
+                      <button className={`${styles.sendButton} customButton` } type="submit">Send</button>
+                    </div>
                   </form>
               </div> 
           </div>
