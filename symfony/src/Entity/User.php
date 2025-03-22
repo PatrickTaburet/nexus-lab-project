@@ -83,6 +83,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(targetEntity: SceneD2::class, mappedBy: "user")]
     private $sceneD2;
 
+       // ------- Collective drawing scenes --------
+
+    #[ORM\OneToMany(targetEntity: CollectiveDrawing::class, mappedBy: "user")]
+    private $collectiveDrawing;
+
        // ------- Requests --------
 
     #[ORM\OneToOne(targetEntity: ArtistRole::class, mappedBy: "user")]
@@ -104,6 +109,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->sceneD1 = new ArrayCollection();
         $this->sceneD2 = new ArrayCollection();
         $this->add_scene = new ArrayCollection();
+        $this->collectiveDrawing = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -401,6 +407,40 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
         return $this;
     }
+
+      // ---------- Collective drawing scenes ---------- //
+
+    /**
+     * @return Collection<int, collectiveDrawing>
+     */
+    public function getCollectiveDrawing(): Collection
+    {
+        return $this->collectiveDrawing;
+    }
+
+    public function addCollectiveDrawing(CollectiveDrawing $collectiveDrawing): self
+    {
+        if (!$this->collectiveDrawing->contains($collectiveDrawing)) {
+            $this->collectiveDrawing[] = $collectiveDrawing;
+            $collectiveDrawing->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCollectiveDrawing(CollectiveDrawing $collectiveDrawing): self
+    {
+        if ($this->collectiveDrawing->removeElement($collectiveDrawing)) {
+            // set the owning side to null (unless already changed)
+            if ($collectiveDrawing->getUser() === $this) {
+                $collectiveDrawing->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+
 
     public function getRoleRequest(): ?ArtistRole
     {

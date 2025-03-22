@@ -56,10 +56,29 @@ export function downloadCanvas(canvas, format = 'png') {
 }
     
 
-// function saveCanvasAsJSON() {
-//     const json = JSON.stringify(canvas.toJSON());
-//     localStorage.setItem("savedCanvas", json);
-// }
+export function saveCanvasAsJSON(canvas) {
+    const canvasJson = JSON.stringify(canvas.toJSON());
+
+    fetch('/collective-drawing/saveDrawing', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: canvasJson
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        return response.json();
+    })
+    .then(data => {
+        console.log('Data sent successfully:', data);
+    // Redirection vers la page 'collectiveDrawing'
+        window.location.href = data.redirectUrl;
+    })
+    .catch(error => {
+        console.error('There was a problem sending the canvas data:', error);
+    });
+}
 
 // function loadCanvasFromJSON() {
 //     const json = localStorage.getItem("savedCanvas");

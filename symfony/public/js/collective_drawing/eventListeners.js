@@ -1,4 +1,4 @@
-import { zoomCanvas, resizeCanvas, clearCanvas, downloadCanvas, deleteSelectedObjects } from './tools.js';
+import { zoomCanvas, resizeCanvas, clearCanvas, downloadCanvas, saveCanvasAsJSON, deleteSelectedObjects } from './tools.js';
 import { addRectangle, addCircle, addTriangle, addLine, addText, addImage,  } from './drawing.js';
 import { handleButtonClick } from './brush.js';
 import { saveState, undo, redo } from './historicManager.js';
@@ -28,7 +28,8 @@ export function setupEventListeners(canvas) {
 
     //Save canvas
     document.getElementById("saveImageButton").addEventListener("click", function() {
-        downloadCanvas(canvas, "png");
+        saveCanvasAsJSON(canvas);
+        // downloadCanvas(canvas, "png");
     });
 
 

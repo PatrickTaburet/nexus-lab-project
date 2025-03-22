@@ -40,6 +40,13 @@ vich_uploader:
             delete_on_update: true
             delete_on_remove: true
 
+        CollectiveDrawingImages:
+            uri_prefix: /images/CollectiveDrawing
+            upload_destination: '%kernel.project_dir%/public/images/CollectiveDrawing'
+            namer: Vich\UploaderBundle\Naming\SmartUniqueNamer
+            delete_on_update: true
+            delete_on_remove: true
+
         addSceneImg:
             uri_prefix: /images/addSceneImg
             upload_destination: '%kernel.project_dir%/public/images/addSceneImg'
