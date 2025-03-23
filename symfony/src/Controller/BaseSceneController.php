@@ -46,7 +46,9 @@ abstract class BaseSceneController extends AbstractController
     #[Route("saveScene/{entity}/{id}", name: "saveScene")]
     public function saveArtwork(Request $request, $id, $entity): Response
     {
+        dump("aaaaaaaaaaaaa");
         $sceneData = $this->sceneDataFactory->createSceneData($entity);
+        
         if (!$sceneData) {
             throw $this->createNotFoundException('Invalid entity type.');
         }
@@ -67,6 +69,7 @@ abstract class BaseSceneController extends AbstractController
             $this->addFlash('success', 'Artwork save in the gallery'); 
             return $this->redirectToRoute('getScene', ['entity' => $entity]);
         }
+        dump($scene);
         return $this->render('main/saveArtwork.html.twig', [
             'form' => $form->createView(),
             'scene' => $scene

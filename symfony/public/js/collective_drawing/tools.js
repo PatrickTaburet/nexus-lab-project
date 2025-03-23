@@ -58,11 +58,18 @@ export function downloadCanvas(canvas, format = 'png') {
 
 export function saveCanvasAsJSON(canvas) {
     const canvasJson = JSON.stringify(canvas.toJSON());
+    const imageBase64 = canvas.toDataURL({ format: 'png', quality: 1 });
+
+    const image = new Image();
+    image.src = imageBase64;
+
+    const formData = new FormData();
+    formData.append('data', canvasJson);
+    formData.append('file', image.src);
 
     fetch('/collective-drawing/saveDrawing', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: canvasJson
+        body: formData
     })
     .then(response => {
         if (!response.ok) {

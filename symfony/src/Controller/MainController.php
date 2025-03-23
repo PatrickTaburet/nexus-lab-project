@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Form\SortArtworkType;
 use App\Repository\{
+    CollectiveDrawingRepository,
     Scene1Repository,
     Scene2Repository,
     SceneD1Repository,
@@ -28,14 +29,15 @@ class MainController extends AbstractController
     }
 
     #[Route("/gallery", name: "gallery", methods: ["GET", "POST"])]
-    public function gallery(Request $request, Scene1Repository $repo, SceneD1Repository $repo2, Scene2Repository $repo3, SceneD2Repository $repo4, PaginatorInterface $paginator): Response
+    public function gallery(Request $request, Scene1Repository $repo, SceneD1Repository $repo2, Scene2Repository $repo3, SceneD2Repository $repo4, CollectiveDrawingRepository $repo5, PaginatorInterface $paginator): Response
     {
         $session = $request->getSession();
         $scenesG1 = $repo -> findAll(); 
         $scenesD1 = $repo2 -> findAll();
         $scenesG2 = $repo3 -> findAll();
         $scenesD2 = $repo4 -> findAll();
-        $allScenes = array_merge($scenesG1, $scenesD1, $scenesG2, $scenesD2);
+        $collectiveDrawing = $repo5 -> findAll();
+        $allScenes = array_merge($scenesG1, $scenesD1, $scenesG2, $scenesD2, $collectiveDrawing);
 
         $form = $this->createForm(SortArtworkType::class);
         $form->handleRequest($request);

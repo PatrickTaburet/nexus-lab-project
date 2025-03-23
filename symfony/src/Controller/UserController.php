@@ -11,8 +11,10 @@ use App\Form\{
     SaveArtworkG2Type,
     UserPasswordType,
     ArtistRoleType,
+    SaveCollectiveDrawingType,
 };
 use App\Repository\{
+    CollectiveDrawingRepository,
     Scene1Repository,
     Scene2Repository,
     SceneD1Repository,
@@ -146,6 +148,7 @@ class UserController extends AbstractController
         Scene2Repository $repoG2,
         SceneD1Repository $repoD1,
         SceneD2Repository $repoD2,
+        CollectiveDrawingRepository $repoDrawing,
         $id,
     ) : Response
     {       
@@ -154,18 +157,25 @@ class UserController extends AbstractController
         $sceneG2 = $repoG2->findBy(['user' => $id]);
         $sceneD1 = $repoD1->findBy(['user' => $id]);
         $sceneD2 = $repoD2->findBy(['user' => $id]);
+        $Drawing = $repoDrawing->findBy(['user' => $id]);
+
         $allScenesG = array_merge($sceneG1, $sceneG2);
         $allScenesD = array_merge($sceneD1, $sceneD2);
+
         usort($allScenesG, function($a, $b) {
             return $b->getUpdatedAt() <=> $a->getUpdatedAt();
         });
-    
         usort($allScenesD, function($a, $b) {
             return $b->getUpdatedAt() <=> $a->getUpdatedAt();
         });
+        usort($Drawing, function($a, $b) {
+            return $b->getUpdatedAt() <=> $a->getUpdatedAt();
+        });
+
         $data = [
             'scenesG' =>  $allScenesG,
             'sceneD' => $allScenesD,
+            'drawing' => $Drawing,
         ];
         
         return $this->render('user/myArtworks.html.twig', [
@@ -181,6 +191,7 @@ class UserController extends AbstractController
         Scene2Repository $repoG2,
         SceneD1Repository $repoD1,
         SceneD2Repository $repoD2,
+        CollectiveDrawingRepository $repoDrawing,
         $id,
         $entity,
         Request $request
@@ -209,6 +220,9 @@ class UserController extends AbstractController
             case 'Scene2':
                 $artwork = $repoG2->find($id);
                 break;
+            case 'CollectiveDrawing':
+                $artwork = $repoDrawing->find($id);
+                break;
             default:
                 throw new NotFoundHttpException('Entity not found');
         }
@@ -233,7 +247,17 @@ class UserController extends AbstractController
     }
 
     #[Route("/myArtworks/update/{id}/{entity}", name: "editArtwork", methods: ["GET", "POST"])]
-    public function Update(Request $request, EntityManagerInterface $entityManager, Scene1Repository $repoG1, Scene2Repository $repoG2,SceneD2Repository $repoD2, SceneD1Repository $repoD1, $id, $entity): Response
+    public function Update(
+        Request $request, 
+        EntityManagerInterface $entityManager, 
+        Scene1Repository $repoG1, 
+        Scene2Repository $repoG2,
+        SceneD2Repository $repoD2, 
+        SceneD1Repository $repoD1, 
+        CollectiveDrawingRepository $repoDrawing,
+        $id, 
+        $entity
+    ): Response
     {
         $currentUser = $this->getUser();
 
@@ -242,6 +266,7 @@ class UserController extends AbstractController
             'Scene2' => ['repo' => $repoG2, 'formType' => SaveArtworkG2Type::class],
             'SceneD1' => ['repo' => $repoD1, 'formType' => SaveArtworkD1Type::class],
             'SceneD2' => ['repo' => $repoD2, 'formType' => SaveArtworkD2Type::class],
+            'CollectiveDrawing' => ['repo' => $repoDrawing, 'formType' => SaveCollectiveDrawingType::class],
         ];
 
         if (!isset($entityMappings[$entity])) {

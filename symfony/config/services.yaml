@@ -57,5 +57,11 @@ services:
                     routeName: sceneG2
                     sceneType: generative_scene
                     repository: '@App\Repository\Scene2Repository'
+                CollectiveDrawing:
+                    entityClass: App\Entity\CollectiveDrawing
+                    formType: App\Form\SaveCollectiveDrawingType
+                    routeName: collectiveDrawing
+                    sceneType: collective_drawing
+                    repository: '@App\Repository\CollectiveDrawingRepository'
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones

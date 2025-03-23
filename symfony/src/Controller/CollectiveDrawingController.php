@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\CollectiveDrawing;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -13,17 +14,27 @@ class CollectiveDrawingController extends BaseSceneController
     #[Route('/collective-drawing/saveDrawing', name: 'send_collective_drawing')]
     public function saveDrawing(Request $request): Response
     {
-        $canvasData = json_decode($request->getContent(), true);
+        $imgFile = $request->request->get('file');
+        $canvasData = $request->request->get('data');
         $user = $this->getUser();
 
-        if ($canvasData !== null && $user !== null) {
+        $imageData = base64_decode(preg_replace('#^data:image/\w+;base64,#i', '', $imgFile));
+        $tempFile = tmpfile();
+        fwrite($tempFile, $imageData);
+        $tempFilePath = stream_get_meta_data($tempFile)['uri'];
+        $imageName = pathinfo($tempFilePath, PATHINFO_FILENAME) . '.png';
+        $imageFile = new UploadedFile($tempFilePath,  $imageName, 'image/png', null, true);
+        
+        if ($canvasData !== null && $user !== null && $imgFile !== null) {
             $drawing = new CollectiveDrawing();
-            $drawing->setData($canvasData);
+            $drawing->setData(json_decode($canvasData, true));
             $drawing->setUser($user);
+            $drawing->setImageFile($imageFile);
 
             $this->entityManager->persist($drawing);
             $this->entityManager->flush();
-
+            fclose($tempFile);
+            
             return new JsonResponse([
                 'message' => 'Data successfully saved!', 
                 'redirectUrl' => $this->generateUrl('saveScene', [

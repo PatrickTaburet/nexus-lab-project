@@ -47,8 +47,8 @@ class GenerativeSceneController extends BaseSceneController
         // Get the absolute path of the temporary file
         $tempFilePath = stream_get_meta_data($tempFile)['uri'];
 
-         // Get the image name
-         $imageName = pathinfo($tempFilePath, PATHINFO_FILENAME) . '.png';
+        // Get the image name
+        $imageName = pathinfo($tempFilePath, PATHINFO_FILENAME) . '.png';
 
         // Créer un nouvel objet UploadedFile
         $imageFile = new UploadedFile($tempFilePath,  $imageName, 'image/png', null, true);

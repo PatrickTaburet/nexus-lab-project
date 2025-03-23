@@ -38,7 +38,7 @@ class CollectiveDrawing extends BaseScene
     #[ORM\Column(type: "datetime_immutable", nullable: true)]
     private $updatedAt;
     
-    #[UploadableField(mapping: "collectiveDrawing", fileNameProperty: "imageName")]
+    #[UploadableField(mapping: "CollectiveDrawingImages", fileNameProperty: "imageName")]
     private ?File $imageFile = null;
 
     //-------------------------------------------------------------------------------------------

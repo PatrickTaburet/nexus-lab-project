@@ -4,7 +4,6 @@ namespace App\Entity;
 
 use DateTimeImmutable;
 use Doctrine\ORM\Mapping as ORM;
-use Doctrine\Common\Collections\Collection;
 use Symfony\Component\{
     HttpFoundation\File\File,
     Serializer\Annotation\Groups
