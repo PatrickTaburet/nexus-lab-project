@@ -28,7 +28,7 @@
           <div class="buttonBox">        
             {{ form_label(form.submit) }}
             {{ form_widget(form.submit, { "attr": {"class" : "customButton" } }) }}
-            <a href="{{ path('myArtworks', {'id': userId})}}"  class="customButton">Back</a>
+            <a href="javascript:history.back()" class="customButton">Back</a>
           </div>
 
         {{ form_end(form) }}

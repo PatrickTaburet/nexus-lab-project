@@ -64,6 +64,7 @@ security:
         - { path: ^/admin, roles: ROLE_ADMIN }
         - { path: ^/profile, roles: ROLE_USER }
         - { path: ^/artist, roles: ROLE_ARTIST }
+        - { path: ^/create/collective-drawing, roles: ROLE_USER }
         # - { path: ^/api/, roles: ROLE_ADMIN }
         # - { path: ^/api, roles: PUBLIC_ACCESS }
 

@@ -2,12 +2,14 @@
 
 namespace App\Controller;
 
+use App\Factory\SceneDataFactory;
 use App\Form\{
     EditUserType,
     SaveArtworkD1Type,
     SaveArtworkD2Type,
     SaveArtworkG1Type,
     SaveArtworkG2Type,
+    SaveCollectiveDrawingType,
 };
 use App\Repository\{
     UserRepository,
@@ -15,6 +17,7 @@ use App\Repository\{
     Scene2Repository,
     SceneD1Repository,
     SceneD2Repository,
+    CollectiveDrawingRepository,
     AddSceneRepository,
     ArtistRoleRepository
 };
@@ -59,10 +62,12 @@ class AdminController extends AbstractController
             ->leftJoin('u.Scene2', 's2')->addSelect('s2')
             ->leftJoin('u.sceneD1', 'sd1')->addSelect('sd1')
             ->leftJoin('u.sceneD2', 'sd2')->addSelect('sd2')
+            ->leftJoin('u.collectiveDrawing', 'cd')->addSelect('cd')
             ->leftJoin('s1.likes', 'l1')->addSelect('l1')
             ->leftJoin('s2.likes', 'l2')->addSelect('l2')
             ->leftJoin('sd1.likes', 'l3')->addSelect('l3')
             ->leftJoin('sd2.likes', 'l4')->addSelect('l4')
+            ->leftJoin('cd.likes', 'l5')->addSelect('l5')
             ->orderBy('u.createdAt', 'DESC');
             
         $allUsers = $paginator->paginate(
@@ -73,10 +78,18 @@ class AdminController extends AbstractController
 
         foreach ($allUsers as $user) {
             $totalArtwork = count($user->getScene1()) + count($user->getScene2()) + 
-                            count($user->getSceneD1()) + count($user->getSceneD2());
+                            count($user->getSceneD1()) + count($user->getSceneD2()) +
+                            count($user->getCollectiveDrawing());
+
             
             $totalLikes = 0;
-            foreach ([$user->getScene1(), $user->getScene2(), $user->getSceneD1(), $user->getSceneD2()] as $artworks) {
+            foreach ([
+                $user->getScene1(), 
+                $user->getScene2(), 
+                $user->getSceneD1(), 
+                $user->getSceneD2(),
+                $user->getCollectiveDrawing()
+            ] as $artworks) {
                 foreach ($artworks as $artwork) {
                     $totalLikes += count($artwork->getLikes());
                 }
@@ -177,20 +190,22 @@ class AdminController extends AbstractController
     
     #[Route("/gallery", name: "gallery")]
     public function gallery(
-        Scene1Repository $repoG1,
-        Scene2Repository $repoG2,
-        SceneD1Repository $repoD1,
-        SceneD2Repository $repoD2,
+        SceneDataFactory $sceneDataFactory,
         PaginatorInterface $paginator,
         Request $request
     ): Response
     {
         $entities = Yaml::parseFile($this->getParameter('kernel.project_dir') . '/config/entities.yaml');
-        $scenes = $repoG1 -> findAll(); 
-        $scenes2= $repoD1 -> findAll();
-        $scenes3= $repoG2 -> findAll();
-        $scenes4= $repoD2 -> findAll();
-        $allScenes = array_merge($scenes, $scenes2, $scenes3, $scenes4);
+        $sceneEntity = ['Scene1', 'Scene2', 'SceneD1', 'SceneD2', 'CollectiveDrawing'];
+        $allScenes = [];
+
+        foreach ($sceneEntity as $entity) {
+            $sceneData = $sceneDataFactory->createSceneData($entity);
+            if ($sceneData) {
+                $allScenes = array_merge($allScenes, $sceneData->getRepository()->findAll());
+            }
+        }
+        
         usort($allScenes, function($a, $b) {
             return ($b->getUpdatedAt() <=> $a->getUpdatedAt());
         });
@@ -207,26 +222,18 @@ class AdminController extends AbstractController
     
     #[Route("/gallery/delete/{id}/{entity}", name: "delete_artwork", methods: ["GET", "POST"])]
     public function deleteArtwork(
-        Scene1Repository $repoG1,
-        Scene2Repository $repoG2,
-        SceneD1Repository $repoD1,
-        SceneD2Repository $repoD2,
+        SceneDataFactory $sceneDataFactory,
         EntityManagerInterface $entityManager,
         $id,
         $entity
     ): Response
     {
-        $repositoryMap = [
-            'Scene1' => $repoG1,
-            'Scene2' => $repoG2,
-            'SceneD1' => $repoD1,
-            'SceneD2' => $repoD2,
-        ];
-        if (!array_key_exists($entity, $repositoryMap)) {
+        $sceneData = $sceneDataFactory->createSceneData($entity);
+        if (!$sceneData) {
             throw new NotFoundHttpException('Entity not found');
         }
+        $artwork = $sceneData->getRepository()->find($id);
 
-        $artwork = $repositoryMap[$entity]->find($id);
         if ($artwork === null) {
             throw new NotFoundHttpException('Artwork not found');
         }
@@ -242,28 +249,21 @@ class AdminController extends AbstractController
     #[Route("/gallery/edit/{id}/{entity}", name: "edit_artwork", methods: ["GET", "POST"])]
     public function editArtwork(
         Request $request,
-        Scene1Repository $repoG1,
-        Scene2Repository $repoG2,
-        SceneD1Repository $repoD1,
-        SceneD2Repository $repoD2,
+        SceneDataFactory $sceneDataFactory,
         EntityManagerInterface $entityManager,
         $id,
         $entity
     ) : Response
     {       
-        $entityMap = [
-            'Scene1' => [ $repoG1, SaveArtworkG1Type::class ],
-            'Scene2' => [ $repoG2, SaveArtworkG2Type::class ],
-            'SceneD1' => [ $repoD1, SaveArtworkD1Type::class ],
-            'SceneD2' => [ $repoD2, SaveArtworkD2Type::class ],
-        ];
-        if (!array_key_exists($entity, $entityMap)) {
+        $sceneData = $sceneDataFactory->createSceneData($entity);
+        if (!$sceneData) {
             throw new NotFoundHttpException('Entity not found');
         }
-        [$repository, $formType] = $entityMap[$entity];
+        $repository = $sceneData->getRepository();
+        $formType = $sceneData->getFormType();
 
         $artwork = $repository->find($id);
-        if ($artwork === null) {
+        if (!$artwork) {
             throw new NotFoundHttpException('Artwork not found');
         }
         $form = $this->createForm($formType, $artwork);
