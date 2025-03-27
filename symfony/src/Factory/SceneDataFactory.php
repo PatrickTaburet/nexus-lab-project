@@ -23,7 +23,7 @@ class SceneDataFactory
 
         // Récupérer les détails de la scène et créer l'objet SceneData
         $repoData = $this->scenesMap[$entityClass];
-
+        
         return new SceneData(
             $repoData['entityClass'],
             $repoData['formType'],

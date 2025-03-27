@@ -16,7 +16,8 @@ class SceneData
         string $formType,
         string $routeName,
         string $sceneType = 'default',
-        object $repository = null)
+        ?object $repository = null
+    )
     {
         $this->entityClass = $entityClass;
         $this->formType = $formType;

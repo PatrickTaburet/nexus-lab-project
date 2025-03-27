@@ -5,7 +5,8 @@
 <img src="./doc/screenshots/NexusLab-full-purple.png" alt="NexusLab" width="500"/>
 
 ## 📋 Table of Contents  
-- [Project Overview](#-project-overview)  
+- [Project Overview](#-project-overview)
+- [Collective Drawing Feature](#-collective-drawing-feature)  
 - [Technologies Used](#-technologies-used)  
 - [Installation](#-installation)  
 - [Usage](#-usage)
@@ -24,12 +25,21 @@ Available on both web and mobile platforms, the project utilizes modern technolo
 
 ---
 
+## 🤝 Collective Drawing Feature  
+In addition to its generative art capabilities, NexusLab now offers a **Collective Drawing** space that lets multiple users collaborate on a shared digital canvas in real time.  
+- **Real-Time Synchronization:** Powered by WebSocket (Socket.io), all participants see updates instantly.  
+- **Intuitive Drawing Tools:** Fabric.js is used for canvas drawing, ensuring smooth and responsive interactions.  
+- **Dynamic Interface:** A React-powered UX displays live chat and the list of online users, creating an engaging collaborative environment.
+
+---
+
 ## 🚀 Technologies Used  
 - **Frontend Web**: Twig, Symfony UX React
-- **Backend**: Symfony (PHP)  
+- **Creative**: p5.js, fabric.js
+- **Backend**: Symfony (PHP)
 - **Mobile**: React Native  
-- **Database**: MySQL  
-- **Others**: Webpack Encore, Babel, Expo, Axios, Jwt Decode
+- **Database**: MySQL
+- **Others**: Webpack Encore, Babel, Expo, Axios, Jwt Decode, Socket.io
 
 ---
 
@@ -110,6 +120,11 @@ Here are some screenshots of the NexusLab project in action:
    - Data Art Scene
      
    ![DataArt](./doc/screenshots/screenshot-4.webp) 
+   
+      
+   - Collective Drawing
+     
+   ![CollectiveDrawing](./doc/screenshots/screenshot-7.webp) 
 
 
    ### Mobile Interface:
