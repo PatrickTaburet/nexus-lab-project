@@ -4,9 +4,7 @@ namespace App\EventListener;
 
 use App\Entity\User;
 use App\Entity\RefreshToken;
-use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\Security\Core\User\UserInterface;
 use Lexik\Bundle\JWTAuthenticationBundle\Event\AuthenticationSuccessEvent;
 
 class RefreshTokenListener

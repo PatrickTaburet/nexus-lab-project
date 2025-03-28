@@ -7,7 +7,7 @@ use Twig\TwigFilter;
 
 class ClassNameExtension extends AbstractExtension
 {
-    public function getFilters()
+    public function getFilters(): array
     {
         return [
             new TwigFilter('class_name', [$this, 'getClassName']),
