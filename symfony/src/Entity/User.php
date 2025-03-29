@@ -280,8 +280,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function removeFile()
     {
-        if ($this->getImageFile()!== 'no-profile.jpg') {
+        if ($this->getImageName()!== 'no-profile.jpg') {
             $this->setImageFile(null);
+            $this->setImageName('no-profile.jpg');
         }
     }
 
@@ -383,7 +384,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     public function getSceneD2(): Collection
     {
-        return $this->sceneD1;
+        return $this->sceneD2;
     }
 
     public function addSceneD2(SceneD2 $sceneD2): self
@@ -398,7 +399,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function removeSceneD2(SceneD2 $sceneD2): self
     {
-        if ($this->sceneD1->removeElement($sceneD2)) {
+        if ($this->sceneD2->removeElement($sceneD2)) {
             // set the owning side to null (unless already changed)
             if ($sceneD2->getUser() === $this) {
                 $sceneD2->setUser(null);
@@ -439,7 +440,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
         return $this;
     }
-
 
 
     public function getRoleRequest(): ?ArtistRole
