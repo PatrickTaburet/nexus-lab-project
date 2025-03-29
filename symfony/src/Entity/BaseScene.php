@@ -38,6 +38,9 @@ abstract class BaseScene
     #[ORM\ManyToMany(targetEntity: User::class)]
     protected $likes;
 
+    protected ?File $imageFile = null;
+    protected ?DateTimeImmutable $updatedAt = null;
+    
   // --------- VICH UPLOADER-----------------
 
     #[ORM\Column(type: "string", length: 255, nullable: true)]
@@ -101,11 +104,36 @@ abstract class BaseScene
         return $this->imageName;
     }
 
-    abstract public function getImageFile(): ?File;
-    abstract public function setImageFile(?File $imageFile = null): void;
+    /**
+     * @param File|\Symfony\Component\HttpFoundation\File\UploadedFile|null $imageFile
+     */
+    public function setImageFile(?File $imageFile = null): void
+    {
+        $this->imageFile = $imageFile;
 
-    abstract public function getUpdatedAt(): ?DateTimeImmutable;
-    abstract public function setUpdatedAt(?DateTimeImmutable $updatedAt): self;
+        if (null !== $imageFile) {
+            // It is required that at least one field changes if you are using doctrine
+            // otherwise the event listeners won't b    e called and the file is lost
+            $this->updatedAt = new DateTimeImmutable();
+        }
+    }
+
+    public function getImageFile(): ?File
+    {
+        return $this->imageFile;
+    }
+
+    public function getUpdatedAt(): ?DateTimeImmutable
+    {
+        return $this->updatedAt;
+    }
+
+    public function setUpdatedAt(?DateTimeImmutable $updatedAt): self
+    {
+        $this->updatedAt = $updatedAt;
+
+        return $this;
+    }
 
      // ---------- Likes settings ---------- //
 

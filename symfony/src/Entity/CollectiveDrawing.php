@@ -36,10 +36,10 @@ class CollectiveDrawing extends BaseScene
     // --------- VICH UPLOADER-----------------
 
     #[ORM\Column(type: "datetime_immutable", nullable: true)]
-    private $updatedAt;
+    protected ?DateTimeImmutable $updatedAt = null;
     
     #[UploadableField(mapping: "CollectiveDrawingImages", fileNameProperty: "imageName")]
-    private ?File $imageFile = null;
+    protected ?File $imageFile ;
 
     //-------------------------------------------------------------------------------------------
 
@@ -52,41 +52,5 @@ class CollectiveDrawing extends BaseScene
     {
         $this->data = $data;
         return $this;
-    }
-
-    // ---------- Vich Uploader - Screen Artwork ---------- //
-    
-    /**
-     * @param File|\Symfony\Component\HttpFoundation\File\UploadedFile|null $imageFile
-     */
-    public function setImageFile(?File $imageFile = null): void
-    {
-        $this->imageFile = $imageFile;
-
-        if (null !== $imageFile) {
-            // It is required that at least one field changes if you are using doctrine
-            // otherwise the event listeners won't b    e called and the file is lost
-            $this->updatedAt = new \DateTimeImmutable();
-        }
-    }
-
-    public function getImageFile(): ?File
-    {
-        return $this->imageFile;
-    }
-
-    public function getUpdatedAt(): ?DateTimeImmutable
-    {
-        return $this->updatedAt;
-    }
-
-    public function setUpdatedAt(?DateTimeImmutable $updatedAt): self
-    {
-        $this->updatedAt = $updatedAt;
-
-        return $this;
-    }
-
-    
-
+    }   
 }
