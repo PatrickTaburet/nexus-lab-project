@@ -19,10 +19,12 @@
             <div class="inputBox">
               {{ form_label(registrationForm.pseudo)}}
               {{ form_widget(registrationForm.pseudo, { "attr": {"class" : "form-control" } }) }}
+              {{ form_errors(registrationForm.pseudo) }}
             </div>
             <div class="inputBox">
               {{ form_label(registrationForm.email)}}
               {{ form_widget(registrationForm.email, { "attr": {"class" : "form-control" } }) }}
+              {{ form_errors(registrationForm.email) }}
             </div>
             <div>
             <div class="inputBox">
@@ -31,6 +33,7 @@
             <div class="vichImgContainer">
               {{ form_label(registrationForm.imageFile) }}
               {{ form_widget(registrationForm.imageFile, { "attr": {"class" : "imagePreview" } }) }}
+              {{ form_errors(registrationForm.imageFile) }}
             </div>
             <div class="links agreeTerms"> 
               <div class="policyContainer">

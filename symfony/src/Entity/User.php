@@ -28,26 +28,34 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: "integer")]
-    private $id;
+    private ?int $id = null;
 
+    #[Assert\NotBlank]
     #[ORM\Column(type: "string", length: 180, unique: true)]
     #[Assert\Email]
-    private $email;
+    private string $email;
 
+    #[Assert\NotBlank]
+    #[Assert\Length(
+        min: 3,
+        max: 50,
+        minMessage: "Username must be at least {{ limit }} characters.",
+        maxMessage: "Username cannot be longer than {{ limit }} characters."
+    )]
     #[ORM\Column(type: "string", length: 50)]
-    private $pseudo;
+    private string $pseudo;
 
+    #[Assert\NotNull]
+    #[Assert\Type("array")]
     #[ORM\Column(type: "json")]
-    private $roles = [];
+    private array $roles = [];
 
-    /**
-     * @var string The hashed password
-     */
+    #[Assert\NotBlank]
     #[ORM\Column(type: "string")]
-    private $password;
+    private string $password;
 
     #[ORM\Column(type: "datetime_immutable")]
-    private $createdAt;
+    private \DateTimeImmutable $createdAt;
 
     // ------- VICH UPLOADER --------
 
@@ -61,40 +69,40 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?File $imageFile = null;
 
     #[ORM\Column(nullable: true)]
-    private $imageName;
+    private ?string $imageName = 'no-profile.jpg'; // Define default image
 
     #[ORM\Column(type: "datetime_immutable", nullable: true)]
-    private $updatedAt;
+    private ?\DateTimeImmutable $updatedAt;
 
         // ------- Generative art scenes --------
 
     #[ORM\OneToMany(targetEntity: Scene1::class, mappedBy: "user")]
-    private $Scene1;
+    private Collection $Scene1;
 
     #[ORM\OneToMany(targetEntity: Scene2::class, mappedBy: "user")]
-    private $Scene2;
+    private Collection $Scene2;
 
 
        // ------- Data art scenes --------
 
     #[ORM\OneToMany(targetEntity: SceneD1::class, mappedBy: "user")]
-    private $sceneD1;
+    private Collection $sceneD1;
 
     #[ORM\OneToMany(targetEntity: SceneD2::class, mappedBy: "user")]
-    private $sceneD2;
+    private Collection $sceneD2;
 
        // ------- Collective drawing scenes --------
 
     #[ORM\OneToMany(targetEntity: CollectiveDrawing::class, mappedBy: "user")]
-    private $collectiveDrawing;
+    private Collection $collectiveDrawing;
 
        // ------- Requests --------
 
     #[ORM\OneToOne(targetEntity: ArtistRole::class, mappedBy: "user")]
-    private $role_request;
+    private ?ArtistRole $role_request = null;
 
     #[ORM\OneToMany(targetEntity: AddScene::class, mappedBy: "user")]
-    private $add_scene;
+    private Collection $add_scene;
 
 
 //-------------------------------------------------------------------------------------------
@@ -102,7 +110,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function __construct()
     {
         $this->createdAt = new  DateTimeImmutable();
-        $this->imageName = 'no-profile.jpg'; // Define default image
         $this->imageFile = null;
         $this->Scene1 = new ArrayCollection();
         $this->Scene2 = new ArrayCollection();
@@ -131,7 +138,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     
     public function getPseudo(): ?string
     {
-        return (string) $this->pseudo;
+        return $this->pseudo;
     }
 
     public function setPseudo(string $pseudo): self
