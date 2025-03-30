@@ -2,13 +2,15 @@
 
 namespace App\Tests\Unit\Entity;
 
-use App\Entity\AddScene;
-use App\Entity\CollectiveDrawing;
-use App\Entity\Scene1;
-use App\Entity\Scene2;
-use App\Entity\SceneD1;
-use App\Entity\SceneD2;
-use App\Entity\User;
+use App\Entity\{
+    CollectiveDrawing,
+    Scene1,
+    Scene2,
+    SceneD1,
+    SceneD2,
+    User,
+    AddScene
+};
 use Doctrine\Common\Collections\Collection;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\File\File;

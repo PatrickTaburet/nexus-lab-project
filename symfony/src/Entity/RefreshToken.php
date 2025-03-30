@@ -22,22 +22,22 @@ class RefreshToken
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $username = null;
 
-    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
-    private ?\DateTimeInterface $valid = null;
+    #[ORM\Column(type: Types::DATETIME_IMMUTABLE, nullable: true)]
+    private ?\DateTimeImmutable $valid = null;
 
     public function __construct($refresh_token, $username)
     {
         $this->refresh_token = $refresh_token;
         $this->username = $username;
-        $this->valid = new \DateTime('+30 days');
+        $this->valid = new \DateTimeImmutable('+30 days');
     }
 
     public function isValid(): bool
     {
-        return $this->valid > new \DateTime();
+        return $this->valid > new \DateTimeImmutable();
     }
 
-    public function getValid(): ?\DateTimeInterface
+    public function getValid(): ?\DateTimeImmutable
     {
         return $this->valid;
     }
