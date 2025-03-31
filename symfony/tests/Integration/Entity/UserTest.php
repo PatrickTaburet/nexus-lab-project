@@ -9,7 +9,9 @@ use App\Entity\ArtistRole;
 
 class UserTest extends KernelTestCase
 {
-    public function getEntity() : User 
+    // Fixtures 
+
+    private function getEntity() : User 
     {
         return (new User())->setEmail("test@mail.com")
             ->setPseudo('test')
@@ -17,7 +19,9 @@ class UserTest extends KernelTestCase
             ->setPassword('hashed-password');
     }
 
-    public function assertHasErrors(User $user, int $expectedErrorCount = 0)
+    // Validation Helper
+
+    private function assertHasErrors(User $user, int $expectedErrorCount = 0)
     {
         self::bootKernel();
         $container = static::getContainer();
@@ -34,6 +38,8 @@ class UserTest extends KernelTestCase
     
         $this->assertCount($expectedErrorCount, $errors);
     }
+
+    // Valid Cases
 
     public function testValidEntity(): void
     {
@@ -55,6 +61,7 @@ class UserTest extends KernelTestCase
     }
     
     // Email
+
     public function testInvalidEmail(): void
     {
         $user = $this->getEntity()->setEmail('invalid_email');
@@ -98,6 +105,7 @@ class UserTest extends KernelTestCase
     }
     
     // Pseudo
+
     public function testTooShortPseudo(): void
     {
         $user = $this->getEntity()->setPseudo('a');
@@ -118,6 +126,7 @@ class UserTest extends KernelTestCase
     }
 
     // Password
+    
     public function testMissingPassword(): void
     {
         $user = $this->getEntity()->setPassword('');
@@ -125,6 +134,7 @@ class UserTest extends KernelTestCase
     }
 
     // ImageFile
+
     public function testInvalidFileMimeType(): void
     {
         $user = $this->getEntity();
@@ -145,7 +155,8 @@ class UserTest extends KernelTestCase
         unlink($tmpPath);
     }
 
-
+    // Doctrine Persistence 
+    
     public function testUserAndRoleRequestRelation(): void
     {
         self::bootKernel();
@@ -173,7 +184,8 @@ class UserTest extends KernelTestCase
         $this->assertEquals('test@mail.com', $savedRole->getUser()->getEmail());
     }
 
-    //Clear Test DataBase
+    // Cleanup
+
     protected function tearDown(): void
     {
         parent::tearDown();

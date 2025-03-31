@@ -5,6 +5,7 @@ namespace App\Entity;
 use DateTimeImmutable;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\ArtistRoleRepository;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: ArtistRoleRepository::class)]
 class ArtistRole
@@ -19,18 +20,26 @@ class ArtistRole
     #[ORM\Column(type: "integer")]
     private $id;
 
+    #[Assert\NotBlank]
+    #[Assert\Length(max: 100)]
     #[ORM\Column(type: "string", length: 100)]
     private $firstname;
 
+    #[Assert\NotBlank]
+    #[Assert\Length(max: 100)]
     #[ORM\Column(type: "string", length: 100)]
     private $name;
 
+    #[Assert\NotBlank]
     #[ORM\Column(type: "text")]
     private $bio;
 
+    #[Assert\Length(max: 255)]
     #[ORM\Column(type: "string", length: 255, nullable: true)]
     private $exemples;
 
+    #[Assert\NotBlank]
+    #[Assert\Length(max: 255)]
     #[ORM\Column(type: "string", length: 255)]
     private $portfolio;
 

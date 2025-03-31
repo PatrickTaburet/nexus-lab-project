@@ -25,6 +25,7 @@
       {% for field, label in form_fields %}
         <div class="form-group{{ field == 'name' ? '-top' : (field == 'bio' ? '-textArea' : '') }}">
           {{ form_widget(attribute(form, field), {'attr': form_classes}) }}
+          {{ form_errors(attribute(form, field)) }}
           <div class="cut"></div>
           <label for="{{ field }}" class="placeholder">{{ label }}</label>
         </div>
