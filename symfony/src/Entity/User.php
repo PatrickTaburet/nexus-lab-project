@@ -55,7 +55,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private string $password;
 
     #[ORM\Column(type: "datetime_immutable")]
-    private \DateTimeImmutable $createdAt;
+    private DateTimeImmutable $createdAt;
 
     // ------- VICH UPLOADER --------
 
@@ -72,7 +72,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?string $imageName = 'no-profile.jpg'; // Define default image
 
     #[ORM\Column(type: "datetime_immutable", nullable: true)]
-    private ?\DateTimeImmutable $updatedAt;
+    private ?DateTimeImmutable $updatedAt = null;
 
         // ------- Generative art scenes --------
 
@@ -109,8 +109,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function __construct()
     {
-        $this->createdAt = new  DateTimeImmutable();
-        $this->imageFile = null;
+        $this->createdAt = new DateTimeImmutable();
         $this->Scene1 = new ArrayCollection();
         $this->Scene2 = new ArrayCollection();
         $this->sceneD1 = new ArrayCollection();
@@ -148,12 +147,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function getCreatedAt(): ?\DateTimeImmutable
+    public function getCreatedAt(): ?DateTimeImmutable
     {
         return $this->createdAt;
     }
 
-    public function setCreatedAt(\DateTimeImmutable $createdAt): self
+    public function setCreatedAt(DateTimeImmutable $createdAt): self
     {
         $this->createdAt = $createdAt;
 
@@ -250,7 +249,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         if (null !== $imageFile) {
             // It is required that at least one field changes if you are using doctrine
             // otherwise the event listeners won't be called and the file is lost
-            $this->updatedAt = new \DateTimeImmutable();
+            $this->updatedAt = new DateTimeImmutable();
         } 
         // else {
         //     $this->imageName = 'no-profile.jpg'; // Set default image
