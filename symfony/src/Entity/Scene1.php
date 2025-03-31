@@ -3,10 +3,7 @@
 namespace App\Entity;
 
 use DateTimeImmutable;
-use Symfony\Component\{
-    HttpFoundation\File\File,
-    Serializer\Annotation\Groups
-};
+use Symfony\Component\HttpFoundation\File\File;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\Scene1Repository;
@@ -17,35 +14,27 @@ use Vich\UploaderBundle\Mapping\Annotation\UploadableField;
 class Scene1 extends BaseScene
 {
     #[ORM\Column(type: "integer")]
-    #[Groups("sceneDataRecup")]
     private $color;
 
     #[ORM\Column(type: "integer")]
-    #[Groups("sceneDataRecup")]
     private $saturation;
 
     #[ORM\Column(type: "float")]
-    #[Groups("sceneDataRecup")]
     private $opacity;
 
     #[ORM\Column(type: "float")]
-    #[Groups("sceneDataRecup")]
     private $weight;
 
     #[ORM\Column(type: "integer")]
-    #[Groups("sceneDataRecup")]
     private $numLine;
 
     #[ORM\Column(type: "float")]
-    #[Groups("sceneDataRecup")]
     private $velocity;
 
     #[ORM\Column(type: "integer")]
-    #[Groups("sceneDataRecup")]
     private $noiseOctave;
 
     #[ORM\Column(type: "float")]
-    #[Groups("sceneDataRecup")]
     private $noiseFalloff;
     
     // --------- Communs settings -----------------

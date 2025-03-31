@@ -303,13 +303,13 @@ function sendData(){
         formData.append('looping', looping);
         formData.append('abstract', abstract);
         formData.append('country1', country1 ? country1 : "");
-        formData.append('country2', country2? country2 : "");
-        formData.append('country3', country3? country3 : "");
-        formData.append('country4', country4? country4 : "");
-        formData.append('country5', country5? country5 : "");
-        formData.append('country6', country6? country6 : "");
-        formData.append('country7', country7? country7 : "");
-        formData.append('country8', country8? country8 : "");
+        formData.append('country2', country2 ? country2 : "");
+        formData.append('country3', country3 ? country3 : "");
+        formData.append('country4', country4 ? country4 : "");
+        formData.append('country5', country5 ? country5 : "");
+        formData.append('country6', country6 ? country6 : "");
+        formData.append('country7', country7 ? country7 : "");
+        formData.append('country8', country8 ? country8 : "");
         formData.append('userId', userId);
         formData.append('file', image.src);
     

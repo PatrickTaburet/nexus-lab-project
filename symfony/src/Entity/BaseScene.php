@@ -3,17 +3,14 @@
 namespace App\Entity;
 
 use DateTimeImmutable;
-use Symfony\Component\{
-    HttpFoundation\File\File,
-    Serializer\Annotation\Groups
-};
+use Symfony\Component\HttpFoundation\File\File;
 use Doctrine\Common\Collections\{
     Collection,
     ArrayCollection
 };
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
 use Doctrine\ORM\Mapping as ORM;
-
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\MappedSuperclass]
 #[Vich\Uploadable]
@@ -22,17 +19,20 @@ abstract class BaseScene
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: "integer")]
-    #[Groups("sceneDataRecup")]
     protected $id;
-
+    
+    #[Assert\NotBlank]
+    #[Assert\Length(max: 100)]
     #[ORM\Column(type: "string", length: 100, nullable: true)]
     protected $title;
 
+    #[Assert\NotBlank]
+    #[Assert\Length(max: 255)]
     #[ORM\Column(type: "string", length: 255, nullable: true)]
     protected $comment;
 
+    #[Assert\NotNull]
     #[ORM\ManyToOne(targetEntity: User::class)]
-    #[Groups("sceneDataRecup")]
     protected $user;
     
     #[ORM\ManyToMany(targetEntity: User::class)]

@@ -2,10 +2,7 @@
 
 namespace App\Entity;
 
-use Symfony\Component\{
-    HttpFoundation\File\File,
-    Serializer\Annotation\Groups
-};
+use Symfony\Component\HttpFoundation\File\File;
 use DateTimeImmutable;
 use Doctrine\ORM\Mapping as ORM;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
@@ -17,47 +14,36 @@ use Vich\UploaderBundle\Mapping\Annotation\UploadableField;
 class SceneD1 extends BaseScene
 {
     #[ORM\Column(type: "string", length: 255, nullable: true)]
-    #[Groups("sceneDataRecup")]
     private $country1;
 
     #[ORM\Column(type: "string", length: 255, nullable: true)]
-    #[Groups("sceneDataRecup")]
     private $country2;
 
     #[ORM\Column(type: "string", length: 255, nullable: true)]
-    #[Groups("sceneDataRecup")]
     private $country3;
 
     #[ORM\Column(type: "string", length: 255, nullable: true)]
-    #[Groups("sceneDataRecup")]
     private $country4;
 
     #[ORM\Column(type: "string", length: 255, nullable: true)]
-    #[Groups("sceneDataRecup")]
     private $country5;
 
     #[ORM\Column(type: "string", length: 255, nullable: true)]
-    #[Groups("sceneDataRecup")]
     private $country6;
 
     #[ORM\Column(type: "string", length: 255, nullable: true)]
-    #[Groups("sceneDataRecup")]
     private $country7;
 
     #[ORM\Column(type: "string", length: 255, nullable: true)]
-    #[Groups("sceneDataRecup")]
     private $country8;
 
     #[ORM\Column(type: "float")]
-    #[Groups("sceneDataRecup")]
     private $randomness;
 
     #[ORM\Column(type: "boolean")]
-    #[Groups("sceneDataRecup")]
     private $looping;
 
     #[ORM\Column(type: "boolean")]
-    #[Groups("sceneDataRecup")]
     private $abstract;
 
     // --------- Communs settings -----------------

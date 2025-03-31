@@ -4,10 +4,7 @@ namespace App\Entity;
 
 
 use DateTimeImmutable;
-use Symfony\Component\{
-    HttpFoundation\File\File,
-    Serializer\Annotation\Groups
-};
+use Symfony\Component\HttpFoundation\File\File;
 use Vich\UploaderBundle\Mapping\{
     Annotation as Vich,
     Annotation\UploadableField
@@ -20,54 +17,39 @@ use App\Repository\SceneD2Repository;
 class SceneD2 extends BaseScene
 {
     #[ORM\Column(type: "integer")]
-    #[Groups("sceneDataRecup")]
     private $divFactor;
 
     #[ORM\Column(type: "integer")]
-    #[Groups("sceneDataRecup")]
     private $copy;
 
     #[ORM\Column(type: "integer")]
-    #[Groups("sceneDataRecup")]
     private $deformation;
 
-    /**
-     * @ORM\Column(type="float")
-     * @Groups ("sceneDataRecup")
-     */
+    #[ORM\Column(type: "float")]
     private $sizeFactor;
 
     #[ORM\Column(type: "integer")]
-    #[Groups("sceneDataRecup")]
     private $angle;
 
     #[ORM\Column(type: "float")]
-    #[Groups("sceneDataRecup")]
     private $opacity;
 
     #[ORM\Column(type: "integer")]
-    #[Groups("sceneDataRecup")]
     private $filters;
 
     #[ORM\Column(type: "integer")]
-    #[Groups("sceneDataRecup")]
     private $division;
 
     #[ORM\Column(type: "integer")]
-    #[Groups("sceneDataRecup")]
     private $colorRange;
 
- 
     #[ORM\Column(type: "boolean")]
-    #[Groups("sceneDataRecup")]
     private $glitch;
 
     #[ORM\Column(type: "boolean")]
-    #[Groups("sceneDataRecup")]
     private $noise;
 
     #[ORM\Column(type: "string", length: 255)]
-    #[Groups("sceneDataRecup")]
     private $colorsValue;
 
     // --------- Communs settings -----------------

@@ -19,7 +19,6 @@ use Symfony\Component\{
 class DataSceneController extends BaseSceneController
 {
 
-    
     //  ---------- Scene D1 : Worldwide CO2 -------------
 
     #[Route("/dataScene/sendDataD1", name: "send_data_D1", methods: ["POST"])]

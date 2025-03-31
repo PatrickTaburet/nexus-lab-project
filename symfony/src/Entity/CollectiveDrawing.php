@@ -6,19 +6,14 @@ use App\Repository\CollectiveDrawingRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Vich\UploaderBundle\Mapping\Annotation\UploadableField;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
-
 use DateTimeImmutable;
-use Symfony\Component\{
-    HttpFoundation\File\File,
-    Serializer\Annotation\Groups
-};
+use Symfony\Component\HttpFoundation\File\File;
 
 #[ORM\Entity(repositoryClass: CollectiveDrawingRepository::class)]
 #[Vich\Uploadable]
 class CollectiveDrawing extends BaseScene
 {
-    #[ORM\Column]
-    #[Groups("sceneDataRecup")]
+    #[ORM\Column(type: "array")]
     private array $data = [];
     
     // --------- Communs settings -----------------

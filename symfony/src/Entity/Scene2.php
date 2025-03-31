@@ -4,10 +4,7 @@ namespace App\Entity;
 
 use DateTimeImmutable;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\{
-    HttpFoundation\File\File,
-    Serializer\Annotation\Groups
-};
+use Symfony\Component\HttpFoundation\File\File;
 use Vich\UploaderBundle\Mapping\{
     Annotation as Vich,
     Annotation\UploadableField
@@ -20,43 +17,33 @@ class Scene2 extends BaseScene
 {
 
     #[ORM\Column(type: "integer")]
-    #[Groups("sceneDataRecup")]
     private $hue;
 
     #[ORM\Column(type: "integer")]
-    #[Groups("sceneDataRecup")]
     private $colorRange;
 
     #[ORM\Column(type: "integer")]
-    #[Groups("sceneDataRecup")]
     private $brightness;
 
     #[ORM\Column(type: "float")]
-    #[Groups("sceneDataRecup")]
     private $movement;
 
     #[ORM\Column(type: "float")]
-    #[Groups("sceneDataRecup")]
     private $deformA;
 
     #[ORM\Column(type: "float")]
-    #[Groups("sceneDataRecup")]
     private $deformB;
 
     #[ORM\Column(type: "float")]
-    #[Groups("sceneDataRecup")]
     private $shape;
 
     #[ORM\Column(type: "float")]
-    #[Groups("sceneDataRecup")]
     private $rings;
 
     #[ORM\Column(type: "float")]
-    #[Groups("sceneDataRecup")]
     private $diameter;
 
     #[ORM\Column(type: "float")]
-    #[Groups("sceneDataRecup")]
     private $zoom;
 
     // --------- Communs settings -----------------
