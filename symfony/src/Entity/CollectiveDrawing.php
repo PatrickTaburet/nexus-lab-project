@@ -13,7 +13,7 @@ use Symfony\Component\HttpFoundation\File\File;
 #[Vich\Uploadable]
 class CollectiveDrawing extends BaseScene
 {
-    #[ORM\Column(type: "array")]
+    #[ORM\Column]
     private array $data = [];
     
     // --------- Communs settings -----------------
@@ -34,7 +34,7 @@ class CollectiveDrawing extends BaseScene
     protected ?DateTimeImmutable $updatedAt = null;
     
     #[UploadableField(mapping: "CollectiveDrawingImages", fileNameProperty: "imageName")]
-    protected ?File $imageFile ;
+    protected ?File $imageFile = null;
 
     //-------------------------------------------------------------------------------------------
 

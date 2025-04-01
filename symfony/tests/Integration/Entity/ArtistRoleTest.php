@@ -104,15 +104,15 @@ class ArtistRoleTest extends KernelTestCase
 
     public function testTooLongNameAndFirstName(): void
     {   
-        $form = $this->getEntity()->setFirstname(str_repeat('a', 101));
-        $form->setName(str_repeat('a', 101));
+        $form = $this->getEntity()->setFirstname(str_repeat('a', 101)); // > 100 chars
+        $form->setName(str_repeat('a', 101)); // > 100 chars
         $this->assertHasErrors($form, 2);
     }
 
     public function testTooLongBioAndPortfolio(): void
     {   
-        $form = $this->getEntity()->setExemples(str_repeat('a', 256));
-        $form->setPortfolio(str_repeat('a', 256));
+        $form = $this->getEntity()->setExemples(str_repeat('a', 256)); // > 250 chars
+        $form->setPortfolio(str_repeat('a', 256)); // > 250 chars
         $this->assertHasErrors($form, 2);
     }
 
