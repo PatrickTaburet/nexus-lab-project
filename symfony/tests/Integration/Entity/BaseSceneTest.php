@@ -15,7 +15,6 @@ use App\Entity\{
 use DateTimeImmutable;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
-use Symfony\Component\HttpFoundation\File\File;
 
 class BaseSceneTest extends KernelTestCase
 {
@@ -137,22 +136,6 @@ class BaseSceneTest extends KernelTestCase
         $this->assertHasErrors($scene, 1);
     }
 
-    // Like System
-
-    public function testAddAndRemoveLike(): void
-    {
-        $scene = (new Scene1())
-            ->setTitle('Liked scene')
-            ->setComment('Valid comment')
-            ->setUser($this->user);
-
-        $scene->addLike($this->user);
-        $this->assertTrue($scene->isLikedByUser($this->user));
-
-        $scene->removeLike($this->user);
-        $this->assertFalse($scene->isLikedByUser($this->user));
-    }
-  
     // Doctrine Persistence 
 
     public function testScene1Persist(): void
@@ -257,6 +240,42 @@ class BaseSceneTest extends KernelTestCase
         $this->assertEquals($scene->getComment(), $saved->getComment());
         $this->assertInstanceOf(User::class, $saved->getUser());
         $this->assertSame($scene->getUser()->getID(), $saved->getUser()->getID());
+    }
+
+    
+    // Like System
+
+    public function testSceneLikePersistenceAndRemoval(): void
+    {
+        $scene = (new Scene1())
+        ->setTitle('Liked scene')
+        ->setComment('Valid comment')
+        ->setUser($this->user)
+        ->setColor(100)
+        ->setSaturation(80)
+        ->setOpacity(0.9)
+        ->setWeight(1.3)
+        ->setNumLine(10)
+        ->setVelocity(1.5)
+        ->setNoiseOctave(2)
+        ->setNoiseFalloff(6);
+
+        $scene->addLike($this->user);
+        
+        $container = static::getContainer();
+        $em = $container->get('doctrine')->getManager();
+        $em->persist($this->user);
+        $em->persist($scene);
+        $em->flush($scene);
+        $em->clear();
+
+        $savedScene = $em->getRepository(Scene1::class)->findOneBy(['title' => 'Liked scene']);
+        $savedUser = $em->getRepository(User::class)->findOneBy(['email' => $this->user->getEmail()]);
+
+        $this->assertTrue($savedScene->isLikedByUser($savedUser));
+
+        $savedScene->removeLike($savedUser);
+        $this->assertFalse($savedScene->isLikedByUser($savedUser));
     }
 
     // Vich Uploader System

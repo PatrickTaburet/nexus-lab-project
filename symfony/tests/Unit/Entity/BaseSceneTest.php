@@ -20,7 +20,7 @@ class BaseSceneTest extends TestCase
     /**
      * @dataProvider provideSceneEntities
      */
-    public function testLikesAreHandledCorrectly(BaseScene $scene): void
+    public function testAddAndRemoveLike(BaseScene $scene): void
     {
         $user = new User();
 

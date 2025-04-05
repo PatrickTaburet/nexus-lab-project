@@ -21,7 +21,6 @@ abstract class BaseSceneController extends AbstractController
     protected Security $security;
     private SceneDataFactory $sceneDataFactory;
 
-    
     public function __construct(SceneDataFactory $sceneDataFactory, Security $security, EntityManagerInterface $entityManager)
     {
         $this->sceneDataFactory = $sceneDataFactory;
