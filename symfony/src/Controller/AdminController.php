@@ -31,7 +31,7 @@ use Symfony\Component\ {
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
-
+use Symfony\Component\Filesystem\Filesystem;
 
 #[Route("/admin", name: "admin_")]
 
@@ -333,6 +333,18 @@ class AdminController extends AbstractController
             throw new NotFoundHttpException('Entity not found');
         }
         $request = $repositoryMap[$entity]->find($id);
+        if (!$request) {
+            throw new NotFoundHttpException('Request not found');
+        }
+
+        if ($entity === 'AddScene' && method_exists($request, 'getCodeFile')) {
+            $filesystem = new Filesystem();
+            $filePath = $this->getParameter('code_directory') . '/' . $request->getCodeFile();
+            if ($filesystem->exists($filePath)) {
+                $filesystem->remove($filePath);
+            }
+        }
+
         $entityManager->remove($request);
         $entityManager->flush();
         
