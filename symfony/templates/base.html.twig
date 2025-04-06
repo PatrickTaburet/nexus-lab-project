@@ -38,17 +38,17 @@
     <!-- Main pages content -->
         <main>
             {% for message in app.flashes('success')%}
-                <div class="succesFlashMessages">
+                <div class="flash-success">
                     {{message}}
                 </div>      
             {% endfor %}
             {# {% for message in app.flashes('error')%}
-                <div class="warningFlashMessages">
+                <div class="flash-error">
                     {{message}}
                 </div>      
             {% endfor %} #}
             {% for message in app.flashes('warning')%}
-                <div class="warningFlashMessages">
+                <div class="flash-warning">
                 {{message|nl2br }}
                 </div>
             {% endfor %}

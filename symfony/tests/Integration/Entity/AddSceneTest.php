@@ -72,10 +72,10 @@ class AddSceneTest extends KernelTestCase
 
     protected function tearDown(): void
     {
-        parent::tearDown();
         $em = self::getContainer()->get('doctrine')->getManager();
         $em->createQuery('DELETE FROM App\Entity\AddScene')->execute();
         $em->createQuery('DELETE FROM App\Entity\User')->execute();
         $em->clear();
+        parent::tearDown();
     }
 }

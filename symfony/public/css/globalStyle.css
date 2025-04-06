@@ -88,7 +88,7 @@ Flash messages
 ========================
 */
 
-.succesFlashMessages{
+.flash-success{
     text-align: center;
     background-color: rgba(148, 255, 148, 0.689);
     padding: 10px;
@@ -98,7 +98,7 @@ Flash messages
     top: 60px;
     width: 100%;
 }
-.warningFlashMessages{
+.flash-warning{
     text-align: center;
     background-color: rgba(255, 148, 148, 0.689);
     padding: 10px;
@@ -109,9 +109,8 @@ Flash messages
     width: 100%;
 }
 .alert{
-    color: red;
+    color: #e74c3c;
 }
-
 /* 
 ========================
 Loading screen image

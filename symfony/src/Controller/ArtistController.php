@@ -20,6 +20,7 @@ use App\Service\{
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\Form\FormError;
 
 #[Route("/artist", name: "artist_")]
 class ArtistController extends AbstractController
@@ -38,28 +39,32 @@ class ArtistController extends AbstractController
         $form = $this->createForm(AddSceneType::class, $sceneRequest);
         $form -> handleRequest($request); 
      
-        if ( $form->isSubmitted() && $form->isValid()){
+        if ( $form->isSubmitted()){
 
             $file = $form->get('codeFile')->getData();
-            $uniqueFileName = $uploader->upload($file);
-            $sceneRequest->setCodeFile($uniqueFileName);
+            if (!$file) {
+                $form->get('codeFile')->addError(new FormError('A code file is required.'));
+            } 
+            if ($form->isValid()) {
+                $uniqueFileName = $uploader->upload($file);
+                $sceneRequest->setCodeFile($uniqueFileName);   
+                $sceneRequest->setUser($this->getUser());
+
+                // Add the value of the "Other" option to the main language array
+                $language = $sceneRequest->getLanguage();
+                $otherLanguage = $form->get('otherLanguage')->getData();
+                $mergedLanguages = $optionField->appendCustomChoice($language, $otherLanguage);
+                $sceneRequest->setLanguage($mergedLanguages);
+    
+                $entityManager->persist($sceneRequest);
+                $entityManager->flush();
+    
+                $this->addFlash('success', 'New scene request sent.'); 
+    
+                return $this->redirectToRoute('home');         
+            }
+        }
         
-            $sceneRequest->setUser($this->getUser());
-
-            // Add the value of the "Other" option to the main language array
-            $language = $sceneRequest->getLanguage();
-            $otherLanguage = $form->get('otherLanguage')->getData();
-            $mergedLanguages = $optionField->appendCustomChoice($language, $otherLanguage);
-            $sceneRequest->setLanguage($mergedLanguages);
-
-            $entityManager->persist($sceneRequest);
-            $entityManager->flush();
-
-            $this->addFlash('success', 'New scene request sent.'); 
-
-            return $this->redirectToRoute('home');
-
-        } 
         $category = ($id === 1) ? 'Generative Art' : ($id === 2 ? 'Data Art Visualization' : 'Unknown Category');
         return $this->render('artist/addScene.html.twig', [
             'form' => $form->createView(),

@@ -14,44 +14,53 @@
   <p class="categoryLabel">{{category}}</p>
 
   <div class="form spinningLight">
-    {{ form_start(form) }}
-      
+    {{ form_start(form) }}  
       <div class="form-group-top">
         {{ form_widget(form.language, { "attr": {"class" : "form-control languageOptions" } }) }}
         <div class="cut"></div>
         <label for="language" class="placeholder">Language</label>
       </div>
+      <div class="alert">
+        {{ form_errors(form.language) }}
+      </div>
       <div class="otherLanguage">
         {{ form_widget(form.otherLanguage, { "attr": {"class" : "other form-control " } }) }}
+      </div>
+      <div class="alert">
+        {{ form_errors(form.otherLanguage) }}
       </div>
       <div class="form-group">
         {{ form_widget(form.title, { "attr": {"class" : "form-control" } }) }}
         <div class="cut"></div>
         <label for="title" class="placeholder">Title</label>
       </div>
+      <div class="alert">
+        {{ form_errors(form.title) }}
+      </div>
       <div class="form-group-textArea">
         {{ form_widget(form.description, { "attr": {"class" : "form-control" } }) }}
         <div class="cut"></div>
         <label for="description" class="placeholder">Description</label>        
       </div>
+      <div class="alert">
+        {{ form_errors(form.description) }}
+      </div>
       <div class="form-group-code">
         {{ form_label(form.codeFile)}}
-        {% if form.codeFile.vars.errors|length > 0  %}
-          <div class="error">
-              {{ form.codeFile.vars.errors|first.message }}
-          </div>
-        {% endif %}
         {{ form_widget(form.codeFile, { "attr": {"class" : "img-control " } }) }}    
+      {% for error in form.vars.errors %}
+        <div class="alert">{{ error.message }}</div>
+      {% endfor %}
+
       </div>
       <div class="form-group-img">
         {{ form_label(form.imageFile)}}
-         {% if form.imageFile.vars.errors|length > 0  %}
-          <div class="error">
+        {{ form_widget(form.imageFile, { "attr": {"class" : "img-control " } }) }}
+        {% if form.imageFile.vars.errors|length > 0  %}
+          <div class="alert">
               {{ form.imageFile.vars.errors|first.message }}
           </div>
         {% endif %}
-        {{ form_widget(form.imageFile, { "attr": {"class" : "img-control " } }) }}
-       
       </div>
 
       <div class="buttonBox">        

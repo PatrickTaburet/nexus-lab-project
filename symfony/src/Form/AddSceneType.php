@@ -16,6 +16,7 @@ use Symfony\Component\Form\Extension\Core\Type\{
     ChoiceType,
     SubmitType
 };
+use Symfony\Component\Validator\Constraints\NotBlank;
 
 class AddSceneType extends AbstractType
 {
@@ -30,6 +31,7 @@ class AddSceneType extends AbstractType
                     'GLSL / WebGl' => 'glsl / webgl',
                     'Other' => 'other',
                 ],
+                'required' => false,
                 'multiple' => true,
                 'expanded' => true,
             ])
@@ -40,19 +42,25 @@ class AddSceneType extends AbstractType
                     'placeholder' => "Other Language"
                 ],
             ])
-            ->add('title')
-            ->add('description')
+            ->add('title', TextType::class, [
+                'required' => false, 
+            ])
+            ->add('description', TextType::class, [
+                'required' => false, 
+            ])
             ->add('codeFile', FileType::class, [
                 'label' => 'Code file',
                 'mapped' => false,
                 'label_attr' => [
                     'class' => 'img-label '
                 ],
+                'required' => false,
                 'constraints' => [
+                    // new NotBlank(['message' => 'A code file is required.']),
                     new File([
                         'maxSize' => '1024k',
                         'mimeTypes' => [ 
-                            'text/plain', // Only accept .txt files
+                            'text/plain',
                         ],
                         'mimeTypesMessage' => 'Please upload a valid text file',
                     ])
@@ -65,7 +73,9 @@ class AddSceneType extends AbstractType
                 'label_attr' => [
                     'class' => 'img-label '
                 ],
+                'required' => false,
                 'constraints' => [
+                    new NotBlank(['message' => 'Please upload an image.']),
                     new File([
                         'mimeTypes' => [
                             'image/jpeg',

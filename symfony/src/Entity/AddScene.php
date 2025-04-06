@@ -8,6 +8,7 @@ use Symfony\Component\HttpFoundation\File\File;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
 use Vich\UploaderBundle\Mapping\Annotation\UploadableField;
 use App\Repository\AddSceneRepository;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: AddSceneRepository::class)]
 #[Vich\Uploadable]
@@ -19,12 +20,16 @@ class AddScene
     private $id;
 
     #[ORM\Column(type: "array", nullable: true)]
+    #[Assert\NotBlank(message: "Please select at least one language.")]
     private $language;
 
     #[ORM\Column(type: "string", length: 100)]
+    #[Assert\NotBlank(message: "The title is required.")]
+    #[Assert\Length(max: 100, maxMessage: "The title cannot exceed {{ limit }} characters.")]
     private $title;
 
     #[ORM\Column(type: "text")]
+    #[Assert\NotBlank(message: "The description is required.")]
     private $description;
 
     #[ORM\Column(type: "string", length: 255)]
@@ -37,6 +42,11 @@ class AddScene
     // --------- VICH UPLOADER-----------------
 
     #[UploadableField(mapping: "addSceneImg", fileNameProperty: "imageName")]
+    #[Assert\NotBlank(message: "A image file is required.")]
+    #[Assert\File(
+        mimeTypes: ['image/jpeg', 'image/png', 'image/gif'],
+        mimeTypesMessage: 'Please upload a valid image file.'
+    )]
     private ?File $imageFile = null;
 
     #[ORM\Column(type: "string", length: 255, nullable: true)]
