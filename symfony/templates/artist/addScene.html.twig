@@ -48,10 +48,9 @@
       <div class="form-group-code">
         {{ form_label(form.codeFile)}}
         {{ form_widget(form.codeFile, { "attr": {"class" : "img-control " } }) }}    
-      {% for error in form.vars.errors %}
-        <div class="alert">{{ error.message }}</div>
-      {% endfor %}
-
+      </div>
+            <div class="alert">
+        {{ form_errors(form.codeFile) }}
       </div>
       <div class="form-group-img">
         {{ form_label(form.imageFile)}}

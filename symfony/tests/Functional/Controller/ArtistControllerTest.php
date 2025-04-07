@@ -36,7 +36,57 @@ class ArtistControllerTest extends WebTestCase
     
         $this->user = $repo->findOneBy(['email' => 'artist@test.com']);
     }
+
+    // Restricted & ROLE_ARTIST access
+
+    /**
+     * @dataProvider provideProtectedArtistRoutes
+     */
+    public function testProtectedRoutesAccessDeniedForAnonymous($route): void
+    {
+        $this->client->request('GET', $route);
+        $this->assertResponseRedirects('/login', 302);
+    }
+
+    /**
+     * @dataProvider provideProtectedArtistRoutes
+     */
+    public function testProtectedRoutesDenyAccessToNonArtistUsers(string $route): void
+    {
+        $user = new User();
+        $user->setEmail('nonArtist@test.com');
+        $user->setPseudo('no_access');
+        $user->setPassword('dummy');
+        $user->setRoles([]);
+
+        $em = static::getContainer()->get('doctrine')->getManager();
+        $em->persist($user);
+        $em->flush();
+
+        $this->client->loginUser($user);
+
+        $this->client->request('GET', $route);
+        $this->assertResponseStatusCodeSame(403);
+    }
+
+    public function provideProtectedArtistRoutes(): array
+    {
+        return [
+            ['/artist/add-new-scene/1'],
+            ['/artist/dashboard'],
+            ['/artist/delete/request/1'],
+        ];
+    }
     
+    
+    // ------- addScene ---------
+
+    public function testAddSceneFormAccessDeniedForAnonymous(): void
+    {
+        $this->client->request('GET', '/artist/add-new-scene/1');
+        $this->assertResponseRedirects('/login', 302);
+    }
+
     /**
      * @dataProvider provideCategoryAccessData
      */
@@ -58,28 +108,6 @@ class ArtistControllerTest extends WebTestCase
             'Data Art Visualization' => [2, 'Data Art Visualization'],
         ];
     }
-
-    public function testAddSceneFormRoleAccess(): void
-    {
-        $user = new User();
-        $user->setEmail('nonArtist@test.com');
-        $user->setPseudo('nonArtist_user');
-        $user->setPassword('hashed-password');
-        $user->setRoles([]);
-
-        $container = $this->client->getContainer();
-        $em = $container->get('doctrine')->getManager();
-        $em->persist($user);
-        $em->flush();
-
-        $nonArtistUser = $em->getRepository(User::class)->findOneBy(['email' => 'nonArtist@test.com']);
-
-        $this->client->loginUser($nonArtistUser);
-        $this->client->request('GET', '/artist/add-new-scene/1');
-
-        $this->assertResponseStatusCodeSame(403);
-    }
-
     
     public function testSubmitValidAddSceneForm(): void
     {
@@ -166,6 +194,96 @@ class ArtistControllerTest extends WebTestCase
         unlink($imageFile->getRealPath());
     }
 
+    // ------- artistDashboard ---------
+
+    public function testArtistDashboardAccess()
+    {
+        $this->client->loginUser($this->user);
+        $this->client->request('GET', '/artist/dashboard');
+        $this->assertResponseIsSuccessful();
+        $this->assertSelectorTextContains('h1', 'Artist Dashboard');
+    }
+
+    public function testDashboardDisplaysUserSceneRequests(): void
+    {
+        $em = $this->client->getContainer()->get('doctrine')->getManager();
+   
+        $scene = new AddScene();
+        $scene->setTitle('Dashboard Scene Title');
+        $scene->setDescription('Dashboard Description');
+        $scene->setLanguage(['p5js']);
+        $scene->setCodeFile('dummy.txt');
+        $scene->setUser($this->user);
+    
+        $em->persist($scene);
+        $em->flush();
+    
+        $this->client->loginUser($this->user);
+        $this->client->request('GET', '/artist/dashboard');
+
+        $this->assertSelectorTextContains('body', 'Dashboard Scene Title');
+    }
+    
+    // ------- delete_request ---------
+
+    public function testDeleteOwnSceneRequest(): void
+    {
+        $em = $this->client->getContainer()->get('doctrine')->getManager();
+    
+        $scene = new AddScene();
+        $scene->setTitle('Scene to Delete');
+        $scene->setDescription('Description');
+        $scene->setLanguage(['p5js']);
+        $scene->setCodeFile('dummy.txt');
+        $scene->setUser($this->user);
+        $em->persist($scene);
+        $em->flush();
+    
+        $this->client->loginUser($this->user);
+
+        $persistedScene = $em->getRepository(AddScene::class)->findOneBy(['title' => 'Scene to Delete']);
+        $sceneId = $persistedScene->getId();
+
+        $this->client->request('GET', '/artist/delete/request/' . $sceneId);
+    
+        $this->assertResponseRedirects('/artist/dashboard');
+        $deleted = $em->getRepository(AddScene::class)->find($sceneId);
+        $this->assertNull($deleted);
+    }
+    
+    public function testCannotDeleteOtherUsersScene(): void
+    {
+        $em = $this->client->getContainer()->get('doctrine')->getManager();
+
+        $otherUser = new User();
+        $otherUser->setEmail('other@test.com');
+        $otherUser->setPseudo('other_user');
+        $otherUser->setPassword('hashed');
+        $em->persist($otherUser);
+
+        $scene = new AddScene();
+        $scene->setTitle('Other Scene');
+        $scene->setDescription('Description');
+        $scene->setLanguage(['p5js']);
+        $scene->setCodeFile('dummy.txt');
+        $scene->setUser($otherUser);
+        $em->persist($scene);
+        $em->flush();
+
+        $this->client->loginUser($this->user);
+        $this->client->request('GET', '/artist/delete/request/' . $scene->getId());
+
+        $this->assertResponseStatusCodeSame(403);
+    }
+
+    public function testDeleteNonExistentScene(): void
+    {
+        $this->client->loginUser($this->user);
+        $this->client->request('GET', '/artist/delete/request/999999');
+    
+        $this->assertResponseStatusCodeSame(404);
+    }
+    
     protected function tearDown(): void
     {
         $em = static::getContainer()->get('doctrine')->getManager();
