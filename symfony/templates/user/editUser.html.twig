@@ -33,13 +33,10 @@
               <div class="cut"></div>
               <label for="roles" class="placeholder">Roles</label> 
             </div>
-          {% endif %}
-        
-          {% if not is_granted('ROLE_ADMIN') %}
+          {% endif %} 
             <div class="psw-group">
               <a href="{{ path('editPassword',  {'id': app.user.id})}}" class="customButton pswButton">Change password</a>
             </div>
-          {% endif %}
           <div class="imagePreview">
             {{ form_label(userForm.imageFile) }}
             {{ form_widget(userForm.imageFile, { "attr": {"class" : "img-control" } }) }}

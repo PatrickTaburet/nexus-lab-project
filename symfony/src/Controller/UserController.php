@@ -64,25 +64,26 @@ class UserController extends AbstractController
 
                 // Check if the new avatar is different from the old one and from the default image
                 $formData = $userForm->getData();
+                $avatarDir = $this->getParameter('kernel.project_dir') . '/public/images/avatar/';
                 $newAvatarFile = $formData->getImageFile();
                 if($newAvatarFile){
                     $newAvatar = $newAvatarFile->getClientOriginalName();
                     if ($newAvatar !== $oldAvatar) {
                         // Check if the new avatar already exists in the directory
-                        $avatarDir = $this->getParameter('kernel.project_dir') . '/public/images/avatar/';
                         if (!file_exists($avatarDir . $newAvatar)) {
                             // Delete the old avatar file
-                            if ($oldAvatar && $oldAvatar !== 'no-profile.jpg') {
+                            if ($oldAvatar && $oldAvatar !== 'no-profile.jpg' && file_exists($avatarDir . $oldAvatar)) {
                                 unlink($avatarDir . $oldAvatar);
                             }
                         }
+                        $user->setImageName($newAvatar);
                     }
                 }
 
                 $entityManager->persist($user);
                 $entityManager->flush();
+                $user->clearImageFile();
                 $userEmail = $user->getEmail();
-                $user->removeFile();
                 $this ->addFlash('success', 'User '.$userEmail.' edit succeed');
 
                 return $this->redirectToRoute('home');

@@ -260,6 +260,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         return $this->imageFile;
     }
+    
+    public function clearImageFile(): void
+    {
+        $this->imageFile = null;
+    }
 
     public function setImageName(?string $imageName): void
     {

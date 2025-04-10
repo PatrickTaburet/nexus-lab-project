@@ -5,19 +5,9 @@ namespace App\Controller;
 use App\Factory\SceneDataFactory;
 use App\Form\{
     EditUserType,
-    SaveArtworkD1Type,
-    SaveArtworkD2Type,
-    SaveArtworkG1Type,
-    SaveArtworkG2Type,
-    SaveCollectiveDrawingType,
 };
 use App\Repository\{
     UserRepository,
-    Scene1Repository,
-    Scene2Repository,
-    SceneD1Repository,
-    SceneD2Repository,
-    CollectiveDrawingRepository,
     AddSceneRepository,
     ArtistRoleRepository
 };
@@ -41,8 +31,7 @@ class AdminController extends AbstractController
     #[Route("/dashboard", name: "dashboard")]
     public function dashboard(ArtistRoleRepository $roleRepo, AddSceneRepository $newSceneRepo): Response
     {
-       
-         // Fetch and sort scene requests directly in the query
+        // Fetch and sort scene requests directly in the query
         $roleRequests = $roleRepo->findBy([], ['createdAt' => 'DESC']);
         $sceneRequests = $newSceneRepo->findBy([], ['updatedAt' => 'DESC']);
 
@@ -78,10 +67,8 @@ class AdminController extends AbstractController
 
         foreach ($allUsers as $user) {
             $totalArtwork = count($user->getScene1()) + count($user->getScene2()) + 
-                            count($user->getSceneD1()) + count($user->getSceneD2()) +
-                            count($user->getCollectiveDrawing());
-
-            
+                count($user->getSceneD1()) + count($user->getSceneD2()) +
+                count($user->getCollectiveDrawing());            
             $totalLikes = 0;
             foreach ([
                 $user->getScene1(), 
@@ -114,9 +101,10 @@ class AdminController extends AbstractController
     {       
             $user = $repo->find($id);
             $oldAvatar = $user->getImageName();
-           
+            $isEditingOwnProfile = $user->getId() === $this->getUser()->getId();
+
             $userForm = $this->createForm(EditUserType::class, $user,[
-                'is_admin' => true,  
+                'is_admin' => !$isEditingOwnProfile && $this->isGranted('ROLE_ADMIN'),
             ]);
             $userForm -> handleRequest($request);
 
@@ -153,7 +141,6 @@ class AdminController extends AbstractController
             return $this->render('user/editUser.html.twig', [
                 'user' => $user,
                 'userForm' => $userForm->createView(),
-                'isAdmin' => false,
             ]);
     } 
 

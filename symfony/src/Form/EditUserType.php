@@ -48,6 +48,7 @@ class EditUserType extends AbstractType
                 'label' => 'User picture',
                 'allow_delete' => false, 
                 'download_link' => false,
+                'image_uri' => true,
                 'label_attr' => [
                     'class' => 'labelImg'
                 ],
