@@ -46,7 +46,7 @@ class UserController extends AbstractController
             $oldAvatar = $user->getImageName();
             // Check if the user is logged
             if (!$this->getUser()) {
-                return $this->redirectToRoute('gallery');
+                return $this->redirectToRoute('login');
             }
             // Check if the logged-in user is the same as the user being edited
             if ($this->getUser() !== $user) {
@@ -82,15 +82,12 @@ class UserController extends AbstractController
 
                 $entityManager->persist($user);
                 $entityManager->flush();
-                $user->clearImageFile();
+                $user->clearImageFile(); // Clear the object file after persist and before render to avoid serialize errors
                 $userEmail = $user->getEmail();
                 $this ->addFlash('success', 'User '.$userEmail.' edit succeed');
 
                 return $this->redirectToRoute('home');
             }
-
-            // Clear the object file after persist and before render to avoid serialize errors
-            $user->removeFile();
 
             return $this->render('user/editUser.html.twig', [
                 'user' => $user,

@@ -112,31 +112,30 @@ class AdminController extends AbstractController
 
             // Check if the new avatar is different from the old one and from the default image
                 $formData = $userForm->getData();
+                $avatarDir = $this->getParameter('kernel.project_dir') . '/public/images/avatar/';
                 $newAvatarFile = $formData->getImageFile();
                 if($newAvatarFile){
                     $newAvatar = $newAvatarFile->getClientOriginalName();
                     if ($newAvatar !== $oldAvatar) {
                         // Check if the new avatar already exists in the directory
-                        $avatarDir = $this->getParameter('kernel.project_dir') . '/public/images/avatar/';
                         if (!file_exists($avatarDir . $newAvatar)) {
                             // Delete the old avatar file
-                            if ($oldAvatar && $oldAvatar !== 'no-profile.jpg') {
+                            if ($oldAvatar && $oldAvatar !== 'no-profile.jpg' && file_exists($avatarDir . $oldAvatar)) {
                                 unlink($avatarDir . $oldAvatar);
                             }
                         }
+                        $user->setImageName($newAvatar);
                     }
                 }
      
                 $entityManager -> persist($user);
                 $entityManager -> flush();
+                $user->clearImageFile();
                 $userEmail = $user->getEmail();
                 $this ->addFlash('success', 'User '.$userEmail.' edit succeed');
 
                 return $this->redirectToRoute('admin_users');
             }
-
-            // Clear the object file after persist and before render to avoid serialize errors
-            $user->removeFile();
             
             return $this->render('user/editUser.html.twig', [
                 'user' => $user,

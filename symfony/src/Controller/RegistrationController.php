@@ -46,7 +46,8 @@ class RegistrationController extends AbstractController
           
             $entityManager->persist($user);
             $entityManager->flush();
-            $user->removeFile(); // Delete the object file after persist to avoid serialize errors
+            
+            $user->clearImageFile(); // Delete the object file after persist to avoid serialize errors
             $this->addFlash('success', 'Hi '.$userName . ' !  Welcome to the amazing world of generative coding art !'); 
 
             return $userAuthenticator->authenticateUser(

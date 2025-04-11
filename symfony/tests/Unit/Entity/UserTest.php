@@ -83,7 +83,7 @@ class UserTest extends TestCase
 
         $this->assertNotNull($user->getImageFile());
 
-        $user->removeFile();
+        $user->clearImageFile();
 
         $this->assertNull($user->getImageFile());
         $this->assertEquals($user->getImageName(), 'no-profile.jpg');

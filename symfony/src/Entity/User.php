@@ -50,7 +50,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(type: "json")]
     private array $roles = [];
 
-    #[Assert\NotBlank]
     #[ORM\Column(type: "string")]
     private string $password;
 
@@ -246,14 +245,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         $this->imageFile = $imageFile;
 
-        if (null !== $imageFile) {
+        if ($imageFile  !==  null) {
             // It is required that at least one field changes if you are using doctrine
             // otherwise the event listeners won't be called and the file is lost
             $this->updatedAt = new DateTimeImmutable();
         } 
-        // else {
-        //     $this->imageName = 'no-profile.jpg'; // Set default image
-        // }
     }
 
     public function getImageFile(): ?File
