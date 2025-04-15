@@ -42,54 +42,61 @@ class AdminController extends AbstractController
     }
 
     // Users manager dashboard
-
     #[Route("/users", name: "users")]
-    public function usersList(UserRepository $users, PaginatorInterface $paginator, Request $request): Response
-    {
-        $queryBuilder = $users->createQueryBuilder('u')
-            ->leftJoin('u.Scene1', 's1')->addSelect('s1')
-            ->leftJoin('u.Scene2', 's2')->addSelect('s2')
-            ->leftJoin('u.sceneD1', 'sd1')->addSelect('sd1')
-            ->leftJoin('u.sceneD2', 'sd2')->addSelect('sd2')
-            ->leftJoin('u.collectiveDrawing', 'cd')->addSelect('cd')
-            ->leftJoin('s1.likes', 'l1')->addSelect('l1')
-            ->leftJoin('s2.likes', 'l2')->addSelect('l2')
-            ->leftJoin('sd1.likes', 'l3')->addSelect('l3')
-            ->leftJoin('sd2.likes', 'l4')->addSelect('l4')
-            ->leftJoin('cd.likes', 'l5')->addSelect('l5')
+    public function usersList(
+        UserRepository $userRepository,
+        PaginatorInterface $paginator,
+        Request $request,
+        EntityManagerInterface $em
+    ): Response {
+        // 1. Retrieve the paginated list of users using a minimal query 
+        $queryBuilder = $userRepository->createQueryBuilder('u')
+            ->select('u') // Only select the User entity fields
             ->orderBy('u.createdAt', 'DESC');
-            
-        $allUsers = $paginator->paginate(
+    
+        $pagination = $paginator->paginate(
             $queryBuilder,
             $request->query->getInt('page', 1),
             9
         );
-
-        foreach ($allUsers as $user) {
-            $totalArtwork = count($user->getScene1()) + count($user->getScene2()) + 
-                count($user->getSceneD1()) + count($user->getSceneD2()) +
-                count($user->getCollectiveDrawing());            
-            $totalLikes = 0;
-            foreach ([
-                $user->getScene1(), 
-                $user->getScene2(), 
-                $user->getSceneD1(), 
-                $user->getSceneD2(),
-                $user->getCollectiveDrawing()
-            ] as $artworks) {
-                foreach ($artworks as $artwork) {
-                    $totalLikes += count($artwork->getLikes());
-                }
+    
+        // Extract user IDs from the paginated result for later aggregation
+        $userIds = [];
+        foreach ($pagination as $user) {
+            $userIds[] = $user->getId();
+        }
+    
+        if (!empty($userIds)) {
+            // 2. Retrieve aggregate totals for artworks and likes for the displayed users
+            $aggregatedResults = $userRepository->findUsersWithAggregatedStats($userIds);
+    
+            //  Build an associative map from user ID to aggregated totals
+            $aggregatedMap = [];
+            foreach ($aggregatedResults as $result) {
+                $aggregatedMap[$result['id']] = [
+                    'totalArtwork' => $result['totalArtwork'],
+                    'totalLikes'   => $result['totalLikes'],
+                ];
             }
     
-            $user->totalArtwork = $totalArtwork;
-            $user->totalLikes = $totalLikes;
+            // 3. Attach the aggregated totals to each user object in the pagination result
+            foreach ($pagination as $user) {
+                $id = $user->getId();
+                if (isset($aggregatedMap[$id])) {
+                    $user->totalArtwork = $aggregatedMap[$id]['totalArtwork'];
+                    $user->totalLikes   = $aggregatedMap[$id]['totalLikes'];
+                } else {
+                    $user->totalArtwork = 0;
+                    $user->totalLikes   = 0;
+                }
+            }
         }
     
         return $this->render('admin/users.html.twig', [
-            'users' => $allUsers
+            'users' => $pagination,
         ]);
     }
+    
 
     #[Route("/users/edit/{id}", name: "edit_user", methods: ["GET", "POST"])]
     public function editUser(

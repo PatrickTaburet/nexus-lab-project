@@ -56,6 +56,36 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
         $this->add($user, true);
     }
 
+     /**
+     * Retrieve aggregate totals for artworks and likes for the displayed users
+     */
+    public function findUsersWithAggregatedStats(array $userIds): array
+    {
+        $dql = "
+            SELECT u.id,
+                (COUNT(DISTINCT s1.id) + COUNT(DISTINCT s2.id) + COUNT(DISTINCT sd1.id) + COUNT(DISTINCT sd2.id) + COUNT(DISTINCT cd.id)) AS totalArtwork,
+                (COUNT(DISTINCT l1.id) + COUNT(DISTINCT l2.id) + COUNT(DISTINCT l3.id) + COUNT(DISTINCT l4.id) + COUNT(DISTINCT l5.id)) AS totalLikes
+            FROM App\Entity\User u
+            LEFT JOIN u.Scene1 s1
+            LEFT JOIN u.Scene2 s2
+            LEFT JOIN u.sceneD1 sd1
+            LEFT JOIN u.sceneD2 sd2
+            LEFT JOIN u.collectiveDrawing cd
+            LEFT JOIN s1.likes l1
+            LEFT JOIN s2.likes l2
+            LEFT JOIN sd1.likes l3
+            LEFT JOIN sd2.likes l4
+            LEFT JOIN cd.likes l5
+            WHERE u.id IN (:ids)
+            GROUP BY u.id
+        ";
+
+        return $this->getEntityManager()
+                    ->createQuery($dql)
+                    ->setParameter('ids', $userIds)
+                    ->getResult();
+    }
+
 //    /**
 //     * @return User[] Returns an array of User objects
 //     */
