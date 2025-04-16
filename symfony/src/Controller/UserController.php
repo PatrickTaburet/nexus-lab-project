@@ -21,6 +21,7 @@ use App\Repository\{
     SceneD2Repository,
     UserRepository
 };
+use App\Service\AvatarManager;
 use Symfony\Component\{
     HttpFoundation\Response,
     Routing\Annotation\Route,
@@ -40,10 +41,9 @@ class UserController extends AbstractController
 {
     
     #[Route("/edit/{id}", name: "profile", methods: ["GET", "POST"])]
-    public function editUser(EntityManagerInterface $entityManager, Request $request, UserRepository $repo, $id) : Response
+    public function editUser(EntityManagerInterface $entityManager, Request $request, UserRepository $repo, AvatarManager $avatarManager, $id) : Response
     {       
             $user = $repo->find($id);
-            $oldAvatar = $user->getImageName();
             // Check if the user is logged
             if (!$this->getUser()) {
                 return $this->redirectToRoute('login');
@@ -62,23 +62,10 @@ class UserController extends AbstractController
             
             if ($userForm->isSubmitted() && $userForm->isValid()) {
 
-                // Check if the new avatar is different from the old one and from the default image
                 $formData = $userForm->getData();
-                $avatarDir = $this->getParameter('kernel.project_dir') . '/public/images/avatar/';
                 $newAvatarFile = $formData->getImageFile();
-                if($newAvatarFile){
-                    $newAvatar = $newAvatarFile->getClientOriginalName();
-                    if ($newAvatar !== $oldAvatar) {
-                        // Check if the new avatar already exists in the directory
-                        if (!file_exists($avatarDir . $newAvatar)) {
-                            // Delete the old avatar file
-                            if ($oldAvatar && $oldAvatar !== 'no-profile.jpg' && file_exists($avatarDir . $oldAvatar)) {
-                                unlink($avatarDir . $oldAvatar);
-                            }
-                        }
-                        $user->setImageName($newAvatar);
-                    }
-                }
+                
+                $avatarManager->updateAvatar($user, $newAvatarFile);
 
                 $entityManager->persist($user);
                 $entityManager->flush();

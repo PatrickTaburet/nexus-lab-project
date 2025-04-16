@@ -25,6 +25,9 @@ services:
     App\Service\CodeFileUploader:
         arguments:
             $codeDirectory: '%code_directory%'
+    App\Service\AvatarManager:
+        arguments:
+            $projectDir: '%kernel.project_dir%'
     App\EventListener\JWTCreatedListener:
         tags:
             - { name: 'kernel.event_listener', event: 'lexik_jwt_authentication.on_jwt_created', method: 'onJWTCreated' }

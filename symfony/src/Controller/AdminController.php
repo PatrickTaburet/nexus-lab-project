@@ -11,6 +11,7 @@ use App\Repository\{
     AddSceneRepository,
     ArtistRoleRepository
 };
+use App\Service\AvatarManager;
 use Symfony\Component\ {
     HttpFoundation\Request,
     HttpFoundation\Response,
@@ -47,11 +48,10 @@ class AdminController extends AbstractController
         UserRepository $userRepository,
         PaginatorInterface $paginator,
         Request $request,
-        EntityManagerInterface $em
     ): Response {
         // 1. Retrieve the paginated list of users using a minimal query 
         $queryBuilder = $userRepository->createQueryBuilder('u')
-            ->select('u') // Only select the User entity fields
+            ->select('u')
             ->orderBy('u.createdAt', 'DESC');
     
         $pagination = $paginator->paginate(
@@ -103,11 +103,12 @@ class AdminController extends AbstractController
         Request $request,
         UserRepository $repo,
         EntityManagerInterface $entityManager,
+        AvatarManager $avatarManager,
         $id
     ) : Response
     {       
             $user = $repo->find($id);
-            $oldAvatar = $user->getImageName();
+            // $oldAvatar = $user->getImageName();
             $isEditingOwnProfile = $user->getId() === $this->getUser()->getId();
 
             $userForm = $this->createForm(EditUserType::class, $user,[
@@ -117,23 +118,10 @@ class AdminController extends AbstractController
 
             if ($userForm->isSubmitted() && $userForm->isValid()) {
 
-            // Check if the new avatar is different from the old one and from the default image
                 $formData = $userForm->getData();
-                $avatarDir = $this->getParameter('kernel.project_dir') . '/public/images/avatar/';
                 $newAvatarFile = $formData->getImageFile();
-                if($newAvatarFile){
-                    $newAvatar = $newAvatarFile->getClientOriginalName();
-                    if ($newAvatar !== $oldAvatar) {
-                        // Check if the new avatar already exists in the directory
-                        if (!file_exists($avatarDir . $newAvatar)) {
-                            // Delete the old avatar file
-                            if ($oldAvatar && $oldAvatar !== 'no-profile.jpg' && file_exists($avatarDir . $oldAvatar)) {
-                                unlink($avatarDir . $oldAvatar);
-                            }
-                        }
-                        $user->setImageName($newAvatar);
-                    }
-                }
+                
+                $avatarManager->updateAvatar($user, $newAvatarFile);
      
                 $entityManager -> persist($user);
                 $entityManager -> flush();
