@@ -12,6 +12,7 @@ use App\Repository\{
     ArtistRoleRepository
 };
 use App\Service\AvatarManager;
+use App\Service\RequestRepositoryProvider;
 use Symfony\Component\ {
     HttpFoundation\Request,
     HttpFoundation\Response,
@@ -120,7 +121,7 @@ class AdminController extends AbstractController
 
                 $formData = $userForm->getData();
                 $newAvatarFile = $formData->getImageFile();
-                
+
                 $avatarManager->updateAvatar($user, $newAvatarFile);
      
                 $entityManager -> persist($user);
@@ -142,16 +143,13 @@ class AdminController extends AbstractController
     public function deleteUser(
         UserRepository $repo,
         EntityManagerInterface $entityManager,
+        AvatarManager $avatarManager,
         $id
     ): Response
     {
         $user = $repo->find($id);
-        
-        // Delete the avatar file if it's not the default image
-        $avatar = $user->getImageName();
-        if ($avatar && $avatar !== 'no-profile.jpg') {
-            unlink($this->getParameter('kernel.project_dir') . '/public/images/avatar/' . $avatar);
-        }
+        $avatarManager->deleteAvatar($user);
+
         $entityManager->remove($user);
         $entityManager->flush();
         $userEmail = $user->getEmail();
@@ -267,31 +265,24 @@ class AdminController extends AbstractController
         ]);
     } 
 
-    #[Route("/request/{entity}/{id}", name: "show_request", methods: ["GET", "POST"])]
+    #[Route("/request/{entity}/{id}", name: "show_request", methods: ["GET"])]
     public function showRequest(
-        ArtistRoleRepository $artistRoleRepo,
-        AddSceneRepository $addSceneRepo,
-        $id,
-        $entity
+        RequestRepositoryProvider $requestRepositoryProvider,
+        string $entity,
+        int $id
     ): Response
     {
-        $repositoryMap = [
-            'ArtistRole' => $artistRoleRepo,
-            'AddScene' => $addSceneRepo,
-        ];
+        $entityRepo = $requestRepositoryProvider->getRepository($entity);
+        $sceneRequest  = $entityRepo->find($id);
 
-        if (!array_key_exists($entity, $repositoryMap)) {
-            throw new NotFoundHttpException('Entity not found');
-        }
-        $request = $repositoryMap[$entity]->find($id);
-
-        if ($request === null) {
+        if (!$sceneRequest ) {
             throw new NotFoundHttpException('Request not found');
         }
-        $type = $request->getType();       
+
+        $type = $sceneRequest->getType();       
 
         return $this->render('admin/request.html.twig', [
-           'request' => $request,
+           'request' => $sceneRequest,
            'type' => $type,
         ]);
     }
@@ -299,34 +290,27 @@ class AdminController extends AbstractController
     #[Route("/delete/request/{entity}/{id}", name: "delete_request", methods: ["GET", "POST"])]
     public function deleteRequest(
         EntityManagerInterface $entityManager,
-        ArtistRoleRepository $artistRoleRepo,
-        AddSceneRepository $addSceneRepo,
-        $id,
-        $entity
+        RequestRepositoryProvider $requestRepositoryProvider,
+        string $entity,
+        int $id
     ): Response
     {
-        $repositoryMap = [
-            'ArtistRole' => $artistRoleRepo,
-            'AddScene' => $addSceneRepo,
-        ];
+        $entityRepo = $requestRepositoryProvider->getRepository($entity);
+        $sceneRequest  = $entityRepo->find($id);
 
-        if (!array_key_exists($entity, $repositoryMap)) {
-            throw new NotFoundHttpException('Entity not found');
-        }
-        $request = $repositoryMap[$entity]->find($id);
-        if (!$request) {
+        if (!$sceneRequest) {
             throw new NotFoundHttpException('Request not found');
         }
 
-        if ($entity === 'AddScene' && method_exists($request, 'getCodeFile')) {
+        if ($entity === 'AddScene' && method_exists($sceneRequest, 'getCodeFile')) {
             $filesystem = new Filesystem();
-            $filePath = $this->getParameter('code_directory') . '/' . $request->getCodeFile();
+            $filePath = $this->getParameter('code_directory') . '/' . $sceneRequest->getCodeFile();
             if ($filesystem->exists($filePath)) {
                 $filesystem->remove($filePath);
             }
         }
 
-        $entityManager->remove($request);
+        $entityManager->remove($sceneRequest);
         $entityManager->flush();
         
         $this->addFlash('success', 'Request successfully deleted');

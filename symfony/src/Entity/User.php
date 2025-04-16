@@ -75,24 +75,24 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
         // ------- Generative art scenes --------
 
-    #[ORM\OneToMany(targetEntity: Scene1::class, mappedBy: "user")]
+    #[ORM\OneToMany(targetEntity: Scene1::class, mappedBy: "user", cascade: ["remove"], orphanRemoval: true)]
     private Collection $Scene1;
 
-    #[ORM\OneToMany(targetEntity: Scene2::class, mappedBy: "user")]
+    #[ORM\OneToMany(targetEntity: Scene2::class, mappedBy: "user", cascade: ["remove"], orphanRemoval: true)]
     private Collection $Scene2;
 
 
        // ------- Data art scenes --------
 
-    #[ORM\OneToMany(targetEntity: SceneD1::class, mappedBy: "user")]
+    #[ORM\OneToMany(targetEntity: SceneD1::class, mappedBy: "user", cascade: ["remove"], orphanRemoval: true)]
     private Collection $sceneD1;
 
-    #[ORM\OneToMany(targetEntity: SceneD2::class, mappedBy: "user")]
+    #[ORM\OneToMany(targetEntity: SceneD2::class, mappedBy: "user", cascade: ["remove"], orphanRemoval: true)]
     private Collection $sceneD2;
 
        // ------- Collective drawing scenes --------
 
-    #[ORM\OneToMany(targetEntity: CollectiveDrawing::class, mappedBy: "user")]
+    #[ORM\OneToMany(targetEntity: CollectiveDrawing::class, mappedBy: "user", cascade: ["remove"], orphanRemoval: true)]
     private Collection $collectiveDrawing;
 
        // ------- Requests --------

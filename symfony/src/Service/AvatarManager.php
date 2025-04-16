@@ -46,4 +46,20 @@ class AvatarManager
             }
         }
     }
+    
+    /**
+     * Delete the user's avatar.
+     *
+     * Delete the avatar file if it's not the default image
+     *
+     * @param User $user
+     * @param string $defaultAvatar The default file name (optional)
+     */
+    public function deleteAvatar(User $user, string $defaultAvatar = 'no-profile.jpg')
+    {
+        $avatar = $user->getImageName();
+        if ($avatar && $avatar !== $defaultAvatar) {
+            $this->filesystem->remove($this->avatarDir . $avatar);
+        }
+    }
 }
