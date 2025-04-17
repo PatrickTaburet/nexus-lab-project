@@ -5,6 +5,7 @@ namespace App\Model;
 
 class SceneData
 {
+    private string $label;
     private string $entityClass;
     private string $formType;
     private string $routeName;
@@ -12,6 +13,7 @@ class SceneData
     private object $repository;
 
     public function __construct(
+        string $label,
         string $entityClass,
         string $formType,
         string $routeName,
@@ -19,6 +21,7 @@ class SceneData
         ?object $repository = null
     )
     {
+        $this->label = $label;
         $this->entityClass = $entityClass;
         $this->formType = $formType;
         $this->routeName = $routeName;
@@ -26,6 +29,11 @@ class SceneData
         $this->repository = $repository;
     }
 
+    public function getLabel(): string
+    {
+        return $this->label;
+    }
+    
     public function getEntityClass(): string
     {
         return $this->entityClass;

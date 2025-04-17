@@ -11,14 +11,15 @@ use App\Repository\{
     AddSceneRepository,
     ArtistRoleRepository
 };
-use App\Service\AvatarManager;
-use App\Service\RequestRepositoryProvider;
+use App\Service\{
+    AvatarManager,
+    RequestRepositoryProvider
+};
 use Symfony\Component\ {
     HttpFoundation\Request,
     HttpFoundation\Response,
     Routing\Annotation\Route,
     HttpKernel\Exception\NotFoundHttpException,
-    Yaml\Yaml
 };
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Doctrine\ORM\EntityManagerInterface;
@@ -29,6 +30,8 @@ use Symfony\Component\Filesystem\Filesystem;
 
 class AdminController extends AbstractController
 {
+
+    public function __construct(private SceneDataFactory $sceneDataFactory){}
 
     #[Route("/dashboard", name: "dashboard")]
     public function dashboard(ArtistRoleRepository $roleRepo, AddSceneRepository $newSceneRepo): Response
@@ -109,7 +112,6 @@ class AdminController extends AbstractController
     ) : Response
     {       
             $user = $repo->find($id);
-            // $oldAvatar = $user->getImageName();
             $isEditingOwnProfile = $user->getId() === $this->getUser()->getId();
 
             $userForm = $this->createForm(EditUserType::class, $user,[
@@ -169,20 +171,19 @@ class AdminController extends AbstractController
     
     #[Route("/gallery", name: "gallery")]
     public function gallery(
-        SceneDataFactory $sceneDataFactory,
         PaginatorInterface $paginator,
         Request $request
     ): Response
     {
-        $entities = Yaml::parseFile($this->getParameter('kernel.project_dir') . '/config/entities.yaml');
-        $sceneEntity = ['Scene1', 'Scene2', 'SceneD1', 'SceneD2', 'CollectiveDrawing'];
+        $entityLabels = [];
         $allScenes = [];
-
-        foreach ($sceneEntity as $entity) {
-            $sceneData = $sceneDataFactory->createSceneData($entity);
+        foreach ($this->sceneDataFactory->getScenesMap() as $entityKey => $config) {
+            $sceneData = $this->sceneDataFactory->createSceneData($entityKey);
             if ($sceneData) {
                 $allScenes = array_merge($allScenes, $sceneData->getRepository()->findAll());
+ 
             }
+            $entityLabels[$entityKey] = $sceneData->getLabel();
         }
         
         usort($allScenes, function($a, $b) {
@@ -195,19 +196,18 @@ class AdminController extends AbstractController
         );
         return $this->render('admin/artworks.html.twig', [
             'artworks' => $artworks,
-            'entities' => $entities['entities']
+            'entities' => $entityLabels
         ]);   
     }
     
     #[Route("/gallery/delete/{id}/{entity}", name: "delete_artwork", methods: ["GET", "POST"])]
     public function deleteArtwork(
-        SceneDataFactory $sceneDataFactory,
         EntityManagerInterface $entityManager,
         $id,
         $entity
     ): Response
     {
-        $sceneData = $sceneDataFactory->createSceneData($entity);
+        $sceneData = $this->sceneDataFactory->createSceneData($entity);
         if (!$sceneData) {
             throw new NotFoundHttpException('Entity not found');
         }
@@ -228,13 +228,12 @@ class AdminController extends AbstractController
     #[Route("/gallery/edit/{id}/{entity}", name: "edit_artwork", methods: ["GET", "POST"])]
     public function editArtwork(
         Request $request,
-        SceneDataFactory $sceneDataFactory,
         EntityManagerInterface $entityManager,
         $id,
         $entity
     ) : Response
     {       
-        $sceneData = $sceneDataFactory->createSceneData($entity);
+        $sceneData = $this->sceneDataFactory->createSceneData($entity);
         if (!$sceneData) {
             throw new NotFoundHttpException('Entity not found');
         }

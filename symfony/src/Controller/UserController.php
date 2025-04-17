@@ -3,22 +3,13 @@
 namespace App\Controller;
 
 use App\Entity\ArtistRole;
+use App\Factory\SceneDataFactory;
 use App\Form\{
     EditUserType,
-    SaveArtworkD1Type,
-    SaveArtworkD2Type,
-    SaveArtworkG1Type,
-    SaveArtworkG2Type,
     UserPasswordType,
     ArtistRoleType,
-    SaveCollectiveDrawingType,
 };
 use App\Repository\{
-    CollectiveDrawingRepository,
-    Scene1Repository,
-    Scene2Repository,
-    SceneD1Repository,
-    SceneD2Repository,
     UserRepository
 };
 use App\Service\AvatarManager;
@@ -27,7 +18,6 @@ use Symfony\Component\{
     Routing\Annotation\Route,
     HttpFoundation\Request,
     PasswordHasher\Hasher\UserPasswordHasherInterface,
-    Yaml\Yaml
 };
 use Symfony\Component\HttpKernel\Exception\{
     NotFoundHttpException,
@@ -39,6 +29,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 #[Route("/profile")]
 class UserController extends AbstractController
 {
+
+    public function __construct(private SceneDataFactory $sceneDataFactory) {}
     
     #[Route("/edit/{id}", name: "profile", methods: ["GET", "POST"])]
     public function editUser(EntityManagerInterface $entityManager, Request $request, UserRepository $repo, AvatarManager $avatarManager, $id) : Response
@@ -128,89 +120,67 @@ class UserController extends AbstractController
 
 
     #[Route("/myArtworks/{id}", name: "myArtworks", methods: ["GET", "POST"])]
-    public function myArtworks(
-        Scene1Repository $repoG1,
-        Scene2Repository $repoG2,
-        SceneD1Repository $repoD1,
-        SceneD2Repository $repoD2,
-        CollectiveDrawingRepository $repoDrawing,
-        $id,
-    ) : Response
+    public function myArtworks(int $id) : Response
     {       
-        $entities = Yaml::parseFile($this->getParameter('kernel.project_dir') . '/config/entities.yaml');
-        $sceneG1 = $repoG1->findBy(['user' => $id]);
-        $sceneG2 = $repoG2->findBy(['user' => $id]);
-        $sceneD1 = $repoD1->findBy(['user' => $id]);
-        $sceneD2 = $repoD2->findBy(['user' => $id]);
-        $Drawing = $repoDrawing->findBy(['user' => $id]);
+        $scenesG = [];
+        $scenesD = [];
+        $drawings = [];
+        $entityLabels = [];
 
-        $allScenesG = array_merge($sceneG1, $sceneG2);
-        $allScenesD = array_merge($sceneD1, $sceneD2);
+       foreach ($this->sceneDataFactory->getScenesMap() as $entityKey => $config) {
+            $sceneData = $this->sceneDataFactory->createSceneData($entityKey);
+            if (!$sceneData) {
+                continue;
+            }
+            $entityLabels[$entityKey] = $sceneData->getLabel();
 
-        usort($allScenesG, function($a, $b) {
-            return $b->getUpdatedAt() <=> $a->getUpdatedAt();
-        });
-        usort($allScenesD, function($a, $b) {
-            return $b->getUpdatedAt() <=> $a->getUpdatedAt();
-        });
-        usort($Drawing, function($a, $b) {
-            return $b->getUpdatedAt() <=> $a->getUpdatedAt();
-        });
+            $items = $sceneData->getRepository()->findBy(['user' => $id]);
+
+            switch ($sceneData->getSceneType()) {
+                case 'generative_scene':
+                    $scenesG = array_merge($scenesG, $items);
+                    break;
+                case 'data_scene':
+                    $scenesD = array_merge($scenesD, $items);
+                    break;
+                case 'collective_drawing':
+                    $drawings = array_merge($drawings, $items);
+                    break;
+            }
+        }
+
+        usort($scenesG, fn($a, $b) => $b->getUpdatedAt() <=> $a->getUpdatedAt());
+        usort($scenesD, fn($a, $b) => $b->getUpdatedAt() <=> $a->getUpdatedAt());
+        usort($drawings, fn($a, $b) => $b->getUpdatedAt() <=> $a->getUpdatedAt());
 
         $data = [
-            'scenesG' =>  $allScenesG,
-            'sceneD' => $allScenesD,
-            'drawing' => $Drawing,
-        ];
+            'scenesG'  => $scenesG,
+            'sceneD'   => $scenesD,
+            'drawing'  => $drawings,
+        ];    
         
         return $this->render('user/myArtworks.html.twig', [
             'artworks' => $data,
-            'entities' => $entities['entities']
+            'entities' => $entityLabels
         ]);
     } 
 
     #[Route("/myArtworks/delete/{id}/{entity}", name: "deleteArtwork", methods: ["GET", "POST"])]
     public function Delete(
         EntityManagerInterface $entityManager,
-        Scene1Repository $repoG1,
-        Scene2Repository $repoG2,
-        SceneD1Repository $repoD1,
-        SceneD2Repository $repoD2,
-        CollectiveDrawingRepository $repoDrawing,
         $id,
         $entity,
         Request $request
     ): Response
     {
         $currentUser = $this->getUser();
-
-        // TENTER CECI POUR EVITER D'INJECTER TOUT LES REPO COMME DEPENDANCES
-        // $entityClass = "App\\Entity\\" . $entity;
-        // if (!class_exists($entityClass)) {
-        //     throw new \Exception('Invalid entity type');
-        // }
-        // $repo = $this->entityManager->getRepository($entityClass);
-        // $artwork = $repo->find($id);
-
-        switch ($entity) {
-            case 'Scene1':
-                $artwork = $repoG1->find($id);
-                break;
-            case 'SceneD1':
-                $artwork = $repoD1->find($id);
-                break;
-            case 'SceneD2':
-                $artwork = $repoD2->find($id);
-                break;
-            case 'Scene2':
-                $artwork = $repoG2->find($id);
-                break;
-            case 'CollectiveDrawing':
-                $artwork = $repoDrawing->find($id);
-                break;
-            default:
-                throw new NotFoundHttpException('Entity not found');
+        $sceneData = $this->sceneDataFactory->createSceneData($entity);
+        if (!$sceneData){
+            throw new NotFoundHttpException('Entity not found');
         }
+
+        $repo = $sceneData->getRepository();
+        $artwork = $repo->find($id);
 
         if (!$artwork || $artwork->getUser() !== $currentUser) {
             throw new AccessDeniedHttpException('You are not allowed to delete this artwork.');
@@ -235,31 +205,19 @@ class UserController extends AbstractController
     public function Update(
         Request $request, 
         EntityManagerInterface $entityManager, 
-        Scene1Repository $repoG1, 
-        Scene2Repository $repoG2,
-        SceneD2Repository $repoD2, 
-        SceneD1Repository $repoD1, 
-        CollectiveDrawingRepository $repoDrawing,
         $id, 
         $entity
     ): Response
     {
         $currentUser = $this->getUser();
-
-        $entityMappings = [
-            'Scene1' => ['repo' => $repoG1, 'formType' => SaveArtworkG1Type::class],
-            'Scene2' => ['repo' => $repoG2, 'formType' => SaveArtworkG2Type::class],
-            'SceneD1' => ['repo' => $repoD1, 'formType' => SaveArtworkD1Type::class],
-            'SceneD2' => ['repo' => $repoD2, 'formType' => SaveArtworkD2Type::class],
-            'CollectiveDrawing' => ['repo' => $repoDrawing, 'formType' => SaveCollectiveDrawingType::class],
-        ];
-
-        if (!isset($entityMappings[$entity])) {
+        $sceneData = $this->sceneDataFactory->createSceneData($entity);
+        
+        if (!$sceneData) {
             throw new NotFoundHttpException('Entity not found');
         }
 
-        $repo = $entityMappings[$entity]['repo'];
-        $formType = $entityMappings[$entity]['formType'];
+        $repo = $sceneData->getRepository();
+        $formType = $sceneData->getFormType();
         
         $artwork = $repo->find($id);
         if (!$artwork || $artwork->getUser() !== $currentUser) {

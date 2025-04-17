@@ -40,30 +40,35 @@ services:
         arguments:
             $scenesMap:
                 SceneD1:
+                    label: "CO2 Emission Explorer"
                     entityClass: App\Entity\SceneD1
                     formType: App\Form\SaveArtworkD1Type
                     routeName: sceneD1
                     sceneType: data_scene
                     repository: '@App\Repository\SceneD1Repository'
                 SceneD2:
+                    label: "Demographic Artistry"
                     entityClass: App\Entity\SceneD2
                     formType: App\Form\SaveArtworkD2Type
                     routeName: sceneD2
                     sceneType: data_scene
                     repository: '@App\Repository\SceneD2Repository'
                 Scene1:
+                    label: 'Random Line Walkers'
                     entityClass: App\Entity\Scene1
                     formType: App\Form\SaveArtworkG1Type
                     routeName: sceneG1
                     sceneType: generative_scene
                     repository: '@App\Repository\Scene1Repository'
                 Scene2:
+                    label: "Noise Orbit"
                     entityClass: App\Entity\Scene2
                     formType: App\Form\SaveArtworkG2Type
                     routeName: sceneG2
                     sceneType: generative_scene
                     repository: '@App\Repository\Scene2Repository'
                 CollectiveDrawing:
+                    label: "Collective Drawing"
                     entityClass: App\Entity\CollectiveDrawing
                     formType: App\Form\SaveCollectiveDrawingType
                     routeName: collectiveDrawing

@@ -15,21 +15,33 @@ class SceneDataFactory
         $this->scenesMap = $scenesMap;
     }
 
-    public function createSceneData(string $entityClass): ?SceneData
+    /**
+     * Retourne toute la map injectée (clé = nom court, valeur = config)
+     */
+    public function getScenesMap(): array
     {
-        if (!isset($this->scenesMap[$entityClass])) {
+        return $this->scenesMap;
+    }
+
+    /**
+     * Crée l'objet SceneData pour une clé d'entité donnée, ou null si pas supportée
+     */
+    public function createSceneData(string $entityKey): ?SceneData
+    {
+        if (!isset($this->scenesMap[$entityKey])) {
             return null; 
         }
 
         // Récupérer les détails de la scène et créer l'objet SceneData
-        $repoData = $this->scenesMap[$entityClass];
+        $config = $this->scenesMap[$entityKey];
         
         return new SceneData(
-            $repoData['entityClass'],
-            $repoData['formType'],
-            $repoData['routeName'],
-            $repoData['sceneType'],
-            $repoData['repository']
+            $config['label'],
+            $config['entityClass'],
+            $config['formType'],
+            $config['routeName'],
+            $config['sceneType'],
+            $config['repository'],
         );
     }
 }
