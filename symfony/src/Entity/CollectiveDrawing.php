@@ -25,7 +25,7 @@ class CollectiveDrawing extends BaseScene
     #[ORM\ManyToMany(targetEntity: User::class)]
     #[ORM\JoinColumn(name: "collectiveDrawing_id", referencedColumnName: "id", onDelete: "CASCADE")]
     #[ORM\InverseJoinColumn(name: "user_id", referencedColumnName: "id", onDelete: "CASCADE")]
-    #[ORM\JoinTable(name: "user_collectiveDrawing_like")]
+    #[ORM\JoinTable(name: "user_collectivedrawing_like")]
     protected $likes;
     
     // --------- VICH UPLOADER-----------------

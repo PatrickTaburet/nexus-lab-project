@@ -55,7 +55,7 @@ class Scene2 extends BaseScene
     #[ORM\ManyToMany(targetEntity: User::class)]
     #[ORM\JoinColumn(name: "scene2_id", referencedColumnName: "id", onDelete: "CASCADE")]
     #[ORM\InverseJoinColumn(name: "user_id", referencedColumnName: "id", onDelete: "CASCADE")]
-    #[ORM\JoinTable(name: "user_G2artwork_like")]
+    #[ORM\JoinTable(name: "user_g2artwork_like")]
     protected $likes;
 
     // --------- VICH UPLOADER-----------------
