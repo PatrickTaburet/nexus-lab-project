@@ -8,32 +8,34 @@
 {% endblock %}
 
 {% block body %}
-  <h1 class="generativeTitle">Generative Art</h1>
-  <h2>Choose a scene</h2>
-  <div class="scenesContainer">
-      <a href="{{ path('getScene', {'entity': 'Scene1'})}}"><div class="optionContainer buttonGradient">Random Line Walkers</div></a>
-      <a href="{{ path('getScene', {'entity': 'Scene2'})}}"><div class="optionContainer buttonGradient">Noise Orbit</div></a>
-      <a ><div class="optionContainer buttonGradient">Incoming</div></a>
-  </div>
- <div class="bottomContainer">
+<div class="create-global-container">
 
-    {% if (is_granted('ROLE_ARTIST')) %}
-      <div {{ react_component('MyButtonTwig', {"props": {
-                    "myStyle":"createButton",
-                    "to":"/artist/add-new-scene/1",
-                    "children" : "Add scene"
-            }}) }}>
+    <h1 class="generativeTitle">Generative Art</h1>
+      <h2>Choose a scene</h2>
+      <div class="scenesContainer">
+          <a href="{{ path('getScene', {'entity': 'Scene1'})}}"><div class="optionContainer buttonGradient">Random Line Walkers</div></a>
+          <a href="{{ path('getScene', {'entity': 'Scene2'})}}"><div class="optionContainer buttonGradient">Noise Orbit</div></a>
+          <a ><div class="optionContainer buttonGradient">Incoming</div></a>
       </div>
-      {% else %}
-      <div {{ react_component('MyButtonTwig', {"props": {
-                  "myStyle":"artistRoleButton",
-                  "to": app.user ? "/profile/roleRequest" : "/login",
-                  "children" : "Ask for Artist Role"
-          }}) }}>
-    </div>
-      
- {% endif %}
-  </div>
+     <div class="bottomContainer">
 
+        {% if (is_granted('ROLE_ARTIST')) %}
+          <div {{ react_component('MyButtonTwig', {"props": {
+                        "myStyle":"createButton",
+                        "to":"/artist/add-new-scene/1",
+                        "children" : "Add scene"
+                }}) }}>
+          </div>
+          {% else %}
+          <div {{ react_component('MyButtonTwig', {"props": {
+                      "myStyle":"artistRoleButton",
+                      "to": app.user ? "/profile/roleRequest" : "/login",
+                      "children" : "Ask for Artist Role"
+              }}) }}>
+        </div>
+
+     {% endif %}
+      </div>
+</div>
    
 {% endblock %}

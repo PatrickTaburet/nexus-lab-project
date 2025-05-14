@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0"><!--Permet de donner les instructions d'echelle de taille aux navigateur-->
@@ -36,34 +36,36 @@
         {{ include("./partials/_loaderScreen.svg.html.twig") }}
         
     <!-- Main pages content -->
-        <main>
-            {% for message in app.flashes('success')%}
-                <div class="flash-success">
-                    {{message}}
-                </div>      
-            {% endfor %}
-            {# {% for message in app.flashes('error')%}
-                <div class="flash-error">
-                    {{message}}
-                </div>      
-            {% endfor %} #}
-            {% for message in app.flashes('warning')%}
-                <div class="flash-warning">
-                {{message|nl2br }}
-                </div>
-            {% endfor %}
-            
-            {% block body %}
-        
-            
+     <div class="page-wrapper">
+
+         <main>
+                {% for message in app.flashes('success')%}
+                    <div class="flash-success">
+                        {{message}}
+                    </div>
+                {% endfor %}
+                {# {% for message in app.flashes('error')%}
+                    <div class="flash-error">
+                        {{message}}
+                    </div>
+                {% endfor %} #}
+                {% for message in app.flashes('warning')%}
+                    <div class="flash-warning">
+                    {{message|nl2br }}
+                    </div>
+                {% endfor %}
+
+                {% block body %}
+
+
+                {% endblock %}
+            </main>
+
+        <!-- Footer -->
+            {% block footer %}
+               {{ include("./partials/_footer.html.twig") }}
             {% endblock %}
-        </main>
- 
-    <!-- Footer -->
-        {% block footer %}
-           {{ include("./partials/_footer.html.twig") }}
-        {% endblock %}
-   
+     </div>
         {% block javascripts %}
             {{ encore_entry_script_tags('app') }}
             <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>

@@ -16,7 +16,7 @@ class CollectiveDrawing extends BaseScene
     #[ORM\Column]
     private array $data = [];
     
-    // --------- Communs settings -----------------
+    // --------- Commons settings -----------------
     
     #[ORM\ManyToOne(targetEntity: User::class, inversedBy: "collectiveDrawing")]
     #[ORM\JoinColumn(nullable: false)]

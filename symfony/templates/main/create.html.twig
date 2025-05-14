@@ -8,12 +8,14 @@
 {% endblock %}
 
 {% block body %}
+    <div class="create-global-container">
+        <h1>Choose a category</h1>
+        <div class="createContainer">
+            <a href="{{ path('generativeHome')}}"><div class="optionContainer buttonGradient">Generative Art</div></a>
+            <a href="{{ path('dataArtHome')}}"><div class="optionContainer buttonGradient">Data Art Visualization</div></a>
+            <a href="{{ path('collectiveDrawing')}}"><div class="optionContainer buttonGradient">Collectif Drawing</div></a>
+        </div>
+    </div>
 
-  <h1>Choose a category</h1>
-  <div class="createContainer">
-      <a href="{{ path('generativeHome')}}"><div class="optionContainer buttonGradient">Generative Art</div></a>
-      <a href="{{ path('dataArtHome')}}"><div class="optionContainer buttonGradient">Data Art Visualization</div></a>
-      <a href="{{ path('collectiveDrawing')}}"><div class="optionContainer buttonGradient">Collectif Drawing</div></a>
-  </div>
 
 {% endblock %}

@@ -5,7 +5,7 @@ let lines = [];
 let lineSlider;
 
 function setup(){
-    const canvas = createCanvas(windowWidth, windowHeight*2);
+    const canvas = createCanvas(windowWidth, document.body.clientHeight);
     canvas.parent('sketch1');
     canvas.id('myCanvas');
     colorMode(HSB, 360, 100, 100, 1);
@@ -79,7 +79,7 @@ function draw(){
 }
 
 function windowResized() {
-    resizeCanvas(windowWidth, windowHeight*2);
+    resizeCanvas(windowWidth, document.body.clientHeight);
     background(0, 0, 0);
     prevX = mouseX;
     prevY = mouseY;

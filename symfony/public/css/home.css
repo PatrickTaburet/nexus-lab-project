@@ -1,6 +1,7 @@
 main{
   position: relative;
 }
+
 .blackBackground {
   position: absolute;
   top: 0;
@@ -10,12 +11,20 @@ main{
   background-color: black;
   z-index: -2; 
 }
+#sketch1{
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
+}
+
 .homeContainer{
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
 }
+
 .NexusLabImg{
     width: 400px;
     margin-bottom: 80px;   

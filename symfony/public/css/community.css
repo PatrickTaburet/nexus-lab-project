@@ -12,9 +12,10 @@ main{
     font-size: 70px;
     margin: 30px;
 }
+
 .logoImg{
     width: 400px;
-    margin: 70px;
+    margin: auto;
 }
 
 /* 

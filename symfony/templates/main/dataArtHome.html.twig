@@ -8,30 +8,33 @@
 {% endblock %}
 
 {% block body %}
-  <h1>Data Visualization Art</h1>
-  <h2>Choose a scene</h2>
-  <div class="scenesContainer">
-      <a href="{{ path('getScene', {'entity': 'SceneD1'})}}"><div class="optionContainer buttonGradient">CO2 Emissions Explorer</div></a>
-      <a href="{{ path('getScene', {'entity': 'SceneD2'})}}"><div class="optionContainer buttonGradient">Demographic Artistry</div></a>
-      <a ><div class="optionContainer buttonGradient">Incoming</div></a>
-  </div>
- <div class="bottomContainer">
-    {% if (is_granted('ROLE_ARTIST')) %}
-      <div {{ react_component('MyButtonTwig', {"props": {
-                    "myStyle":"createButton",
-                    "to":"/artist/add-new-scene/2",
-                    "children" : "Add scene"
-            }}) }}>
+    <div class="create-global-container">
+
+      <h1>Data Visualization Art</h1>
+      <h2>Choose a scene</h2>
+      <div class="scenesContainer">
+          <a href="{{ path('getScene', {'entity': 'SceneD1'})}}"><div class="optionContainer buttonGradient">CO2 Emissions Explorer</div></a>
+          <a href="{{ path('getScene', {'entity': 'SceneD2'})}}"><div class="optionContainer buttonGradient">Demographic Artistry</div></a>
+          <a ><div class="optionContainer buttonGradient">Incoming</div></a>
       </div>
-      {% else %}
-      <div {{ react_component('MyButtonTwig', {"props": {
-                  "myStyle":"artistRoleButton",
-                  "to": app.user ? "/profile/roleRequest" : "/login",
-                  "children" : "Ask for Artist Role"
-          }}) }}>
+     <div class="bottomContainer">
+        {% if (is_granted('ROLE_ARTIST')) %}
+          <div {{ react_component('MyButtonTwig', {"props": {
+                        "myStyle":"createButton",
+                        "to":"/artist/add-new-scene/2",
+                        "children" : "Add scene"
+                }}) }}>
+          </div>
+          {% else %}
+          <div {{ react_component('MyButtonTwig', {"props": {
+                      "myStyle":"artistRoleButton",
+                      "to": app.user ? "/profile/roleRequest" : "/login",
+                      "children" : "Ask for Artist Role"
+              }}) }}>
+        </div>
+        {% endif %}
+      </div>
     </div>
-    {% endif %}
-  </div>
 
    
 {% endblock %}
