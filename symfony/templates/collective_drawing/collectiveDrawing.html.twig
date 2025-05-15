@@ -18,12 +18,21 @@
     <div class="sandbox-container">
 
         {# Multiplayer panel #}
+
         <div {{ react_component('MultiplayerPanel', {"props": {"user": app.user}}) }}></div>
          
 
         {# Canvas #}
 
         <div class="fabric-container">
+
+            {% if scene %}
+                <p class="authorBanner">From the artwork of<span class="pseudo">{{scene.user.pseudo}}</span></p>
+                <script>
+                    window.existingCanvasState = {{ scene.data|json_encode|raw }};
+                </script>
+            {% endif %}
+
             <div class="canvas-parent">
                 <canvas id="drawingCanvas"></canvas>
                 <canvas id="cursorCanvas"></canvas>

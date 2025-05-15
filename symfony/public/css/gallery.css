@@ -305,7 +305,12 @@ p {
     padding: 7px;
     border-radius: 10px;
 }
-.generative:hover, .data:hover{
+.drawing{
+    background-color: var(--var-main-bg);
+    padding: 7px;
+    border-radius: 10px;
+}
+.generative:hover, .data:hover, .drawing:hover{
     opacity: 0.5;
 }
 /* Image details */

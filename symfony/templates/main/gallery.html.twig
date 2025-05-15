@@ -13,12 +13,12 @@
     <div class="galleryHeader">
         <div class="sideBarBoxLeft">
             <div class="colorBarLeft"></div>
-            <img class="sideBarLeft" src={{asset("/images/design/sideBarLeft.png")}} alt="Style side bar left">
+            <img class="sideBarLeft" src="{{asset('/images/design/sideBarLeft.png')}}" alt="Style-side-bar-left">
         </div>
         <h1>Welcome to the member's artwork gallery</h1>
         <div class="sideBarBoxRight">
             <div class="colorBarRight"></div>
-            <img class="sideBarRight" src={{asset("/images/design/sideBarRight.png")}} alt="Style side bar right">
+            <img class="sideBarRight" src="{{asset('/images/design/sideBarRight.png')}}" alt="Style-side-bar-right">
         </div>
     </div>
 
@@ -26,7 +26,7 @@
 
     <div class="sortingForm">
         <div class="formContainer">
-           <img class="sortingSquareImg" src={{asset("/images/design/square2.png")}} alt="Stlye sorting selection square">
+           <img class="sortingSquareImg" src="{{asset('/images/design/square2.png')}}" alt="Style-sorting-selection-square">
             {{ form_start(form) }}
                 <div class="form-group">
                     {{ form_label(form.sortSelect, null, { "label_attr": {"class" : "formLabel" } })}}
@@ -71,6 +71,8 @@
                                     <a href="{{ path('generativeHome')}}"><span class="generative">Generative Art</span></a>
                                 {% elseif entityName == "SceneD1" or entityName == "SceneD2"  %}
                                     <a href="{{ path('dataArtHome')}}"><span class="data">Data Art</span></a>
+                                {% elseif entityName == "CollectiveDrawing" %}
+                                    <a href="{{ path('collectiveDrawing')}}"><span class="drawing">Drawing</span></a>
                                 {% endif %}
                             </div>
                             <div {{ react_component('Like', {"props": {

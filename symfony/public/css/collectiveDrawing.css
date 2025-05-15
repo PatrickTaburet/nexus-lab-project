@@ -35,7 +35,17 @@ main{
     font-weight: 600;
     z-index: 2;
 }
-  
+.authorBanner{
+    font-size: 18px;
+    font-weight: 600;
+    color: #0179a5;
+    margin-left: 5vw;
+    margin-bottom: 15px;
+}
+.pseudo{
+    color: #00DDEB;
+    margin-left: 7px;
+}
 .mainContainer{
     display: flex;
     justify-content: center;

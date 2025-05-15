@@ -107,7 +107,9 @@ class MainController extends AbstractController
     #[Route("/create/collective-drawing", name: "collectiveDrawing")]
     public function collectiveDrawing(): Response
     {
+        $scene = null;
         return $this->render('collective_drawing/collectiveDrawing.html.twig', [
+            'scene' => $scene,
         ]);   
     }
 

@@ -10,7 +10,8 @@ document.addEventListener("DOMContentLoaded", function () {
       console.error("Fabric.js is not loaded!");
       return;
   }
-      
+
+
   // --- Canvas init
 
   const canvas = new fabric.Canvas("drawingCanvas", {
@@ -19,10 +20,23 @@ document.addEventListener("DOMContentLoaded", function () {
     isDrawingMode: false
   });
   canvas.backgroundColor = 'black';
-  canvas.renderAll();
-  const cursorCanvas = document.getElementById("cursorCanvas");
 
-  
+  // Preload if reopen previous canvas from db
+  if (window.existingCanvasState) {
+    canvas
+        .loadFromJSON(window.existingCanvasState)
+        .then(() => {
+          canvas.renderAll();
+          canvas.backgroundColor = window.existingCanvasState.background ? window.existingCanvasState.background : "black";
+          saveState(canvas);
+        })
+        .catch(err => console.error('Error loadFromJSON:', err));
+  } else {
+    canvas.renderAll();
+    saveState(canvas);
+  }
+
+  const cursorCanvas = document.getElementById("cursorCanvas");
   const ctx = cursorCanvas.getContext("2d");
   cursorCanvas.width = canvas.width;
   cursorCanvas.height = canvas.height;
@@ -32,7 +46,7 @@ document.addEventListener("DOMContentLoaded", function () {
   setupBrushMode(canvas)
 
   // Save the initial state
-  saveState(canvas);
+  // saveState(canvas);
   setupSockets(canvas, cursorCanvas);
 
 
