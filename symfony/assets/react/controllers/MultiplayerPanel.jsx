@@ -1,8 +1,9 @@
 import React, { useState, useEffect, useRef } from 'react';
-import socket from '../../../public/js/collective_drawing/socketSingleton.js';
+// import socket from '../../../public/js/collective_drawing/socketSingleton.js';
 import styles from "/assets/styles/MultiplayerPanel.module.css?module";
 
 const MultiplayerPanel = () => {
+  const socket = window.socket;
   const [users, setUsers] = useState([]);
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState("");
@@ -10,7 +11,7 @@ const MultiplayerPanel = () => {
 
   useEffect(() => {
     console.log("useEffect react - mounting MultiplayerPanel");
-    socket.emit("join_session", { sessionId: "session1", username: window.currentUser.username, userId: window.currentUser.id });
+    // socket.emit("join_session", { sessionId: "session1", username: window.currentUser.username, userId: window.currentUser.id });
 
     socket.on("update_users", (userList) => {
         console.log("userList react");

@@ -3,8 +3,9 @@
 // if (!socket) {
 //   console.warn("socket.io is not loaded on this page.");
 // }
-import socket from './socketSingleton.js';
+// import socket from './socketSingleton.js';
 
+const socket = window.socket;
 const sessionId = "session1";
 const cursors = {}; 
 const currentUser = window.currentUser; 
@@ -13,7 +14,7 @@ const currentUser = window.currentUser;
 
 export function setupSockets(drawingCanvas, cursorCanvas) {
     // Join a session
-    socket.emit("join_session", { sessionId, username: currentUser.username, userId: currentUser.id });
+    // socket.emit("join_session", { sessionId, username: currentUser.username, userId: currentUser.id });
 
     // Load an existing drawing
     socket.on("load_canvas", (canvasData) => {
