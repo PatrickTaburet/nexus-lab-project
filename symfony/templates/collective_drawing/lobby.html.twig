@@ -1,0 +1,15 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Collective Drawing{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('css/lobby.css') }}">
+{% endblock %}
+
+{% block body %}
+    <div id="lobby">
+        <div {{ react_component('Lobby', {"props": {"user": app.user}}) }}></div>
+    </div>
+{% endblock %}
+

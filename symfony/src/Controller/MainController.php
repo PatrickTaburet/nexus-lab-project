@@ -104,12 +104,10 @@ class MainController extends AbstractController
         ]);
     }
 
-    #[Route("/create/collective-drawing", name: "collectiveDrawing")]
+    #[Route("/create/collective-drawing-lobby", name: "collectiveDrawingLobby")]
     public function collectiveDrawing(): Response
     {
-        $scene = null;
-        return $this->render('collective_drawing/collectiveDrawing.html.twig', [
-            'scene' => $scene,
+        return $this->render('collective_drawing/lobby.html.twig', [
         ]);   
     }
 

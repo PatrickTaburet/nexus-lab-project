@@ -11,6 +11,15 @@ use Symfony\Component\HttpFoundation\Request;
 
 class CollectiveDrawingController extends BaseSceneController
 {
+    #[Route("/create/collective-drawing", name: "collectiveDrawingLobby")]
+    public function collectiveDrawing(): Response
+    {
+        $scene = null;
+        return $this->render('collective_drawing/collectiveDrawing.html.twig', [
+            'scene' => $scene,
+        ]);
+    }
+
     #[Route('/collective-drawing/saveDrawing', name: 'send_collective_drawing')]
     public function saveDrawing(Request $request): Response
     {

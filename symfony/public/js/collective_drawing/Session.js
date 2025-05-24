@@ -1,15 +1,15 @@
 const usersColors = ['#FF0000', '#00FF00', '#0000FF', '#FFFF00', '#FF00FF', '#00FFFF'];
 
 class Session {
-  constructor(sessionId) {
+    constructor(sessionId) {
     this.sessionId = sessionId;
     this.canvasData = null;
     this.users = {};
     this.chatMessages = [];
-  }
+    }
 
-  // Add or update user in the session
-  addUser(userId, socketId, username) {
+    // Add or update user in the session
+    addUser(userId, socketId, username) {
       // If user already exist, update his socket id
         if (this.users[userId]) {
             this.users[userId].socketId = socketId;
@@ -27,28 +27,32 @@ class Session {
                 online: true
             };
         }
-  }
-
-  // Marks a user as offline (instead of deleting him)
-  removeUser(userId) {
-    if (this.users[userId]) {
-      this.users[userId].online = false;
     }
-  }
 
-  // Update canvas state
-  updateCanvas(data) {
-    this.canvasData = data;
-  }
+    // Marks a user as offline (instead of deleting him)
+    removeUser(userId) {
+        if (this.users[userId]) {
+          this.users[userId].online = false;
+        }
+    }
+
+    // Update canvas state
+    updateCanvas(data) {
+        this.canvasData = data;
+    }
 
   // Returns users list formatted for broadcast
-  getUserList() {
-    return Object.values(this.users).map(user => ({
-      username: user.username,
-      userColor: user.color,
-      online: user.online
-    }));
-  }
+    getUserList() {
+        return Object.values(this.users).map(user => ({
+            username: user.username,
+            userColor: user.color,
+            online: user.online
+        }));
+    }
+    addChat(message) {
+        this.chatMessages.push(message);
+    }
+
 }
 
 module.exports = Session;

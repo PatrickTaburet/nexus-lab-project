@@ -1,7 +1,8 @@
-const Session = require('./public/js/collective_drawing/Session');
+// const Session = require('../public/js/collective_drawing/Session');
 const express = require("express");
 const http = require("http");
 const { Server } = require("socket.io");
+const Room = require('./Room');
 const cors = require("cors");
 const { log } = require("console");
 
@@ -16,10 +17,63 @@ const io = new Server(server, {
     maxHttpBufferSize: 10e6,
 });
 
-const sessions = {}; // to stock drawings and users info in session instances
+const rooms = {};
+
+function getOrCreateRoom(roomId, opts = {}) {
+    if (!rooms[roomId]) rooms[roomId] = new Room(roomId, opts);
+    return rooms[roomId];
+}
 
 io.on("connection", (socket) => {
     console.log("New user connected:", socket.id);
+
+    socket.emit("room_list", Object.values(rooms).map(r => r.serializeLobby()));
+
+    socket.on("create_room", ({ roomId, name, maxPlayers }) => {
+        const room = getOrCreateRoom(roomId, { name, maxPlayers });
+        io.emit("room_list", Object.values(rooms).map(r => r.serializeLobby()));
+    });
+
+    socket.on("join_room", ({ roomId, userId, username }) => {
+        const room = getOrCreateRoom(roomId);
+        if (!room.canJoin()) {
+            return socket.emit("error", "Impossible to join this room");
+        }
+        socket.join(roomId);
+        socket.userId = userId;
+        room.addUser(userId, socket.id, username);
+
+        // Lobby update
+        io.emit("room_list", Object.values(rooms).map(r => r.serializeLobby()));
+        io.to(roomId).emit("room_update", room.serializeLobby());
+
+        // Send session state (canvas + chat) to new user
+        socket.emit("session_state", room.serializeSession());
+    });
+
+    socket.on("leave_room", ({ roomId, userId }) => {
+        const room = rooms[roomId];
+        if (!room) return;
+        room.removeUser(userId);
+        socket.leave(roomId);
+
+        if (room.currentCount === 0) {
+            delete rooms[roomId];
+        } else {
+            io.to(roomId).emit("room_update", room.serializeLobby());
+        }
+        io.emit("room_list", Object.values(rooms).map(r => r.serializeLobby()));
+    });
+
+    socket.on("start_room", ({ roomId }) => {
+        const room = rooms[roomId];
+        if (!room) return;
+        room.start();
+        io.to(roomId).emit("room_started", { roomId });
+        io.emit("room_list", Object.values(rooms).map(r => r.serializeLobby()));
+    });
+
+
 
     socket.on("join_session", ({ sessionId, username, userId }) => {
         socket.join(sessionId);
