@@ -11,12 +11,13 @@ use Symfony\Component\HttpFoundation\Request;
 
 class CollectiveDrawingController extends BaseSceneController
 {
-    #[Route("/create/collective-drawing", name: "collectiveDrawingLobby")]
-    public function collectiveDrawing(): Response
+    #[Route("/create/collective-drawing/{roomId}", name: 'collective_drawing_room')]
+    public function collectiveDrawing(string $roomId): Response
     {
         $scene = null;
         return $this->render('collective_drawing/collectiveDrawing.html.twig', [
             'scene' => $scene,
+            'roomId' => $roomId
         ]);
     }
 

@@ -1,10 +1,11 @@
 const Session = require('../public/js/collective_drawing/Session');
 
 class Room {
-    constructor(roomId, { name = roomId, maxPlayers = 5 } = {}) {
+    constructor(roomId, { name = roomId, maxPlayers = 5, creator = {} } = {}) {
         this.roomId = roomId;
         this.name = name;
         this.maxPlayers = maxPlayers;
+        this.creator = creator;
         this.hasStarted = false;
         this.session = new Session(roomId);
     }
@@ -39,7 +40,8 @@ class Room {
             name: this.name,
             currentPlayers: this.currentCount,
             maxPlayers: this.maxPlayers,
-            hasStarted: this.hasStarted
+            hasStarted: this.hasStarted,
+            creator: this.creator
         };
     }
 

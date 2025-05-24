@@ -11,5 +11,14 @@
     <div id="lobby">
         <div {{ react_component('Lobby', {"props": {"user": app.user}}) }}></div>
     </div>
+    <script>
+        window.currentUser = {
+            id: {{ app.user.id|json_encode|raw }},
+            username: {{ app.user.pseudo|json_encode|raw }}
+        };
+    </script>
+    <script src="https://cdn.socket.io/4.5.4/socket.io.min.js"></script>
+    <script src="{{ asset('js/collective_drawing/socketSingleton.js') }}"></script>
+
 {% endblock %}
 
