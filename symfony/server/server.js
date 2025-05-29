@@ -57,12 +57,29 @@ io.on("connection", (socket) => {
         room.addUser(userId, socket.id, username);
 
         // Lobby update
-        io.emit("room_list", Object.values(rooms).map(r => r.serializeLobby()));
         io.to(roomId).emit("room_update", room.serializeLobby());
+        io.to(roomId).emit("update_users", room.session.getUserList());
 
-        // socket.emit("join_success", { roomId, isFromLobby });
+        // Send actual drawing if exists
+        socket.emit("load_canvas", room.session.canvasData);
+
+        // Send other users' positions (and info) to the new user
+        Object.keys(room.session.users).forEach(([otherId, user])    => {
+            if (otherId  !== String(userId)) {
+                socket.emit("cursor_move", {
+                    sessionId: roomId,
+                    pointer: {
+                        ...user.pointer,
+                        userColor: user.color,
+                        username: user.username
+                    }
+                });
+            }
+        });
         // Send session state (canvas + chat) to new user
         socket.emit("session_state", room.serializeSession());
+        io.emit("room_list", Object.values(rooms).map(r => r.serializeLobby()));
+
     });
 
     socket.on("leave_room", ({ roomId, userId }) => {
@@ -88,44 +105,43 @@ io.on("connection", (socket) => {
     });
 
 
-
-    socket.on("join_session", ({ sessionId, username, userId }) => {
-
-        const room = rooms[sessionId];
-        if (!room) {
-            return socket.emit("error", "Session not found.");
-        }
-
-        const session = room.session;
-        socket.join(sessionId);
-        socket.userId = userId;
-
-        console.log(`${username} (${socket.id}) joined the session ${sessionId}`);
-
-        // Ajout de l'utilisateur dans la session
-        session.addUser(userId, socket.id, username);
-
-        // Envoi des utilisateurs mis à jour à tout le monde
-        io.to(sessionId).emit("update_users", session.getUserList());
-
-        // Send actual drawing if exists
-        socket.emit("load_canvas", session.canvasData);
-
-        // Send other users' positions (and info) to the new user
-        Object.keys(session.users).forEach(otherUserId   => {
-            if (otherUserId  !== userId) {
-                const user = session.users[otherUserId];
-                socket.emit("cursor_move", {
-                    sessionId,
-                    pointer: {
-                        ...user.pointer,
-                        userColor: user.color,
-                        username: user.username
-                    }
-                });
-            }
-        });
-    });
+    // socket.on("join_session", ({ sessionId, username, userId }) => {
+    //
+    //     const room = rooms[sessionId];
+    //     if (!room) {
+    //         return socket.emit("error", "Session not found.");
+    //     }
+    //
+    //     const session = room.session;
+    //     socket.join(sessionId);
+    //     socket.userId = userId;
+    //
+    //     console.log(`${username} (${socket.id}) joined the session ${sessionId}`);
+    //
+    //     // Ajout de l'utilisateur dans la session
+    //     session.addUser(userId, socket.id, username);
+    //
+    //     // Envoi des utilisateurs mis à jour à tout le monde
+    //     io.to(sessionId).emit("update_users", session.getUserList());
+    //
+    //     // Send actual drawing if exists
+    //     socket.emit("load_canvas", session.canvasData);
+    //
+    //     // Send other users' positions (and info) to the new user
+    //     Object.keys(session.users).forEach(otherUserId   => {
+    //         if (otherUserId  !== userId) {
+    //             const user = session.users[otherUserId];
+    //             socket.emit("cursor_move", {
+    //                 sessionId,
+    //                 pointer: {
+    //                     ...user.pointer,
+    //                     userColor: user.color,
+    //                     username: user.username
+    //                 }
+    //             });
+    //         }
+    //     });
+    // });
 
     // User cursor tracking
     socket.on("cursor_move", ({ sessionId, userId, pointer }) => {

@@ -8,6 +8,21 @@
 {% endblock %}
 
 {% block body %}
+<script>
+    window.currentUser = {
+        id: {{ app.user.id|json_encode|raw }},
+        username: {{ app.user.pseudo|json_encode|raw }}
+    };
+    window.roomId = {{ roomId|json_encode|raw }};
+</script>
+
+{# Socket.IO et singleton #}
+<script src="https://cdn.socket.io/4.5.4/socket.io.min.js"></script>
+<script src="{{ asset('js/collective_drawing/socketSingleton.js') }}"></script>
+
+{# Fabric & main module #}
+<script src="https://cdn.jsdelivr.net/npm/fabric@latest/dist/index.min.js"></script>
+<script defer type="module" src="{{ asset('js/collective_drawing/mainFabricModule.js') }}"></script>
 
 <div class="headerTitle">
     <img class="titleImg" src={{ asset("/images/design/title3.png")}} alt="Style element title square">
@@ -149,9 +164,5 @@
         </div>        
     </div>
 <div>
-
-<script src="https://cdn.jsdelivr.net/npm/fabric@latest/dist/index.min.js"></script>
-<script defer type="module" src="{{ asset('js/collective_drawing/mainFabricModule.js') }}" ></script>
-
 
 {% endblock %}

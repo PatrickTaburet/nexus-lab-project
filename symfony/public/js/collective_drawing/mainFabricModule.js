@@ -11,7 +11,6 @@ document.addEventListener("DOMContentLoaded", function () {
       return;
   }
 
-
   // --- Canvas init
 
   const canvas = new fabric.Canvas("drawingCanvas", {

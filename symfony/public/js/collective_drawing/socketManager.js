@@ -1,4 +1,6 @@
 const socket = window.socket;
+const roomId   = window.roomId;
+
 // Get session id
 const urlParts = window.location.pathname.split("/");
 const sessionId = urlParts[urlParts.length - 1];
@@ -8,10 +10,10 @@ console.log("socket manager");
 console.log(socket);
 export function setupSockets(drawingCanvas, cursorCanvas) {
     // Join a session
-    socket.emit("join_session", {
-        sessionId,
-        username: currentUser.username,
-        userId: currentUser.id
+    socket.emit("join_room", {
+        roomId,
+        userId:   currentUser.id,
+        username: currentUser.username
     });
 
     // Load an existing drawing
