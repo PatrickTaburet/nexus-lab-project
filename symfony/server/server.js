@@ -28,6 +28,10 @@ io.on("connection", (socket) => {
 
     socket.emit("room_list", Object.values(rooms).map(r => r.serializeLobby()));
 
+    socket.on('get_room_list', () => {
+        socket.emit('room_list', Object.values(rooms).map(r => r.serializeLobby()));
+    });
+
     socket.on("create_room", ({ roomId, name, maxPlayers, userId, username }) => {
         const room = getOrCreateRoom(roomId, {
             name,
@@ -64,10 +68,10 @@ io.on("connection", (socket) => {
         socket.emit("load_canvas", room.session.canvasData);
 
         // Send other users' positions (and info) to the new user
-        Object.keys(room.session.users).forEach(([otherId, user])    => {
-            if (otherId  !== String(userId)) {
+        Object.entries(room.session.users).forEach(([otherId, user])=> {
+            if (String(otherId)  !== String(userId)) {
                 socket.emit("cursor_move", {
-                    sessionId: roomId,
+                    roomId: roomId,
                     pointer: {
                         ...user.pointer,
                         userColor: user.color,
@@ -79,7 +83,6 @@ io.on("connection", (socket) => {
         // Send session state (canvas + chat) to new user
         socket.emit("session_state", room.serializeSession());
         io.emit("room_list", Object.values(rooms).map(r => r.serializeLobby()));
-
     });
 
     socket.on("leave_room", ({ roomId, userId }) => {
@@ -144,16 +147,16 @@ io.on("connection", (socket) => {
     // });
 
     // User cursor tracking
-    socket.on("cursor_move", ({ sessionId, userId, pointer }) => {
-        const room = rooms[sessionId];
+    socket.on("cursor_move", ({ roomId, userId, pointer }) => {
+        const room = rooms[roomId];
         if (!room || !room.session.users[userId]) return;
 
         // Update the cursor position for this user in the session
         room.session.users[userId].pointer = pointer;
 
         // Broadcast the new cursor position to other users in the session
-        socket.to(sessionId).emit("cursor_move", {
-            sessionId,
+        socket.to(roomId).emit("cursor_move", {
+            roomId,
             pointer: {
                 ...pointer,
                 userColor: room.session.users[userId].color,
@@ -163,14 +166,14 @@ io.on("connection", (socket) => {
     });
 
     // Receive a drawing and broadcast it to the session
-    socket.on("draw", ({ sessionId, data }) => {
-        const room = rooms[sessionId];
+    socket.on("draw", ({ roomId, data }) => {
+        const room = rooms[roomId];
         if (!room) return;
-        // console.log(sessions[sessionId] );
+        // console.log(sessions[roomId] );
         //  Store the canvas state
         // if (data.canvasData && data.canvasData.objects && data.canvasData.objects.length > 0) { // TODO : If first player disconnect, clear the session, else keep it intact
         room.session.updateCanvas(data.canvasData);
-        socket.to(sessionId).emit("draw", { canvasData: data.canvasData }); // Send to others
+        socket.to(roomId).emit("draw", { canvasData: data.canvasData }); // Send to others
         // }
     });
 
@@ -182,7 +185,7 @@ io.on("connection", (socket) => {
             const session = room.session;
 
             if (session.users[socket.userId]){
-                // delete sessions[sessionId].users[socket.userId];
+                // delete sessions[roomId].users[socket.userId];
                 session.removeUser(socket.userId);
                 if (room.currentCount === 0) {
                     delete rooms[roomId]; // optionnel : suppression de la room vide
@@ -194,8 +197,8 @@ io.on("connection", (socket) => {
         }
     });
 
-    socket.on("get_users", ({ sessionId }) => {
-        const room = rooms[sessionId];
+    socket.on("get_users", ({ roomId }) => {
+        const room = rooms[roomId];
         if (room) {
             socket.emit("update_users", room.session.getUserList());
         } else {
@@ -203,16 +206,13 @@ io.on("connection", (socket) => {
         }
     });
 
-    socket.on("send_chat", ({sessionId, message, username, userId, userColor}) => {
-        const room = rooms[sessionId];
+    socket.on("send_chat", ({roomId, message, username, userId, userColor}) => {
+        const room = rooms[roomId];
         if (!room) return;
-
         const chatMessage = { username, message, userColor };
-        if (!room.session.chatMessages) {
-            room.session.chatMessages = [];
-        }
-        room.session.chatMessages.push(chatMessage);
-        io.to(sessionId).emit("update_chat", room.session.chatMessages);
+        console.log(chatMessage);
+        room.addChat(chatMessage);
+        io.to(roomId).emit("update_chat", room.session.chatMessages);
     });
     
 });

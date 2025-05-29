@@ -2,8 +2,8 @@ const socket = window.socket;
 const roomId   = window.roomId;
 
 // Get session id
-const urlParts = window.location.pathname.split("/");
-const sessionId = urlParts[urlParts.length - 1];
+// const urlParts = window.location.pathname.split("/");
+// const sessionId = urlParts[urlParts.length - 1];
 const cursors = {};
 const currentUser = window.currentUser;
 console.log("socket manager");
@@ -53,7 +53,7 @@ export function setupSockets(drawingCanvas, cursorCanvas) {
 
 export function sendCanvasUpdate(canvas) {
     const data = { canvasData: canvas.toJSON() };
-    socket.emit("draw", { sessionId, data });
+    socket.emit("draw", { roomId, data });
 }
 
 function trackCursorMovement(canvas) {
@@ -68,7 +68,7 @@ function trackCursorMovement(canvas) {
         };
 
         // Send position to others
-        socket.emit("cursor_move", { sessionId, userId: currentUser.id, pointer });
+        socket.emit("cursor_move", { roomId, userId: currentUser.id, pointer });
     });
 
     document.addEventListener('mousedown', () => { isClicking = true; });

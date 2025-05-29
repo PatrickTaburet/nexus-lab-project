@@ -30,6 +30,8 @@ const Lobby = () => {
             // redirection vers le canvas
             window.location = `/create/collective-drawing/${roomId}`;
         });
+        socket.emit("get_room_list");
+
         return () => {
             socket.off("room_list");
             socket.off("room_update");

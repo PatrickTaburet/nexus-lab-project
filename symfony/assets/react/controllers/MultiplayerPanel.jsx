@@ -4,6 +4,7 @@ import styles from "/assets/styles/MultiplayerPanel.module.css?module";
 
 const MultiplayerPanel = () => {
   const socket = window.socket;
+  const roomId = window.roomId;
   const [users, setUsers] = useState([]);
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState("");
@@ -11,8 +12,11 @@ const MultiplayerPanel = () => {
 
   useEffect(() => {
     console.log("useEffect react - mounting MultiplayerPanel");
-    // socket.emit("join_session", { sessionId: "session1", username: window.currentUser.username, userId: window.currentUser.id });
-
+    // socket.emit("join_session", { sessionId: "roomId", username: window.currentUser.username, userId: window.currentUser.id });
+    socket.on("session_state", ({ users, chatMessages }) => {
+      setUsers(users);
+      setMessages(chatMessages);
+    });
     socket.on("update_users", (userList) => {
         console.log("userList react");
         console.log(userList);
@@ -22,7 +26,7 @@ const MultiplayerPanel = () => {
       console.log("chat messages received", chatMessages);
       setMessages(chatMessages);
     });
-    socket.emit("get_users", { sessionId: "session1" });
+    socket.emit("get_users", { roomId });
     return () => {
       socket.off("update_users");
     };
@@ -40,7 +44,7 @@ const MultiplayerPanel = () => {
     e.preventDefault();
     if (newMessage.trim() === "") return;
     socket.emit("send_chat", {
-      sessionId: "session1",
+      roomId: roomId,
       message: newMessage,
       username: window.currentUser.username,
       userId: window.currentUser.id,
