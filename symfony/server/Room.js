@@ -1,4 +1,4 @@
-const Session = require('../public/js/collective_drawing/Session');
+const Session = require('./Session');
 
 class Room {
     constructor(roomId, { name = roomId, maxPlayers = 5, creator = {} } = {}) {
@@ -12,12 +12,13 @@ class Room {
     get currentCount() {
         return Object.keys(this.session.users).length;
     }
-    canJoin() {
-        return !this.hasStarted && this.currentCount < this.maxPlayers;
+    canJoin(userId) {
+        const alreadyInRoom = !!this.session.users[userId];
+        return alreadyInRoom || (!this.hasStarted && this.currentCount < this.maxPlayers);
     }
 
     addUser(userId, socketId, username) {
-        if (!this.canJoin()) throw new Error('Room full or already started');
+        if (!this.canJoin(userId)) throw new Error('Room full or already started');
         this.session.addUser(userId, socketId, username)
     }
     removeUser(userId) {

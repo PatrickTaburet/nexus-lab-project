@@ -10,7 +10,7 @@ const server = http.createServer(app);
 
 const io = new Server(server, {
     cors: {
-        origin: "*", 
+        origin: "*",
         methods: ["GET", "POST"],
     },
     maxHttpBufferSize: 10e6,
@@ -45,16 +45,16 @@ io.on("connection", (socket) => {
         socket.userId = userId;
         socket.join(roomId);
         room.addUser(userId, socket.id, username);
-        // room.creator = userId;
         io.emit("room_list", Object.values(rooms).map(r => r.serializeLobby()));
         io.to(roomId).emit("room_update", room.serializeLobby());
-        socket.emit("session_state", room.serializeSession());
+        // socket.emit("session_state", room.serializeSession());
     });
 
     socket.on("join_room", ({ roomId, userId, username }) => {
+        console.log('join room', roomId, userId, username);
         const room = getOrCreateRoom(roomId);
-        if (!room.canJoin()) {
-            return socket.emit("error", "Impossible to join this room");
+        if (!room.canJoin(userId)) {
+            return console.log("ERROR - IMPOSSIBLE TO JOIN ROOM");
         }
         socket.join(roomId);
         socket.userId = userId;
@@ -68,8 +68,8 @@ io.on("connection", (socket) => {
         socket.emit("load_canvas", room.session.canvasData);
 
         // Send other users' positions (and info) to the new user
-        Object.entries(room.session.users).forEach(([otherId, user])=> {
-            if (String(otherId)  !== String(userId)) {
+        Object.entries(room.session.users).forEach(([otherId, user]) => {
+            if (String(otherId) !== String(userId)) {
                 socket.emit("cursor_move", {
                     roomId: roomId,
                     pointer: {
@@ -184,7 +184,7 @@ io.on("connection", (socket) => {
             const room = rooms[roomId];
             const session = room.session;
 
-            if (session.users[socket.userId]){
+            if (session.users[socket.userId]) {
                 // delete sessions[roomId].users[socket.userId];
                 session.removeUser(socket.userId);
                 if (room.currentCount === 0) {
@@ -205,16 +205,28 @@ io.on("connection", (socket) => {
             socket.emit("update_users", []);
         }
     });
-
-    socket.on("send_chat", ({roomId, message, username, userId, userColor}) => {
-        const room = rooms[roomId];
+    // socket.on("get_session_state", ({ roomId }) => {
+    //     const room = rooms[roomId];
+    //     if (!room) {
+    //         socket.emit("session_state", {
+    //             users: [],
+    //             chatMessages: [],
+    //             canvasData: null
+    //         });
+    //     } else {
+    //         console.log("get_session_state")
+    //         console.log(room.serializeSession());
+    //         socket.emit("session_state", room.serializeSession());
+    //     }
+    // });
+    socket.on("send_chat", ({ roomId, message, username, userId, userColor }) => {
+        const room = rooms[roomId]
         if (!room) return;
         const chatMessage = { username, message, userColor };
-        console.log(chatMessage);
         room.addChat(chatMessage);
         io.to(roomId).emit("update_chat", room.session.chatMessages);
     });
-    
+
 });
 
 const PORT = 3001;

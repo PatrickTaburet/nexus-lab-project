@@ -2,18 +2,19 @@ const usersColors = ['#FF0000', '#00FF00', '#0000FF', '#FFFF00', '#FF00FF', '#00
 
 class Session {
     constructor(sessionId) {
-    this.sessionId = sessionId;
-    this.canvasData = null;
-    this.users = {};
-    this.chatMessages = [];
+        this.sessionId = sessionId;
+        this.canvasData = null;
+        this.users = {};
+        this.chatMessages = [];
     }
 
     // Add or update user in the session
     addUser(userId, socketId, username) {
-      // If user already exist, update his socket id
+        // If user already exist, update his socket id
         if (this.users[userId]) {
             this.users[userId].socketId = socketId;
             this.users[userId].online = true;
+            console.log("2222", this.users);
         } else {
             // Else, add user and asign him a color
             const userCount = Object.keys(this.users).length;
@@ -32,7 +33,7 @@ class Session {
     // Marks a user as offline (instead of deleting him)
     removeUser(userId) {
         if (this.users[userId]) {
-          this.users[userId].online = false;
+            this.users[userId].online = false;
         }
     }
 
@@ -41,15 +42,16 @@ class Session {
         this.canvasData = data;
     }
 
-  // Returns users list formatted for broadcast
+    // Returns users list formatted for broadcast
     getUserList() {
         return Object.values(this.users).map(user => ({
             username: user.username,
-            userColor: user.color,
+            color: user.color,
             online: user.online
         }));
     }
     addChat(message) {
+        console.log("session", message, this.chatMessages);
         this.chatMessages.push(message);
     }
 

@@ -48,8 +48,6 @@ document.addEventListener("DOMContentLoaded", function () {
   // saveState(canvas);
   setupSockets(canvas, cursorCanvas);
 
-
-
   // Delete
   let deleteButton = document.getElementById("deleteButton");
 

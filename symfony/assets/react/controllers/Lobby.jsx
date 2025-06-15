@@ -51,7 +51,7 @@ const Lobby = () => {
     }
 
     function handleJoin(roomId) {
-        console.log("hendlejoin - front")
+        console.log("handlejoin - front")
         socket.emit("join_room", {
             roomId,
             userId: window.currentUser.id,
