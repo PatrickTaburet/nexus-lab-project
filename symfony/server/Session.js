@@ -32,9 +32,10 @@ class Session {
 
     // Marks a user as offline (instead of deleting him)
     removeUser(userId) {
-        if (this.users[userId]) {
-            this.users[userId].online = false;
-        }
+        delete this.users[userId];
+        // if (this.users[userId]) {
+        //     this.users[userId].online = false;
+        // }
     }
 
     // Update canvas state

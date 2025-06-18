@@ -3,9 +3,9 @@ const Session = require('./Session');
 class Room {
     constructor(roomId, { name = roomId, maxPlayers = 5, creator = {} } = {}) {
         this.roomId = roomId;
-        this.name = name;
+        this.name = name || roomId;
         this.maxPlayers = maxPlayers;
-        this.creator = creator;
+        this.creator = creator || {};
         this.hasStarted = false;
         this.session = new Session(roomId);
     }
@@ -50,7 +50,8 @@ class Room {
         return {
             canvasData: this.session.canvasData,
             chatMessages: this.session.chatMessages,
-            users: this.session.getUserList()
+            users: this.session.getUserList(),
+            creator: this.session.creator
         };
     }
 }

@@ -9,6 +9,7 @@ const MultiplayerPanel = () => {
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState("");
   const chatContainerRef = useRef(null);
+  const [creatorId, setCreatorId] = useState(null);
 
   useEffect(() => {
     console.log("roomID", roomId);
@@ -20,11 +21,12 @@ const MultiplayerPanel = () => {
     console.log("useEffect react - mounting MultiplayerPanel");
 
     // INIT ONLY ONCE
-    socket.on("session_state", ({ chatMessages, users }) => {
+    socket.on("session_state", ({ chatMessages, users, creator }) => {
       console.log("session state messages :");
       console.log(chatMessages);
       setUsers(users);
       setMessages(chatMessages);
+      if (creator) setCreatorId(creator.id);
     });
     // LIVE UPDATES
     socket.on("update_users", (userList) => {
@@ -36,11 +38,17 @@ const MultiplayerPanel = () => {
       console.log("chat messages received", chatMessages);
       setMessages(chatMessages);
     });
+    socket.on("room_closed_by_creator", () => {
+      console.log('ROOM LEAVEEEEEE');
 
+      alert("The creator has left the game. You are being redirected to the lobby.");
+      window.location.href = "/create/collective-drawing-lobby";
+    });
     return () => {
       socket.off("session_state");
       socket.off("update_users");
       socket.off("update_chat");
+      socket.off("room_closed_by_creator");
     };
   }, []);
 
@@ -49,6 +57,13 @@ const MultiplayerPanel = () => {
       chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
     }
   }, [messages]);
+
+  const handleLeaveRoom = () => {
+    const userId = window.currentUser.id;
+    socket.emit("leave_room", { roomId, userId });
+
+    window.location.href = "/create/collective-drawing-lobby";
+  };
 
   const handleSendMessage = (e) => {
     console.log("----------->" + newMessage);
@@ -132,6 +147,11 @@ const MultiplayerPanel = () => {
           </div>
         </div>
       </div>
+
+      <button onClick={handleLeaveRoom}>
+        Leave room
+      </button>
+
     </div>
   );
 };

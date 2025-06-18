@@ -18,7 +18,7 @@ const io = new Server(server, {
 
 const rooms = {};
 
-function getOrCreateRoom(roomId, opts = {}) {
+function getOrCreateRoom(roomId, opts) {
     if (!rooms[roomId]) rooms[roomId] = new Room(roomId, opts);
     return rooms[roomId];
 }
@@ -40,7 +40,6 @@ io.on("connection", (socket) => {
                 username: username,
                 id: userId
             }
-
         });
         socket.userId = userId;
         socket.join(roomId);
@@ -86,65 +85,16 @@ io.on("connection", (socket) => {
     });
 
     socket.on("leave_room", ({ roomId, userId }) => {
-        const room = rooms[roomId];
-        if (!room) return;
-        room.removeUser(userId);
-        socket.leave(roomId);
-
-        if (room.currentCount === 0) {
-            delete rooms[roomId];
-        } else {
-            io.to(roomId).emit("room_update", room.serializeLobby());
-        }
-        io.emit("room_list", Object.values(rooms).map(r => r.serializeLobby()));
+        handleUserLeave(socket, roomId, userId);
     });
 
     socket.on("start_room", ({ roomId }) => {
         const room = rooms[roomId];
-        if (!room) return;
+        if (!room || socket.userId !== room.creator.id) return;
         room.start();
         io.to(roomId).emit("room_started", { roomId });
         io.emit("room_list", Object.values(rooms).map(r => r.serializeLobby()));
     });
-
-
-    // socket.on("join_session", ({ sessionId, username, userId }) => {
-    //
-    //     const room = rooms[sessionId];
-    //     if (!room) {
-    //         return socket.emit("error", "Session not found.");
-    //     }
-    //
-    //     const session = room.session;
-    //     socket.join(sessionId);
-    //     socket.userId = userId;
-    //
-    //     console.log(`${username} (${socket.id}) joined the session ${sessionId}`);
-    //
-    //     // Ajout de l'utilisateur dans la session
-    //     session.addUser(userId, socket.id, username);
-    //
-    //     // Envoi des utilisateurs mis à jour à tout le monde
-    //     io.to(sessionId).emit("update_users", session.getUserList());
-    //
-    //     // Send actual drawing if exists
-    //     socket.emit("load_canvas", session.canvasData);
-    //
-    //     // Send other users' positions (and info) to the new user
-    //     Object.keys(session.users).forEach(otherUserId   => {
-    //         if (otherUserId  !== userId) {
-    //             const user = session.users[otherUserId];
-    //             socket.emit("cursor_move", {
-    //                 sessionId,
-    //                 pointer: {
-    //                     ...user.pointer,
-    //                     userColor: user.color,
-    //                     username: user.username
-    //                 }
-    //             });
-    //         }
-    //     });
-    // });
 
     // User cursor tracking
     socket.on("cursor_move", ({ roomId, userId, pointer }) => {
@@ -169,7 +119,6 @@ io.on("connection", (socket) => {
     socket.on("draw", ({ roomId, data }) => {
         const room = rooms[roomId];
         if (!room) return;
-        // console.log(sessions[roomId] );
         //  Store the canvas state
         // if (data.canvasData && data.canvasData.objects && data.canvasData.objects.length > 0) { // TODO : If first player disconnect, clear the session, else keep it intact
         room.session.updateCanvas(data.canvasData);
@@ -179,19 +128,11 @@ io.on("connection", (socket) => {
 
     // User disconnection
     socket.on("disconnect", () => {
-        console.log(`User disconected: ${socket.id}`);
+        console.log(`User disconnected: ${socket.id}`);
         for (const roomId in rooms) {
-            const room = rooms[roomId];
-            const session = room.session;
-
+            const session = rooms[roomId].session;
             if (session.users[socket.userId]) {
-                // delete sessions[roomId].users[socket.userId];
-                session.removeUser(socket.userId);
-                if (room.currentCount === 0) {
-                    delete rooms[roomId]; // optionnel : suppression de la room vide
-                } else {
-                    io.to(roomId).emit("update_users", session.getUserList());
-                }
+                handleUserLeave(socket, roomId, socket.userId);
                 break;
             }
         }
@@ -205,20 +146,7 @@ io.on("connection", (socket) => {
             socket.emit("update_users", []);
         }
     });
-    // socket.on("get_session_state", ({ roomId }) => {
-    //     const room = rooms[roomId];
-    //     if (!room) {
-    //         socket.emit("session_state", {
-    //             users: [],
-    //             chatMessages: [],
-    //             canvasData: null
-    //         });
-    //     } else {
-    //         console.log("get_session_state")
-    //         console.log(room.serializeSession());
-    //         socket.emit("session_state", room.serializeSession());
-    //     }
-    // });
+
     socket.on("send_chat", ({ roomId, message, username, userId, userColor }) => {
         const room = rooms[roomId]
         if (!room) return;
@@ -228,6 +156,38 @@ io.on("connection", (socket) => {
     });
 
 });
+
+function handleUserLeave(socket, roomId, userId) {
+    const room = rooms[roomId];
+    if (!room) return;
+    console.log("CREZATOR LEAVE ROOM");
+    console.log(userId);
+    console.log(room);
+
+
+    const session = room.session;
+
+    if (userId === room.creator.id) {
+        console.log(`Créateur a quitté la room ${roomId}, suppression`);
+
+        io.to(roomId).emit("room_closed_by_creator");
+
+        io.in(roomId).socketsLeave(roomId);
+        delete rooms[roomId];
+    } else {
+        session.removeUser(userId);
+        socket.leave(roomId);
+
+        if (room.currentCount === 0) {
+            delete rooms[roomId];
+        } else {
+            io.to(roomId).emit("update_users", session.getUserList());
+            io.to(roomId).emit("room_update", room.serializeLobby());
+        }
+    }
+
+    io.emit("room_list", Object.values(rooms).map(r => r.serializeLobby()));
+}
 
 const PORT = 3001;
 server.listen(PORT, () => {
