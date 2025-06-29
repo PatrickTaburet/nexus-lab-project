@@ -87,8 +87,12 @@ const Lobby = () => {
                                 {window.currentUser.id === r.creator.id && !r.hasStarted && (
                                     <button onClick={() => handleStart(r.roomId)}>Start</button>
                                 )}
-                                {window.currentUser.id !== r.creator.id && !r.hasStarted && (
-                                    <em>Waiting for creator...</em>
+                                {window.currentUser.id !== r.creator.id && (
+                                    r.hasStarted ? (
+                                        <em>In game</em>
+                                    ) : (
+                                        <em>Waiting for creator...</em>
+                                    )
                                 )}
                             </>
                         )}

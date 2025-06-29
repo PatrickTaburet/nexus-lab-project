@@ -13,13 +13,15 @@ class Room {
         return Object.keys(this.session.users).length;
     }
     canJoin(userId) {
-        const alreadyInRoom = !!this.session.users[userId];
-        return alreadyInRoom || (!this.hasStarted && this.currentCount < this.maxPlayers);
+        if (this.session.users[userId]) return true;
+        return !this.hasStarted && this.currentCount < this.maxPlayers;
     }
 
     addUser(userId, socketId, username) {
-        if (!this.canJoin(userId)) throw new Error('Room full or already started');
+        // if (!this.canJoin(userId)) throw new Error('Room full or already started');
         this.session.addUser(userId, socketId, username)
+        console.log("-->" + this.hasStarted);
+
     }
     removeUser(userId) {
         this.session.removeUser(userId);

@@ -17,8 +17,10 @@ const io = new Server(server, {
 });
 
 const rooms = {};
+const pendingDisconnects = {};
 
 function getOrCreateRoom(roomId, opts) {
+    if (!rooms[roomId]) console.log("new room creation");
     if (!rooms[roomId]) rooms[roomId] = new Room(roomId, opts);
     return rooms[roomId];
 }
@@ -57,8 +59,21 @@ io.on("connection", (socket) => {
         }
         socket.join(roomId);
         socket.userId = userId;
-        room.addUser(userId, socket.id, username);
 
+        if (pendingDisconnects[userId]) {
+            console.log(`✅ Reconnexion du créateur ${userId}, annulation du timeout`);
+            clearTimeout(pendingDisconnects[userId]);
+            delete pendingDisconnects[userId];
+        }
+
+        room.addUser(userId, socket.id, username);
+        console.log("🧠 Session après addUser :", room.session.users);
+
+        console.log("-----------------");
+        console.log(room);
+
+
+        console.log(`✅ Room ${roomId} has started.`, room.hasStarted);
         // Lobby update
         io.to(roomId).emit("room_update", room.serializeLobby());
         io.to(roomId).emit("update_users", room.session.getUserList());
@@ -85,13 +100,15 @@ io.on("connection", (socket) => {
     });
 
     socket.on("leave_room", ({ roomId, userId }) => {
-        handleUserLeave(socket, roomId, userId);
+        handleUserLeave(socket, roomId, userId, true);
     });
 
     socket.on("start_room", ({ roomId }) => {
         const room = rooms[roomId];
         if (!room || socket.userId !== room.creator.id) return;
         room.start();
+        console.log(`✅ Room ${roomId} has started.`, room.hasStarted); // 👈 log ici
+
         io.to(roomId).emit("room_started", { roomId });
         io.emit("room_list", Object.values(rooms).map(r => r.serializeLobby()));
     });
@@ -130,9 +147,24 @@ io.on("connection", (socket) => {
     socket.on("disconnect", () => {
         console.log(`User disconnected: ${socket.id}`);
         for (const roomId in rooms) {
-            const session = rooms[roomId].session;
+            const room = rooms[roomId];
+            const session = room.session;
+
             if (session.users[socket.userId]) {
-                handleUserLeave(socket, roomId, socket.userId);
+                const userId = socket.userId;
+
+                if (userId === room.creator.id) {
+                    console.log(`⏳ Créateur déconnecté temporairement, attente avant suppression room ${roomId}`);
+
+                    // Laisse 5 secondes pour qu’il se reconnecte
+                    pendingDisconnects[userId] = setTimeout(() => {
+                        console.log(`⛔️ Suppression finale room ${roomId} (créateur non revenu)`);
+                        handleUserLeave(socket, roomId, userId, true); // FORCÉ
+                        delete pendingDisconnects[userId];
+                    }, 5000);
+                } else {
+                    handleUserLeave(socket, roomId, userId);
+                }
                 break;
             }
         }
@@ -157,25 +189,28 @@ io.on("connection", (socket) => {
 
 });
 
-function handleUserLeave(socket, roomId, userId) {
+function handleUserLeave(socket, roomId, userId, forceDestroy = false) {
     const room = rooms[roomId];
     if (!room) return;
-    console.log("CREZATOR LEAVE ROOM");
-    console.log(userId);
-    console.log(room);
-
 
     const session = room.session;
 
-    if (userId === room.creator.id) {
-        console.log(`Créateur a quitté la room ${roomId}, suppression`);
+    const isCreator = userId === room.creator.id;
+
+    if (isCreator && (forceDestroy || room.hasStarted)) {
+        console.log(`🧨 Room ${roomId} supprimée (créateur quitté${forceDestroy ? " volontairement" : ""})`);
 
         io.to(roomId).emit("room_closed_by_creator");
-
         io.in(roomId).socketsLeave(roomId);
         delete rooms[roomId];
     } else {
-        session.removeUser(userId);
+        if (room.hasStarted) {
+            if (session.users[userId]) {
+                session.users[userId].online = false;
+            }
+        } else {
+            session.removeUser(userId);
+        }
         socket.leave(roomId);
 
         if (room.currentCount === 0) {
@@ -188,6 +223,7 @@ function handleUserLeave(socket, roomId, userId) {
 
     io.emit("room_list", Object.values(rooms).map(r => r.serializeLobby()));
 }
+
 
 const PORT = 3001;
 server.listen(PORT, () => {

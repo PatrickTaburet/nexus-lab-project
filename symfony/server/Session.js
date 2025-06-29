@@ -14,7 +14,7 @@ class Session {
         if (this.users[userId]) {
             this.users[userId].socketId = socketId;
             this.users[userId].online = true;
-            console.log("2222", this.users);
+            console.log(`🔁 Reconnexion de ${username} (user ${userId})`);
         } else {
             // Else, add user and asign him a color
             const userCount = Object.keys(this.users).length;
@@ -27,7 +27,11 @@ class Session {
                 pointer: { x: 0, y: 0, isClicking: false },
                 online: true
             };
+            console.log(`🆕 Ajout de ${username} (user ${userId}) à la session`);
+
         }
+        console.log("📦 Users dans la session :", this.users);
+
     }
 
     // Marks a user as offline (instead of deleting him)
